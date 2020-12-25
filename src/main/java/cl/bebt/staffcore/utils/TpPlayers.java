@@ -6,10 +6,10 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class TpPlayers{
-
+public class TpPlayers {
+    
     private static final main plugin = main.plugin;
-
+    
     public static void tpToPlayer( Player sender , String player ){
         if ( utils.isPlayer( player ) ) {
             Player target = Bukkit.getPlayer( player );
@@ -32,7 +32,7 @@ public class TpPlayers{
             utils.tell( sender , utils.getString( "server_prefix" ) + message );
         }
     }
-
+    
     public static void tpPlayerToPlayer( CommandSender sender , String player1 , String player2 ){
         if ( utils.isPlayer( player1 ) && utils.isPlayer( player2 ) ) {
             Player from = Bukkit.getPlayer( player1 );
@@ -83,7 +83,7 @@ public class TpPlayers{
             }
         }
     }
-
+    
     public static void tpAll( CommandSender sender , String player ){
         if ( utils.isPlayer( player ) ) {
             try {
@@ -115,7 +115,7 @@ public class TpPlayers{
             utils.tell( sender , utils.getString( "server_prefix" ) + message );
         }
     }
-
+    
     public static void tpToCords( Player sender , double x , double y , double z ){
         try {
             sender.teleport( new Location( sender.getWorld( ) , x , y , z ) );
@@ -124,13 +124,13 @@ public class TpPlayers{
             message = message.replace( "%y%" , String.valueOf( y ) );
             message = message.replace( "%z%" , String.valueOf( z ) );
             utils.tell( sender , utils.getString( "server_prefix" ) + message );
-
+            
         } catch ( NullPointerException offline ) {
             utils.tell( sender , utils.getString( "server_prefix" ) + "&cAn error occurred" );
             offline.printStackTrace( );
         }
     }
-
+    
     public static void tpToCordsAndPlayer( CommandSender sender , Player target , double x , double y , double z ){
         try {
             boolean bol = false;
@@ -157,14 +157,14 @@ public class TpPlayers{
                 message2 = message2.replace( "%sender%" , sender.getName( ) );
                 utils.tell( target , utils.getString( "server_prefix" ) + message2 );
             }
-
-
+            
+            
         } catch ( NullPointerException offline ) {
             utils.tell( sender , utils.getString( "server_prefix" ) + "&cAn error occurred" );
             offline.printStackTrace( );
         }
     }
-
+    
     public static void tpAllToCords( Player sender , double x , double y , double z ){
         try {
             if ( Bukkit.getServer( ).getOnlinePlayers( ).size( ) <= 1 ) {
@@ -192,6 +192,6 @@ public class TpPlayers{
             utils.tell( sender , utils.getString( "server_prefix" ) + "&cAn error occurred" );
             offline.printStackTrace( );
         }
-
+        
     }
 }

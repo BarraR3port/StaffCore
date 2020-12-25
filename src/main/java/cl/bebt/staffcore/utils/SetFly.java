@@ -9,10 +9,10 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 
-public class SetFly{
+public class SetFly {
     private static final Plugin plugin = main.plugin;
     private static final SQLGetter data = main.plugin.data;
-
+    
     public static void SetFly( Player p , Boolean bol ){
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         if ( bol ) {
@@ -21,7 +21,7 @@ public class SetFly{
                 p.setFlying( true );
             }
             if ( utils.mysqlEnabled( ) ) {
-                SQLGetter.setTrue( p.getName() , "flying" , "true" );
+                SQLGetter.setTrue( p.getName( ) , "flying" , "true" );
             }
         } else {
             if ( !(p.getGameMode( ) == GameMode.CREATIVE || p.getGameMode( ) == GameMode.SPECTATOR || PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING )) ) {
@@ -32,7 +32,7 @@ public class SetFly{
                 }
             }
             if ( utils.mysqlEnabled( ) ) {
-                SQLGetter.setTrue( p.getName() , "flying" , "false" );
+                SQLGetter.setTrue( p.getName( ) , "flying" , "false" );
             }
         }
     }

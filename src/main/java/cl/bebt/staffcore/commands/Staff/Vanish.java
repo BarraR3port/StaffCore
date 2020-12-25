@@ -13,15 +13,15 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 
-public class Vanish implements CommandExecutor{
-
+public class Vanish implements CommandExecutor {
+    
     private final main plugin;
-
+    
     public Vanish( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "vanish" ).setExecutor( this );
     }
-
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {
@@ -102,9 +102,9 @@ public class Vanish implements CommandExecutor{
                 }
             } else {
                 utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) );
-
+                
             }
-
+            
         }
         return true;
     }

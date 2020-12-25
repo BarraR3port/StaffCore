@@ -17,24 +17,24 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 
-public class ChatSettings extends MenuC{
+public class ChatSettings extends MenuC {
     private final main plugin;
-
+    
     public ChatSettings( PlayerMenuUtility playerMenuUtility , main plugin ){
         super( playerMenuUtility );
         this.plugin = plugin;
     }
-
+    
     @Override
     public String getMenuName( ){
         return utils.chat( "&cClear Chat Manager" );
     }
-
+    
     @Override
     public int getSlots( ){
         return 45;
     }
-
+    
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
@@ -58,28 +58,28 @@ public class ChatSettings extends MenuC{
             }
         }
     }
-
+    
     @Override
     public void setMenuItemsPlayer( Player p ){
         ArrayList < String > lore = new ArrayList <>( );
         lore.add( utils.chat( "&c" ) );
         ItemStack ClearChat = new ItemStack( Material.END_CRYSTAL , 1 );
         ItemStack Head = utils.getPlayerHead( p.getName( ) );
-
+        
         ItemMeta metaTChat = ClearChat.getItemMeta( );
         ItemMeta metaHead = Head.getItemMeta( );
-
+        
         metaTChat.setDisplayName( utils.chat( "&cClear Server Chat" ) );
         metaHead.setDisplayName( utils.chat( "&5Clear player chat" ) );
-
+        
         metaTChat.setLore( lore );
         metaHead.setLore( lore );
         metaTChat.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "clearAll" ) , PersistentDataType.STRING , "clearAll" );
         metaHead.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "head" ) , PersistentDataType.STRING , "head" );
-
+        
         ClearChat.setItemMeta( metaTChat );
         Head.setItemMeta( metaHead );
-
+        
         for ( int i = 0; i < 10; i++ ) {
             if ( inventory.getItem( i ) == null ) {
                 inventory.setItem( i , super.bluePanel( ) );

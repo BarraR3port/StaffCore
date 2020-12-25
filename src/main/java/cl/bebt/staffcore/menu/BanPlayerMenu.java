@@ -13,8 +13,8 @@ import org.bukkit.persistence.PersistentDataType;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public abstract class BanPlayerMenu extends Menu{
-
+public abstract class BanPlayerMenu extends Menu {
+    
     protected String baned;
     protected Player baner;
     protected int page = 0;
@@ -22,12 +22,12 @@ public abstract class BanPlayerMenu extends Menu{
     protected int index = 0;
     protected String reason;
     protected DateTimeFormatter time;
-
-
+    
+    
     public BanPlayerMenu( PlayerMenuUtility playerMenuUtility ){
         super( playerMenuUtility );
     }
-
+    
     public void addMenuBorder( ){
         for ( int i = 0; i < 10; i++ ) {
             if ( inventory.getItem( i ) == null ) {
@@ -63,7 +63,7 @@ public abstract class BanPlayerMenu extends Menu{
         for ( int i = 37; i < 44; i++ ) {
             if ( inventory.getItem( i ) == null ) {
                 inventory.setItem( i , super.greenPanel( ) );
-
+                
             }
         }
         inventory.setItem( 49 , makeItem( Material.BARRIER , ChatColor.DARK_RED + "Close" ) );
@@ -73,7 +73,7 @@ public abstract class BanPlayerMenu extends Menu{
             }
         }
     }
-
+    
     public int getMaxItemsPerPage( ){
         return maxItemsPerPage;
     }

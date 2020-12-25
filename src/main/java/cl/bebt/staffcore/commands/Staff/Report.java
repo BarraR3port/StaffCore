@@ -11,15 +11,15 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Report implements TabExecutor{
-
+public class Report implements TabExecutor {
+    
     private final main plugin;
-
+    
     public Report( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "report" ).setExecutor( this );
     }
-
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {
@@ -43,7 +43,7 @@ public class Report implements TabExecutor{
         }
         return false;
     }
-
+    
     @Override
     public List < String > onTabComplete( CommandSender sender , Command command , String alias , String[] args ){
         List < String > version = new ArrayList <>( );

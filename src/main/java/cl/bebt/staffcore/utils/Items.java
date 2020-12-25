@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
-public class Items{
-
+public class Items {
+    
     public static ItemStack head( Player target ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack head = utils.getPlayerHead( target.getName( ) );
@@ -47,7 +47,7 @@ public class Items{
         head.setItemMeta( head_meta );
         return head;
     }
-
+    
     public static ItemStack food( Player target ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack food = new ItemStack( Material.COOKED_BEEF );
@@ -60,7 +60,7 @@ public class Items{
         food.setItemMeta( food_meta );
         return food;
     }
-
+    
     public static ItemStack potions( Player target ){
         ArrayList < PotionEffect > potions = new ArrayList <>( target.getActivePotionEffects( ) );
         if ( !potions.isEmpty( ) ) {
@@ -85,16 +85,16 @@ public class Items{
             return item;
         }
     }
-
+    
     public static ItemStack EmptyItem( ){
         ItemStack item = new ItemStack( Material.BARRIER );
         ItemMeta itemMeta = item.getItemMeta( );
         itemMeta.setDisplayName( utils.chat( "&cEMPTY WARN" ) );
         item.setItemMeta( itemMeta );
         return item;
-
+        
     }
-
+    
     public static ItemStack greenPanel( ){
         ItemStack panel = new ItemStack( Material.LIME_STAINED_GLASS_PANE );
         ItemMeta panel_meta = panel.getItemMeta( );
@@ -103,14 +103,14 @@ public class Items{
         panel.setItemMeta( panel_meta );
         return panel;
     }
-
+    
     private static String getTime( Long timeLeft ){
         Long left = (timeLeft / 20) * 1000;
         SimpleDateFormat format = new SimpleDateFormat( "mm:ss" );
         Date date = new Date( left );
         return format.format( date );
     }
-
+    
     public static ItemStack ServerStatus( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack server = new ItemStack( Material.COMPASS );
@@ -139,7 +139,7 @@ public class Items{
         server.setItemMeta( metaServer );
         return server;
     }
-
+    
     public static ItemStack PlayerStatus( Player p ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack playerHead = utils.getPlayerHead( p.getName( ) );

@@ -12,9 +12,9 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.List;
 
-public class wipePlayer{
+public class wipePlayer {
     private static main plugin;
-
+    
     public wipePlayer( main plugin , CommandSender sender , String p ){
         wipePlayer.plugin = plugin;
         int bans = 0;
@@ -105,7 +105,7 @@ public class wipePlayer{
             SendMsg.sendWipeAlert( sender.getName( ) , p , bans , reports , warns , plugin.getConfig( ).getString( "bungeecord.server" ) );
         }
     }
-
+    
     public static void WipeOnBan( main plugin , String p ){
         if ( utils.isRegistered( p ) ) {
             if ( utils.mysqlEnabled( ) ) {
@@ -150,7 +150,7 @@ public class wipePlayer{
             PersistentDataContainer( p );
         }
     }
-
+    
     private static void PersistentDataContainer( String p ){
         try {
             if ( Bukkit.getPlayer( p ) instanceof Player ) {
@@ -174,7 +174,7 @@ public class wipePlayer{
         } catch ( NullPointerException ignored ) {
         }
     }
-
+    
     private static HashMap < Integer, Integer > Ids( String type , String p ){
         HashMap < Integer, Integer > ids = new HashMap <>( );
         int num = 0;
@@ -224,7 +224,7 @@ public class wipePlayer{
         }
         return ids;
     }
-
+    
     public static int count( String type ){
         if ( utils.mysqlEnabled( ) ) {
             if ( type.equalsIgnoreCase( "report" ) ) {
@@ -246,7 +246,7 @@ public class wipePlayer{
             } catch ( NullPointerException ignored ) {
                 return 0;
             }
-
+            
         }
     }
 }

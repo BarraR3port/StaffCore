@@ -16,25 +16,25 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 
-public class WarnManager extends PaginatedMenu{
-
+public class WarnManager extends PaginatedMenu {
+    
     private final main plugin;
-
+    
     public WarnManager( PlayerMenuUtility playerMenuUtility , main plugin ){
         super( playerMenuUtility );
         this.plugin = plugin;
     }
-
+    
     @Override
     public String getMenuName( ){
         return utils.chat( "&cWarns:" );
     }
-
+    
     @Override
     public int getSlots( ){
         return 54;
     }
-
+    
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
@@ -70,7 +70,7 @@ public class WarnManager extends PaginatedMenu{
             }
         }
     }
-
+    
     @Override
     public void setMenuItems( ){
         addMenuBorder( );
@@ -95,10 +95,10 @@ public class WarnManager extends PaginatedMenu{
                     p_head.setItemMeta( meta );
                     inventory.addItem( p_head );
                     /////////////////////////////
-
+                    
                 }
             }
         }
     }
-
+    
 }

@@ -12,15 +12,15 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class wipe implements TabExecutor{
-
+public class wipe implements TabExecutor {
+    
     private final main plugin;
-
+    
     public wipe( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "wipe" ).setExecutor( this );
     }
-
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( sender instanceof Player ) {
@@ -77,7 +77,7 @@ public class wipe implements TabExecutor{
         }
         return true;
     }
-
+    
     @Override
     public List < String > onTabComplete( CommandSender sender , Command command , String alias , String[] args ){
         List < String > version = new ArrayList <>( );
@@ -92,5 +92,5 @@ public class wipe implements TabExecutor{
         }
         return version;
     }
-
+    
 }

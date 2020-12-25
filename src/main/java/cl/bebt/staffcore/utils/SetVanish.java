@@ -10,10 +10,10 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 
-public class SetVanish{
+public class SetVanish {
     private static final Plugin plugin = main.plugin;
     private static final SQLGetter data = main.plugin.data;
-
+    
     public static void setVanish( Player p , Boolean bol ){
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         if ( bol ) {
@@ -31,7 +31,7 @@ public class SetVanish{
                         }
                     }
                 }
-                SQLGetter.setTrue( p.getName() , "vanish" , "true" );
+                SQLGetter.setTrue( p.getName( ) , "vanish" , "true" );
             } else {
                 for ( Player player : Bukkit.getOnlinePlayers( ) ) {
                     if ( !player.hasPermission( "staffcore.vanish.see" ) && !player.hasPermission( "staffcore.vanish" ) ) {
@@ -39,7 +39,7 @@ public class SetVanish{
                             player.hidePlayer( plugin , p );
                         } else {
                             p.showPlayer( plugin , player );
-
+                            
                         }
                     } else {
                         p.showPlayer( plugin , player );
@@ -77,7 +77,7 @@ public class SetVanish{
             p.setSaturation( 5f );
             PlayerData.remove( new NamespacedKey( plugin , "vanished" ) );
             if ( utils.mysqlEnabled( ) ) {
-                SQLGetter.setTrue( p.getName() , "vanish" , "false" );
+                SQLGetter.setTrue( p.getName( ) , "vanish" , "false" );
             }
             for ( Player people : Bukkit.getOnlinePlayers( ) ) {
                 people.showPlayer( plugin , p );

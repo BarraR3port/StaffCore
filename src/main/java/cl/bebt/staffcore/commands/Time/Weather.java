@@ -12,15 +12,15 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Weather implements TabExecutor{
-
+public class Weather implements TabExecutor {
+    
     private final main plugin;
-
+    
     public Weather( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "weather" ).setExecutor( this );
     }
-
+    
     @Override
     public List < String > onTabComplete( CommandSender sender , Command command , String alias , String[] args ){
         if ( args.length == 1 ) {
@@ -32,7 +32,7 @@ public class Weather implements TabExecutor{
         }
         return null;
     }
-
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {
@@ -71,7 +71,7 @@ public class Weather implements TabExecutor{
                     p.getLocation( ).getWorld( ).setThundering( false );
                     p.getLocation( ).getWorld( ).setStorm( false );
                     p.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7Weather: &eClean!" ) );
-
+                    
                 }
                 if ( args[0].equalsIgnoreCase( "rain" ) ) {
                     p.getLocation( ).getWorld( ).setStorm( true );

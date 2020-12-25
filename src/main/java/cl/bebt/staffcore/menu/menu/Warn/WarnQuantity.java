@@ -16,12 +16,12 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 
-public class WarnQuantity extends PaginatedMenu{
+public class WarnQuantity extends PaginatedMenu {
     private final main plugin;
     private final String warned;
     private final String reason;
     private final Long time;
-
+    
     public WarnQuantity( PlayerMenuUtility playerMenuUtility , main plugin , String warned , String reason , Long amount ){
         super( playerMenuUtility );
         this.plugin = plugin;
@@ -29,22 +29,22 @@ public class WarnQuantity extends PaginatedMenu{
         this.reason = reason;
         this.time = amount;
     }
-
+    
     @Override
     public String getMenuName( ){
         return utils.chat( "&cChose between &ds/m/h/d" );
     }
-
+    
     @Override
     public int getSlots( ){
         return 45;
     }
-
+    
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
         int amount = 49;
-
+        
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "seconds" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
             WarnPlayer.createWarn( p , warned , reason , time , "s" );
@@ -80,7 +80,7 @@ public class WarnQuantity extends PaginatedMenu{
             }
         }
     }
-
+    
     @Override
     public void setMenuItems( ){
         for ( int i = 0; i < 10; i++ ) {
@@ -115,7 +115,7 @@ public class WarnQuantity extends PaginatedMenu{
         inventory.setItem( 23 , hours( ) );
         inventory.setItem( 24 , days( ) );
     }
-
+    
     public ItemStack seconds( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.MAGENTA_CONCRETE );
@@ -127,7 +127,7 @@ public class WarnQuantity extends PaginatedMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack minutes( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.PURPLE_CONCRETE );
@@ -139,7 +139,7 @@ public class WarnQuantity extends PaginatedMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack hours( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.BLUE_CONCRETE );
@@ -151,7 +151,7 @@ public class WarnQuantity extends PaginatedMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack days( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.RED_CONCRETE );
@@ -163,5 +163,5 @@ public class WarnQuantity extends PaginatedMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
 }

@@ -20,25 +20,25 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class enderSee extends InventoryMenu{
-
+public class enderSee extends InventoryMenu {
+    
     private final Player target;
-
+    
     public enderSee( PlayerMenuUtility playerMenuUtility , Player target ){
         super( playerMenuUtility );
         this.target = target;
     }
-
+    
     @Override
     public String getMenuName( ){
         return utils.chat( "&c" + target.getName( ) + "'s Ender Chest:" );
     }
-
+    
     @Override
     public int getSlots( ){
         return 45;
     }
-
+    
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
@@ -50,17 +50,17 @@ public class enderSee extends InventoryMenu{
             e.setCancelled( true );
             return;
         }
-
+        
         if ( e.getClick( ) == ClickType.MIDDLE ) {
             return;
         }
-
+        
         if ( e.getClick( ) == ClickType.DROP || e.getClick( ) == ClickType.CONTROL_DROP ) {
             utils.tell( p , utils.getString( "staff.staff_prefix" ) + "&cYou can't drop items while you are seen a player Ender Chest" );
             e.setCancelled( true );
             return;
         }
-
+        
         if ( e.getClickedInventory( ) == p.getInventory( ) ) {
             return;
         }
@@ -80,7 +80,7 @@ public class enderSee extends InventoryMenu{
         } else if ( e.getSlot( ) == 35 ) {
             slot = 36;
         }
-
+        
         try {
             if ( item.equals( Material.AIR ) ) {
                 // player put item to inventory
@@ -102,14 +102,14 @@ public class enderSee extends InventoryMenu{
                 String target = item.getItemMeta( ).getPersistentDataContainer( ).get( new NamespacedKey( main.plugin , "name" ) , PersistentDataType.STRING );
                 TpPlayers.tpToPlayer( p , target );
             }
-
+            
         } catch ( NullPointerException ignored ) {
             //OpenInvSee.updateTargetInventory( p, target );
             OpenEnderSee.setItem( p , target , slot );
         }
-
+        
     }
-
+    
     @Override
     public void handleMenu( InventoryDragEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
@@ -135,17 +135,17 @@ public class enderSee extends InventoryMenu{
             }
             OpenEnderSee.setItem( p , target , slot , items.get( i ) );
         }
-
+        
     }
-
-
+    
+    
     @Override
     public void handleMenu( InventoryCloseEvent e ){
         main.enderSee.remove( e.getPlayer( ) , target );
         utils.PlaySound( ( Player ) e.getPlayer( ) , "endersee_close" );
     }
-
-
+    
+    
     @Override
     public void setMenuItemsPlayer( Player p ){
         HashMap < Integer, ItemStack > hotbar = new HashMap <>( );
@@ -189,5 +189,5 @@ public class enderSee extends InventoryMenu{
         }
         utils.PlaySound( p , "endersee" );
     }
-
+    
 }

@@ -11,15 +11,15 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 import java.util.Map;
 
-public class OpenEnderSee{
-
+public class OpenEnderSee {
+    
     public OpenEnderSee( Player p , Player target ){
         if ( !main.enderSee.containsValue( target ) ) {
             main.enderSee.put( p , target );
         }
         new enderSee( new PlayerMenuUtility( p ) , target ).open( p );
     }
-
+    
     public static void updateInventory( Player p , Player target ){
         HashMap < Integer, ItemStack > hotbar = new HashMap <>( );
         for ( int i = 0; i < 9; i++ ) {
@@ -61,12 +61,12 @@ public class OpenEnderSee{
             p.getOpenInventory( ).getTopInventory( ).setItem( 35 , target.getInventory( ).getBoots( ) );
         }
     }
-
+    
     public static void removeItem( Player target , int slot ){
         //main.itemHold.put( p , item );
         target.getEnderChest( ).setItem( slot , new ItemStack( Material.AIR ) );
     }
-
+    
     public static void setItem( Player p , Player target , int slot ){
         //ItemStack item = main.itemHold.get( p );
         ItemStack item = p.getItemOnCursor( );
@@ -78,7 +78,7 @@ public class OpenEnderSee{
         } , 6L );
         //main.itemHold.remove( p );
     }
-
+    
     public static void setItem( Player p , Player target , int slot , ItemStack item ){
         //ItemStack item = main.itemHold.get( p );
         target.getEnderChest( ).setItem( slot , item );
@@ -89,7 +89,7 @@ public class OpenEnderSee{
         } , 6L );
         //main.itemHold.remove( p );
     }
-
+    
     public static Player getOwner( Player target ){
         Player owner = null;
         try {
@@ -102,5 +102,5 @@ public class OpenEnderSee{
         }
         return owner;
     }
-
+    
 }

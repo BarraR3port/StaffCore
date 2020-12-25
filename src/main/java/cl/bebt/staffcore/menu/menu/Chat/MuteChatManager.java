@@ -18,24 +18,24 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 
-public class MuteChatManager extends MenuC{
+public class MuteChatManager extends MenuC {
     private final main plugin;
-
+    
     public MuteChatManager( PlayerMenuUtility playerMenuUtility , main plugin ){
         super( playerMenuUtility );
         this.plugin = plugin;
     }
-
+    
     @Override
     public String getMenuName( ){
         return utils.chat( "&cMute Chat Manager" );
     }
-
+    
     @Override
     public int getSlots( ){
         return 45;
     }
-
+    
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
@@ -65,23 +65,23 @@ public class MuteChatManager extends MenuC{
             }
         }
     }
-
+    
     @Override
     public void setMenuItemsPlayer( Player p ){
         ArrayList < String > lore = new ArrayList <>( );
-
+        
         ItemStack TChatOn = new ItemStack( Material.ENDER_EYE , 1 );
         ItemStack TChatOff = new ItemStack( Material.ENDER_EYE , 1 );
         ItemStack Head = utils.getPlayerHead( p.getName( ) );
-
+        
         ItemMeta metaTChatOn = TChatOn.getItemMeta( );
         ItemMeta metaTChatOff = TChatOff.getItemMeta( );
         ItemMeta metaHead = Head.getItemMeta( );
-
+        
         metaTChatOn.setDisplayName( utils.chat( "&8Current Chat: &aNormal" ) );
         metaTChatOff.setDisplayName( utils.chat( "&8Current Chat: &cMuted" ) );
         metaHead.setDisplayName( utils.chat( "&cMute Player Chat" ) );
-
+        
         lore.add( utils.chat( "&7Click to &cMUTE &7the Chat." ) );
         metaTChatOn.setLore( lore );
         lore.clear( );
@@ -90,18 +90,18 @@ public class MuteChatManager extends MenuC{
         lore.clear( );
         lore.add( utils.chat( "&7Click to &cMute &7a specific player chat." ) );
         metaHead.setLore( lore );
-
+        
         metaTChatOff.addEnchant( Enchantment.MENDING , 1 , false );
         metaTChatOff.addItemFlags( ItemFlag.HIDE_ENCHANTS );
-
+        
         metaTChatOn.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "TChatOn" ) , PersistentDataType.STRING , "TChatOn" );
         metaTChatOff.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "TChatOff" ) , PersistentDataType.STRING , "TChatOff" );
         metaHead.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "Head" ) , PersistentDataType.STRING , "Head" );
-
+        
         TChatOn.setItemMeta( metaTChatOn );
         TChatOff.setItemMeta( metaTChatOff );
         Head.setItemMeta( metaHead );
-
+        
         for ( int i = 0; i < 10; i++ ) {
             if ( inventory.getItem( i ) == null ) {
                 inventory.setItem( i , super.bluePanel( ) );

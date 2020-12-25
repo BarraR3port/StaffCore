@@ -13,27 +13,27 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class utils{
-
-    private static main plugin;
+public class utils {
+    
     private static final ArrayList < Player > players = new ArrayList <>( Bukkit.getServer( ).getOnlinePlayers( ).size( ) );
-
+    private static main plugin;
+    
     public utils( main plugin ){
         utils.plugin = plugin;
     }
-
+    
     public static String chat( String s ){
         return ChatColor.translateAlternateColorCodes( '&' , s );
     }
-
+    
     public static void tell( CommandSender sender , String message ){
         sender.sendMessage( utils.chat( message ) );
     }
-
+    
     public static void tell( Player player , String message ){
         player.sendMessage( utils.chat( message ) );
     }
-
+    
     public static void ccAll( ){
         for ( Player p : Bukkit.getOnlinePlayers( ) ) {
             for ( int i = 0; i < 99; i++ ) {
@@ -42,14 +42,14 @@ public class utils{
             }
         }
     }
-
+    
     public static void ccPlayer( Player p ){
         for ( int i = 0; i < 99; i++ ) {
             p.sendMessage( "\n" );
             p.sendMessage( " " );
         }
     }
-
+    
     public static ItemStack getPlayerHead( String p ){
         boolean isNewVersion = Arrays.stream( Material.values( ) )
                 .map( Material::name ).collect( Collectors.toList( ) ).contains( "PLAYER_HEAD" );
@@ -63,14 +63,14 @@ public class utils{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public static void PlaySound( Player p , String path ){
         if ( plugin.getConfig( ).getBoolean( "sounds" ) ) {
             Sound sound = Sound.valueOf( plugin.getConfig( ).getString( "custom_sounds." + path ) );
             p.playSound( p.getLocation( ) , sound , 1 , 1 );
         }
     }
-
+    
     public static void PlayParticle( Player p , String path ){
         if ( plugin.getConfig( ).getBoolean( "custom_particles." + path + ".enabled" ) ) {
             Particle particle = Particle.valueOf( plugin.getConfig( ).getString( "custom_particles." + path + ".particle" ) );
@@ -84,7 +84,7 @@ public class utils{
             }
         }
     }
-
+    
     public static String stringify( List < String > l , String Ip ){
         StringBuilder rs = new StringBuilder( Ip );
         for ( String marker : l ) {
@@ -94,20 +94,20 @@ public class utils{
         }
         return rs.toString( );
     }
-
+    
     public static HashMap < String, String > makeHashMap( String s ){
         HashMap < String, String > map = new HashMap <>( );
         s = s.replace( "{" , "" ).replace( "}" , "" );
         //split the String by a comma
         String[] parts = s.split( "," );
-
+        
         //iterate the parts and add them to a map
-
+        
         for ( String part : parts ) {
-
+            
             //split the employee data by : to get id and name
             String[] empdata = part.split( "=" );
-
+            
             String strId = empdata[0].trim( );
             String strName = empdata[1].trim( );
             strId = strId.replace( " " , "" );
@@ -117,14 +117,14 @@ public class utils{
         }
         return map;
     }
-
+    
     public static List < String > makeList( String rs ){
         List < String > rl = new LinkedList <>( );
         String[] a = rs.split( "," );
         rl.addAll( Arrays.asList( a ) );
         return rl;
     }
-
+    
     public static boolean isRegistered( String p ){
         if ( utils.mysqlEnabled( ) ) {
             return SQLGetter.getPlayersNames( ).contains( p );
@@ -132,15 +132,15 @@ public class utils{
             return Objects.requireNonNull( plugin.alts.getConfig( ).getConfigurationSection( "alts" ) ).contains( p );
         }
     }
-
+    
     public static boolean mysqlEnabled( ){
         return plugin.getConfig( ).getBoolean( "mysql.enabled" );
     }
-
+    
     public static Boolean isPlayer( String target ){
         return Bukkit.getPlayer( target ) != null;
     }
-
+    
     public static int getPing( Player p ){
         try {
             Object entityPlayer = p.getClass( ).getMethod( "getHandle" ).invoke( p );
@@ -151,19 +151,19 @@ public class utils{
             return 0;
         }
     }
-
+    
     public static String getString( String s ){
         return plugin.getConfig( ).getString( s );
     }
-
+    
     public static Boolean getBoolean( String s ){
         return plugin.getConfig( ).getBoolean( s );
     }
-
+    
     public static int getInt( String s ){
         return plugin.getConfig( ).getInt( s );
     }
-
+    
     public static Player randomPlayer( Player p ){
         int count = 0;
         while (count < 10) {
@@ -184,7 +184,7 @@ public class utils{
         }
         return null;
     }
-
+    
     public static int currentWarns( ){
         int current = 0;
         try {
@@ -196,7 +196,7 @@ public class utils{
         }
         return current;
     }
-
+    
     public static int currentPlayerWarns( String warned ){
         int warnings = 0;
         if ( mysqlEnabled( ) ) {
@@ -214,7 +214,7 @@ public class utils{
             return warnings;
         }
     }
-
+    
     public static int currentPlayerReports( String reported ){
         int reports = 0;
         if ( mysqlEnabled( ) ) {
@@ -232,15 +232,15 @@ public class utils{
             return reports;
         }
     }
-
+    
     public static String getServerVersion( ){
         return Bukkit.getServer( ).getClass( ).getPackage( ).getName( ).substring( 23 );
     }
-
+    
     public static double getTPS( ){
         return TPS.getTPS( );
     }
-
+    
     public static ArrayList < String > getUsers( ){
         ArrayList < String > Users = new ArrayList <>( );
         if ( mysqlEnabled( ) ) {
@@ -253,24 +253,24 @@ public class utils{
         }
         return Users;
     }
-
+    
     public static ArrayList < String > getWarnedPlayers( ){
         ArrayList < String > Users = new ArrayList <>( );
         if ( mysqlEnabled( ) ) {
             Users.addAll( SQLGetter.getWarnedPlayers( ) );
         } else {
             ConfigurationSection inventorySection = plugin.warns.getConfig( ).getConfigurationSection( "warns" );
-            try{
+            try {
                 for ( String key : inventorySection.getKeys( false ) ) {
                     String name = plugin.warns.getConfig( ).getString( "warns." + key + ".name" );
                     if ( !Users.contains( name ) ) {
                         Users.add( name );
                     }
                 }
-            }catch(NullPointerException ignored){
-
+            } catch ( NullPointerException ignored ) {
+            
             }
-
+            
         }
         return Users;
     }

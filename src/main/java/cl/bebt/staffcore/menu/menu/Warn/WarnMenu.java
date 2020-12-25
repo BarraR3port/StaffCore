@@ -15,26 +15,26 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 
-public class WarnMenu extends WarnPlayerMenu{
+public class WarnMenu extends WarnPlayerMenu {
     private final main plugin;
-
+    
     public WarnMenu( PlayerMenuUtility playerMenuUtility , main plugin , String p2 ){
         super( playerMenuUtility );
         this.plugin = plugin;
         this.warned = p2;
     }
-
+    
     @Override
     public String getMenuName( ){
         return utils.chat( "&cWarn &4" + warned );
     }
-
+    
     @Override
     public int getSlots( ){
         return 54;
     }
-
-
+    
+    
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
@@ -72,10 +72,10 @@ public class WarnMenu extends WarnPlayerMenu{
             PlayerData.set( new NamespacedKey( main.plugin , "warnmsg" ) , PersistentDataType.STRING , warned );
             utils.tell( p , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "staff.other_reason" ) );
         } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
-
+        
         }
     }
-
+    
     public ItemStack hacking( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.RED_DYE );
@@ -87,7 +87,7 @@ public class WarnMenu extends WarnPlayerMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack killaura( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.DIAMOND_SWORD );
@@ -99,7 +99,7 @@ public class WarnMenu extends WarnPlayerMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack flying( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.FEATHER );
@@ -111,7 +111,7 @@ public class WarnMenu extends WarnPlayerMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack speed( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.SUGAR );
@@ -123,7 +123,7 @@ public class WarnMenu extends WarnPlayerMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack spamming( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.PAPER );
@@ -135,7 +135,7 @@ public class WarnMenu extends WarnPlayerMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack griefing( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.TNT );
@@ -147,7 +147,7 @@ public class WarnMenu extends WarnPlayerMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack bhop( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.RABBIT_HIDE );
@@ -159,7 +159,7 @@ public class WarnMenu extends WarnPlayerMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack other( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.FLOWER_BANNER_PATTERN );
@@ -173,7 +173,7 @@ public class WarnMenu extends WarnPlayerMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     @Override
     public void setMenuItems( ){
         addMenuBorder( );

@@ -10,15 +10,15 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class Ping implements CommandExecutor{
-
+public class Ping implements CommandExecutor {
+    
     private final main plugin;
-
+    
     public Ping( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "ping" ).setExecutor( this );
     }
-
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {
@@ -42,7 +42,7 @@ public class Ping implements CommandExecutor{
         } else if ( sender instanceof Player ) {
             if ( args.length == 0 ) {
                 Player p = ( Player ) sender;
-
+                
                 if ( p.hasPermission( "staffcore.ping" ) ) {
                     try {
                         Object entityPlayer = p.getClass( ).getMethod( "getHandle" ).invoke( p );
@@ -73,8 +73,8 @@ public class Ping implements CommandExecutor{
                 }
             }
         }
-
-
+        
+        
         return true;
     }
 }

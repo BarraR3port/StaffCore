@@ -14,15 +14,15 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 
-public class StaffMysql implements CommandExecutor{
+public class StaffMysql implements CommandExecutor {
     private static final SQLGetter data = main.plugin.data;
     private final main plugin;
-
+    
     public StaffMysql( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "staff" ).setExecutor( this );
     }
-
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {
@@ -64,7 +64,7 @@ public class StaffMysql implements CommandExecutor{
                             if ( PlayerData.has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) ) {
                                 SetStaffItems.Off( p );
                                 utils.tell( sender , "&7You remove &r" + p.getDisplayName( ) + " &7from staff mode" );
-
+                                
                             } else if ( !(PlayerData.has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING )) ) {
                                 SetStaffItems.On( p );
                                 utils.tell( sender , "&7You put &r" + p.getDisplayName( ) + " &7in staff mode" );

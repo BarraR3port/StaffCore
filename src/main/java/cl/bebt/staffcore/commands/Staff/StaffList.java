@@ -10,15 +10,15 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class StaffList implements CommandExecutor{
-
+public class StaffList implements CommandExecutor {
+    
     private final main plugin;
-
+    
     public StaffList( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "stafflist" ).setExecutor( this );
     }
-
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( sender instanceof Player ) {
@@ -33,7 +33,7 @@ public class StaffList implements CommandExecutor{
                 } else {
                     new StaffListGui( new PlayerMenuUtility( p ) , plugin ).open( p );
                 }
-
+                
             }
         }
         return true;

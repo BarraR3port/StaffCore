@@ -12,8 +12,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-public class ToggleChat{
-
+public class ToggleChat {
+    
     public static void Mute( Boolean bol ){
         if ( bol ) {
             main.plugin.chatMuted = true;
@@ -22,7 +22,7 @@ public class ToggleChat{
             main.plugin.chatMuted = false;
         }
     }
-
+    
     public static void unMute( CommandSender p , Player muted ){
         PersistentDataContainer data = muted.getPersistentDataContainer( );
         data.remove( new NamespacedKey( main.plugin , "muted" ) );
@@ -47,14 +47,14 @@ public class ToggleChat{
                 if ( p instanceof Player ) {
                     utils.tell( people , "&b                 &a► &aUn Muted by: &c" + p.getName( ) );
                 } else {
-
+                    
                     utils.tell( people , "&b                 &a► &aUn Muted by: The &cCONSOLE" );
                 }
                 people.sendMessage( " " );
             }
         }
     }
-
+    
     public static void MutePlayer( CommandSender p , Player muted ){
         PersistentDataContainer data = muted.getPersistentDataContainer( );
         if ( !data.has( new NamespacedKey( main.plugin , "muted" ) , PersistentDataType.STRING ) ) {
@@ -80,7 +80,7 @@ public class ToggleChat{
                     if ( p instanceof Player ) {
                         utils.tell( people , "&b                 &a► &cMuted by: &c" + p.getName( ) );
                     } else {
-
+                        
                         utils.tell( people , "&b                 &a► &cMuted by: The &cCONSOLE" );
                     }
                     people.sendMessage( " " );
@@ -90,8 +90,8 @@ public class ToggleChat{
             unMute( p , muted );
         }
     }
-
-
+    
+    
     public static void MuteCooldown( CommandSender sender , Player p , String time , long amount ){
         if ( time.equals( "s" ) ) {
             CountdownManager.setMuteCountdown( p , amount );
@@ -110,7 +110,7 @@ public class ToggleChat{
             utils.tell( sender , main.plugin.getConfig( ).getString( "server_prefix" ) + "&cExample /mute &a" + p.getName( ) + " &d10<s/m/h/d>" );
         }
     }
-
+    
     private static void sendMessage( Player p , Player muted , long amount , String quantity ){
         ComponentBuilder cb = new ComponentBuilder( utils.chat( "&7Click to teleport &a✓" ) );
         TextComponent v = new TextComponent( utils.chat( "&a    &3The player &2" + muted.getName( ) + "&3 was muted." ) );

@@ -14,25 +14,25 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 
-public class StaffListGui extends PaginatedMenu{
-
+public class StaffListGui extends PaginatedMenu {
+    
     private final main plugin;
-
+    
     public StaffListGui( PlayerMenuUtility playerMenuUtility , main plugin ){
         super( playerMenuUtility );
         this.plugin = plugin;
     }
-
+    
     @Override
     public String getMenuName( ){
         return utils.chat( "&cStaffList" );
     }
-
+    
     @Override
     public int getSlots( ){
         return 54;
     }
-
+    
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
@@ -67,7 +67,7 @@ public class StaffListGui extends PaginatedMenu{
             }
         }
     }
-
+    
     @Override
     public void setMenuItems( ){
         addMenuBorder( );

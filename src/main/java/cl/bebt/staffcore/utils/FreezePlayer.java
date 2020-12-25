@@ -13,10 +13,10 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 
-public class FreezePlayer{
-
+public class FreezePlayer {
+    
     private static final Plugin plugin = main.plugin;
-
+    
     public static void FreezePlayer( Player p , String freezer , Boolean bol ){
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         String status = null;
@@ -27,7 +27,7 @@ public class FreezePlayer{
             utils.PlayParticle( p , "unfreeze_player" );
             PlayerData.set( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING , "frozen" );
             if ( utils.mysqlEnabled( ) ) {
-                SQLGetter.setTrue( p.getName() , "frozen" , "true" );
+                SQLGetter.setTrue( p.getName( ) , "frozen" , "true" );
             }
             status = main.plugin.getConfig( ).getString( "freeze.freeze" );
             try {
@@ -49,10 +49,10 @@ public class FreezePlayer{
             }
             PlayerData.remove( new NamespacedKey( plugin , "frozen" ) );
             if ( utils.mysqlEnabled( ) ) {
-                SQLGetter.setTrue( p.getName() , "frozen" , "false" );
+                SQLGetter.setTrue( p.getName( ) , "frozen" , "false" );
             }
             status = main.plugin.getConfig( ).getString( "freeze.unfreeze" );
-
+            
             if ( utils.getBoolean( "freeze.freeze_alerts" ) ) {
                 try {
                     ItemStack helmet = Serializer.deserialize( PlayerData.get( new NamespacedKey( plugin , "frozen_helmet" ) , PersistentDataType.STRING ) );
@@ -75,5 +75,5 @@ public class FreezePlayer{
         }
         SendMsg.sendFreezeAlert( freezer , p.getName( ) , bol , plugin.getConfig( ).getString( "bungeecord.server" ) );
     }
-
+    
 }

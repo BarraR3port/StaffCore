@@ -14,14 +14,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-public class GmSurvival implements CommandExecutor{
+public class GmSurvival implements CommandExecutor {
     private final main plugin;
-
+    
     public GmSurvival( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "gms" ).setExecutor( this );
     }
-
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {
@@ -119,7 +119,7 @@ public class GmSurvival implements CommandExecutor{
                             sender.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7You set Survival mode to: " + p.getName( ) ) );
                         }
                         p.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "survival" ) ) );
-
+                        
                     } else {
                         if ( !(sender == p) ) {
                             sender.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7The player: " + p.getName( ) + " &7is already in survival" ) );

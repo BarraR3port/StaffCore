@@ -10,16 +10,16 @@ import org.bukkit.entity.Player;
 
 import java.net.InetAddress;
 
-public class Ip implements CommandExecutor{
-
+public class Ip implements CommandExecutor {
+    
     private final main plugin;
-
+    
     public Ip( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "ip" ).setExecutor( this );
-
+        
     }
-
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {

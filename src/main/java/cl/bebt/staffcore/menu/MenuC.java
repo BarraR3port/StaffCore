@@ -16,16 +16,16 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public abstract class MenuC implements InventoryHolder{
-
+public abstract class MenuC implements InventoryHolder {
+    
     protected Inventory inventory;
-
+    
     protected PlayerMenuUtility playerMenuUtility;
-
+    
     public MenuC( PlayerMenuUtility playerMenuUtility ){
         this.playerMenuUtility = playerMenuUtility;
     }
-
+    
     protected ItemStack redPanel( ){
         ItemStack panel = new ItemStack( Material.RED_STAINED_GLASS_PANE );
         ItemMeta panel_meta = panel.getItemMeta( );
@@ -34,7 +34,7 @@ public abstract class MenuC implements InventoryHolder{
         panel.setItemMeta( panel_meta );
         return panel;
     }
-
+    
     protected ItemStack greenPanel( ){
         ItemStack panel = new ItemStack( Material.LIME_STAINED_GLASS_PANE );
         ItemMeta panel_meta = panel.getItemMeta( );
@@ -43,7 +43,7 @@ public abstract class MenuC implements InventoryHolder{
         panel.setItemMeta( panel_meta );
         return panel;
     }
-
+    
     protected ItemStack bluePanel( ){
         ItemStack panel = new ItemStack( Material.CYAN_STAINED_GLASS_PANE );
         ItemMeta panel_meta = panel.getItemMeta( );
@@ -52,27 +52,27 @@ public abstract class MenuC implements InventoryHolder{
         panel.setItemMeta( panel_meta );
         return panel;
     }
-
+    
     public abstract String getMenuName( );
-
+    
     public abstract int getSlots( );
-
+    
     public abstract void handleMenu( InventoryClickEvent e );
-
+    
     public abstract void setMenuItemsPlayer( Player p );
-
+    
     public void open( Player p ){
         inventory = Bukkit.createInventory( this , getSlots( ) , getMenuName( ) );
-
+        
         //grab all the items specified to be used for this menu and add to inventory
         this.setMenuItemsPlayer( p );
         //open the inventory for the player
         playerMenuUtility.getOwner( ).openInventory( inventory );
-
+        
     }
-
+    
     public ItemStack makeItem( Material material , String displayName , String... lore ){
-
+        
         ItemStack item = new ItemStack( material );
         ItemMeta itemMeta = item.getItemMeta( );
         itemMeta.setDisplayName( utils.chat( displayName ) );
@@ -85,10 +85,10 @@ public abstract class MenuC implements InventoryHolder{
             itemMeta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "BARRIER" ) , PersistentDataType.STRING , "BARRIER" );
         }
         item.setItemMeta( itemMeta );
-
+        
         return item;
     }
-
+    
     public ItemStack makeItem( Material material , String displayName , ArrayList < String > lore ){
         ItemStack item = new ItemStack( material );
         ItemMeta itemMeta = item.getItemMeta( );
@@ -97,10 +97,10 @@ public abstract class MenuC implements InventoryHolder{
         item.setItemMeta( itemMeta );
         return item;
     }
-
+    
     @Override
     public Inventory getInventory( ){
         return inventory;
     }
-
+    
 }

@@ -16,25 +16,25 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 
-public class ClearChat extends PaginatedMenu{
-
+public class ClearChat extends PaginatedMenu {
+    
     private final main plugin;
-
+    
     public ClearChat( PlayerMenuUtility playerMenuUtility , main plugin ){
         super( playerMenuUtility );
         this.plugin = plugin;
     }
-
+    
     @Override
     public String getMenuName( ){
         return utils.chat( "&cClear Players chat" );
     }
-
+    
     @Override
     public int getSlots( ){
         return 54;
     }
-
+    
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
@@ -72,7 +72,7 @@ public class ClearChat extends PaginatedMenu{
             }
         }
     }
-
+    
     @Override
     public void setMenuItems( ){
         addMenuBorder( );

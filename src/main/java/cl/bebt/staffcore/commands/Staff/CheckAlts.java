@@ -12,14 +12,14 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CheckAlts implements TabExecutor{
+public class CheckAlts implements TabExecutor {
     private static main plugin;
-
+    
     public CheckAlts( main plugin ){
         CheckAlts.plugin = plugin;
         plugin.getCommand( "alts" ).setExecutor( this );
     }
-
+    
     public static List < String > ips( String p ){
         if ( utils.mysqlEnabled( ) ) {
             return utils.makeList( SQLGetter.getAlts( p ) );
@@ -27,7 +27,7 @@ public class CheckAlts implements TabExecutor{
             return plugin.alts.getConfig( ).getStringList( "alts." + p );
         }
     }
-
+    
     public static List < String > alts( String player ){
         List < String > alts = new ArrayList <>( );
         List < String > accounts = new ArrayList <>( );
@@ -63,7 +63,7 @@ public class CheckAlts implements TabExecutor{
         }
         return accounts;
     }
-
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( sender instanceof Player ) {
@@ -101,7 +101,7 @@ public class CheckAlts implements TabExecutor{
         }
         return true;
     }
-
+    
     @Override
     public List < String > onTabComplete( CommandSender sender , Command command , String alias , String[] args ){
         List < String > version = new ArrayList <>( );

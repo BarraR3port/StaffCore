@@ -8,16 +8,16 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class ReportList implements CommandExecutor{
-
+public class ReportList implements CommandExecutor {
+    
     private final main plugin;
-
+    
     public ReportList( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "reportlist" ).setExecutor( this );
     }
-
-
+    
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {
@@ -32,5 +32,5 @@ public class ReportList implements CommandExecutor{
         }
         return false;
     }
-
+    
 }

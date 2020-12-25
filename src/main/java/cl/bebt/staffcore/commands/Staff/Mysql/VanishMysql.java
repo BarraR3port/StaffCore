@@ -11,16 +11,16 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 
-public class VanishMysql implements CommandExecutor{
-
+public class VanishMysql implements CommandExecutor {
+    
     private static final SQLGetter data = main.plugin.data;
     private final main plugin;
-
+    
     public VanishMysql( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "vanish" ).setExecutor( this );
     }
-
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {

@@ -15,14 +15,14 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class unMute implements TabExecutor{
+public class unMute implements TabExecutor {
     private final main plugin;
-
+    
     public unMute( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "unmute" ).setExecutor( this );
     }
-
+    
     @Override
     public List < String > onTabComplete( CommandSender sender , Command command , String alias , String[] args ){
         List < String > muted = new ArrayList <>( );
@@ -40,10 +40,10 @@ public class unMute implements TabExecutor{
             }
             return muted;
         }
-
+        
         return null;
     }
-
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {
@@ -91,7 +91,7 @@ public class unMute implements TabExecutor{
             }
         }
         return true;
-
+        
     }
-
+    
 }

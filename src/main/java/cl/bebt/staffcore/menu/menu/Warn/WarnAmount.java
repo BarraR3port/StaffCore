@@ -13,12 +13,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
-public class WarnAmount extends PaginatedMenu{
+public class WarnAmount extends PaginatedMenu {
     private final main plugin;
     private final Player player;
     private final String warned;
     private final String reason;
-
+    
     public WarnAmount( PlayerMenuUtility playerMenuUtility , main plugin , Player player , String warned , String reason ){
         super( playerMenuUtility );
         this.plugin = plugin;
@@ -26,17 +26,17 @@ public class WarnAmount extends PaginatedMenu{
         this.warned = warned;
         this.reason = reason;
     }
-
+    
     @Override
     public String getMenuName( ){
         return utils.chat( "&cChose the amount:" );
     }
-
+    
     @Override
     public int getSlots( ){
         return 54;
     }
-
+    
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
@@ -68,7 +68,7 @@ public class WarnAmount extends PaginatedMenu{
             }
         }
     }
-
+    
     @Override
     public void setMenuItems( ){
         addMenuBorder( );
@@ -88,7 +88,7 @@ public class WarnAmount extends PaginatedMenu{
             inventory.addItem( clock );
             /////////////////////////////
         }
-
-
+        
+        
     }
 }

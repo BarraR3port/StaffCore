@@ -10,7 +10,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.InventoryHolder;
 
 
-public class MenuListener implements Listener{
+public class MenuListener implements Listener {
     @EventHandler
     public void onMenuClick( InventoryClickEvent e ){
         InventoryHolder holder = e.getInventory( ).getHolder( );
@@ -31,7 +31,7 @@ public class MenuListener implements Listener{
             menu.handleMenu( e );
         }
         if ( holder instanceof InventoryMenu ) {
-
+            
             if ( e.getSlotType( ) == InventoryType.SlotType.OUTSIDE ) return;
             InventoryMenu menu = ( InventoryMenu ) holder;
             menu.handleMenu( e );

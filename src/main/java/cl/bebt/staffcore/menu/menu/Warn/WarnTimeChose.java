@@ -19,18 +19,18 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 
-public class WarnTimeChose extends Menu{
-
+public class WarnTimeChose extends Menu {
+    
     private static final SQLGetter data = main.plugin.data;
-
+    
     private final main plugin;
-
+    
     public String warned;
-
+    
     public String reason;
-
+    
     public Player p;
-
+    
     public WarnTimeChose( PlayerMenuUtility playerMenuUtility , main plugin , Player p , String warned , String reason ){
         super( playerMenuUtility );
         this.plugin = plugin;
@@ -38,17 +38,17 @@ public class WarnTimeChose extends Menu{
         this.warned = warned;
         this.reason = reason;
     }
-
+    
     @Override
     public String getMenuName( ){
         return utils.chat( "&cChose the Warn Time" );
     }
-
+    
     @Override
     public int getSlots( ){
         return 45;
     }
-
+    
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
@@ -74,18 +74,18 @@ public class WarnTimeChose extends Menu{
             }
         }
     }
-
+    
     @Override
     public void setMenuItems( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack head = utils.getPlayerHead( warned );
         ItemStack defaultTime = new ItemStack( Material.NAME_TAG , 1 );
         ItemStack specificTime = new ItemStack( Material.NAME_TAG , 1 );
-
+        
         ItemMeta or_meta = defaultTime.getItemMeta( );
         ItemMeta cr_meta = specificTime.getItemMeta( );
         ItemMeta head_meta = head.getItemMeta( );
-
+        
         or_meta.setDisplayName( utils.chat( "&aDefault Time" ) );
         cr_meta.setDisplayName( utils.chat( "&cSpecific Time" ) );
         head_meta.setDisplayName( utils.chat( "&5" + warned ) );
@@ -93,35 +93,35 @@ public class WarnTimeChose extends Menu{
         lore.add( utils.chat( "&5Click to Warn " + warned ) );
         lore.add( utils.chat( "for the the default time." ) );
         lore.add( utils.chat( "&a(&c" + utils.getString( "warns.expire_after" ) + utils.getString( "warns.expire_after_quantity" ) + "&a)" ) );
-
+        
         or_meta.setLore( lore );
         lore.clear( );
         lore.add( utils.chat( "&5Click to Warn " + warned ) );
         lore.add( utils.chat( "for an specific time." ) );
-
+        
         cr_meta.setLore( lore );
         lore.clear( );
         lore.add( utils.chat( "&cCurrents warns: &6" + currentWarns ) );
-
+        
         if ( currentWarns < utils.getInt( "warns.max_warns" ) && utils.getBoolean( "warns.ban_on_exceeded" ) ) {
             lore.add( utils.chat( "&cWarns left: &6" + (utils.getInt( "warns.max_warns" ) - currentWarns) ) );
         }
-
+        
         head_meta.setLore( lore );
         lore.clear( );
-
+        
         or_meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "default" ) , PersistentDataType.STRING , "default" );
         cr_meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "specific" ) , PersistentDataType.STRING , "specific" );
         head_meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "head" ) , PersistentDataType.STRING , "head" );
-
-
+        
+        
         cr_meta.addEnchant( Enchantment.CHANNELING , 1 , true );
         cr_meta.addItemFlags( ItemFlag.HIDE_ENCHANTS );
-
+        
         defaultTime.setItemMeta( or_meta );
         specificTime.setItemMeta( cr_meta );
         head.setItemMeta( head_meta );
-
+        
         for ( int i = 0; i < 10; i++ ) {
             if ( inventory.getItem( i ) == null ) {
                 inventory.setItem( i , super.bluePanel( ) );
@@ -155,5 +155,5 @@ public class WarnTimeChose extends Menu{
         inventory.setItem( 24 , specificTime );
         inventory.setItem( 13 , head );
     }
-
+    
 }

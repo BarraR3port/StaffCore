@@ -18,24 +18,24 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class closedReportsMenu extends PaginatedMenu{
+public class closedReportsMenu extends PaginatedMenu {
     private final main plugin;
-
+    
     public closedReportsMenu( PlayerMenuUtility playerMenuUtility , main plugin ){
         super( playerMenuUtility );
         this.plugin = plugin;
     }
-
+    
     @Override
     public String getMenuName( ){
         return utils.chat( "&cClosed Reports" );
     }
-
+    
     @Override
     public int getSlots( ){
         return 54;
     }
-
+    
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
@@ -71,7 +71,7 @@ public class closedReportsMenu extends PaginatedMenu{
                 } catch ( NullPointerException err ) {
                     utils.tell( p , plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&cThe player is not online, or not exist" );
                 }
-
+                
             }
         } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
             p.closeInventory( );
@@ -97,7 +97,7 @@ public class closedReportsMenu extends PaginatedMenu{
             }
         }
     }
-
+    
     private int count( ){
         if ( utils.mysqlEnabled( ) ) {
             return SQLGetter.getCurrents( "reports" ) + plugin.data.getReportId( );
@@ -105,7 +105,7 @@ public class closedReportsMenu extends PaginatedMenu{
             return plugin.reports.getConfig( ).getInt( "current" ) + plugin.reports.getConfig( ).getInt( "count" );
         }
     }
-
+    
     @Override
     public void setMenuItems( ){
         addMenuBorder( );

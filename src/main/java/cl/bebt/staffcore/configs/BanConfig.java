@@ -10,17 +10,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.logging.Level;
 
-public class BanConfig{
-
+public class BanConfig {
+    
     private final main plugin;
     private FileConfiguration dataConfig = null;
     private File configFile = null;
-
+    
     public BanConfig( main plugin ){
         this.plugin = plugin;
         saveDefaultConfig( );
     }
-
+    
     public void reloadConfig( ){
         if ( configFile == null ) {
             configFile = new File( plugin.getDataFolder( ) , "baned.yml" );
@@ -32,14 +32,14 @@ public class BanConfig{
             dataConfig.setDefaults( defaultConfig );
         }
     }
-
+    
     public FileConfiguration getConfig( ){
         if ( dataConfig == null ) {
             reloadConfig( );
         }
         return dataConfig;
     }
-
+    
     public void saveConfig( ){
         if ( dataConfig == null || configFile == null )
             return;
@@ -49,7 +49,7 @@ public class BanConfig{
             plugin.getLogger( ).log( Level.SEVERE , "Could not save config to " + configFile , e );
         }
     }
-
+    
     public void saveDefaultConfig( ){
         if ( configFile == null )
             configFile = new File( plugin.getDataFolder( ) , "baned.yml" );
@@ -57,5 +57,5 @@ public class BanConfig{
             plugin.saveResource( "baned.yml" , false );
         }
     }
-
+    
 }

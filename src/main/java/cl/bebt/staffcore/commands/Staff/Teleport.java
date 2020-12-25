@@ -9,15 +9,15 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Teleport implements CommandExecutor{
-
+public class Teleport implements CommandExecutor {
+    
     private final main plugin;
-
+    
     public Teleport( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "tp" ).setExecutor( this );
     }
-
+    
     private static Boolean isCord( String x , String y , String z ){
         try {
             double ex = Double.parseDouble( x );
@@ -29,7 +29,7 @@ public class Teleport implements CommandExecutor{
             return false;
         }
     }
-
+    
     private static Boolean isCordAndPlayer( String x , String y , String z , String player ){
         if ( Bukkit.getPlayer( player ) instanceof Player ) {
             try {
@@ -45,7 +45,7 @@ public class Teleport implements CommandExecutor{
             return false;
         }
     }
-
+    
     private static Boolean isPlayerAndCord( String player , String x , String y , String z ){
         if ( Bukkit.getPlayer( player ) instanceof Player ) {
             try {
@@ -61,7 +61,7 @@ public class Teleport implements CommandExecutor{
             return false;
         }
     }
-
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {
@@ -198,5 +198,5 @@ public class Teleport implements CommandExecutor{
         }
         return true;
     }
-
+    
 }

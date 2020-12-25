@@ -18,24 +18,24 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class openReportsMenu extends PaginatedMenu{
+public class openReportsMenu extends PaginatedMenu {
     private final main plugin;
-
+    
     public openReportsMenu( PlayerMenuUtility playerMenuUtility , main plugin ){
         super( playerMenuUtility );
         this.plugin = plugin;
     }
-
+    
     @Override
     public String getMenuName( ){
         return utils.chat( "&cOpen Reports" );
     }
-
+    
     @Override
     public int getSlots( ){
         return 54;
     }
-
+    
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
@@ -96,7 +96,7 @@ public class openReportsMenu extends PaginatedMenu{
             }
         }
     }
-
+    
     private int count( ){
         if ( utils.mysqlEnabled( ) ) {
             return SQLGetter.getCurrents( "reports" ) + plugin.data.getReportId( );
@@ -104,7 +104,7 @@ public class openReportsMenu extends PaginatedMenu{
             return plugin.reports.getConfig( ).getInt( "current" ) + plugin.reports.getConfig( ).getInt( "count" );
         }
     }
-
+    
     @Override
     public void setMenuItems( ){
         addMenuBorder( );

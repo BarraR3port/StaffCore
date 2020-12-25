@@ -16,27 +16,27 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 
-public class StaffListBungeeGui extends PaginatedMenu{
-
+public class StaffListBungeeGui extends PaginatedMenu {
+    
     private final main plugin;
     private final Player p;
-
+    
     public StaffListBungeeGui( PlayerMenuUtility playerMenuUtility , main plugin , Player p ){
         super( playerMenuUtility );
         this.plugin = plugin;
         this.p = p;
     }
-
+    
     @Override
     public String getMenuName( ){
         return utils.chat( "&cStaffList" );
     }
-
+    
     @Override
     public int getSlots( ){
         return 54;
     }
-
+    
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
@@ -75,7 +75,7 @@ public class StaffListBungeeGui extends PaginatedMenu{
             }
         }
     }
-
+    
     @Override
     public void setMenuItems( ){
         addMenuBorder( );
@@ -119,7 +119,7 @@ public class StaffListBungeeGui extends PaginatedMenu{
                         } else {
                             lore.add( utils.chat( "&7Flying: &cFalse" ) );
                         }
-
+                        
                     }
                     lore.add( utils.chat( "&7Gamemode: &a" + gm ) );
                     lore.add( utils.chat( "&7Server: &a" + server ) );

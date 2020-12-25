@@ -10,17 +10,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.logging.Level;
 
-public class ReportConfig{
-
+public class ReportConfig {
+    
     private final main plugin;
     private FileConfiguration dataConfig = null;
     private File configFile = null;
-
+    
     public ReportConfig( main plugin ){
         this.plugin = plugin;
         saveDefaultConfig( );
     }
-
+    
     public void reloadConfig( ){
         if ( configFile == null ) {
             configFile = new File( plugin.getDataFolder( ) , "reports.yml" );
@@ -32,14 +32,14 @@ public class ReportConfig{
             dataConfig.setDefaults( defaultConfig );
         }
     }
-
+    
     public FileConfiguration getConfig( ){
         if ( dataConfig == null ) {
             reloadConfig( );
         }
         return dataConfig;
     }
-
+    
     public void saveConfig( ){
         if ( dataConfig == null || configFile == null )
             return;
@@ -49,7 +49,7 @@ public class ReportConfig{
             plugin.getLogger( ).log( Level.SEVERE , "Could not save config to " + configFile , e );
         }
     }
-
+    
     public void saveDefaultConfig( ){
         if ( configFile == null )
             configFile = new File( plugin.getDataFolder( ) , "reports.yml" );

@@ -12,14 +12,14 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MuteChat implements TabExecutor{
+public class MuteChat implements TabExecutor {
     private final main plugin;
-
+    
     public MuteChat( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "mute" ).setExecutor( this );
     }
-
+    
     @Override
     public List < String > onTabComplete( CommandSender sender , Command command , String alias , String[] args ){
         if ( args.length == 2 ) {
@@ -33,7 +33,7 @@ public class MuteChat implements TabExecutor{
         }
         return null;
     }
-
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {
@@ -72,7 +72,7 @@ public class MuteChat implements TabExecutor{
                 } else {
                     utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "player_dont_exist" ) );
                 }
-
+                
             }
         } else {
             Player p = ( Player ) sender;
@@ -113,13 +113,13 @@ public class MuteChat implements TabExecutor{
                         utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "player_dont_exist" ) );
                     }
                 }
-
+                
             } else {
                 p.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) ) );
             }
         }
         return true;
-
+        
     }
-
+    
 }

@@ -19,27 +19,27 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 
-public class chose extends ReportMenu{
-
+public class chose extends ReportMenu {
+    
     private final main plugin;
     private final int id;
-
+    
     public chose( PlayerMenuUtility playerMenuUtility , main plugin , String p2 , int id ){
         super( playerMenuUtility , plugin , p2 );
         this.plugin = plugin;
         this.id = id;
     }
-
+    
     @Override
     public String getMenuName( ){
         return utils.chat( "&cDelete or Close the report?" );
     }
-
+    
     @Override
     public int getSlots( ){
         return 45;
     }
-
+    
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
@@ -65,7 +65,7 @@ public class chose extends ReportMenu{
             }
         }
     }
-
+    
     private void CloseReport( Player p ){
         String reporter = null;
         String reported = null;
@@ -106,7 +106,7 @@ public class chose extends ReportMenu{
             }
         }
     }
-
+    
     private void OpenReport( Player p ){
         String reporter = null;
         String reported = null;
@@ -147,7 +147,7 @@ public class chose extends ReportMenu{
             }
         }
     }
-
+    
     public void DeleteReport( Player p ){
         String reporter = null;
         String reported = null;
@@ -188,54 +188,54 @@ public class chose extends ReportMenu{
             }
         }
     }
-
+    
     @Override
     public void setMenuItems( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack delete = new ItemStack( Material.FLOWER_BANNER_PATTERN , 1 );
         ItemStack closeReport = new ItemStack( Material.NAME_TAG , 1 );
         ItemStack openReport = new ItemStack( Material.NAME_TAG , 1 );
-
+        
         ItemMeta delete_meta = delete.getItemMeta( );
         ItemMeta closeReport_meta = closeReport.getItemMeta( );
         ItemMeta openReport_meta = openReport.getItemMeta( );
-
+        
         delete_meta.setDisplayName( utils.chat( "&4DELETE REPORT" ) );
         closeReport_meta.setDisplayName( utils.chat( "&4CLOSE REPORT" ) );
         openReport_meta.setDisplayName( utils.chat( "&aOPEN REPORT" ) );
-
+        
         delete_meta.addEnchant( Enchantment.DURABILITY , 1 , true );
         delete_meta.addItemFlags( ItemFlag.HIDE_ENCHANTS );
         delete_meta.addItemFlags( ItemFlag.HIDE_ATTRIBUTES );
-
+        
         closeReport_meta.addEnchant( Enchantment.DURABILITY , 1 , true );
         closeReport_meta.addItemFlags( ItemFlag.HIDE_ENCHANTS );
         closeReport_meta.addItemFlags( ItemFlag.HIDE_ATTRIBUTES );
-
+        
         openReport_meta.addEnchant( Enchantment.DURABILITY , 1 , true );
         openReport_meta.addItemFlags( ItemFlag.HIDE_ENCHANTS );
         openReport_meta.addItemFlags( ItemFlag.HIDE_ATTRIBUTES );
-
+        
         lore.add( utils.chat( "&8Click to &4Delete &8the report" ) );
         delete_meta.setLore( lore );
         lore.clear( );
-
+        
         lore.add( utils.chat( "&8Click to &aClose &8the report" ) );
         closeReport_meta.setLore( lore );
         lore.clear( );
-
+        
         lore.add( utils.chat( "&8Click to &aOpen &8the report" ) );
         openReport_meta.setLore( lore );
         lore.clear( );
-
+        
         delete_meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "delete_report" ) , PersistentDataType.STRING , "delete_report" );
         closeReport_meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "close_report" ) , PersistentDataType.STRING , "close_report" );
         openReport_meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "open_report" ) , PersistentDataType.STRING , "open_report" );
-
+        
         delete.setItemMeta( delete_meta );
         closeReport.setItemMeta( closeReport_meta );
         openReport.setItemMeta( openReport_meta );
-
+        
         for ( int i = 0; i < 10; i++ ) {
             if ( inventory.getItem( i ) == null ) {
                 inventory.setItem( i , super.bluePanel( ) );

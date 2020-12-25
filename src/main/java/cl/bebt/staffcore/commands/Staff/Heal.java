@@ -8,15 +8,15 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Heal implements CommandExecutor{
-
+public class Heal implements CommandExecutor {
+    
     private final main plugin;
-
+    
     public Heal( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "heal" ).setExecutor( this );
     }
-
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {
@@ -48,7 +48,7 @@ public class Heal implements CommandExecutor{
                             p.setHealth( 20 );
                             p.setSaturation( 5f );
                             utils.tell( p , plugin.getConfig( ).getString( "server_prefix" ) + "&7You've been healed and feed" );
-
+                            
                         } else {
                             jugador.setFoodLevel( 20 );
                             jugador.setHealth( 20 );
@@ -66,5 +66,5 @@ public class Heal implements CommandExecutor{
         }
         return true;
     }
-
+    
 }

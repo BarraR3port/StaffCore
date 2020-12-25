@@ -8,14 +8,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class TpAll implements CommandExecutor{
+public class TpAll implements CommandExecutor {
     private final main plugin;
-
+    
     public TpAll( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "tpall" ).setExecutor( this );
     }
-
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {
@@ -29,9 +29,9 @@ public class TpAll implements CommandExecutor{
             } else {
                 utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&4Wrong usage, use:" );
                 utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&cTo teleport all player to other: /tpall <player>" );
-
+                
             }
-
+            
         } else {
             Player p = ( Player ) sender;
             if ( p.hasPermission( "staffcore.tp.all" ) ) {

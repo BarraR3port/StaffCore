@@ -15,8 +15,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class BanPlayer{
-
+public class BanPlayer {
+    
     public static void unBan( CommandSender p , int Id ){
         String player = "";
         if ( p instanceof Player ) {
@@ -66,7 +66,7 @@ public class BanPlayer{
             }
         }
     }
-
+    
     public static int currentBans( ){
         int current = 0;
         for ( int i = 0; i <= main.plugin.bans.getConfig( ).getInt( "count" ) + main.plugin.bans.getConfig( ).getInt( "current" ); i++ ) {
@@ -80,12 +80,12 @@ public class BanPlayer{
         main.plugin.bans.getConfig( ).set( "current" , current );
         return current;
     }
-
+    
     public static void BanPlayer( CommandSender p , String baned , String reason ){
         createBan( ( Player ) p , baned , reason , 283605 , "d" , true );
     }
-
-
+    
+    
     public static void BanCooldown( CommandSender sender , String baned , String reason , long amount , String time ){
         if ( time.equalsIgnoreCase( "s" ) || time.equalsIgnoreCase( "m" ) ||
                 time.equalsIgnoreCase( "h" ) || time.equalsIgnoreCase( "d" ) ) {
@@ -95,7 +95,7 @@ public class BanPlayer{
             utils.tell( sender , main.plugin.getConfig( ).getString( "server_prefix" ) + "&cExample /ban &a" + baned );
         }
     }
-
+    
     public static int id( ){
         if ( utils.mysqlEnabled( ) ) {
             return main.plugin.data.getBanId( );
@@ -105,8 +105,8 @@ public class BanPlayer{
             return id;
         }
     }
-
-
+    
+    
     private static void createBan( Player p , String baned , String reason , long amount , String time , Boolean permanent ){
         int id = id( );
         Date now = new Date( );
@@ -132,7 +132,7 @@ public class BanPlayer{
                 String msg = main.plugin.getConfig( ).getString( "staff.never_seen" );
                 msg = msg.replace( "%player%" , baned );
                 utils.tell( p , main.plugin.getConfig( ).getString( "staff.staff_prefix" ) + msg );
-
+                
             }
         }
         if ( IP != null ) {

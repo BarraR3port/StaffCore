@@ -10,14 +10,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SQLGetter{
-
+public class SQLGetter {
+    
     private static main plugin;
-
+    
     public SQLGetter( main plugin ){
         SQLGetter.plugin = plugin;
     }
-
+    
     public static String get( String tableName , int id , String row ){
         try {
             PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "SELECT " + row + " FROM sc_" + tableName + " WHERE ReportId=?" );
@@ -31,7 +31,7 @@ public class SQLGetter{
         }
         return "Something went wrong :(";
     }
-
+    
     public static String getBanedIp( int id ){
         try {
             PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "SELECT IP FROM sc_bans WHERE BanId=?" );
@@ -45,7 +45,7 @@ public class SQLGetter{
         }
         return "Something went wrong :(";
     }
-
+    
     public static String getBaned( int id , String row ){
         try {
             PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "SELECT " + row + " FROM sc_bans WHERE BanId=?" );
@@ -60,7 +60,7 @@ public class SQLGetter{
         }
         return "Something went wrong :(";
     }
-
+    
     public static String getWarned( int id , String row ){
         try {
             PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "SELECT " + row + " FROM sc_warns WHERE WarnId=?" );
@@ -75,7 +75,7 @@ public class SQLGetter{
         }
         return "Something went wrong :(";
     }
-
+    
     public static boolean BansTableExists( ){
         try {
             PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "SELECT * FROM sc_bans" );
@@ -86,7 +86,7 @@ public class SQLGetter{
             return false;
         }
     }
-
+    
     public static boolean WarnsTableExists( ){
         try {
             PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "SELECT * FROM sc_warns" );
@@ -97,7 +97,7 @@ public class SQLGetter{
             return false;
         }
     }
-
+    
     public static List < String > getPlayersNames( ){
         List < String > players = new ArrayList <>( );
         try {
@@ -105,7 +105,7 @@ public class SQLGetter{
             ResultSet results = statement.executeQuery( );
             while (results.next( )) {
                 String aDBName = results.getString( 1 );
-                if (!players.contains( aDBName ) ){
+                if ( !players.contains( aDBName ) ) {
                     players.add( aDBName );
                 }
             }
@@ -114,6 +114,7 @@ public class SQLGetter{
         }
         return players;
     }
+    
     public static String getIp( String name ){
         String IP = "";
         try {
@@ -128,6 +129,7 @@ public class SQLGetter{
         }
         return IP;
     }
+    
     public static List < String > getWarnedPlayers( ){
         List < String > players = new ArrayList <>( );
         try {
@@ -144,7 +146,7 @@ public class SQLGetter{
         }
         return players;
     }
-
+    
     public static List < String > getBannedPlayers( ){
         List < String > players = new ArrayList <>( );
         try {
@@ -161,6 +163,7 @@ public class SQLGetter{
         }
         return players;
     }
+    
     public static List < Integer > getPlayersIds( String p , String table , String typeId ){
         List < Integer > ids = new ArrayList <>( );
         try {
@@ -178,7 +181,7 @@ public class SQLGetter{
         }
         return ids;
     }
-
+    
     public static String getReportStatus( int id ){
         try {
             PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "SELECT Status FROM sc_reports WHERE ReportId=?" );
@@ -192,7 +195,7 @@ public class SQLGetter{
         }
         return "Something went wrong :(";
     }
-
+    
     public static String getBanStatus( int id ){
         try {
             PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "SELECT Status FROM sc_bans WHERE BanId=?" );
@@ -206,7 +209,7 @@ public class SQLGetter{
         }
         return "Something went wrong :(";
     }
-
+    
     public static void createAlts( String player , String IP ){
         int intento = 0;
         while (intento < 4) {
@@ -223,7 +226,7 @@ public class SQLGetter{
             }
         }
     }
-
+    
     public static String getAlts( String player ){
         try {
             PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "SELECT Ips FROM sc_alts WHERE Name=?" );
@@ -237,7 +240,7 @@ public class SQLGetter{
         }
         return "Something went wrong :(";
     }
-
+    
     public static void addIps( String player , String Ips ){
         int intento = 0;
         while (intento < 4) {
@@ -253,7 +256,7 @@ public class SQLGetter{
             }
         }
     }
-
+    
     public static void deleteReport( int id ){
         int intento = 0;
         while (intento < 4) {
@@ -267,7 +270,7 @@ public class SQLGetter{
             }
         }
     }
-
+    
     public static void wipe( String player ){
         try {
             PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "DELETE FROM sc_flying WHERE sc_flying.Name = ?" );
@@ -299,9 +302,9 @@ public class SQLGetter{
             statement.executeUpdate( );
         } catch ( SQLException ignored ) {
         }
-
+        
     }
-
+    
     public static void deleteAlts( String name ){
         int intento = 0;
         while (intento < 4) {
@@ -315,7 +318,7 @@ public class SQLGetter{
             }
         }
     }
-
+    
     public static void deleteWarns( String name ){
         int intento = 0;
         while (intento < 4) {
@@ -329,7 +332,7 @@ public class SQLGetter{
             }
         }
     }
-
+    
     public static void deleteBans( int id ){
         int intento = 0;
         while (intento < 4) {
@@ -343,7 +346,7 @@ public class SQLGetter{
             }
         }
     }
-
+    
     public static void deleteWarn( int id ){
         int intento = 0;
         while (intento < 4) {
@@ -357,7 +360,7 @@ public class SQLGetter{
             }
         }
     }
-
+    
     public static void createAltsTable( ){
         PreparedStatement ps;
         try {
@@ -366,9 +369,9 @@ public class SQLGetter{
         } catch ( SQLException ignored ) {
             ignored.printStackTrace( );
         }
-
+        
     }
-
+    
     //////////////////////////////NORMAL////////////////////////////////////////////////
     public static void createTable( String tableName ){
         PreparedStatement ps;
@@ -378,9 +381,9 @@ public class SQLGetter{
         } catch ( SQLException ignored ) {
             ignored.printStackTrace( );
         }
-
+        
     }
-
+    
     /**
      * This will create a ReportReport into the Mysql database
      **/
@@ -395,7 +398,7 @@ public class SQLGetter{
             //ignored.printStackTrace();
         }
     }
-
+    
     /**
      * This will create the BanTable into the Mysql database.
      **/
@@ -410,7 +413,7 @@ public class SQLGetter{
             //ignored.printStackTrace();
         }
     }
-
+    
     /**
      * This will create the BanTable into the Mysql database.
      **/
@@ -425,7 +428,7 @@ public class SQLGetter{
             //ignored.printStackTrace();
         }
     }
-
+    
     public static boolean PlayerExists( String tableName , String playerName ){
         try {
             PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "SELECT * FROM sc_" + tableName + " WHERE Name=?" );
@@ -437,7 +440,7 @@ public class SQLGetter{
         }
         return false;
     }
-
+    
     public static void createPlayer( Player player , String tableName , String bol ){
         try {
             if ( !(PlayerExists( tableName , player.getName( ) )) ) {
@@ -447,11 +450,11 @@ public class SQLGetter{
                 statement.executeUpdate( );
             }
         } catch ( SQLException throwable ) {
-
+            
             throwable.printStackTrace( );
         }
     }
-
+    
     public static void createPlayer( String player , String tableName , String bol ){
         try {
             if ( !(PlayerExists( tableName , player )) ) {
@@ -461,11 +464,11 @@ public class SQLGetter{
                 statement.executeUpdate( );
             }
         } catch ( SQLException throwable ) {
-
+            
             throwable.printStackTrace( );
         }
     }
-
+    
     public static String isTrue( Player player , String tableName ){
         try {
             PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "SELECT Enabled FROM sc_" + tableName + " WHERE Name=?" );
@@ -482,7 +485,7 @@ public class SQLGetter{
         }
         return "false";
     }
-
+    
     public static String isTrue( String player , String tableName ){
         try {
             PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "SELECT Enabled FROM sc_" + tableName + " WHERE Name=?" );
@@ -499,7 +502,7 @@ public class SQLGetter{
         }
         return "false";
     }
-
+    
     public static int getCurrents( String tableName ){
         int count = 0;
         try {
@@ -513,7 +516,7 @@ public class SQLGetter{
         }
         return count;
     }
-
+    
     public static int getCurrentWarns( String p ){
         int count = 0;
         try {
@@ -530,7 +533,7 @@ public class SQLGetter{
         }
         return count;
     }
-
+    
     public static int getCurrentReports( String p ){
         int count = 0;
         try {
@@ -547,7 +550,7 @@ public class SQLGetter{
         }
         return count;
     }
-
+    
     public static ArrayList < Integer > getBanIds( String p ){
         ArrayList < Integer > BanIDs = new ArrayList <>( );
         try {
@@ -564,7 +567,7 @@ public class SQLGetter{
         }
         return BanIDs;
     }
-
+    
     public static ArrayList < Integer > getWarnIds( String p ){
         ArrayList < Integer > WarnIds = new ArrayList <>( );
         try {
@@ -581,7 +584,7 @@ public class SQLGetter{
         }
         return WarnIds;
     }
-
+    
     public static ArrayList < Integer > getWarnIds( ){
         ArrayList < Integer > WarnIds = new ArrayList <>( );
         try {
@@ -589,14 +592,14 @@ public class SQLGetter{
             ResultSet rs = statement.executeQuery( );
             while (rs.next( )) {
                 WarnIds.add( rs.getInt( 1 ) );
-
+                
             }
         } catch ( SQLException throwable ) {
             throwable.printStackTrace( );
         }
         return WarnIds;
     }
-
+    
     public static int getWarnId( ){
         int id = 1;
         try {
@@ -610,7 +613,57 @@ public class SQLGetter{
         }
         return id;
     }
-
+    
+    public static void setBan( int id , String Status ){
+        int intento = 0;
+        while (intento < 4) {
+            try {
+                PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "UPDATE sc_bans SET Status=? WHERE BanId=?" );
+                statement.setString( 1 , Status );
+                statement.setInt( 2 , id );
+                statement.executeUpdate( );
+                break;
+            } catch ( SQLException ignored ) {
+                intento++;
+            }
+        }
+    }
+    
+    public static void setWarn( int id , String Status ){
+        int intento = 0;
+        while (intento < 4) {
+            try {
+                PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "UPDATE sc_warns SET Status=? WHERE WarnId=?" );
+                statement.setString( 1 , Status );
+                statement.setInt( 2 , id );
+                statement.executeUpdate( );
+                break;
+            } catch ( SQLException ignored ) {
+                intento++;
+            }
+        }
+    }
+    
+    public static void setTrue( String player , String tableName , String bol ){
+        int intento = 0;
+        while (intento < 4) {
+            if ( PlayerExists( tableName , player ) ) {
+                try {
+                    PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "UPDATE sc_" + tableName + " SET Enabled=? WHERE Name=?" );
+                    statement.setString( 1 , bol );
+                    statement.setString( 2 , player );
+                    statement.executeUpdate( );
+                    break;
+                } catch ( SQLException ignored ) {
+                    intento++;
+                }
+            } else {
+                createPlayer( player , tableName , bol );
+                intento++;
+            }
+        }
+    }
+    
     /**
      * This will create a Report into the Report Table.
      **/
@@ -631,11 +684,11 @@ public class SQLGetter{
                 plugin.getServer( ).getConsoleSender( ).sendMessage( utils.chat( "&c[&5Staff Core&c] Creating the sc_reports table into the database" ) );
                 createReportTable( );
                 intento++;
-
+                
             }
         }
     }
-
+    
     /**
      * This will create a Ban into the Bans Table.
      **/
@@ -662,7 +715,7 @@ public class SQLGetter{
             }
         }
     }
-
+    
     /**
      * This will create a Warn into the Bans Table.
      **/
@@ -687,7 +740,7 @@ public class SQLGetter{
             }
         }
     }
-
+    
     public int getReportId( ){
         int id = 1;
         try {
@@ -701,7 +754,7 @@ public class SQLGetter{
         }
         return id;
     }
-
+    
     public int getBanId( ){
         int id = 1;
         try {
@@ -715,7 +768,7 @@ public class SQLGetter{
         }
         return id;
     }
-
+    
     public void set( String tableName , int id , String Status ){
         int intento = 0;
         while (intento < 4) {
@@ -726,56 +779,6 @@ public class SQLGetter{
                 statement.executeUpdate( );
                 break;
             } catch ( SQLException ignored ) {
-                intento++;
-            }
-        }
-    }
-
-    public static void setBan( int id , String Status ){
-        int intento = 0;
-        while (intento < 4) {
-            try {
-                PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "UPDATE sc_bans SET Status=? WHERE BanId=?" );
-                statement.setString( 1 , Status );
-                statement.setInt( 2 , id );
-                statement.executeUpdate( );
-                break;
-            } catch ( SQLException ignored ) {
-                intento++;
-            }
-        }
-    }
-
-    public static void setWarn( int id , String Status ){
-        int intento = 0;
-        while (intento < 4) {
-            try {
-                PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "UPDATE sc_warns SET Status=? WHERE WarnId=?" );
-                statement.setString( 1 , Status );
-                statement.setInt( 2 , id );
-                statement.executeUpdate( );
-                break;
-            } catch ( SQLException ignored ) {
-                intento++;
-            }
-        }
-    }
-
-    public static void setTrue( String player , String tableName , String bol ){
-        int intento = 0;
-        while (intento < 4) {
-            if ( PlayerExists( tableName , player ) ) {
-                try {
-                    PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "UPDATE sc_" + tableName + " SET Enabled=? WHERE Name=?" );
-                    statement.setString( 1 , bol );
-                    statement.setString( 2 , player );
-                    statement.executeUpdate( );
-                    break;
-                } catch ( SQLException ignored ) {
-                    intento++;
-                }
-            } else {
-                createPlayer( player , tableName , bol );
                 intento++;
             }
         }

@@ -20,11 +20,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-public class Warnings extends Menu{
+public class Warnings extends Menu {
     private final main plugin;
     private final Player p;
     private final String warned;
-
+    
     public Warnings( PlayerMenuUtility playerMenuUtility , main plugin ,
                      Player p , String warned ){
         super( playerMenuUtility );
@@ -32,7 +32,7 @@ public class Warnings extends Menu{
         this.p = p;
         this.warned = warned;
     }
-
+    
     @Override
     public String getMenuName( ){
         if ( p.getName( ).equalsIgnoreCase( warned ) ) {
@@ -41,12 +41,12 @@ public class Warnings extends Menu{
             return utils.chat( "&c" + warned + "'s Warnings:" );
         }
     }
-
+    
     @Override
     public int getSlots( ){
         return 27;
     }
-
+    
     @Override
     public void handleMenu( InventoryClickEvent e ){
         ItemStack item = e.getCurrentItem( );
@@ -57,9 +57,9 @@ public class Warnings extends Menu{
                 new ChoseWarn( playerMenuUtility , plugin , p , warned , id ).open( p );
             }
         }
-
+        
     }
-
+    
     @Override
     public void setMenuItems( ){
         for ( int i = 0; i < 10; i++ ) {
@@ -67,13 +67,13 @@ public class Warnings extends Menu{
                 inventory.setItem( i , super.bluePanel( ) );
             }
         }
-
+        
         for ( int i = 17; i < 27; i++ ) {
             if ( inventory.getItem( i ) == null ) {
                 inventory.setItem( i , super.bluePanel( ) );
             }
         }
-
+        
         if ( utils.getInt( "warns.max_warns" ) == 3 ) {
             inventory.setItem( 10 , super.bluePanel( ) );
             inventory.setItem( 11 , super.bluePanel( ) );
@@ -113,7 +113,7 @@ public class Warnings extends Menu{
                     Seconds -= TimeUnit.HOURS.toSeconds( Hours );
                     long Minutes = TimeUnit.SECONDS.toMinutes( Seconds );
                     Seconds -= TimeUnit.MINUTES.toSeconds( Minutes );
-
+                    
                     ItemStack p_head = utils.getPlayerHead( SQLGetter.getWarned( i , "Name" ) );
                     ItemMeta meta = p_head.getItemMeta( );
                     ArrayList < String > lore = new ArrayList <>( );
@@ -156,7 +156,7 @@ public class Warnings extends Menu{
                     Seconds -= TimeUnit.HOURS.toSeconds( Hours );
                     long Minutes = TimeUnit.SECONDS.toMinutes( Seconds );
                     Seconds -= TimeUnit.MINUTES.toSeconds( Minutes );
-
+                    
                     ItemStack p_head = utils.getPlayerHead( plugin.warns.getConfig( ).getString( "warns." + i + ".name" ) );
                     ItemMeta meta = p_head.getItemMeta( );
                     ArrayList < String > lore = new ArrayList <>( );
@@ -189,7 +189,7 @@ public class Warnings extends Menu{
             }
         }
     }
-
+    
     private ArrayList < Integer > getWarnIds( ){
         ArrayList < Integer > warnIds = new ArrayList <>( );
         for ( int i = 0; i < (plugin.warns.getConfig( ).getInt( "current" ) + plugin.warns.getConfig( ).getInt( "count" )); i++ ) {
@@ -202,5 +202,5 @@ public class Warnings extends Menu{
         }
         return warnIds;
     }
-
+    
 }

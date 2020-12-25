@@ -17,25 +17,25 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 
-public class ReportManager extends Menu{
+public class ReportManager extends Menu {
     private static final SQLGetter data = main.plugin.data;
     private final main plugin;
-
+    
     public ReportManager( PlayerMenuUtility playerMenuUtility , main plugin ){
         super( playerMenuUtility );
         this.plugin = plugin;
     }
-
+    
     @Override
     public String getMenuName( ){
         return utils.chat( "&cReport manager" );
     }
-
+    
     @Override
     public int getSlots( ){
         return 45;
     }
-
+    
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
@@ -59,7 +59,7 @@ public class ReportManager extends Menu{
             }
         }
     }
-
+    
     private int Closed( ){
         int close = 0;
         if ( utils.mysqlEnabled( ) ) {
@@ -90,7 +90,7 @@ public class ReportManager extends Menu{
             return close;
         }
     }
-
+    
     private int Opens( ){
         int opens = 0;
         if ( utils.mysqlEnabled( ) ) {
@@ -121,36 +121,36 @@ public class ReportManager extends Menu{
             return opens;
         }
     }
-
+    
     @Override
     public void setMenuItems( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack openReports = new ItemStack( Material.FLOWER_BANNER_PATTERN , 1 );
         ItemStack closeReports = new ItemStack( Material.NAME_TAG , 1 );
-
+        
         ItemMeta or_meta = openReports.getItemMeta( );
         ItemMeta cr_meta = closeReports.getItemMeta( );
-
+        
         or_meta.setDisplayName( utils.chat( "&aOpen Reports" ) );
         cr_meta.setDisplayName( utils.chat( "&cClosed Reports" ) );
-
+        
         lore.add( utils.chat( "&8&lClick to open all the opened Reports" ) );
-
+        
         lore.add( utils.chat( "&8&lCurrent Opened: &a" + Opens( ) ) );
         or_meta.setLore( lore );
         lore.clear( );
         lore.add( utils.chat( "&8&lClick to open all the closed Reports" ) );
-
+        
         lore.add( utils.chat( "&8&lCurrent Closed: &a" + Closed( ) ) );
         cr_meta.setLore( lore );
         lore.clear( );
-
+        
         or_meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "openReports" ) , PersistentDataType.STRING , "openReports" );
         cr_meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "closeReports" ) , PersistentDataType.STRING , "closeReports" );
-
+        
         openReports.setItemMeta( or_meta );
         closeReports.setItemMeta( cr_meta );
-
+        
         for ( int i = 0; i < 10; i++ ) {
             if ( inventory.getItem( i ) == null ) {
                 inventory.setItem( i , super.bluePanel( ) );
@@ -183,5 +183,5 @@ public class ReportManager extends Menu{
         inventory.setItem( 23 , super.redPanel( ) );
         inventory.setItem( 24 , closeReports );
     }
-
+    
 }

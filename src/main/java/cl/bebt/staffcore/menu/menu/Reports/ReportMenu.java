@@ -16,25 +16,25 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 
-public class ReportMenu extends ReportPlayerMenu{
+public class ReportMenu extends ReportPlayerMenu {
     private final main plugin;
-
+    
     public ReportMenu( PlayerMenuUtility playerMenuUtility , main plugin , String p2 ){
         super( playerMenuUtility );
         this.plugin = plugin;
         this.reported = p2;
     }
-
+    
     @Override
     public String getMenuName( ){
         return utils.chat( "&cReport &4" + reported );
     }
-
+    
     @Override
     public int getSlots( ){
         return 54;
     }
-
+    
     private int id( ){
         if ( utils.mysqlEnabled( ) ) {
             return plugin.data.getReportId( );
@@ -44,8 +44,8 @@ public class ReportMenu extends ReportPlayerMenu{
             return id;
         }
     }
-
-
+    
+    
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
@@ -86,7 +86,7 @@ public class ReportMenu extends ReportPlayerMenu{
             p.closeInventory( );
         }
     }
-
+    
     public ItemStack hacking( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.RED_DYE );
@@ -98,7 +98,7 @@ public class ReportMenu extends ReportPlayerMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack killaura( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.DIAMOND_SWORD );
@@ -110,7 +110,7 @@ public class ReportMenu extends ReportPlayerMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack flying( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.FEATHER );
@@ -122,7 +122,7 @@ public class ReportMenu extends ReportPlayerMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack speed( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.SUGAR );
@@ -134,7 +134,7 @@ public class ReportMenu extends ReportPlayerMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack spamming( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.PAPER );
@@ -146,7 +146,7 @@ public class ReportMenu extends ReportPlayerMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack griefing( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.TNT );
@@ -158,7 +158,7 @@ public class ReportMenu extends ReportPlayerMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack bhop( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.RABBIT_HIDE );
@@ -170,7 +170,7 @@ public class ReportMenu extends ReportPlayerMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack other( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.FLOWER_BANNER_PATTERN );
@@ -184,7 +184,7 @@ public class ReportMenu extends ReportPlayerMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     @Override
     public void setMenuItems( ){
         addMenuBorder( );

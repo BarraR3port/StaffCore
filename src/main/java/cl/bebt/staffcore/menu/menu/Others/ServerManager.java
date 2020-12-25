@@ -20,25 +20,25 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 
-public class ServerManager extends MenuC{
+public class ServerManager extends MenuC {
     private static final SQLGetter data = main.plugin.data;
     private final main plugin;
-
+    
     public ServerManager( PlayerMenuUtility playerMenuUtility , main plugin ){
         super( playerMenuUtility );
         this.plugin = plugin;
     }
-
+    
     @Override
     public String getMenuName( ){
         return utils.chat( "&cServer Manager" );
     }
-
+    
     @Override
     public int getSlots( ){
         return 45;
     }
-
+    
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
@@ -62,7 +62,7 @@ public class ServerManager extends MenuC{
             e.setCancelled( true );
         }
     }
-
+    
     @Override
     public void setMenuItemsPlayer( Player p ){
         ArrayList < String > lore = new ArrayList <>( );
@@ -70,20 +70,20 @@ public class ServerManager extends MenuC{
         ItemStack ReportManager = new ItemStack( Material.BLAZE_ROD , 1 );
         ItemStack ChatManager = new ItemStack( Material.PAPER , 1 );
         ItemStack WarnManager = new ItemStack( Material.LEAD , 1 );
-
-
+        
+        
         ItemMeta metaBans = BanManager.getItemMeta( );
         ItemMeta metaReports = ReportManager.getItemMeta( );
         ItemMeta metaChat = ChatManager.getItemMeta( );
         ItemMeta metaWarn = WarnManager.getItemMeta( );
-
-
+        
+        
         metaBans.setDisplayName( utils.chat( "&cBan Manager" ) );
         metaReports.setDisplayName( utils.chat( "&cReport Manager" ) );
         metaChat.setDisplayName( utils.chat( "&cChat Manager" ) );
         metaWarn.setDisplayName( utils.chat( "&cWarn Manager" ) );
-
-
+        
+        
         lore.add( utils.chat( "&7Click open the Ban Manager." ) );
         metaBans.setLore( lore );
         lore.clear( );
@@ -96,18 +96,18 @@ public class ServerManager extends MenuC{
         lore.add( utils.chat( "&7Click to open the Warn Manager." ) );
         metaWarn.setLore( lore );
         lore.clear( );
-
+        
         metaBans.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "bans" ) , PersistentDataType.STRING , "bans" );
         metaReports.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "reports" ) , PersistentDataType.STRING , "reports" );
         metaChat.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "chat" ) , PersistentDataType.STRING , "chat" );
         metaWarn.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "warn" ) , PersistentDataType.STRING , "warn" );
-
+        
         BanManager.setItemMeta( metaBans );
         ReportManager.setItemMeta( metaReports );
         ChatManager.setItemMeta( metaChat );
         WarnManager.setItemMeta( metaWarn );
-
-
+        
+        
         for ( int i = 0; i < 10; i++ ) {
             if ( inventory.getItem( i ) == null ) {
                 inventory.setItem( i , super.bluePanel( ) );
@@ -139,7 +139,7 @@ public class ServerManager extends MenuC{
         inventory.setItem( 22 , super.redPanel( ) );
         inventory.setItem( 23 , ChatManager );
         inventory.setItem( 24 , WarnManager );
-
+        
         inventory.setItem( 13 , Items.PlayerStatus( p ) );
         inventory.setItem( 31 , Items.ServerStatus( ) );
     }

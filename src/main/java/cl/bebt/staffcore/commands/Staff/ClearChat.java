@@ -8,15 +8,15 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class ClearChat implements CommandExecutor{
-
+public class ClearChat implements CommandExecutor {
+    
     private final main plugin;
-
+    
     public ClearChat( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "clearchat" ).setExecutor( this );
     }
-
+    
     @Override
     public boolean onCommand( CommandSender sender , Command command , String label , String[] args ){
         if ( !(sender instanceof Player) ) {
@@ -62,6 +62,6 @@ public class ClearChat implements CommandExecutor{
         }
         return true;
     }
-
-
+    
+    
 }

@@ -17,12 +17,12 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 
-public class QuantityBaned extends Menu{
+public class QuantityBaned extends Menu {
     private final main plugin;
     private final Player player;
     private final String baned;
     private final String reason;
-
+    
     public QuantityBaned( PlayerMenuUtility playerMenuUtility , main plugin , Player player , String baned , String reason ){
         super( playerMenuUtility );
         this.plugin = plugin;
@@ -30,17 +30,17 @@ public class QuantityBaned extends Menu{
         this.baned = baned;
         this.reason = reason;
     }
-
+    
     @Override
     public String getMenuName( ){
         return utils.chat( "&cChose between &ds/m/h/d" );
     }
-
+    
     @Override
     public int getSlots( ){
         return 45;
     }
-
+    
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
@@ -71,7 +71,7 @@ public class QuantityBaned extends Menu{
             new ChoseBanType( playerMenuUtility , plugin , player , baned , reason ).open( p );
         }
     }
-
+    
     @Override
     public void setMenuItems( ){
         for ( int i = 0; i < 10; i++ ) {
@@ -106,7 +106,7 @@ public class QuantityBaned extends Menu{
         inventory.setItem( 23 , hours( ) );
         inventory.setItem( 24 , days( ) );
     }
-
+    
     public ItemStack seconds( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.MAGENTA_CONCRETE );
@@ -119,7 +119,7 @@ public class QuantityBaned extends Menu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack minutes( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.PURPLE_CONCRETE );
@@ -132,7 +132,7 @@ public class QuantityBaned extends Menu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack hours( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.BLUE_CONCRETE );
@@ -145,7 +145,7 @@ public class QuantityBaned extends Menu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack days( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.RED_CONCRETE );
@@ -158,5 +158,5 @@ public class QuantityBaned extends Menu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
 }

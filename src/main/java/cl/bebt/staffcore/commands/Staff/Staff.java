@@ -13,14 +13,14 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 
-public class Staff implements CommandExecutor{
+public class Staff implements CommandExecutor {
     private final main plugin;
-
+    
     public Staff( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "staff" ).setExecutor( this );
     }
-
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {
@@ -34,7 +34,7 @@ public class Staff implements CommandExecutor{
                     if ( PlayerData.has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) ) {
                         SetStaffItems.Off( p );
                         utils.tell( sender , "&7You remove &r" + p.getDisplayName( ) + " &7from staff mode" );
-
+                        
                     } else if ( !(PlayerData.has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING )) ) {
                         SetStaffItems.On( p );
                         utils.tell( sender , "&7You put &r" + p.getDisplayName( ) + " &7in staff mode" );
@@ -63,7 +63,7 @@ public class Staff implements CommandExecutor{
                             if ( PlayerData.has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) ) {
                                 SetStaffItems.Off( p );
                                 utils.tell( sender , "&7You remove &r" + p.getDisplayName( ) + " &7from staff mode" );
-
+                                
                             } else if ( !(PlayerData.has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING )) ) {
                                 SetStaffItems.On( p );
                                 utils.tell( sender , "&7You put &r" + p.getDisplayName( ) + " &7in staff mode" );
@@ -79,5 +79,5 @@ public class Staff implements CommandExecutor{
         }
         return true;
     }
-
+    
 }

@@ -20,28 +20,28 @@ import java.util.Date;
 import java.util.HashMap;
 
 @Deprecated
-public class invSeeOld extends MenuC{
+public class invSeeOld extends MenuC {
     private final Player player;
-
+    
     private final main plugin;
-
+    
     public invSeeOld( PlayerMenuUtility playerMenuUtility , main plugin , Player p ){
         super( playerMenuUtility );
         this.player = p;
         this.plugin = plugin;
-
+        
     }
-
+    
     @Override
     public String getMenuName( ){
         return utils.chat( "&c" + player.getName( ) + "'s inventory:" );
     }
-
+    
     @Override
     public int getSlots( ){
         return 45;
     }
-
+    
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
@@ -55,14 +55,14 @@ public class invSeeOld extends MenuC{
             e.setCancelled( true );
         }
     }
-
+    
     private String getTime( Long timeLeft ){
         Long left = (timeLeft / 20) * 1000;
         SimpleDateFormat format = new SimpleDateFormat( "mm:ss" );
         Date date = new Date( left );
         return format.format( date );
     }
-
+    
     private ItemStack potions( ){
         ArrayList < PotionEffect > potions = new ArrayList <>( player.getActivePotionEffects( ) );
         if ( !potions.isEmpty( ) ) {
@@ -75,7 +75,7 @@ public class invSeeOld extends MenuC{
             return makeItem( Material.BREWING_STAND , "&aPotion Effects:" , "No potion effects" );
         }
     }
-
+    
     @Override
     public void setMenuItemsPlayer( Player p ){
         utils.PlaySound( p , "invsee" );
@@ -87,7 +87,7 @@ public class invSeeOld extends MenuC{
             }
         }
         HashMap < Integer, ItemStack > inv = new HashMap <>( );
-
+        
         for ( int c = 0; c <= 35; c++ ) {
             try {
                 inv.put( c , player.getInventory( ).getItem( c + 9 ) );
@@ -100,7 +100,7 @@ public class invSeeOld extends MenuC{
         for ( int b = 0; b < inv.size( ); b++ ) {
             inventory.setItem( b , inv.get( b ) );
         }
-
+        
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack head = utils.getPlayerHead( player.getName( ) );
         ItemMeta head_meta = head.getItemMeta( );
@@ -135,7 +135,7 @@ public class invSeeOld extends MenuC{
         head_meta.setLore( lore );
         head.setItemMeta( head_meta );
         lore.clear( );
-
+        
         ItemStack food = new ItemStack( Material.COOKED_BEEF );
         ItemMeta food_meta = food.getItemMeta( );
         food_meta.setDisplayName( utils.chat( "&a" + player.getName( ) + "'s &7Health Stats:" ) );
@@ -145,7 +145,7 @@ public class invSeeOld extends MenuC{
         lore.add( utils.chat( "&aFood level: &6" + player.getFoodLevel( ) ) );
         food_meta.setLore( lore );
         food.setItemMeta( food_meta );
-
+        
         inventory.setItem( 27 , super.greenPanel( ) );
         inventory.setItem( 28 , potions( ) );
         inventory.setItem( 29 , food );
@@ -165,6 +165,6 @@ public class invSeeOld extends MenuC{
         if ( player.getInventory( ).getBoots( ) != null ) {
             inventory.setItem( 35 , player.getInventory( ).getBoots( ) );
         }
-
+        
     }
 }

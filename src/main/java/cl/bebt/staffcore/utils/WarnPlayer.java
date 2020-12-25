@@ -14,16 +14,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
-public class WarnPlayer{
-
+public class WarnPlayer {
+    
     private static main plugin;
-
+    
     public WarnPlayer( Player p , String warned , main plugin ){
         WarnPlayer.plugin = plugin;
         new WarnMenu( new PlayerMenuUtility( p ) , plugin , warned ).open( p );
     }
-
-
+    
+    
     public static void createWarn( Player p , String warned , String reason , long amount , String time ){
         int id = id( );
         Date now = new Date( );
@@ -45,7 +45,7 @@ public class WarnPlayer{
         }
         Date ExpDate = cal.getTime( );
         SimpleDateFormat format = new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" );
-
+        
         if ( utils.mysqlEnabled( ) ) {
             main.plugin.data.createWarn( warned , p.getName( ) , reason , format.format( now ) , format.format( ExpDate ) , "open" );
         } else {
@@ -82,7 +82,7 @@ public class WarnPlayer{
             WipeWarns( warned );
         }
     }
-
+    
     public static void unWarn( Player p , main plugin , int Id ){
         String player = "";
         if ( p instanceof Player ) {
@@ -132,7 +132,7 @@ public class WarnPlayer{
             }
         }
     }
-
+    
     public static int id( ){
         if ( utils.mysqlEnabled( ) ) {
             return SQLGetter.getWarnId( );
@@ -142,7 +142,7 @@ public class WarnPlayer{
             return id;
         }
     }
-
+    
     private static void WipeWarns( String p ){
         HashMap < Integer, Integer > ids = Ids( p );
         for ( int i = 1; i <= ids.size( ); i++ ) {
@@ -154,8 +154,8 @@ public class WarnPlayer{
             }
         }
     }
-
-
+    
+    
     private static HashMap < Integer, Integer > Ids( String p ){
         HashMap < Integer, Integer > ids = new HashMap <>( );
         int num = 0;
@@ -174,5 +174,5 @@ public class WarnPlayer{
         }
         return ids;
     }
-
+    
 }

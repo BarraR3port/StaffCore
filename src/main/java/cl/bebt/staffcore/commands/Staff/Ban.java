@@ -16,14 +16,14 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Ban implements TabExecutor{
+public class Ban implements TabExecutor {
     private final main plugin;
-
+    
     public Ban( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "ban" ).setExecutor( this );
     }
-
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( sender instanceof Player ) {
@@ -94,7 +94,7 @@ public class Ban implements TabExecutor{
         }
         return true;
     }
-
+    
     @Override
     public List < String > onTabComplete( CommandSender sender , Command command , String alias , String[] args ){
         List < String > version = new ArrayList <>( );
@@ -109,7 +109,7 @@ public class Ban implements TabExecutor{
         }
         return version;
     }
-
+    
     private Boolean isNormal( String s ){
         String lastWord = s.substring( s.length( ) - 1 );
         String ncadena = s.substring( 0 , s.length( ) - 1 );

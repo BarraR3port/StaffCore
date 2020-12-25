@@ -12,15 +12,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 
 
-public class StaffChat implements CommandExecutor{
-
+public class StaffChat implements CommandExecutor {
+    
     private final main plugin;
-
+    
     public StaffChat( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "staffchat" ).setExecutor( this );
     }
-
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {

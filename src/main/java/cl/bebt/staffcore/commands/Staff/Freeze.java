@@ -12,15 +12,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-public class Freeze implements CommandExecutor{
-
+public class Freeze implements CommandExecutor {
+    
     private final main plugin;
-
+    
     public Freeze( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "freeze" ).setExecutor( this );
     }
-
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {

@@ -9,13 +9,13 @@ import org.bukkit.entity.Player;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class ReportPlayer{
+public class ReportPlayer {
     private static main plugin;
-
+    
     public ReportPlayer( main plugin ){
         ReportPlayer.plugin = plugin;
     }
-
+    
     public ReportPlayer( Player p , String reason , String reported , int id ){
         Date now = new Date( );
         SimpleDateFormat format = new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" );
@@ -48,5 +48,5 @@ public class ReportPlayer{
         }
         SendMsg.sendReportAlert( id , p.getName( ) , reported , reason , format.format( now ) , plugin.getConfig( ).getString( "bungeecord.server" ) );
     }
-
+    
 }

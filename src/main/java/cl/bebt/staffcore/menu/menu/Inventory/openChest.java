@@ -8,31 +8,31 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 
-public class openChest extends Menu{
+public class openChest extends Menu {
     private final HashMap < Integer, ItemStack > chest_slots;
     private final int size;
-
+    
     public openChest( PlayerMenuUtility playerMenuUtility , HashMap < Integer, ItemStack > chest_slots , int size ){
         super( playerMenuUtility );
         this.chest_slots = chest_slots;
         this.size = size;
     }
-
+    
     @Override
     public String getMenuName( ){
         return utils.chat( "&8Chest" );
     }
-
+    
     @Override
     public int getSlots( ){
         return size;
     }
-
+    
     @Override
     public void handleMenu( InventoryClickEvent e ){
-
+    
     }
-
+    
     @Override
     public void setMenuItems( ){
         for ( int c = 0; c < size; c++ ) {

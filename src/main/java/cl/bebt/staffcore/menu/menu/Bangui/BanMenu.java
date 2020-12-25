@@ -15,26 +15,26 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 
-public class BanMenu extends BanPlayerMenu{
+public class BanMenu extends BanPlayerMenu {
     private final main plugin;
-
+    
     public BanMenu( PlayerMenuUtility playerMenuUtility , main plugin , Player p , String p2 ){
         super( playerMenuUtility );
         this.plugin = plugin;
         super.baned = p2;
         super.baner = p;
     }
-
+    
     @Override
     public String getMenuName( ){
         return utils.chat( "&cBan &4" + baned );
     }
-
+    
     @Override
     public int getSlots( ){
         return 54;
     }
-
+    
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
@@ -75,7 +75,7 @@ public class BanMenu extends BanPlayerMenu{
             p.closeInventory( );
         }
     }
-
+    
     @Override
     public void setMenuItems( ){
         addMenuBorder( );
@@ -89,7 +89,7 @@ public class BanMenu extends BanPlayerMenu{
         inventory.addItem( other( ) );
         baner.getPersistentDataContainer( ).remove( new NamespacedKey( plugin , "ban-ip" ) );
     }
-
+    
     public ItemStack hacking( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.RED_DYE );
@@ -101,7 +101,7 @@ public class BanMenu extends BanPlayerMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack killaura( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.DIAMOND_SWORD );
@@ -113,7 +113,7 @@ public class BanMenu extends BanPlayerMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack flying( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.FEATHER );
@@ -125,7 +125,7 @@ public class BanMenu extends BanPlayerMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack speed( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.SUGAR );
@@ -137,7 +137,7 @@ public class BanMenu extends BanPlayerMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack spamming( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.PAPER );
@@ -149,7 +149,7 @@ public class BanMenu extends BanPlayerMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack griefing( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.TNT );
@@ -161,7 +161,7 @@ public class BanMenu extends BanPlayerMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack bhop( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.RABBIT_HIDE );
@@ -173,7 +173,7 @@ public class BanMenu extends BanPlayerMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack other( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.FLOWER_BANNER_PATTERN );
@@ -187,5 +187,5 @@ public class BanMenu extends BanPlayerMenu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
 }

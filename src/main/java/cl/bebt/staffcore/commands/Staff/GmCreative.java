@@ -9,14 +9,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class GmCreative implements CommandExecutor{
+public class GmCreative implements CommandExecutor {
     private final main plugin;
-
+    
     public GmCreative( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "gmc" ).setExecutor( this );
     }
-
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {
@@ -25,7 +25,7 @@ public class GmCreative implements CommandExecutor{
                 sender.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&4&lUse: gmc <player>" ) );
             } else if ( args.length == 1 ) {
                 Player p = Bukkit.getPlayer( args[0] );
-
+                
                 if ( p instanceof Player ) {
                     if ( !(p.getGameMode( ) == GameMode.CREATIVE) ) {
                         p.setGameMode( GameMode.CREATIVE );
@@ -46,7 +46,7 @@ public class GmCreative implements CommandExecutor{
         if ( (sender instanceof Player) ) {
             if ( args.length == 0 ) {
                 Player p = ( Player ) sender;
-
+                
                 if ( p.hasPermission( "staffcore.gmc" ) ) {
                     if ( !(p.getGameMode( ) == GameMode.CREATIVE) ) {
                         p.setGameMode( GameMode.CREATIVE );
@@ -64,7 +64,7 @@ public class GmCreative implements CommandExecutor{
             } else if ( args.length == 1 ) {
                 if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
                     Player p = Bukkit.getPlayer( args[0] );
-
+                    
                     if ( sender.hasPermission( "staffcore.gmc" ) ) {
                         if ( !(p.getGameMode( ) == GameMode.CREATIVE) ) {
                             p.setGameMode( GameMode.CREATIVE );
@@ -76,7 +76,7 @@ public class GmCreative implements CommandExecutor{
                                 sender.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7You set Creative mode to: " + p.getName( ) ) );
                             }
                             p.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "creative" ) ) );
-
+                            
                         } else {
                             if ( !(sender == p) ) {
                                 sender.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7The player: " + p.getName( ) + " &7is already in creative" ) );

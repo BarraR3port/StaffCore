@@ -12,14 +12,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-public class Fly implements CommandExecutor{
+public class Fly implements CommandExecutor {
     private final main plugin;
-
+    
     public Fly( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "fly" ).setExecutor( this );
     }
-
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {
@@ -46,7 +46,7 @@ public class Fly implements CommandExecutor{
             }
         } else {
             if ( args.length == 0 ) {
-
+                
                 Player p = ( Player ) sender;
                 PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
                 if ( p.hasPermission( "staffcore.fly" ) ) {

@@ -13,15 +13,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-public class FlyMysql implements CommandExecutor{
+public class FlyMysql implements CommandExecutor {
     private static final SQLGetter data = main.plugin.data;
     private final main plugin;
-
+    
     public FlyMysql( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "fly" ).setExecutor( this );
     }
-
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {

@@ -13,12 +13,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
-public class AmountBaned extends PaginatedMenu{
+public class AmountBaned extends PaginatedMenu {
     private final main plugin;
     private final Player player;
     private final String baned;
     private final String reason;
-
+    
     public AmountBaned( PlayerMenuUtility playerMenuUtility , main plugin , Player player , String baned , String reason ){
         super( playerMenuUtility );
         this.plugin = plugin;
@@ -26,17 +26,17 @@ public class AmountBaned extends PaginatedMenu{
         this.baned = baned;
         this.reason = reason;
     }
-
+    
     @Override
     public String getMenuName( ){
         return utils.chat( "&cChose the amount:" );
     }
-
+    
     @Override
     public int getSlots( ){
         return 54;
     }
-
+    
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
@@ -69,7 +69,7 @@ public class AmountBaned extends PaginatedMenu{
             }
         }
     }
-
+    
     @Override
     public void setMenuItems( ){
         addMenuBorder( );
@@ -88,7 +88,7 @@ public class AmountBaned extends PaginatedMenu{
             inventory.addItem( clock );
             /////////////////////////////
         }
-
-
+        
+        
     }
 }

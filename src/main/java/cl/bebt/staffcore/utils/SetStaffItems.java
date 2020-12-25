@@ -16,15 +16,15 @@ import org.bukkit.persistence.PersistentDataType;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class SetStaffItems{
+public class SetStaffItems {
     private static final SQLGetter data = main.plugin.data;
     private static main plugin;
-
+    
     public SetStaffItems( main plugin ){
         SetStaffItems.plugin = plugin;
     }
-
-
+    
+    
     public static void On( Player p ){
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         PlayerData.set( new NamespacedKey( plugin , "staff_items" ) , PersistentDataType.STRING , Serializer.itemStackArrayToBase64( p.getInventory( ).getContents( ) ) );
@@ -43,10 +43,10 @@ public class SetStaffItems{
         PlayerData.set( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING , "staff" );
         utils.tell( p , plugin.getConfig( ).getString( "staff.staff_prefix" ) + plugin.getConfig( ).getString( "staff.staff_enabled" ) );
         if ( utils.mysqlEnabled( ) ) {
-            SQLGetter.setTrue( p.getName() , "staff" , "true" );
+            SQLGetter.setTrue( p.getName( ) , "staff" , "true" );
         }
     }
-
+    
     public static void Off( Player p ){
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         Bukkit.getScheduler( ).scheduleSyncDelayedTask( plugin , ( ) -> {
@@ -75,11 +75,11 @@ public class SetStaffItems{
         PlayerData.remove( new NamespacedKey( plugin , "staff" ) );
         utils.tell( p , plugin.getConfig( ).getString( "staff.staff_prefix" ) + plugin.getConfig( ).getString( "staff.staff_disabled" ) );
         if ( utils.mysqlEnabled( ) ) {
-            SQLGetter.setTrue( p.getName() , "staff" , "false" );
+            SQLGetter.setTrue( p.getName( ) , "staff" , "false" );
         }
-
+        
     }
-
+    
     public static ItemStack vanishOn( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack vanishOn = new ItemStack( Material.LIME_DYE );
@@ -91,7 +91,7 @@ public class SetStaffItems{
         vanishOn.setItemMeta( vanishOn_meta );
         return vanishOn;
     }
-
+    
     public static ItemStack vanishOff( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack vanishOff = new ItemStack( Material.GRAY_DYE );
@@ -103,7 +103,7 @@ public class SetStaffItems{
         vanishOff.setItemMeta( vanishOff_meta );
         return vanishOff;
     }
-
+    
     public static ItemStack staffOff( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack staffOff = new ItemStack( Material.RED_DYE );
@@ -115,7 +115,7 @@ public class SetStaffItems{
         staffOff.setItemMeta( staffOff_meta );
         return staffOff;
     }
-
+    
     public static ItemStack serverManager( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack chatManager = new ItemStack( Material.TOTEM_OF_UNDYING );
@@ -128,7 +128,7 @@ public class SetStaffItems{
         chatManager.setItemMeta( chatManager_meta );
         return chatManager;
     }
-
+    
     public static ItemStack freeze( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack freeze = new ItemStack( Material.BLUE_ICE );
@@ -140,7 +140,7 @@ public class SetStaffItems{
         freeze.setItemMeta( freeze_meta );
         return freeze;
     }
-
+    
     public static ItemStack randomTp( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack randomTp = new ItemStack( Material.CLOCK );
@@ -152,7 +152,7 @@ public class SetStaffItems{
         randomTp.setItemMeta( randomTp_meta );
         return randomTp;
     }
-
+    
     public static ItemStack reportManager( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack report = new ItemStack( Material.BLAZE_ROD );
@@ -164,7 +164,7 @@ public class SetStaffItems{
         report.setItemMeta( report_meta );
         return report;
     }
-
+    
     public static ItemStack InvSee( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack InvSee = new ItemStack( Material.CHEST );

@@ -9,15 +9,15 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Day implements CommandExecutor{
-
+public class Day implements CommandExecutor {
+    
     private final main plugin;
-
+    
     public Day( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "day" ).setExecutor( this );
     }
-
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {

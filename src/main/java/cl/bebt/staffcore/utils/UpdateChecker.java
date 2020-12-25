@@ -9,15 +9,15 @@ import java.net.URL;
 import java.util.Scanner;
 import java.util.function.Consumer;
 
-public class UpdateChecker{
+public class UpdateChecker {
     private final main plugin;
     private final int resourceId;
-
+    
     public UpdateChecker( main plugin , int resourceId ){
         this.plugin = plugin;
         this.resourceId = resourceId;
     }
-
+    
     public void getLatestVersion( Consumer < String > consumer ){
         Bukkit.getScheduler( ).runTaskAsynchronously( plugin , ( ) -> {
             try (InputStream inputStream = new URL( "https://api.spigotmc.org/legacy/update.php?resource=" + resourceId ).openStream( );

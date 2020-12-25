@@ -11,20 +11,20 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Warn implements TabExecutor{
-
+public class Warn implements TabExecutor {
+    
     private final main plugin;
-
+    
     public Warn( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "warn" ).setExecutor( this );
     }
-
-
+    
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {
-
+        
         } else {
             if ( args.length == 1 ) {
                 Player p = ( Player ) sender;
@@ -37,14 +37,14 @@ public class Warn implements TabExecutor{
                 } else {
                     utils.tell( sender , utils.getString( "server_prefix" ) + utils.getString( "no_permissions" ) );
                 }
-
+                
             } else {
                 utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&cWrong use, use /warn <player>" );
             }
         }
         return false;
     }
-
+    
     @Override
     public List < String > onTabComplete( CommandSender sender , Command command , String alias , String[] args ){
         List < String > version = new ArrayList <>( );

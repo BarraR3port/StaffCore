@@ -17,12 +17,12 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 
-public class ChoseBanType extends Menu{
+public class ChoseBanType extends Menu {
     private final main plugin;
     private final Player player;
     private final String baned;
     private final String reason;
-
+    
     public ChoseBanType( PlayerMenuUtility playerMenuUtility , main plugin , Player player , String baned , String reason ){
         super( playerMenuUtility );
         this.plugin = plugin;
@@ -30,17 +30,17 @@ public class ChoseBanType extends Menu{
         this.baned = baned;
         this.reason = reason;
     }
-
+    
     @Override
     public String getMenuName( ){
         return utils.chat( "&cChose Ban Type" );
     }
-
+    
     @Override
     public int getSlots( ){
         return 45;
     }
-
+    
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
@@ -63,7 +63,7 @@ public class ChoseBanType extends Menu{
             new BanMenu( playerMenuUtility , main.plugin , player , baned ).open( p );
         }
     }
-
+    
     @Override
     public void setMenuItems( ){
         for ( int i = 0; i < 10; i++ ) {
@@ -103,7 +103,7 @@ public class ChoseBanType extends Menu{
         inventory.setItem( 24 , permBan( ) );
         inventory.setItem( 25 , super.redPanel( ) );
     }
-
+    
     public ItemStack tempBan( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.CARVED_PUMPKIN );
@@ -115,7 +115,7 @@ public class ChoseBanType extends Menu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack permBan( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.JACK_O_LANTERN );
@@ -127,7 +127,7 @@ public class ChoseBanType extends Menu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack ban_ip( ){
         ItemStack item = new ItemStack( Material.REDSTONE );
         ItemMeta meta = item.getItemMeta( );
@@ -138,7 +138,7 @@ public class ChoseBanType extends Menu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
     public ItemStack ban_normal( ){
         ItemStack item = new ItemStack( Material.REDSTONE );
         ItemMeta meta = item.getItemMeta( );
@@ -147,5 +147,5 @@ public class ChoseBanType extends Menu{
         item.setItemMeta( meta );
         return item;
     }
-
+    
 }

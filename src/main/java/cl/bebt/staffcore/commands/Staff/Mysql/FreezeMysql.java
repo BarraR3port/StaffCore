@@ -10,16 +10,16 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class FreezeMysql implements CommandExecutor{
-
+public class FreezeMysql implements CommandExecutor {
+    
     private static final SQLGetter data = main.plugin.data;
     private final main plugin;
-
+    
     public FreezeMysql( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "freeze" ).setExecutor( this );
     }
-
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {
