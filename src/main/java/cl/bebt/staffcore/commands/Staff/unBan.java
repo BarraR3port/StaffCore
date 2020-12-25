@@ -5,132 +5,114 @@ import cl.bebt.staffcore.sql.SQLGetter;
 import cl.bebt.staffcore.utils.BanPlayer;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
-public class unBan implements TabExecutor{
-
+public class unBan implements TabExecutor {
     private final main plugin;
 
-    private final HashMap < Integer, Integer > bans = new HashMap <>( );
+    private final HashMap<Integer, Integer> bans = new HashMap<>();
 
-    public unBan( main plugin ){
+    public unBan(main plugin) {
         this.plugin = plugin;
-        plugin.getCommand( "unban" ).setExecutor( this );
+        plugin.getCommand("unban").setExecutor((CommandExecutor)this);
     }
 
-    @Override
-    public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        if ( sender instanceof Player ) {
-            if ( args.length == 1 ) {
-                Player p = ( Player ) sender;
-                if ( p.hasPermission( "staffcore.unban" ) ) {
-                    ArrayList < Integer > ids = BanIds( args[0] );
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (sender instanceof Player) {
+            if (args.length == 1) {
+                Player p = (Player)sender;
+                if (p.hasPermission("staffcore.unban")) {
+                    ArrayList<Integer> ids = BanIds(args[0]);
                     try {
-                        for ( int i : ids ) {
-                            BanPlayer.unBan( p , i );
+                        for (Iterator<Integer> iterator = ids.iterator(); iterator.hasNext(); ) {
+                            int i = ((Integer)iterator.next()).intValue();
+                            BanPlayer.unBan((CommandSender)p, i);
                         }
-                    } catch ( NullPointerException ignored ) {
-                        utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&cThe player " + args[0] + " didn't got un baned" );
+                    } catch (NullPointerException ignored) {
+                        utils.tell(sender, utils.getString("staff.staff_prefix") + "&cThe player " + args[0] + " didn't got un baned");
                     }
                 } else {
-                    utils.tell( sender , utils.getString( "staff.staff_prefix" ) + utils.getString( "no_permissions" ) );
+                    utils.tell(sender, utils.getString("staff.staff_prefix") + utils.getString("no_permissions"));
                 }
             } else {
-                utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&7Use /unban <&aplayer&7>" );
+                utils.tell(sender, utils.getString("staff.staff_prefix") + "&7Use /unban <&aplayer&7>");
             }
-
+        } else if (args.length == 1) {
+            ArrayList<Integer> ids = BanIds(args[0]);
+            try {
+                for (Iterator<Integer> iterator = ids.iterator(); iterator.hasNext(); ) {
+                    int i = ((Integer)iterator.next()).intValue();
+                    BanPlayer.unBan(sender, i);
+                }
+            } catch (NullPointerException ignored) {
+                utils.tell(sender, utils.getString("staff.staff_prefix") + "&cThe player " + args[0] + " didn't got un baned");
+            }
         } else {
-            if ( args.length == 1 ) {
-                ArrayList < Integer > ids = BanIds( args[0] );
-                try {
-                    for ( int i : ids ) {
-                        BanPlayer.unBan( sender , i );
-                    }
-                } catch ( NullPointerException ignored ) {
-                    utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&cThe player " + args[0] + " didn't got un baned" );
-                }
-            } else {
-                utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&7Use /unban <&aplayer&7>" );
-            }
+            utils.tell(sender, utils.getString("staff.staff_prefix") + "&7Use /unban <&aplayer&7>");
         }
         return true;
     }
 
-    @Override
-    public List < String > onTabComplete( CommandSender sender , Command command , String alias , String[] args ){
-        List < String > version = new ArrayList <>( );
-        bans.clear( );
-        if ( args.length == 1 ) {
-            if ( amountOfBanned( ) == 0 ) {
-                utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&cThere are no players baned" );
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        List<String> version = new ArrayList<>();
+        this.bans.clear();
+        if (args.length == 1)
+            if (amountOfBanned() == 0) {
+                utils.tell(sender, utils.getString("staff.staff_prefix") + "&cThere are no players baned");
             } else {
-                for ( int i = 1; i <= amountOfBanned( ); i++ ) {
-                    if ( utils.mysqlEnabled( ) ) {
-                        version.add( SQLGetter.getBaned( bans.get( i ) , "name" ) );
+                for (int i = 1; i <= amountOfBanned(); i++) {
+                    if (utils.mysqlEnabled()) {
+                        version.add(SQLGetter.getBaned(((Integer)this.bans.get(Integer.valueOf(i))).intValue(), "name"));
                     } else {
-                        version.add( plugin.baned.getConfig( ).getString( "bans." + bans.get( i ) + ".name" ) );
+                        version.add(this.plugin.bans.getConfig().getString("bans." + this.bans.get(Integer.valueOf(i)) + ".name"));
                     }
                 }
             }
-        }
         return version;
     }
 
-
-    private int count( ){
-        if ( utils.mysqlEnabled( ) ) {
-            return SQLGetter.getCurrents( "bans" ) + plugin.data.getBanId( );
-        } else {
-            return plugin.baned.getConfig( ).getInt( "current" ) + plugin.baned.getConfig( ).getInt( "count" );
-        }
+    private int count() {
+        if (utils.mysqlEnabled())
+            return SQLGetter.getCurrents("bans") + this.plugin.data.getBanId();
+        return this.plugin.bans.getConfig().getInt("current") + this.plugin.bans.getConfig().getInt("count");
     }
 
-
-    private int amountOfBanned( ){
+    private int amountOfBanned() {
         int num = 0;
-        for ( int id = 0; id <= count( ); ) {
+        for (int id = 0; id <= count(); ) {
             id++;
             try {
-                if ( utils.mysqlEnabled( ) ) {
-                    if ( SQLGetter.getBanStatus( id ).equals( "open" ) ) {
+                if (utils.mysqlEnabled()) {
+                    if (SQLGetter.getBanStatus(id).equals("open")) {
                         num++;
-                        bans.put( num , id );
+                        this.bans.put(Integer.valueOf(num), Integer.valueOf(id));
                     }
-                } else {
-                    if ( Objects.equals( plugin.baned.getConfig( ).getString( "bans." + id + ".status" ) , "open" ) ) {
-                        num++;
-                        bans.put( num , id );
-                    }
+                    continue;
                 }
-            } catch ( NullPointerException ignored ) {
-            }
+                if (Objects.equals(this.plugin.bans.getConfig().getString("bans." + id + ".status"), "open")) {
+                    num++;
+                    this.bans.put(Integer.valueOf(num), Integer.valueOf(id));
+                }
+            } catch (NullPointerException nullPointerException) {}
         }
         return num;
     }
 
-    private ArrayList < Integer > BanIds( String baned ){
-        ArrayList < Integer > BanIDs = new ArrayList <>( );
-        if ( utils.mysqlEnabled( ) ) {
-            return SQLGetter.getBanIds( baned );
-        } else {
-            for ( int i = 0; i < count( ); i++ ) {
-                try {
-                    if ( plugin.baned.getConfig( ).getString( "bans." + i + ".name" ).equalsIgnoreCase( baned ) ) {
-                        BanIDs.add( i );
-                    }
-                } catch ( NullPointerException ignored ) {
-                }
-            }
+    private ArrayList<Integer> BanIds(String baned) {
+        ArrayList<Integer> BanIDs = new ArrayList<>();
+        if (utils.mysqlEnabled())
+            return SQLGetter.getBanIds(baned);
+        for (int i = 0; i < count(); i++) {
+            try {
+                if (this.plugin.bans.getConfig().getString("bans." + i + ".name").equalsIgnoreCase(baned))
+                    BanIDs.add(Integer.valueOf(i));
+            } catch (NullPointerException nullPointerException) {}
         }
-
-
         return BanIDs;
     }
 }

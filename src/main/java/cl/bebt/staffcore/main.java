@@ -1,9 +1,10 @@
 package cl.bebt.staffcore;
 
+import cl.bebt.staffcore.API.API;
+import cl.bebt.staffcore.API.Server.Metrics;
+import cl.bebt.staffcore.API.Server.staffcore;
 import cl.bebt.staffcore.MSGChanel.PluginMessage;
 import cl.bebt.staffcore.commands.Head;
-import cl.bebt.staffcore.commands.Server.Metrics;
-import cl.bebt.staffcore.commands.Server.staffcore;
 import cl.bebt.staffcore.commands.Staff.*;
 import cl.bebt.staffcore.commands.Staff.Mysql.*;
 import cl.bebt.staffcore.commands.Suicide;
@@ -33,45 +34,52 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public final class main extends JavaPlugin{
-
+public final class main extends JavaPlugin {
     private static final HashMap < Player, PlayerMenuUtility > playerMenuUtilityMap = new HashMap <>( );
+
     public static main plugin;
+
     public static List < String > staffMembers = new ArrayList <>( );
+
     public static HashMap < String, String > playersServerMap = new HashMap <>( );
+
     public static HashMap < String, String > playersServerPingMap = new HashMap <>( );
+
     public static HashMap < String, String > playersServerGamemodesMap = new HashMap <>( );
+
     public static HashMap < Player, Player > invSee = new HashMap <>( );
+
     public static HashMap < Player, Player > enderSee = new HashMap <>( );
+
     public AltsStorage alts;
-    public BanConfig baned;
+
+    public BanConfig bans;
+
     public ReportConfig reports;
+
     public WarnConfig warns;
 
     public SQLGetter data;
-    public Boolean chatMuted = false;
+
+    public Boolean chatMuted = Boolean.valueOf( false );
 
     public static PlayerMenuUtility getPlayerMenuUtility( Player p ){
-        PlayerMenuUtility playerMenuUtility;
-        if ( playerMenuUtilityMap.containsKey( p ) ) {
+        if ( playerMenuUtilityMap.containsKey( p ) )
             return playerMenuUtilityMap.get( p );
-        } else {
-            playerMenuUtility = new PlayerMenuUtility( p );
-            playerMenuUtilityMap.put( p , playerMenuUtility );
-            return playerMenuUtility;
-        }
+        PlayerMenuUtility playerMenuUtility = new PlayerMenuUtility( p );
+        playerMenuUtilityMap.put( p , playerMenuUtility );
+        return playerMenuUtility;
     }
 
-    @Override
     public void onEnable( ){
         plugin = this;
         saveDefaultConfig( );
         reloadConfig( );
-        reports = new ReportConfig( this );
-        data = new SQLGetter( this );
-        baned = new BanConfig( this );
-        alts = new AltsStorage( this );
-        warns = new WarnConfig( this );
+        this.reports = new ReportConfig( this );
+        this.data = new SQLGetter( this );
+        this.bans = new BanConfig( this );
+        this.alts = new AltsStorage( this );
+        this.warns = new WarnConfig( this );
         loadConfigManager( );
         Mysql connection = new Mysql( );
         ConsoleCommandSender c = Bukkit.getConsoleSender( );
@@ -154,6 +162,7 @@ public final class main extends JavaPlugin{
         new utils( plugin );
         new ToggleChat( );
         new CountdownManager( );
+        new API( plugin );
         getServer( ).getMessenger( ).registerOutgoingPluginChannel( plugin , "sc:alerts" );
         getServer( ).getMessenger( ).registerIncomingPluginChannel( plugin , "sc:stafflist" , new PluginMessage( ) );
         getServer( ).getMessenger( ).registerIncomingPluginChannel( plugin , "sc:alerts" , new PluginMessage( ) );
@@ -167,7 +176,7 @@ public final class main extends JavaPlugin{
         Bukkit.getPluginManager( ).registerEvents( new onPLayerLeave( plugin ) , plugin );
         Bukkit.getPluginManager( ).registerEvents( new onChat( ) , plugin );
         Bukkit.getPluginManager( ).registerEvents( new InventoryListeners( plugin ) , plugin );
-        new UpdateChecker( plugin , 82324 ).getLatestVersion( version -> {
+        (new UpdateChecker( plugin , 82324 )).getLatestVersion( version -> {
             if ( getDescription( ).getVersion( ).equals( version ) ) {
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&aYou are using &bStaff-Core!" + getDescription( ).getVersion( ) ) );
             } else {
@@ -183,10 +192,9 @@ public final class main extends JavaPlugin{
                         players.getOpenInventory( ).getTopInventory( ).setItem( 31 , Items.ServerStatus( ) );
                         players.getOpenInventory( ).getTopInventory( ).setItem( 13 , Items.PlayerStatus( players ) );
                     }
-                } catch ( NullPointerException | ArrayIndexOutOfBoundsException ignored ) {
-                }
+                } catch ( NullPointerException | ArrayIndexOutOfBoundsException ignored ) { }
             }
-        } , 10L , 10L );
+        } ,10L, 10L);
     }
 
     public void onDisable( ){
@@ -204,11 +212,11 @@ public final class main extends JavaPlugin{
     }
 
     public void loadConfigManager( ){
-        baned = new BanConfig( plugin );
-        baned.reloadConfig( );
-        alts = new AltsStorage( plugin );
-        alts.reloadConfig( );
-        warns = new WarnConfig( plugin );
-        warns.reloadConfig( );
+        this.bans = new BanConfig( plugin );
+        this.bans.reloadConfig( );
+        this.alts = new AltsStorage( plugin );
+        this.alts.reloadConfig( );
+        this.warns = new WarnConfig( plugin );
+        this.warns.reloadConfig( );
     }
 }

@@ -260,12 +260,17 @@ public class utils{
             Users.addAll( SQLGetter.getWarnedPlayers( ) );
         } else {
             ConfigurationSection inventorySection = plugin.warns.getConfig( ).getConfigurationSection( "warns" );
-            for ( String key : inventorySection.getKeys( false ) ) {
-                String name = plugin.warns.getConfig( ).getString( "warns." + key + ".name" );
-                if ( !Users.contains( name ) ) {
-                    Users.add( name );
+            try{
+                for ( String key : inventorySection.getKeys( false ) ) {
+                    String name = plugin.warns.getConfig( ).getString( "warns." + key + ".name" );
+                    if ( !Users.contains( name ) ) {
+                        Users.add( name );
+                    }
                 }
+            }catch(NullPointerException ignored){
+
             }
+
         }
         return Users;
     }

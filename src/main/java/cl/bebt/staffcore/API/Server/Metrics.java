@@ -1,4 +1,4 @@
-package cl.bebt.staffcore.commands.Server;
+package cl.bebt.staffcore.API.Server;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
