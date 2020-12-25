@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="DebugMode" type="JarApplication">
+    <option name="JAR_PATH" value="$USER_HOME$/OneDrive - UNIVERSIDAD ANDRES BELLO/Desktop/server Test/paper-282.jar" />
+    <option name="WORKING_DIRECTORY" value="C:\Users\barra\OneDrive - UNIVERSIDAD ANDRES BELLO\Desktop\server Test" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
+    <method v="2" />
+  </configuration>
+</component>
