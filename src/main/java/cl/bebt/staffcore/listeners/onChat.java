@@ -55,22 +55,26 @@ public class onChat implements Listener{
             secondsCount -= TimeUnit.MINUTES.toSeconds( minutes );
             if ( remaining >= 2332800 ) {
                 utils.PlaySound( p , "muted_try_to_chat" );
-                utils.tell( p , main.plugin.getConfig( ).getString( "server_prefix" ) + "&cYou are muted. &a1 Month &cand &a" + (days - 27) + " &cDays remaining" );
+                utils.tell( p , main.plugin.getConfig( ).getString( "server_prefix" ) + "&cYou are muted." );
+                utils.tell( p , main.plugin.getConfig( ).getString( "server_prefix" ) + "&cTime remaining: &a1 Month &cand &a" + (days - 27) + "&cd remaining" );
                 return;
             }
             if ( remaining >= 86400 ) {
                 utils.PlaySound( p , "muted_try_to_chat" );
-                utils.tell( p , main.plugin.getConfig( ).getString( "server_prefix" ) + "&cYou are muted. &a" + days + "&7:&a" + hours + "&7:&a" + minutes + " &cDays remaining" );
+                utils.tell( p , main.plugin.getConfig( ).getString( "server_prefix" ) + "&cYou are muted." );
+                utils.tell( p , main.plugin.getConfig( ).getString( "server_prefix" ) + "&cTime remaining: &a" + days + "d&7:&a" + hours + "h&7:&a" + minutes + "m" );
                 return;
             }
             if ( remaining >= 3600 ) {
                 utils.PlaySound( p , "muted_try_to_chat" );
-                utils.tell( p , main.plugin.getConfig( ).getString( "server_prefix" ) + "&cYou are muted. &a" + hours + "&7:&a" + minutes + "&7:&a" + secondsCount + " &cHours remaining" );
+                utils.tell( p , main.plugin.getConfig( ).getString( "server_prefix" ) + "&cYou are muted." );
+                utils.tell( p , main.plugin.getConfig( ).getString( "server_prefix" ) + "&cTime remaining: &a" + hours + "h&7:&a" + minutes + "m&7&a:" + secondsCount + "s");
                 return;
             }
             if ( remaining >= 60 ) {
                 utils.PlaySound( p , "muted_try_to_chat" );
-                utils.tell( p , main.plugin.getConfig( ).getString( "server_prefix" ) + "&cYou are muted. &a" + minutes + "&7:&a" + secondsCount + " &cMinutes remaining" );
+                utils.tell( p , main.plugin.getConfig( ).getString( "server_prefix" ) + "&cYou are muted." );
+                utils.tell( p , main.plugin.getConfig( ).getString( "server_prefix" ) + "&cTime remaining: &a" + minutes + "m&7&a:" + secondsCount + "s");
                 return;
             }
             if ( remaining == 0 || remaining == 1 ) {
@@ -80,7 +84,7 @@ public class onChat implements Listener{
                 return;
             }
             utils.PlaySound( p , "muted_try_to_chat" );
-            utils.tell( p , main.plugin.getConfig( ).getString( "server_prefix" ) + "&cYou are muted. &a" + secondsCount + " &cSeconds remaining" );
+            utils.tell( p , main.plugin.getConfig( ).getString( "server_prefix" ) + "&cYou are muted. &a" + secondsCount + "&cs remaining" );
 
         } else if ( main.plugin.chatMuted ) {
             if ( !p.hasPermission( "staffcore.togglechat.bypass" ) ) {

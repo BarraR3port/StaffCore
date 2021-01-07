@@ -138,11 +138,11 @@ public class API {
     }
     
     public static void setFrozenStatus( Player target , String sender , boolean status ){
-        FreezePlayer.FreezePlayer( target , sender , Boolean.valueOf( status ) );
+        FreezePlayer.FreezePlayer( target , sender , status );
     }
     
     public static void setVanishStatus( Player target , boolean status ){
-        SetVanish.setVanish( target , Boolean.valueOf( status ) );
+        SetVanish.setVanish( target , status );
     }
     
     public static void setStaffStatus( Player target , boolean status ){
@@ -168,7 +168,7 @@ public class API {
     }
     
     public static void setFlyingStatus( Player target , boolean status ){
-        SetFly.SetFly( target , Boolean.valueOf( status ) );
+        SetFly.SetFly( target , status );
     }
     
     public static ArrayList < String > getBannedPlayers( ){
@@ -197,15 +197,15 @@ public class API {
                 Date exp_date = (new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" )).parse( SQLGetter.getBaned( Id , "ExpDate" ) );
                 if ( now.after( exp_date ) ) {
                     SQLGetter.setBan( Id , "closed" );
-                    return Boolean.valueOf( false );
+                    return false;
                 }
                 if ( !SQLGetter.BansTableExists( ) ) {
                     SQLGetter.createBansTable( );
-                    return Boolean.valueOf( false );
+                    return false;
                 }
-                return Boolean.valueOf( true );
+                return Boolean.TRUE;
             } catch ( ParseException | NullPointerException ignored ) {
-                return Boolean.valueOf( false );
+                return false;
             }
         try {
             Date now = new Date( );
@@ -214,14 +214,14 @@ public class API {
                 plugin.bans.getConfig( ).set( "bans." + Id + ".status" , "closed" );
                 plugin.bans.saveConfig( );
                 plugin.bans.reloadConfig( );
-                return Boolean.valueOf( false );
+                return false;
             }
-            return Boolean.valueOf( true );
+            return true;
         } catch ( ParseException | NullPointerException ignored ) {
             plugin.bans.getConfig( ).set( "bans." + Id + ".status" , "closed" );
             plugin.bans.saveConfig( );
             plugin.bans.reloadConfig( );
-            return Boolean.valueOf( false );
+            return false;
         }
     }
     
@@ -232,15 +232,15 @@ public class API {
                 Date exp_date = (new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" )).parse( SQLGetter.getWarned( Id , "ExpDate" ) );
                 if ( now.after( exp_date ) ) {
                     SQLGetter.setWarn( Id , "closed" );
-                    return Boolean.valueOf( false );
+                    return false;
                 }
                 if ( !SQLGetter.WarnsTableExists( ) ) {
                     SQLGetter.createWarnsTable( );
-                    return Boolean.valueOf( false );
+                    return false;
                 }
-                return Boolean.valueOf( true );
+                return true;
             } catch ( ParseException | NullPointerException ignored ) {
-                return Boolean.valueOf( false );
+                return false;
             }
         try {
             Date now = new Date( );
@@ -249,19 +249,19 @@ public class API {
                 plugin.warns.getConfig( ).set( "warns." + Id + ".status" , "closed" );
                 plugin.warns.saveConfig( );
                 plugin.warns.reloadConfig( );
-                return Boolean.valueOf( false );
+                return false;
             }
-            return Boolean.valueOf( true );
+            return true;
         } catch ( ParseException | NullPointerException ignored ) {
             plugin.warns.getConfig( ).set( "warns." + Id + ".status" , "closed" );
             plugin.warns.saveConfig( );
             plugin.warns.reloadConfig( );
-            return Boolean.valueOf( false );
+            return false;
         }
     }
     
     public static void banPlayer( CommandSender sender , String banned , String reason , Long amount , String time ){
-        BanPlayer.BanCooldown( sender , banned , reason , amount.longValue( ) , time );
+        BanPlayer.BanCooldown( sender , banned , reason , amount , time );
     }
     
     public static void banPlayer( CommandSender sender , String banned , String reason ){
@@ -269,7 +269,7 @@ public class API {
     }
     
     public static void warnPlayer( Player player , String warned , String reason , Long amount , String time ){
-        WarnPlayer.createWarn( player , warned , reason , amount.longValue( ) , time );
+        WarnPlayer.createWarn( player , warned , reason , amount , time );
     }
     
     public static void warnPlayer( Player player , String warned , String reason ){

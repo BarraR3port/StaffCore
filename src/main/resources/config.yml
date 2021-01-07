@@ -35,6 +35,7 @@ server_prefix: "&8[&a&lSTAFF CORE&r&8]&r "
 player_dont_exist: "&cThe player does not exist!"
 no_online_players: "&cNo players &aOnline&c!"
 no_permissions: "&cYou don't have permissions!."
+disable_outdated_plugin: false # ON ENABLE IF THE PLUGIN IS OUTDATED, IT WILL AUTOMATIC BE DISABLED.
 # ------------> GAMEMODES <----------
 creative: "&7Creative!"
 creative_already: "&cYou are already in Creative!"
@@ -135,7 +136,7 @@ custom_particles:
 report:
   report_alerts: # Placeholders: %reporter% | %reported% | %reason% | %date%
     - " "
-    - "                 &6&5Report Alerts &6
+    - "                 &6&5Report Alerts &6"
     - " "
     - "         &3The player &r%reported% &3was &creported."
     - " "
@@ -145,7 +146,7 @@ report:
     - " "
   report_change: # Placeholders: %changed_by% | %reported% | %reporter% | %id% | %reason% | %create_date% | %report_status%
     - " "
-    - "                 &6&5Report Changed &6
+    - "                 &6&5Report Changed &6"
     - " "
     - "    &a&aThe Report &cId: #&c%id% &awas &4%report_status% &aby: &c%changed_by%"
     - " "
@@ -157,7 +158,7 @@ report:
 ban:
   ban_alerts:  # Placeholders: %baner% | %baned% | %reason% | %amount% | %time% | %exp_date% | %date%
     - " "
-    - "                 &6&5Ban Alerts &6
+    - "                 &6&5Ban Alerts &6"
     - " "
     - "         &3The player &r%baned% &3was &cBaned."
     - " "
@@ -170,7 +171,7 @@ ban:
     - " "
   ban_change: # Placeholders: %changed_by% | %baner% | %baned% | %id% | %reason% | %create_date% | %exp_date% | %ban_status%
     - " "
-    - "                 &6&5Ban Changed &6
+    - "                 &6&5Ban Changed &6"
     - " "
     - "    &a&aThe Ban #&c%id% &awas &4%ban_status% &aby: &c%changed_by%"
     - " "
@@ -180,7 +181,7 @@ ban:
     - "           &a&7ID: &4%id%"
     - " "
   ban_msg: # Placeholders: %baner% | %baned% | %reason% | %amount% | %time% | %exp_date% | %date%
-    - "&6&5Ban System &6
+    - "&6&5Ban System &6"
     - ""
     - "&4Your account %baned% were baned!"
     - ""
@@ -193,7 +194,7 @@ ban:
     - ""
   join_baned: # Placeholders: %baner% | %baned% | %reason% | %amount% | %time% | %exp_date% | %date%
     - ""
-    - "&6&5Ban System &6
+    - "&6&5Ban System &6"
     - ""
     - "&4Your account %baned% is baned!"
     - ""
@@ -214,7 +215,7 @@ warns:
   alerts:
     warn_alerts: # Placeholders: %warner% | %warned% | %reason% | %amount% | %time% | %exp_date% | %date%
       - " "
-      - "                 &6&5Warn Alerts &6
+      - "                 &6&5Warn Alerts &6"
       - " "
       - "         &3The player &r%warned% &3was &cWarned."
       - " "
@@ -226,7 +227,7 @@ warns:
       - " "
     warn_change: # Placeholders: %changed_by% | %warner% | %warned% | %id% | %reason% | %create_date% | %exp_date% | %warn_status%
       - " "
-      - "                 &6&5Warn Changed &6
+      - "                 &6&5Warn Changed &6"
       - " "
       - "    &a&aThe Warn #&c%id% &awas &4%warn_status% &aby: &c%changed_by%"
       - " "
@@ -246,7 +247,7 @@ freeze:
   set_ice_block: true
   freeze_alerts: # Placeholders: %frozen% | %freezer% | %status%
     - " "
-    - "                 &6&5Freeze Alerts &6
+    - "                 &6&5Freeze Alerts &6"
     - " "
     - "         &3The player &r%frozen% &3was %status%."
     - " "
@@ -264,7 +265,7 @@ wipe:
   wipe_on_ban: true
   wipe_msg: # Placeholders: %wiper% | %wiped% | %bans% | %reports% | %warns%
     - " "
-    - "                 &6&5Wipe Alerts &6
+    - "                 &6&5Wipe Alerts &6"
     - " "
     - "         &3The player &r%wiped% &3was &aWiped."
     - " "
@@ -275,7 +276,7 @@ wipe:
     - " "
   wipe_kick_msg: # Placeholders: %wiper% | %wiped%
     - ""
-    - "&6&5Wipe System &6
+    - "&6&5Wipe System &6"
     - ""
     - "&4Your account has being Wiped Off!"
     - ""

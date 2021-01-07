@@ -1,4 +1,4 @@
-package cl.bebt.staffcore.API.Server;
+package cl.bebt.staffcore.commands;
 
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.utils.UpdateChecker;
