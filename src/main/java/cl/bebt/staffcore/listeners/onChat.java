@@ -2,7 +2,6 @@ package cl.bebt.staffcore.listeners;
 
 import cl.bebt.staffcore.MSGChanel.SendMsg;
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.sql.SQLGetter;
 import cl.bebt.staffcore.utils.CountdownManager;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.Bukkit;
@@ -17,8 +16,7 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.concurrent.TimeUnit;
 
 public class onChat implements Listener{
-
-    private static final SQLGetter data = main.plugin.data;
+    
 
     @EventHandler
     public void onChatEvent( AsyncPlayerChatEvent e ){
@@ -28,7 +26,9 @@ public class onChat implements Listener{
             e.setMessage( utils.chat( e.getMessage( ) ) );
         }
         if ( persistent.has( new NamespacedKey( main.plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-            e.setCancelled( true );
+            if ( utils.getBoolean( "freeze.cancel_chat_while_frozen" ) ) {
+                e.setCancelled( true );
+            }
         }
         if ( persistent.has( new NamespacedKey( main.plugin , "staffchat" ) , PersistentDataType.STRING ) ) {
             e.setCancelled( true );

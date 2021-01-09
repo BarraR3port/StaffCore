@@ -245,6 +245,7 @@ freeze:
   freeze: "&cFrozen"
   unfreeze: "&aUnfrozen"
   set_ice_block: true
+  cancel_chat_while_frozen: true
   freeze_alerts: # Placeholders: %frozen% | %freezer% | %status%
     - " "
     - "                 &6&5Freeze Alerts &6"
