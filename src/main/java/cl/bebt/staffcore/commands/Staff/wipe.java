@@ -28,7 +28,7 @@ public class wipe implements TabExecutor {
             if ( p.hasPermission( "staffcore.wipe" ) ) {
                 if ( args.length == 1 ) {
                     if ( utils.isRegistered( args[0] ) ) {
-                        new wipePlayer( plugin , sender , args[0] );
+                        new wipePlayer( sender , args[0] );
                         Bukkit.getScheduler( ).scheduleSyncDelayedTask( plugin , ( ) -> {
                             try {
                                 utils.tell( Bukkit.getPlayer( args[0] ) , "&cYour account is Wiping" );
@@ -54,7 +54,7 @@ public class wipe implements TabExecutor {
         } else {
             if ( args.length == 1 ) {
                 if ( utils.isRegistered( args[0] ) ) {
-                    new wipePlayer( plugin , sender , args[0] );
+                    new wipePlayer( sender , args[0] );
                     Bukkit.getScheduler( ).scheduleSyncDelayedTask( plugin , ( ) -> {
                         try {
                             utils.tell( Bukkit.getPlayer( args[0] ) , "&cYour account is Wiping" );

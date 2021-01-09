@@ -13,23 +13,26 @@ import java.util.HashMap;
 import java.util.List;
 
 public class wipePlayer {
+    
     private static main plugin;
     
-    public wipePlayer( main plugin , CommandSender sender , String p ){
-        wipePlayer.plugin = plugin;
+    public wipePlayer( main plugin ){
+        this.plugin = plugin;
+    }
+    public wipePlayer( CommandSender sender , String p ){
         int bans = 0;
         int reports = 0;
         int warns = 0;
         if ( utils.isRegistered( p ) ) {
             if ( utils.mysqlEnabled( ) ) {
-                if ( wipePlayer.plugin.getConfig( ).getBoolean( "wipe.bans" ) ) {
+                if ( plugin.getConfig( ).getBoolean( "wipe.bans" ) ) {
                     List < Integer > ids = SQLGetter.getPlayersIds( p , "bans" , "BanId" );
                     for ( int i : ids ) {
                         SQLGetter.deleteBans( i );
                     }
                     bans = ids.size( );
                 }
-                if ( wipePlayer.plugin.getConfig( ).getBoolean( "wipe.reports" ) ) {
+                if ( plugin.getConfig( ).getBoolean( "wipe.reports" ) ) {
                     List < Integer > ids = SQLGetter.getPlayersIds( p , "reports" , "ReportId" );
                     for ( int i : ids ) {
                         SQLGetter.deleteReport( i );
@@ -41,7 +44,7 @@ public class wipePlayer {
                 } catch ( NullPointerException ignored ) {
                 }
                 SQLGetter.wipe( p );
-                PersistentDataContainer( p );
+                PersistentDataContainer( p, plugin );
                 SQLGetter.deleteAlts( p );
             } else {
                 if ( plugin.getConfig( ).getBoolean( "wipe.bans" ) ) {
@@ -85,7 +88,7 @@ public class wipePlayer {
                     SetStaffItems.Off( Bukkit.getPlayer( p ) );
                 } catch ( NullPointerException ignored ) {
                 }
-                PersistentDataContainer( p );
+                PersistentDataContainer( p, plugin );
                 plugin.alts.reloadConfig( );
                 plugin.alts.getConfig( ).set( "alts." + p , null );
                 plugin.alts.saveConfig( );
@@ -109,7 +112,7 @@ public class wipePlayer {
     public static void WipeOnBan( main plugin , String p ){
         if ( utils.isRegistered( p ) ) {
             if ( utils.mysqlEnabled( ) ) {
-                if ( wipePlayer.plugin.getConfig( ).getBoolean( "wipe.reports" ) ) {
+                if ( plugin.getConfig( ).getBoolean( "wipe.reports" ) ) {
                     List < Integer > ids = SQLGetter.getPlayersIds( p , "reports" , "ReportId" );
                     for ( int i : ids ) {
                         SQLGetter.deleteReport( i );
@@ -147,11 +150,11 @@ public class wipePlayer {
                 SetStaffItems.Off( Bukkit.getPlayer( p ) );
             } catch ( NullPointerException ignored ) {
             }
-            PersistentDataContainer( p );
+            PersistentDataContainer( p, plugin );
         }
     }
     
-    private static void PersistentDataContainer( String p ){
+    private static void PersistentDataContainer( String p, main plugin ){
         try {
             if ( Bukkit.getPlayer( p ) instanceof Player ) {
                 Player player = Bukkit.getPlayer( p );

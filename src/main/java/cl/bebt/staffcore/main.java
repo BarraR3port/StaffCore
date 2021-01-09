@@ -161,6 +161,7 @@ public final class main extends JavaPlugin {
         new ToggleChat( );
         new CountdownManager( );
         new API( plugin );
+        new wipePlayer( plugin );
         getServer( ).getMessenger( ).registerOutgoingPluginChannel( plugin , "sc:alerts" );
         getServer( ).getMessenger( ).registerIncomingPluginChannel( plugin , "sc:stafflist" , new PluginMessage( ) );
         getServer( ).getMessenger( ).registerIncomingPluginChannel( plugin , "sc:alerts" , new PluginMessage( ) );
@@ -210,6 +211,13 @@ public final class main extends JavaPlugin {
                 }
             }
         } );
+        if ( utils.isOlderVersion( ) ) {
+            c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1------------------------------------------" ) );
+            c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&l         DISABLING STAFF-CORE." ) );
+            c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&lYour config file its not configure well." ) );
+            c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1------------------------------------------" ) );
+            plugin.getPluginLoader().disablePlugin(plugin);
+        }
     }
     
     public void onDisable( ){

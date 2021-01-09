@@ -36,6 +36,8 @@ player_dont_exist: "&cThe player does not exist!"
 no_online_players: "&cNo players &aOnline&c!"
 no_permissions: "&cYou don't have permissions!."
 disable_outdated_plugin: true # ON ENABLE IF THE PLUGIN IS OUTDATED, IT WILL AUTOMATIC BE DISABLED.
+server_version: "1.16" # If you are using a version under 1.14 yo need to put 1.13,
+                       # this will make almost the hole plugin useless, only notifications will work.
 # ------------> GAMEMODES <----------
 creative: "&7Creative!"
 creative_already: "&cYou are already in Creative!"

@@ -274,4 +274,30 @@ public class utils {
         }
         return Users;
     }
+    
+    public static Boolean isOlderVersion(){
+        if ( getString( "server_version" ).equalsIgnoreCase( "1.16" ) ){
+            return false;
+        } else if ( getString( "server_version" ).equalsIgnoreCase( "1.15" ) ){
+            return false;
+        } else if ( getString( "server_version" ).equalsIgnoreCase( "1.14" ) ){
+            return false;
+        } else if ( getString( "server_version" ).equalsIgnoreCase( "1.13" ) ){
+            return true;
+        } else if ( getString( "server_version" ).equalsIgnoreCase( "1.12" ) ){
+            return true;
+        } else if ( getString( "server_version" ).equalsIgnoreCase( "1.11" ) ){
+            return true;
+        } else if ( getString( "server_version" ).equalsIgnoreCase( "1.10" ) ){
+            return true;
+        } else if ( getString( "server_version" ).equalsIgnoreCase( "1.9" ) ){
+            return true;
+        } else if ( getString( "server_version" ).equalsIgnoreCase( "1.8" ) ){
+            return true;
+        } else if ( getString( "server_version" ).equalsIgnoreCase( "1.7" ) ){
+            return true;
+        } else {
+            return null;
+        }
+    }
 }
