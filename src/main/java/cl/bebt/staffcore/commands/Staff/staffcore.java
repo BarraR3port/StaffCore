@@ -1,4 +1,4 @@
-package cl.bebt.staffcore.commands;
+package cl.bebt.staffcore.commands.Staff;
 
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.utils.UpdateChecker;

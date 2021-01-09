@@ -35,8 +35,8 @@ public class GetReportMessage implements Listener{
             PlayerData.remove( new NamespacedKey( main.plugin , "reportmsg" ) );
         } else if ( PlayerData.has( new NamespacedKey( main.plugin , "banmsg" ) , PersistentDataType.STRING ) ) {
             String reason = e.getMessage( );
-            String baned = p.getPersistentDataContainer( ).get( new NamespacedKey( plugin , "banmsg" ) , PersistentDataType.STRING );
-            Bukkit.getScheduler( ).runTask( plugin , ( ) -> new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , p , baned , reason ).open( p ) );
+            String banned = p.getPersistentDataContainer( ).get( new NamespacedKey( plugin , "banmsg" ) , PersistentDataType.STRING );
+            Bukkit.getScheduler( ).runTask( plugin , ( ) -> new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , p , banned , reason ).open( p ) );
             e.setCancelled( true );
             PlayerData.remove( new NamespacedKey( main.plugin , "banmsg" ) );
         } else if ( PlayerData.has( new NamespacedKey( main.plugin , "warnmsg" ) , PersistentDataType.STRING ) ) {

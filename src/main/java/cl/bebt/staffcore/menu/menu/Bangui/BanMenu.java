@@ -21,13 +21,13 @@ public class BanMenu extends BanPlayerMenu {
     public BanMenu( PlayerMenuUtility playerMenuUtility , main plugin , Player p , String p2 ){
         super( playerMenuUtility );
         this.plugin = plugin;
-        super.baned = p2;
+        super.banned = p2;
         super.baner = p;
     }
     
     @Override
     public String getMenuName( ){
-        return utils.chat( "&cBan &4" + baned );
+        return utils.chat( "&cBan &4" + banned );
     }
     
     @Override
@@ -40,36 +40,36 @@ public class BanMenu extends BanPlayerMenu {
         Player p = ( Player ) e.getWhoClicked( );
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "hacking" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , baned , "Hacking" ).open( p );
+            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , banned , "Hacking" ).open( p );
         }
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "killaura" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , baned , "Killaura" ).open( p );
+            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , banned , "Killaura" ).open( p );
         }
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , baned , "Flying" ).open( p );
+            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , banned , "Flying" ).open( p );
         }
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "speed" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , baned , "Speed" ).open( p );
+            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , banned , "Speed" ).open( p );
         }
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "griefing" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , baned , "Griefing" ).open( p );
+            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , banned , "Griefing" ).open( p );
         }
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "spamming" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , baned , "Spamming" ).open( p );
+            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , banned , "Spamming" ).open( p );
         }
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "bhop" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , baned , "BunnyHop" ).open( p );
+            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , banned , "BunnyHop" ).open( p );
         }
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "other" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
             PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
-            PlayerData.set( new NamespacedKey( main.plugin , "banmsg" ) , PersistentDataType.STRING , baned );
+            PlayerData.set( new NamespacedKey( main.plugin , "banmsg" ) , PersistentDataType.STRING , banned );
             utils.tell( p , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "staff.other_reason" ) );
         } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
             p.closeInventory( );
@@ -94,7 +94,7 @@ public class BanMenu extends BanPlayerMenu {
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.RED_DYE );
         ItemMeta meta = item.getItemMeta( );
-        lore.add( utils.chat( "&dBan &r" + baned + " &dfor hacking" ) );
+        lore.add( utils.chat( "&dBan &r" + banned + " &dfor hacking" ) );
         meta.setLore( lore );
         meta.setDisplayName( utils.chat( "&4Hacking" ) );
         meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "hacking" ) , PersistentDataType.STRING , "hacking" );
@@ -106,7 +106,7 @@ public class BanMenu extends BanPlayerMenu {
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.DIAMOND_SWORD );
         ItemMeta meta = item.getItemMeta( );
-        lore.add( utils.chat( "&dBan &r" + baned + " &dfor KillAura" ) );
+        lore.add( utils.chat( "&dBan &r" + banned + " &dfor KillAura" ) );
         meta.setLore( lore );
         meta.setDisplayName( utils.chat( "&4KillAura" ) );
         meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "killaura" ) , PersistentDataType.STRING , "killaura" );
@@ -118,7 +118,7 @@ public class BanMenu extends BanPlayerMenu {
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.FEATHER );
         ItemMeta meta = item.getItemMeta( );
-        lore.add( utils.chat( "&dBan &r" + baned + " &dfor Flying" ) );
+        lore.add( utils.chat( "&dBan &r" + banned + " &dfor Flying" ) );
         meta.setLore( lore );
         meta.setDisplayName( utils.chat( "&4Flying" ) );
         meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "flying" ) , PersistentDataType.STRING , "flying" );
@@ -130,7 +130,7 @@ public class BanMenu extends BanPlayerMenu {
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.SUGAR );
         ItemMeta meta = item.getItemMeta( );
-        lore.add( utils.chat( "&dBan &r" + baned + " &dfor Hacking" ) );
+        lore.add( utils.chat( "&dBan &r" + banned + " &dfor Hacking" ) );
         meta.setLore( lore );
         meta.setDisplayName( utils.chat( "&4Speed" ) );
         meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "speed" ) , PersistentDataType.STRING , "speed" );
@@ -142,7 +142,7 @@ public class BanMenu extends BanPlayerMenu {
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.PAPER );
         ItemMeta meta = item.getItemMeta( );
-        lore.add( utils.chat( "&dBan &r" + baned + " &dfor Spamming" ) );
+        lore.add( utils.chat( "&dBan &r" + banned + " &dfor Spamming" ) );
         meta.setLore( lore );
         meta.setDisplayName( utils.chat( "&4Spamming" ) );
         meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "spamming" ) , PersistentDataType.STRING , "spamming" );
@@ -154,7 +154,7 @@ public class BanMenu extends BanPlayerMenu {
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.TNT );
         ItemMeta meta = item.getItemMeta( );
-        lore.add( utils.chat( "&dBan &r" + baned + " &dfor Griefing" ) );
+        lore.add( utils.chat( "&dBan &r" + banned + " &dfor Griefing" ) );
         meta.setLore( lore );
         meta.setDisplayName( utils.chat( "&4Griefing" ) );
         meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "griefing" ) , PersistentDataType.STRING , "griefing" );
@@ -166,7 +166,7 @@ public class BanMenu extends BanPlayerMenu {
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.RABBIT_HIDE );
         ItemMeta meta = item.getItemMeta( );
-        lore.add( utils.chat( "&dBan &r" + baned + " &dfor BunnyHop" ) );
+        lore.add( utils.chat( "&dBan &r" + banned + " &dfor BunnyHop" ) );
         meta.setLore( lore );
         meta.setDisplayName( utils.chat( "&4BunnyHop" ) );
         meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "bhop" ) , PersistentDataType.STRING , "bhop" );
@@ -178,7 +178,7 @@ public class BanMenu extends BanPlayerMenu {
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.FLOWER_BANNER_PATTERN );
         ItemMeta meta = item.getItemMeta( );
-        lore.add( utils.chat( "&dBan &r" + baned + " &dfor other reason" ) );
+        lore.add( utils.chat( "&dBan &r" + banned + " &dfor other reason" ) );
         lore.add( utils.chat( "&dType in chat the reason." ) );
         assert meta != null;
         meta.setLore( lore );

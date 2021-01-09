@@ -183,7 +183,7 @@ public class PluginMessage implements PluginMessageListener {
                 utils.PlaySound( people , "ban_alerts" );
                 for ( String key : main.plugin.getConfig( ).getStringList( "ban.ban_alerts" ) ) {
                     key = key.replace( "%baner%" , sender + this.plugin.getConfig( ).getString( "bungeecord.server_prefix" ).replace( "%server%" , server ) );
-                    key = key.replace( "%baned%" , target );
+                    key = key.replace( "%banned%" , target );
                     key = key.replace( "%reason%" , reason );
                     if ( permanent ) {
                         key = key.replace( "%amount%" , "&4PERMANENT" );
@@ -211,7 +211,7 @@ public class PluginMessage implements PluginMessageListener {
             String ban_msg = "\n";
             for ( String key : main.plugin.getConfig( ).getStringList( "ban.ban_msg" ) ) {
                 key = key.replace( "%baner%" , sender );
-                key = key.replace( "%baned%" , target );
+                key = key.replace( "%banned%" , target );
                 key = key.replace( "%reason%" , reason );
                 if ( permanent ) {
                     key = key.replace( "%amount%" , "&4PERMANENT" );
@@ -262,7 +262,7 @@ public class PluginMessage implements PluginMessageListener {
             String ban_msg = "\n";
             for ( String msg : main.plugin.getConfig( ).getStringList( "ban.ban_msg" ) ) {
                 msg = msg.replace( "%baner%" , sender );
-                msg = msg.replace( "%baned%" , target );
+                msg = msg.replace( "%banned%" , target );
                 msg = msg.replace( "%reason%" , reason );
                 msg = msg.replace( "%amount%" , String.valueOf( amount ) );
                 msg = msg.replace( "%time%" , time );
@@ -285,13 +285,13 @@ public class PluginMessage implements PluginMessageListener {
             if ( utils.getBoolean( "alerts.ban" ) || people.hasPermission( "staffcore.staff" ) ) {
                 if ( status.equals( "closed" ) ) {
                     utils.PlaySound( people , "close_ban" );
-                } else if ( status.equals( "unbaned" ) ) {
+                } else if ( status.equals( "unbanned" ) ) {
                     utils.PlaySound( people , "un_ban" );
                 }
                 for ( String key : main.plugin.getConfig( ).getStringList( "ban.ban_change" ) ) {
                     key = key.replace( "%changed_by%" , changer + this.plugin.getConfig( ).getString( "bungeecord.server_prefix" ).replace( "%server%" , server ) );
                     key = key.replace( "%baner%" , sender );
-                    key = key.replace( "%baned%" , target );
+                    key = key.replace( "%banned%" , target );
                     key = key.replace( "%reason%" , reason );
                     key = key.replace( "%create_date%" , date );
                     key = key.replace( "%%xp_date%" , ExpDate );
@@ -310,7 +310,7 @@ public class PluginMessage implements PluginMessageListener {
             if ( utils.getBoolean( "alerts.warns" ) || people.hasPermission( "staffcore.staff" ) ) {
                 if ( status.equalsIgnoreCase( "closed" ) ) {
                     utils.PlaySound( people , "close_ban" );
-                } else if ( status.equalsIgnoreCase( "unbaned" ) ) {
+                } else if ( status.equalsIgnoreCase( "unbanned" ) ) {
                     utils.PlaySound( people , "un_ban" );
                 }
                 for ( String key : main.plugin.getConfig( ).getStringList( "warn.alerts.warn_change" ) ) {

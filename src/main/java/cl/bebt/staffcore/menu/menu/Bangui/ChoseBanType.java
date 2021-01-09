@@ -20,14 +20,14 @@ import java.util.ArrayList;
 public class ChoseBanType extends Menu {
     private final main plugin;
     private final Player player;
-    private final String baned;
+    private final String banned;
     private final String reason;
     
-    public ChoseBanType( PlayerMenuUtility playerMenuUtility , main plugin , Player player , String baned , String reason ){
+    public ChoseBanType( PlayerMenuUtility playerMenuUtility , main plugin , Player player , String banned , String reason ){
         super( playerMenuUtility );
         this.plugin = plugin;
         this.player = player;
-        this.baned = baned;
+        this.banned = banned;
         this.reason = reason;
     }
     
@@ -46,21 +46,21 @@ public class ChoseBanType extends Menu {
         Player p = ( Player ) e.getWhoClicked( );
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "tempban" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new AmountBaned( main.getPlayerMenuUtility( p ) , plugin , p , baned , reason ).open( p );
+            new AmountBanned( main.getPlayerMenuUtility( p ) , plugin , p , banned , reason ).open( p );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "permban" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            BanPlayer.BanPlayer( p , baned , reason );
+            BanPlayer.BanPlayer( p , banned , reason );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "ban-normal" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
             p.getPersistentDataContainer( ).set( new NamespacedKey( plugin , "ban-ip" ) , PersistentDataType.STRING , "ban-ip" );
-            new ChoseBanType( playerMenuUtility , plugin , player , baned , reason ).open( p );
+            new ChoseBanType( playerMenuUtility , plugin , player , banned , reason ).open( p );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "ban-ip" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
             p.getPersistentDataContainer( ).remove( new NamespacedKey( plugin , "ban-ip" ) );
-            new ChoseBanType( playerMenuUtility , plugin , player , baned , reason ).open( p );
+            new ChoseBanType( playerMenuUtility , plugin , player , banned , reason ).open( p );
         } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
             p.closeInventory( );
-            new BanMenu( playerMenuUtility , main.plugin , player , baned ).open( p );
+            new BanMenu( playerMenuUtility , main.plugin , player , banned ).open( p );
         }
     }
     
@@ -108,7 +108,7 @@ public class ChoseBanType extends Menu {
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.CARVED_PUMPKIN );
         ItemMeta meta = item.getItemMeta( );
-        lore.add( utils.chat( "&cClick to &aTemp Ban &r" + baned ) );
+        lore.add( utils.chat( "&cClick to &aTemp Ban &r" + banned ) );
         meta.setLore( lore );
         meta.setDisplayName( utils.chat( "&aTemp Ban" ) );
         meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "tempban" ) , PersistentDataType.STRING , "tempban" );
@@ -120,7 +120,7 @@ public class ChoseBanType extends Menu {
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.JACK_O_LANTERN );
         ItemMeta meta = item.getItemMeta( );
-        lore.add( utils.chat( "&cClick to &4Perm Ban &r" + baned ) );
+        lore.add( utils.chat( "&cClick to &4Perm Ban &r" + banned ) );
         meta.setLore( lore );
         meta.setDisplayName( utils.chat( "&4Perm Ban" ) );
         meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "permban" ) , PersistentDataType.STRING , "permban" );

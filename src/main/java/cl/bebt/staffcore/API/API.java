@@ -190,11 +190,11 @@ public class API {
         return utils.getWarnedPlayers( );
     }
     
-    public static Boolean isStillBaned( int Id ){
+    public static Boolean isStillBanned( int Id ){
         if ( utils.mysqlEnabled( ) )
             try {
                 Date now = new Date( );
-                Date exp_date = (new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" )).parse( SQLGetter.getBaned( Id , "ExpDate" ) );
+                Date exp_date = (new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" )).parse( SQLGetter.getBanned( Id , "ExpDate" ) );
                 if ( now.after( exp_date ) ) {
                     SQLGetter.setBan( Id , "closed" );
                     return false;

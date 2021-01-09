@@ -32,7 +32,7 @@ public class SQLGetter {
         return "Something went wrong :(";
     }
     
-    public static String getBanedIp( int id ){
+    public static String getBannedIp( int id ){
         try {
             PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "SELECT IP FROM sc_bans WHERE BanId=?" );
             statement.setInt( 1 , id );
@@ -46,7 +46,7 @@ public class SQLGetter {
         return "Something went wrong :(";
     }
     
-    public static String getBaned( int id , String row ){
+    public static String getBanned( int id , String row ){
         try {
             PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "SELECT " + row + " FROM sc_bans WHERE BanId=?" );
             statement.setInt( 1 , id );
@@ -405,7 +405,7 @@ public class SQLGetter {
     public static void createBansTable( ){
         PreparedStatement ps;
         try {
-            ps = Mysql.getConnection( ).prepareStatement( "CREATE TABLE IF NOT EXISTS sc_bans (BanId int NOT NULL AUTO_INCREMENT,Name varchar(20) NOT NULL,Baner varchar(20) NOT NULL,Reason varchar(100)NOT NULL,Date varchar(20)NOT NULL, ExpDate varchar(100)NOT NULL, IP varchar(100)NOT NULL, IP_Baned varchar(10)NOT NULL, Status varchar(10)NOT NULL,PRIMARY KEY (BanId));" );
+            ps = Mysql.getConnection( ).prepareStatement( "CREATE TABLE IF NOT EXISTS sc_bans (BanId int NOT NULL AUTO_INCREMENT,Name varchar(20) NOT NULL,Baner varchar(20) NOT NULL,Reason varchar(100)NOT NULL,Date varchar(20)NOT NULL, ExpDate varchar(100)NOT NULL, IP varchar(100)NOT NULL, IP_Banned varchar(10)NOT NULL, Status varchar(10)NOT NULL,PRIMARY KEY (BanId));" );
             ps.executeUpdate( );
         } catch ( SQLException ignored ) {
             plugin.getServer( ).getConsoleSender( ).sendMessage( utils.chat( "&c[&5Staff Core&c] There has been an error with the mysql" ) );
@@ -692,18 +692,18 @@ public class SQLGetter {
     /**
      * This will create a Ban into the Bans Table.
      **/
-    public void createBan( String baned , String baner , String Reason , String Date , String ExpDate , String IP , String IP_Baned , String Status ){
+    public void createBan( String banned , String baner , String Reason , String Date , String ExpDate , String IP , String IP_Banned , String Status ){
         int intento = 0;
         while (intento < 4) {
             try {
-                PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "INSERT INTO sc_bans (Name, Baner, Reason, Date, ExpDate, IP, IP_Baned, Status) VALUES (?,?,?,?,?,?,?,?)" );
-                statement.setString( 1 , baned );
+                PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "INSERT INTO sc_bans (Name, Baner, Reason, Date, ExpDate, IP, IP_Banned, Status) VALUES (?,?,?,?,?,?,?,?)" );
+                statement.setString( 1 , banned );
                 statement.setString( 2 , baner );
                 statement.setString( 3 , Reason );
                 statement.setString( 4 , Date );
                 statement.setString( 5 , ExpDate );
                 statement.setString( 6 , IP );
-                statement.setString( 7 , IP_Baned );
+                statement.setString( 7 , IP_Banned );
                 statement.setString( 8 , Status );
                 statement.executeUpdate( );
                 break;

@@ -33,7 +33,7 @@ public class unBan implements TabExecutor {
                             BanPlayer.unBan( p , i );
                         }
                     } catch ( NullPointerException ignored ) {
-                        utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&cThe player " + args[0] + " didn't got un baned" );
+                        utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&cThe player " + args[0] + " didn't got un banned" );
                     }
                 } else {
                     utils.tell( sender , utils.getString( "staff.staff_prefix" ) + utils.getString( "no_permissions" ) );
@@ -49,7 +49,7 @@ public class unBan implements TabExecutor {
                     BanPlayer.unBan( sender , i );
                 }
             } catch ( NullPointerException ignored ) {
-                utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&cThe player " + args[0] + " didn't got un baned" );
+                utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&cThe player " + args[0] + " didn't got un banned" );
             }
         } else {
             utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&7Use /unban <&aplayer&7>" );
@@ -62,11 +62,11 @@ public class unBan implements TabExecutor {
         this.bans.clear( );
         if ( args.length == 1 )
             if ( amountOfBanned( ) == 0 ) {
-                utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&cThere are no players baned" );
+                utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&cThere are no players banned" );
             } else {
                 for ( int i = 1; i <= amountOfBanned( ); i++ ) {
                     if ( utils.mysqlEnabled( ) ) {
-                        version.add( SQLGetter.getBaned( this.bans.get( Integer.valueOf( i ) ).intValue( ) , "name" ) );
+                        version.add( SQLGetter.getBanned( this.bans.get( Integer.valueOf( i ) ).intValue( ) , "name" ) );
                     } else {
                         version.add( this.plugin.bans.getConfig( ).getString( "bans." + this.bans.get( Integer.valueOf( i ) ) + ".name" ) );
                     }
@@ -103,13 +103,13 @@ public class unBan implements TabExecutor {
         return num;
     }
     
-    private ArrayList < Integer > BanIds( String baned ){
+    private ArrayList < Integer > BanIds( String banned ){
         ArrayList < Integer > BanIDs = new ArrayList <>( );
         if ( utils.mysqlEnabled( ) )
-            return SQLGetter.getBanIds( baned );
+            return SQLGetter.getBanIds( banned );
         for ( int i = 0; i < count( ); i++ ) {
             try {
-                if ( this.plugin.bans.getConfig( ).getString( "bans." + i + ".name" ).equalsIgnoreCase( baned ) )
+                if ( this.plugin.bans.getConfig( ).getString( "bans." + i + ".name" ).equalsIgnoreCase( banned ) )
                     BanIDs.add( Integer.valueOf( i ) );
             } catch ( NullPointerException nullPointerException ) {
             }

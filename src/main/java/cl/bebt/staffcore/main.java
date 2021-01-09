@@ -10,7 +10,6 @@ import cl.bebt.staffcore.commands.Time.Day;
 import cl.bebt.staffcore.commands.Time.Night;
 import cl.bebt.staffcore.commands.Time.Weather;
 import cl.bebt.staffcore.commands.WarningsCommand;
-import cl.bebt.staffcore.commands.staffcore;
 import cl.bebt.staffcore.configs.AltsStorage;
 import cl.bebt.staffcore.configs.BanConfig;
 import cl.bebt.staffcore.configs.ReportConfig;
@@ -60,7 +59,7 @@ public final class main extends JavaPlugin {
     
     public SQLGetter data;
     
-    public Boolean chatMuted = Boolean.valueOf( false );
+    public Boolean chatMuted = false;
     
     public static PlayerMenuUtility getPlayerMenuUtility( Player p ){
         if ( playerMenuUtilityMap.containsKey( p ) )

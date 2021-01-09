@@ -23,10 +23,10 @@ public class BanConfig {
     
     public void reloadConfig( ){
         if ( configFile == null ) {
-            configFile = new File( plugin.getDataFolder( ) , "baned.yml" );
+            configFile = new File( plugin.getDataFolder( ) , "banned.yml" );
         }
         dataConfig = YamlConfiguration.loadConfiguration( configFile );
-        InputStream defaultStream = plugin.getResource( "baned.yml" );
+        InputStream defaultStream = plugin.getResource( "banned.yml" );
         if ( defaultStream != null ) {
             YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration( new InputStreamReader( defaultStream ) );
             dataConfig.setDefaults( defaultConfig );
@@ -52,9 +52,9 @@ public class BanConfig {
     
     public void saveDefaultConfig( ){
         if ( configFile == null )
-            configFile = new File( plugin.getDataFolder( ) , "baned.yml" );
+            configFile = new File( plugin.getDataFolder( ) , "banned.yml" );
         if ( !configFile.exists( ) ) {
-            plugin.saveResource( "baned.yml" , false );
+            plugin.saveResource( "banned.yml" , false );
         }
     }
     

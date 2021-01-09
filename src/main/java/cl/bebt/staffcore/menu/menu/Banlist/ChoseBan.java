@@ -73,34 +73,34 @@ public class ChoseBan extends ReportMenu {
         String created = null;
         String exp = null;
         String baner = null;
-        String baned = null;
+        String banned = null;
         String status = "closed";
         if ( utils.mysqlEnabled( ) ) {
-            reason = SQLGetter.getBaned( this.Id , "Reason" );
-            created = SQLGetter.getBaned( this.Id , "Date" );
-            exp = SQLGetter.getBaned( this.Id , "ExpDate" );
-            baner = SQLGetter.getBaned( this.Id , "Baner" );
-            baned = SQLGetter.getBaned( this.Id , "Name" );
+            reason = SQLGetter.getBanned( this.Id , "Reason" );
+            created = SQLGetter.getBanned( this.Id , "Date" );
+            exp = SQLGetter.getBanned( this.Id , "ExpDate" );
+            baner = SQLGetter.getBanned( this.Id , "Baner" );
+            banned = SQLGetter.getBanned( this.Id , "Name" );
             SQLGetter.setBan( this.Id , "closed" );
         } else {
             this.plugin.bans.reloadConfig( );
             reason = this.plugin.bans.getConfig( ).getString( "bans." + this.Id + ".reason" );
             created = this.plugin.bans.getConfig( ).getString( "bans." + this.Id + ".date" );
             exp = this.plugin.bans.getConfig( ).getString( "bans." + this.Id + ".expdate" );
-            baner = this.plugin.bans.getConfig( ).getString( "bans." + this.Id + ".baned_by" );
-            baned = this.plugin.bans.getConfig( ).getString( "bans." + this.Id + ".name" );
+            baner = this.plugin.bans.getConfig( ).getString( "bans." + this.Id + ".banned_by" );
+            banned = this.plugin.bans.getConfig( ).getString( "bans." + this.Id + ".name" );
             this.plugin.bans.getConfig( ).set( "bans." + this.Id + ".status" , "closed" );
             this.plugin.bans.getConfig( ).set( "count" , Integer.valueOf( playerMenuUtility.currentBans( ) ) );
             this.plugin.bans.saveConfig( );
         }
-        SendMsg.sendBanChangeAlert( this.Id , p.getName( ) , baner , baned , reason , exp , created , status , this.plugin.getConfig( ).getString( "bungeecord.server" ) );
+        SendMsg.sendBanChangeAlert( this.Id , p.getName( ) , baner , banned , reason , exp , created , status , this.plugin.getConfig( ).getString( "bungeecord.server" ) );
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
             if ( people.hasPermission( "staffcore.staff" ) ) {
                 utils.PlaySound( p , "close_ban" );
                 for ( String key : main.plugin.getConfig( ).getStringList( "ban.ban_change" ) ) {
                     key = key.replace( "%changed_by%" , p.getName( ) );
                     key = key.replace( "%baner%" , baner );
-                    key = key.replace( "%baned%" , baned );
+                    key = key.replace( "%banned%" , banned );
                     key = key.replace( "%id%" , String.valueOf( this.Id ) );
                     key = key.replace( "%reason%" , reason );
                     key = key.replace( "%create_date%" , created );
@@ -160,13 +160,13 @@ public class ChoseBan extends ReportMenu {
                 this.inventory.setItem( i , bluePanel( ) );
         }
         if ( utils.mysqlEnabled( ) ) {
-            if ( SQLGetter.getBaned( this.Id , "Status" ).equals( "open" ) ) {
+            if ( SQLGetter.getBanned( this.Id , "Status" ).equals( "open" ) ) {
                 this.inventory.setItem( 20 , delete );
                 this.inventory.setItem( 21 , redPanel( ) );
                 this.inventory.setItem( 22 , makeItem( Material.BARRIER , ChatColor.DARK_RED + "closed" ) );
                 this.inventory.setItem( 23 , redPanel( ) );
                 this.inventory.setItem( 24 , closeBan );
-            } else if ( SQLGetter.getBaned( this.Id , "Status" ).equals( "closed" ) ) {
+            } else if ( SQLGetter.getBanned( this.Id , "Status" ).equals( "closed" ) ) {
                 this.inventory.setItem( 20 , redPanel( ) );
                 this.inventory.setItem( 21 , delete );
                 this.inventory.setItem( 22 , redPanel( ) );

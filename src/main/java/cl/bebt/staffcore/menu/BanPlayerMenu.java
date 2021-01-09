@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public abstract class BanPlayerMenu extends Menu {
     
-    protected String baned;
+    protected String banned;
     protected Player baner;
     protected int page = 0;
     protected int maxItemsPerPage = 55;
@@ -41,11 +41,11 @@ public abstract class BanPlayerMenu extends Menu {
                 }
             }
         }
-        ItemStack p_head = utils.getPlayerHead( baned );
+        ItemStack p_head = utils.getPlayerHead( banned );
         ItemMeta meta = p_head.getItemMeta( );
         ArrayList < String > lore = new ArrayList <>( );
-        meta.setDisplayName( utils.chat( "&5" + baned ) );
-        lore.add( utils.chat( utils.chat( "&7Why you wanna ban &c" ) + baned + "&7?" ) );
+        meta.setDisplayName( utils.chat( "&5" + banned ) );
+        lore.add( utils.chat( utils.chat( "&7Why you wanna ban &c" ) + banned + "&7?" ) );
         meta.setLore( lore );
         meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "panel" ) , PersistentDataType.STRING , "panel" );
         p_head.setItemMeta( meta );

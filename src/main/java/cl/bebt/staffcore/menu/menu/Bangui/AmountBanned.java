@@ -13,17 +13,17 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
-public class AmountBaned extends PaginatedMenu {
+public class AmountBanned extends PaginatedMenu {
     private final main plugin;
     private final Player player;
-    private final String baned;
+    private final String banned;
     private final String reason;
     
-    public AmountBaned( PlayerMenuUtility playerMenuUtility , main plugin , Player player , String baned , String reason ){
+    public AmountBanned( PlayerMenuUtility playerMenuUtility , main plugin , Player player , String banned , String reason ){
         super( playerMenuUtility );
         this.plugin = plugin;
         this.player = player;
-        this.baned = baned;
+        this.banned = banned;
         this.reason = reason;
     }
     
@@ -45,10 +45,10 @@ public class AmountBaned extends PaginatedMenu {
             p.closeInventory( );
             int yep = e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).get( new NamespacedKey( plugin , "amount" ) , PersistentDataType.INTEGER );
             player.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "amount" ) , PersistentDataType.INTEGER , yep );
-            new QuantityBaned( playerMenuUtility , plugin , player , baned , reason ).open( p );
+            new QuantityBanned( playerMenuUtility , plugin , player , banned , reason ).open( p );
         } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
             p.closeInventory( );
-            new ChoseBanType( playerMenuUtility , plugin , player , baned , reason ).open( p );
+            new ChoseBanType( playerMenuUtility , plugin , player , banned , reason ).open( p );
         } else if ( e.getCurrentItem( ).getType( ).equals( Material.DARK_OAK_BUTTON ) ) {
             if ( ChatColor.stripColor( e.getCurrentItem( ).getItemMeta( ).getDisplayName( ) ).equalsIgnoreCase( "Back" ) ) {
                 if ( page == 0 ) {

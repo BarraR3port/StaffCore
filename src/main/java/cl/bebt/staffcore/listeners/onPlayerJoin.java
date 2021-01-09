@@ -51,16 +51,16 @@ public class onPlayerJoin implements Listener {
             }
             for (int i = 1; i <= currents; i++) {
                 try {
-                    if (SQLGetter.getBaned(i, "Name").equals(p.getName()) &&
-                            SQLGetter.getBaned(i, "Status").equals("open") &&
-                            API.isStillBaned(i).booleanValue()) {
-                        e.disallow(PlayerLoginEvent.Result.KICK_OTHER, KickBanedPlayerSql(i));
+                    if (SQLGetter.getBanned(i, "Name").equals(p.getName()) &&
+                            SQLGetter.getBanned(i, "Status").equals("open") &&
+                            API.isStillBanned(i).booleanValue()) {
+                        e.disallow(PlayerLoginEvent.Result.KICK_OTHER, KickBannedPlayerSql(i));
                         break;
                     }
-                    if (SQLGetter.getBanedIp(i).equals(IP) &&
-                            SQLGetter.getBaned(i, "Status").equals("open") && SQLGetter.getBaned(i, "IP_Baned").equals("true") &&
-                            API.isStillBaned(i).booleanValue()) {
-                        e.disallow(PlayerLoginEvent.Result.KICK_OTHER, KickBanedPlayerSql(i));
+                    if (SQLGetter.getBannedIp(i).equals(IP) &&
+                            SQLGetter.getBanned(i, "Status").equals("open") && SQLGetter.getBanned(i, "IP_Banned").equals("true") &&
+                            API.isStillBanned(i).booleanValue()) {
+                        e.disallow(PlayerLoginEvent.Result.KICK_OTHER, KickBannedPlayerSql(i));
                         break;
                     }
                 } catch (NullPointerException nullPointerException) {}
@@ -84,15 +84,15 @@ public class onPlayerJoin implements Listener {
                 try {
                     if (Objects.equals(plugin.bans.getConfig().getString("bans." + i + ".name"), p.getName()) &&
                             Objects.equals(plugin.bans.getConfig().getString("bans." + i + ".status"), "open") &&
-                            API.isStillBaned(i).booleanValue()) {
-                        e.disallow(PlayerLoginEvent.Result.KICK_OTHER, KickBanedPlayer(i));
+                            API.isStillBanned(i).booleanValue()) {
+                        e.disallow(PlayerLoginEvent.Result.KICK_OTHER, KickBannedPlayer(i));
                         break;
                     }
-                    if (plugin.bans.getConfig().getBoolean("bans." + i + ".IP-Baned") &&
+                    if (plugin.bans.getConfig().getBoolean("bans." + i + ".IP-Banned") &&
                             Objects.equals(plugin.bans.getConfig().getString("bans." + i + ".IP"), IP) &&
                             Objects.equals(plugin.bans.getConfig().getString("bans." + i + ".status"), "open") &&
-                            API.isStillBaned(i).booleanValue()) {
-                        e.disallow(PlayerLoginEvent.Result.KICK_OTHER, KickBanedPlayer(i));
+                            API.isStillBanned(i).booleanValue()) {
+                        e.disallow(PlayerLoginEvent.Result.KICK_OTHER, KickBannedPlayer(i));
                         break;
                     }
                 } catch (NullPointerException nullPointerException) {}
@@ -225,15 +225,15 @@ public class onPlayerJoin implements Listener {
         }
     }
 
-    String KickBanedPlayerSql(int Id) {
+    String KickBannedPlayerSql(int Id) {
         try {
-            String reason = SQLGetter.getBaned(Id, "Reason");
+            String reason = SQLGetter.getBanned(Id, "Reason");
             Date now = new Date();
-            String created = SQLGetter.getBaned(Id, "Date");
-            String exp = SQLGetter.getBaned(Id, "ExpDate");
+            String created = SQLGetter.getBanned(Id, "Date");
+            String exp = SQLGetter.getBanned(Id, "ExpDate");
             SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-            String baner = SQLGetter.getBaned(Id, "Baner");
-            String baned = SQLGetter.getBaned(Id, "Name");
+            String baner = SQLGetter.getBanned(Id, "Baner");
+            String banned = SQLGetter.getBanned(Id, "Name");
             Date d2 = null;
             d2 = format.parse(exp);
             long remaining = (d2.getTime() - now.getTime()) / 1000L;
@@ -244,18 +244,18 @@ public class onPlayerJoin implements Listener {
             long Minutes = TimeUnit.SECONDS.toMinutes(Seconds);
             Seconds -= TimeUnit.MINUTES.toSeconds(Minutes);
             String ban_msg = "\n";
-            for (String msg : main.plugin.getConfig().getStringList("ban.join_baned")) {
+            for (String msg : main.plugin.getConfig().getStringList("ban.join_banned")) {
                 msg = msg.replace("%baner%", baner);
-                msg = msg.replace("%baned%", baned);
+                msg = msg.replace("%banned%", banned);
                 msg = msg.replace("%reason%", reason);
                 if (Days >= 365L) {
                     msg = msg.replace("%time_left%", "&4PERMANENT");
                 } else {
                     msg = msg.replace("%time_left%", Days + "d " + Hours + "h " + Minutes + "m " + Seconds + "s");
                 }
-                if (SQLGetter.getBaned(Id, "IP_Baned").equals("true")) {
+                if (SQLGetter.getBanned(Id, "IP_Banned").equals("true")) {
                     msg = msg.replace("%IP_BANED%", "&atrue");
-                } else if (SQLGetter.getBaned(Id, "IP_Baned").equals("false")) {
+                } else if (SQLGetter.getBanned(Id, "IP_Banned").equals("false")) {
                     msg = msg.replace("%IP_BANED%", "&cfalse");
                 }
                 msg = msg.replace("%exp_date%", exp);
@@ -269,10 +269,10 @@ public class onPlayerJoin implements Listener {
         }
     }
 
-    String KickBanedPlayer(int Id) {
+    String KickBannedPlayer(int Id) {
         try {
-            String p = plugin.bans.getConfig().getString("bans." + Id + ".baned_by");
-            String baned = plugin.bans.getConfig().getString("bans." + Id + ".name");
+            String p = plugin.bans.getConfig().getString("bans." + Id + ".banned_by");
+            String banned = plugin.bans.getConfig().getString("bans." + Id + ".name");
             String reason = plugin.bans.getConfig().getString("bans." + Id + ".reason");
             Date now = new Date();
             String created = plugin.bans.getConfig().getString("bans." + Id + ".date");
@@ -288,16 +288,16 @@ public class onPlayerJoin implements Listener {
             long Minutes = TimeUnit.SECONDS.toMinutes(Seconds);
             Seconds -= TimeUnit.MINUTES.toSeconds(Minutes);
             String ban_msg = "\n";
-            for (String msg : main.plugin.getConfig().getStringList("ban.join_baned")) {
+            for (String msg : main.plugin.getConfig().getStringList("ban.join_banned")) {
                 msg = msg.replace("%baner%", p);
-                msg = msg.replace("%baned%", baned);
+                msg = msg.replace("%banned%", banned);
                 msg = msg.replace("%reason%", reason);
                 if (Days >= 365L) {
                     msg = msg.replace("%time_left%", "&4PERMANENT");
                 } else {
                     msg = msg.replace("%time_left%", Days + "d " + Hours + "h " + Minutes + "m " + Seconds + "s");
                 }
-                if (plugin.bans.getConfig().getBoolean("bans." + Id + ".IP-Baned")) {
+                if (plugin.bans.getConfig().getBoolean("bans." + Id + ".IP-Banned")) {
                     msg = msg.replace("%IP_BANED%", "&atrue");
                 } else {
                     msg = msg.replace("%IP_BANED%", "&cfalse");

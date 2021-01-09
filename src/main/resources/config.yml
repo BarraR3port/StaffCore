@@ -35,7 +35,7 @@ server_prefix: "&8[&a&lSTAFF CORE&r&8]&r "
 player_dont_exist: "&cThe player does not exist!"
 no_online_players: "&cNo players &aOnline&c!"
 no_permissions: "&cYou don't have permissions!."
-disable_outdated_plugin: false # ON ENABLE IF THE PLUGIN IS OUTDATED, IT WILL AUTOMATIC BE DISABLED.
+disable_outdated_plugin: true # ON ENABLE IF THE PLUGIN IS OUTDATED, IT WILL AUTOMATIC BE DISABLED.
 # ------------> GAMEMODES <----------
 creative: "&7Creative!"
 creative_already: "&cYou are already in Creative!"
@@ -156,51 +156,51 @@ report:
     - " "
 # ------------> Ban Alerts <----------
 ban:
-  ban_alerts:  # Placeholders: %baner% | %baned% | %reason% | %amount% | %time% | %exp_date% | %date%
+  ban_alerts:  # Placeholders: %baner% | %banned% | %reason% | %amount% | %time% | %exp_date% | %date%
     - " "
     - "                 &6&5Ban Alerts &6"
     - " "
-    - "         &3The player &r%baned% &3was &cBaned."
+    - "         &3The player &r%banned% &3was &cBanned."
     - " "
-    - "           &a&7Baned by: &r%baner%"
+    - "           &a&7Banned by: &r%baner%"
     - "           &a&7Reason: &4%reason%"
-    - "           &a&7Ip Baned: %IP_BANED%"
+    - "           &a&7Ip Banned: %IP_BANED%"
     - "           &a&7For &a%amount%%time%"
     - "           &a&7Until &a%exp_date%"
     - "           &a&7Create Date &a%date%"
     - " "
-  ban_change: # Placeholders: %changed_by% | %baner% | %baned% | %id% | %reason% | %create_date% | %exp_date% | %ban_status%
+  ban_change: # Placeholders: %changed_by% | %baner% | %banned% | %id% | %reason% | %create_date% | %exp_date% | %ban_status%
     - " "
     - "                 &6&5Ban Changed &6"
     - " "
     - "    &a&aThe Ban #&c%id% &awas &4%ban_status% &aby: &c%changed_by%"
     - " "
-    - "           &a&7Baned: &a%baned%"
-    - "           &a&7Baned by: &a%baner%"
+    - "           &a&7Banned: &a%banned%"
+    - "           &a&7Banned by: &a%baner%"
     - "           &a&7Reason: &4%reason%"
     - "           &a&7ID: &4%id%"
     - " "
-  ban_msg: # Placeholders: %baner% | %baned% | %reason% | %amount% | %time% | %exp_date% | %date%
+  ban_msg: # Placeholders: %baner% | %banned% | %reason% | %amount% | %time% | %exp_date% | %date%
     - "&6&5Ban System &6"
     - ""
-    - "&4Your account %baned% were baned!"
+    - "&4Your account %banned% were banned!"
     - ""
-    - "&a&7Baned by: &a%baner%"
+    - "&a&7Banned by: &a%baner%"
     - "&a&7Reason: &4%reason%"
-    - "&a&7Ip Baned: %IP_BANED%"
+    - "&a&7Ip Banned: %IP_BANED%"
     - "&a&7For &a%amount%%time%"
     - "&a&7Until &a%exp_date%"
     - "&a&7Create Date &a%date%"
     - ""
-  join_baned: # Placeholders: %baner% | %baned% | %reason% | %amount% | %time% | %exp_date% | %date%
+  join_banned: # Placeholders: %baner% | %banned% | %reason% | %amount% | %time% | %exp_date% | %date%
     - ""
     - "&6&5Ban System &6"
     - ""
-    - "&4Your account %baned% is baned!"
+    - "&4Your account %banned% is banned!"
     - ""
-    - "&a&7Baned by: &r%baner%"
+    - "&a&7Banned by: &r%baner%"
     - "&a&7Reason: &4%reason%"
-    - "&a&7Ip Baned: %IP_BANED%"
+    - "&a&7Ip Banned: %IP_BANED%"
     - "&a&7Time left: &c%time_left%"
     - "&a&7Until &a%exp_date%"
     - "&a&7Create Date &a%date%"
@@ -290,5 +290,5 @@ alerts:
   mute_player: false # Alert all players that a player has been muted.
   report: true # Alert all players about a new reported player.
   freeze: true # Alert all players about a new frozen player.
-  ban: false # Alert all players about a new baned player.
+  ban: false # Alert all players about a new banned player.
   warn: false # Alert all players about a new waned player.

@@ -63,7 +63,7 @@ public class BanManager extends Menu {
             for ( int j = 0; j <= i; ) {
                 j++;
                 try {
-                    if ( SQLGetter.getBaned( j , "Status" ).equals( "closed" ) )
+                    if ( SQLGetter.getBanned( j , "Status" ).equals( "closed" ) )
                         close++;
                 } catch ( NullPointerException nullPointerException ) {
                 }
@@ -90,7 +90,7 @@ public class BanManager extends Menu {
             for ( int j = 0; j <= i + 1; ) {
                 j++;
                 try {
-                    if ( SQLGetter.getBaned( j , "Status" ).equals( "open" ) )
+                    if ( SQLGetter.getBanned( j , "Status" ).equals( "open" ) )
                         opens++;
                 } catch ( NullPointerException nullPointerException ) {
                 }

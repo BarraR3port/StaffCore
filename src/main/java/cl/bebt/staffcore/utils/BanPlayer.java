@@ -28,34 +28,34 @@ public class BanPlayer {
         String created = null;
         String exp = null;
         String baner = null;
-        String baned = null;
-        String status = "unbaned";
+        String banned = null;
+        String status = "unbanned";
         if ( utils.mysqlEnabled( ) ) {
-            reason = SQLGetter.getBaned( Id , "Reason" );
-            created = SQLGetter.getBaned( Id , "Date" );
-            exp = SQLGetter.getBaned( Id , "ExpDate" );
-            baner = SQLGetter.getBaned( Id , "Baner" );
-            baned = SQLGetter.getBaned( Id , "Name" );
+            reason = SQLGetter.getBanned( Id , "Reason" );
+            created = SQLGetter.getBanned( Id , "Date" );
+            exp = SQLGetter.getBanned( Id , "ExpDate" );
+            baner = SQLGetter.getBanned( Id , "Baner" );
+            banned = SQLGetter.getBanned( Id , "Name" );
             SQLGetter.deleteBans( Id );
         } else {
             main.plugin.bans.reloadConfig( );
             reason = main.plugin.bans.getConfig( ).getString( "bans." + Id + ".reason" );
             created = main.plugin.bans.getConfig( ).getString( "bans." + Id + ".date" );
             exp = main.plugin.bans.getConfig( ).getString( "bans." + Id + ".expdate" );
-            baner = main.plugin.bans.getConfig( ).getString( "bans." + Id + ".baned_by" );
-            baned = main.plugin.bans.getConfig( ).getString( "bans." + Id + ".name" );
+            baner = main.plugin.bans.getConfig( ).getString( "bans." + Id + ".banned_by" );
+            banned = main.plugin.bans.getConfig( ).getString( "bans." + Id + ".name" );
             main.plugin.bans.getConfig( ).set( "bans." + Id , null );
             main.plugin.bans.getConfig( ).set( "current" , currentBans( ) );
             main.plugin.bans.saveConfig( );
         }
-        SendMsg.sendBanChangeAlert( Id , p.getName( ) , baner , baned , reason , exp , created , status , main.plugin.getConfig( ).getString( "bungeecord.server" ) );
+        SendMsg.sendBanChangeAlert( Id , p.getName( ) , baner , banned , reason , exp , created , status , main.plugin.getConfig( ).getString( "bungeecord.server" ) );
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
             if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.ban" ) ) {
                 utils.PlaySound( people , "un_ban" );
                 for ( String key : main.plugin.getConfig( ).getStringList( "ban.ban_change" ) ) {
                     key = key.replace( "%changed_by%" , player );
                     key = key.replace( "%baner%" , baner );
-                    key = key.replace( "%baned%" , baned );
+                    key = key.replace( "%banned%" , banned );
                     key = key.replace( "%id%" , String.valueOf( Id ) );
                     key = key.replace( "%reason%" , reason );
                     key = key.replace( "%create_date%" , created );
@@ -81,18 +81,18 @@ public class BanPlayer {
         return current;
     }
     
-    public static void BanPlayer( CommandSender p , String baned , String reason ){
-        createBan( ( Player ) p , baned , reason , 283605 , "d" , true );
+    public static void BanPlayer( CommandSender p , String banned , String reason ){
+        createBan( ( Player ) p , banned , reason , 283605 , "d" , true );
     }
     
     
-    public static void BanCooldown( CommandSender sender , String baned , String reason , long amount , String time ){
+    public static void BanCooldown( CommandSender sender , String banned , String reason , long amount , String time ){
         if ( time.equalsIgnoreCase( "s" ) || time.equalsIgnoreCase( "m" ) ||
                 time.equalsIgnoreCase( "h" ) || time.equalsIgnoreCase( "d" ) ) {
-            createBan( ( Player ) sender , baned , reason , amount , time , false );
+            createBan( ( Player ) sender , banned , reason , amount , time , false );
         } else {
             utils.tell( sender , main.plugin.getConfig( ).getString( "server_prefix" ) + "&cWrong usage." );
-            utils.tell( sender , main.plugin.getConfig( ).getString( "server_prefix" ) + "&cExample /ban &a" + baned );
+            utils.tell( sender , main.plugin.getConfig( ).getString( "server_prefix" ) + "&cExample /ban &a" + banned );
         }
     }
     
@@ -107,30 +107,30 @@ public class BanPlayer {
     }
     
     
-    private static void createBan( Player p , String baned , String reason , long amount , String time , Boolean permanent ){
+    private static void createBan( Player p , String banned , String reason , long amount , String time , Boolean permanent ){
         int id = id( );
         Date now = new Date( );
         Calendar cal = Calendar.getInstance( );
         cal.setTime( now );
         String IP = null;
-        if ( Bukkit.getPlayer( baned ) instanceof Player ) {
-            Player baned_player = Bukkit.getPlayer( baned );
-            IP = baned_player.getAddress( ).getAddress( ).toString( );
+        if ( Bukkit.getPlayer( banned ) instanceof Player ) {
+            Player banned_player = Bukkit.getPlayer( banned );
+            IP = banned_player.getAddress( ).getAddress( ).toString( );
             IP = IP.replace( "/" , "" );
         } else {
             try {
                 if ( utils.mysqlEnabled( ) ) {
-                    List < String > ips = utils.makeList( SQLGetter.getAlts( baned ) );
+                    List < String > ips = utils.makeList( SQLGetter.getAlts( banned ) );
                     IP = ips.get( 0 );
                 } else {
-                    List < ? extends String > ips = main.plugin.alts.getConfig( ).getStringList( "alts." + baned );
+                    List < ? extends String > ips = main.plugin.alts.getConfig( ).getStringList( "alts." + banned );
                     IP = ips.subList( ips.size( ) - 1 , ips.size( ) ).toString( );
                 }
                 IP = IP.replace( "[" , "" );
                 IP = IP.replace( "]" , "" );
             } catch ( NullPointerException | IndexOutOfBoundsException ignored ) {
                 String msg = main.plugin.getConfig( ).getString( "staff.never_seen" );
-                msg = msg.replace( "%player%" , baned );
+                msg = msg.replace( "%player%" , banned );
                 utils.tell( p , main.plugin.getConfig( ).getString( "staff.staff_prefix" ) + msg );
                 
             }
@@ -149,22 +149,22 @@ public class BanPlayer {
             SimpleDateFormat format = new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" );
             if ( utils.mysqlEnabled( ) ) {
                 if ( p.getPersistentDataContainer( ).has( new NamespacedKey( main.plugin , "ban-ip" ) , PersistentDataType.STRING ) ) {
-                    main.plugin.data.createBan( baned , p.getName( ) , reason , format.format( now ) , format.format( ExpDate ) , IP , "true" , "open" );
+                    main.plugin.data.createBan( banned , p.getName( ) , reason , format.format( now ) , format.format( ExpDate ) , IP , "true" , "open" );
                 } else {
-                    main.plugin.data.createBan( baned , p.getName( ) , reason , format.format( now ) , format.format( ExpDate ) , IP , "false" , "open" );
+                    main.plugin.data.createBan( banned , p.getName( ) , reason , format.format( now ) , format.format( ExpDate ) , IP , "false" , "open" );
                 }
             }
             if ( main.plugin.bans.getConfig( ).contains( "count" ) ) {
                 main.plugin.bans.getConfig( ).set( "count" , id );
-                main.plugin.bans.getConfig( ).set( "bans." + id + ".name" , baned );
-                main.plugin.bans.getConfig( ).set( "bans." + id + ".baned_by" , p.getName( ) );
+                main.plugin.bans.getConfig( ).set( "bans." + id + ".name" , banned );
+                main.plugin.bans.getConfig( ).set( "bans." + id + ".banned_by" , p.getName( ) );
                 main.plugin.bans.getConfig( ).set( "bans." + id + ".reason" , reason );
                 main.plugin.bans.getConfig( ).set( "bans." + id + ".date" , format.format( now ) );
                 main.plugin.bans.getConfig( ).set( "bans." + id + ".expdate" , format.format( ExpDate ) );
                 if ( p.getPersistentDataContainer( ).has( new NamespacedKey( main.plugin , "ban-ip" ) , PersistentDataType.STRING ) ) {
-                    main.plugin.bans.getConfig( ).set( "bans." + id + ".IP-Baned" , true );
+                    main.plugin.bans.getConfig( ).set( "bans." + id + ".IP-Banned" , true );
                 } else {
-                    main.plugin.bans.getConfig( ).set( "bans." + id + ".IP-Baned" , false );
+                    main.plugin.bans.getConfig( ).set( "bans." + id + ".IP-Banned" , false );
                 }
                 main.plugin.bans.getConfig( ).set( "bans." + id + ".IP" , IP );
                 main.plugin.bans.getConfig( ).set( "bans." + id + ".status" , "open" );
@@ -175,13 +175,13 @@ public class BanPlayer {
             if ( p.getPersistentDataContainer( ).has( new NamespacedKey( main.plugin , "ban-ip" ) , PersistentDataType.STRING ) ) {
                 Ip = true;
             }
-            SendMsg.sendBanAlert( p.getName( ) , baned , reason , permanent , Ip , amount , time , format.format( ExpDate ) , format.format( now ) , main.plugin.getConfig( ).getString( "bungeecord.server" ) );
+            SendMsg.sendBanAlert( p.getName( ) , banned , reason , permanent , Ip , amount , time , format.format( ExpDate ) , format.format( now ) , main.plugin.getConfig( ).getString( "bungeecord.server" ) );
             for ( Player people : Bukkit.getOnlinePlayers( ) ) {
                 if ( utils.getBoolean( "alerts.ban" ) || people.hasPermission( "staffcore.staff" ) ) {
                     utils.PlaySound( people , "ban_alerts" );
                     for ( String key : main.plugin.getConfig( ).getStringList( "ban.ban_alerts" ) ) {
                         key = key.replace( "%baner%" , p.getName( ) );
-                        key = key.replace( "%baned%" , baned );
+                        key = key.replace( "%banned%" , banned );
                         key = key.replace( "%reason%" , reason );
                         if ( permanent ) {
                             key = key.replace( "%amount%" , "&4PERMANENT" );
@@ -201,11 +201,11 @@ public class BanPlayer {
                     }
                 }
             }
-            if ( Bukkit.getPlayer( baned ) instanceof Player ) {
+            if ( Bukkit.getPlayer( banned ) instanceof Player ) {
                 String ban_msg = "\n";
                 for ( String msg : main.plugin.getConfig( ).getStringList( "ban.ban_msg" ) ) {
                     msg = msg.replace( "%baner%" , p.getName( ) );
-                    msg = msg.replace( "%baned%" , baned );
+                    msg = msg.replace( "%banned%" , banned );
                     msg = msg.replace( "%reason%" , reason );
                     if ( permanent ) {
                         msg = msg.replace( "%amount%" , "&4PERMANENT" );
@@ -223,12 +223,12 @@ public class BanPlayer {
                     msg = msg.replace( "%date%" , format.format( now ) );
                     ban_msg = ban_msg + msg + "\n";
                 }
-                utils.PlayParticle( Bukkit.getPlayer( baned ) , "ban" );
+                utils.PlayParticle( Bukkit.getPlayer( banned ) , "ban" );
                 if ( main.plugin.getConfig( ).getBoolean( "wipe.wipe_on_ban" ) ) {
-                    wipePlayer.WipeOnBan( main.plugin , baned );
+                    wipePlayer.WipeOnBan( main.plugin , banned );
                 }
                 String finalBan_msg = ban_msg;
-                Bukkit.getScheduler( ).scheduleSyncDelayedTask( main.plugin , ( ) -> Bukkit.getPlayer( baned ).kickPlayer( utils.chat( finalBan_msg ) ) , 7l );
+                Bukkit.getScheduler( ).scheduleSyncDelayedTask( main.plugin , ( ) -> Bukkit.getPlayer( banned ).kickPlayer( utils.chat( finalBan_msg ) ) , 7l );
             }
         }
     }

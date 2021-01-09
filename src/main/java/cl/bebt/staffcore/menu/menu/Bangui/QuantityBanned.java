@@ -17,17 +17,17 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 
-public class QuantityBaned extends Menu {
+public class QuantityBanned extends Menu {
     private final main plugin;
     private final Player player;
-    private final String baned;
+    private final String banned;
     private final String reason;
     
-    public QuantityBaned( PlayerMenuUtility playerMenuUtility , main plugin , Player player , String baned , String reason ){
+    public QuantityBanned( PlayerMenuUtility playerMenuUtility , main plugin , Player player , String banned , String reason ){
         super( playerMenuUtility );
         this.plugin = plugin;
         this.player = player;
-        this.baned = baned;
+        this.banned = banned;
         this.reason = reason;
     }
     
@@ -48,27 +48,27 @@ public class QuantityBaned extends Menu {
         long time = p.getPersistentDataContainer( ).get( new NamespacedKey( plugin , "amount" ) , PersistentDataType.INTEGER );
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "seconds" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            BanPlayer.BanCooldown( sender , baned , reason , time , "s" );
+            BanPlayer.BanCooldown( sender , banned , reason , time , "s" );
             p.getPersistentDataContainer( ).remove( new NamespacedKey( plugin , "seconds" ) );
             p.getPersistentDataContainer( ).remove( new NamespacedKey( plugin , "amount" ) );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "minutes" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            BanPlayer.BanCooldown( sender , baned , reason , time , "m" );
+            BanPlayer.BanCooldown( sender , banned , reason , time , "m" );
             p.getPersistentDataContainer( ).remove( new NamespacedKey( plugin , "minutes" ) );
             p.getPersistentDataContainer( ).remove( new NamespacedKey( plugin , "amount" ) );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "hours" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            BanPlayer.BanCooldown( sender , baned , reason , time , "h" );
+            BanPlayer.BanCooldown( sender , banned , reason , time , "h" );
             p.getPersistentDataContainer( ).remove( new NamespacedKey( plugin , "hours" ) );
             p.getPersistentDataContainer( ).remove( new NamespacedKey( plugin , "amount" ) );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "days" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            BanPlayer.BanCooldown( sender , baned , reason , time , "d" );
+            BanPlayer.BanCooldown( sender , banned , reason , time , "d" );
             p.getPersistentDataContainer( ).remove( new NamespacedKey( plugin , "days" ) );
             p.getPersistentDataContainer( ).remove( new NamespacedKey( plugin , "amount" ) );
         } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
             p.closeInventory( );
-            new ChoseBanType( playerMenuUtility , plugin , player , baned , reason ).open( p );
+            new ChoseBanType( playerMenuUtility , plugin , player , banned , reason ).open( p );
         }
     }
     
@@ -112,7 +112,7 @@ public class QuantityBaned extends Menu {
         ItemStack item = new ItemStack( Material.MAGENTA_CONCRETE );
         ItemMeta meta = item.getItemMeta( );
         long time = player.getPersistentDataContainer( ).get( new NamespacedKey( plugin , "amount" ) , PersistentDataType.INTEGER );
-        lore.add( utils.chat( "&cBan &r" + baned + " &c for &a" + time + " &cSeconds." ) );
+        lore.add( utils.chat( "&cBan &r" + banned + " &c for &a" + time + " &cSeconds." ) );
         meta.setLore( lore );
         meta.setDisplayName( utils.chat( "&4SECONDS" ) );
         meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "seconds" ) , PersistentDataType.STRING , "seconds" );
@@ -125,7 +125,7 @@ public class QuantityBaned extends Menu {
         ItemStack item = new ItemStack( Material.PURPLE_CONCRETE );
         ItemMeta meta = item.getItemMeta( );
         long time = player.getPersistentDataContainer( ).get( new NamespacedKey( plugin , "amount" ) , PersistentDataType.INTEGER );
-        lore.add( utils.chat( "&cBan &r" + baned + " &c for &a" + time + " &cMinutes." ) );
+        lore.add( utils.chat( "&cBan &r" + banned + " &c for &a" + time + " &cMinutes." ) );
         meta.setLore( lore );
         meta.setDisplayName( utils.chat( "&4MINUTES" ) );
         meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "minutes" ) , PersistentDataType.STRING , "minutes" );
@@ -138,7 +138,7 @@ public class QuantityBaned extends Menu {
         ItemStack item = new ItemStack( Material.BLUE_CONCRETE );
         ItemMeta meta = item.getItemMeta( );
         long time = player.getPersistentDataContainer( ).get( new NamespacedKey( plugin , "amount" ) , PersistentDataType.INTEGER );
-        lore.add( utils.chat( "&cBan &r" + baned + " &c for &a" + time + " &cHours." ) );
+        lore.add( utils.chat( "&cBan &r" + banned + " &c for &a" + time + " &cHours." ) );
         meta.setLore( lore );
         meta.setDisplayName( utils.chat( "&4HOURS" ) );
         meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "hours" ) , PersistentDataType.STRING , "hours" );
@@ -151,7 +151,7 @@ public class QuantityBaned extends Menu {
         ItemStack item = new ItemStack( Material.RED_CONCRETE );
         ItemMeta meta = item.getItemMeta( );
         long time = player.getPersistentDataContainer( ).get( new NamespacedKey( plugin , "amount" ) , PersistentDataType.INTEGER );
-        lore.add( utils.chat( "&cBan &r" + baned + " &c for &a" + time + " &cDays." ) );
+        lore.add( utils.chat( "&cBan &r" + banned + " &c for &a" + time + " &cDays." ) );
         meta.setLore( lore );
         meta.setDisplayName( utils.chat( "&4DAYS" ) );
         meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "days" ) , PersistentDataType.STRING , "days" );

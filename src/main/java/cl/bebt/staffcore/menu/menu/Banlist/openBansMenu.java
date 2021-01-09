@@ -140,7 +140,7 @@ public class openBansMenu extends PaginatedMenu {
                         this.plugin.bans.reloadConfig( );
                         if ( utils.mysqlEnabled( ) ) {
                             Date now = new Date( );
-                            String exp = SQLGetter.getBaned( bans.get( Integer.valueOf( this.index ) ).intValue( ) , "ExpDate" );
+                            String exp = SQLGetter.getBanned( bans.get( Integer.valueOf( this.index ) ).intValue( ) , "ExpDate" );
                             SimpleDateFormat format = new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" );
                             Date d2 = null;
                             d2 = format.parse( exp );
@@ -151,15 +151,15 @@ public class openBansMenu extends PaginatedMenu {
                             Seconds -= TimeUnit.HOURS.toSeconds( Hours );
                             long Minutes = TimeUnit.SECONDS.toMinutes( Seconds );
                             Seconds -= TimeUnit.MINUTES.toSeconds( Minutes );
-                            ItemStack p_head = utils.getPlayerHead( SQLGetter.getBaned( bans.get( Integer.valueOf( this.index ) ).intValue( ) , "Name" ) );
+                            ItemStack p_head = utils.getPlayerHead( SQLGetter.getBanned( bans.get( Integer.valueOf( this.index ) ).intValue( ) , "Name" ) );
                             ItemMeta meta = p_head.getItemMeta( );
                             ArrayList < String > lore = new ArrayList <>( );
-                            meta.setDisplayName( SQLGetter.getBaned( bans.get( Integer.valueOf( this.index ) ).intValue( ) , "name" ) );
-                            lore.add( utils.chat( "&7Baned by: " + SQLGetter.getBaned( bans.get( Integer.valueOf( this.index ) ).intValue( ) , "Baner" ) ) );
-                            lore.add( utils.chat( "&7Reason: &b" + SQLGetter.getBaned( bans.get( Integer.valueOf( this.index ) ).intValue( ) , "Reason" ) ) );
-                            lore.add( utils.chat( "&7Created date: &c" + SQLGetter.getBaned( bans.get( Integer.valueOf( this.index ) ).intValue( ) , "Date" ) ) );
-                            lore.add( utils.chat( "&7Expiry date: &c" + SQLGetter.getBaned( bans.get( Integer.valueOf( this.index ) ).intValue( ) , "ExpDate" ) ) );
-                            if ( API.isStillBaned( bans.get( Integer.valueOf( this.index ) ).intValue( ) ).booleanValue( ) ) {
+                            meta.setDisplayName( SQLGetter.getBanned( bans.get( Integer.valueOf( this.index ) ).intValue( ) , "name" ) );
+                            lore.add( utils.chat( "&7Banned by: " + SQLGetter.getBanned( bans.get( Integer.valueOf( this.index ) ).intValue( ) , "Baner" ) ) );
+                            lore.add( utils.chat( "&7Reason: &b" + SQLGetter.getBanned( bans.get( Integer.valueOf( this.index ) ).intValue( ) , "Reason" ) ) );
+                            lore.add( utils.chat( "&7Created date: &c" + SQLGetter.getBanned( bans.get( Integer.valueOf( this.index ) ).intValue( ) , "Date" ) ) );
+                            lore.add( utils.chat( "&7Expiry date: &c" + SQLGetter.getBanned( bans.get( Integer.valueOf( this.index ) ).intValue( ) , "ExpDate" ) ) );
+                            if ( API.isStillBanned( bans.get( Integer.valueOf( this.index ) ).intValue( ) ).booleanValue( ) ) {
                                 lore.add( utils.chat( "&7Status: &aOpen" ) );
                                 if ( Days > 365L ) {
                                     lore.add( utils.chat( "&7Time left: &4PERMANENT" ) );
@@ -169,10 +169,10 @@ public class openBansMenu extends PaginatedMenu {
                             } else {
                                 lore.add( utils.chat( "&7Status: &cClosed" ) );
                             }
-                            if ( SQLGetter.getBaned( bans.get( Integer.valueOf( this.index ) ).intValue( ) , "IP_Baned" ).equals( "true" ) ) {
-                                lore.add( utils.chat( "&7Ip Baned: &aTrue" ) );
+                            if ( SQLGetter.getBanned( bans.get( Integer.valueOf( this.index ) ).intValue( ) , "IP_Banned" ).equals( "true" ) ) {
+                                lore.add( utils.chat( "&7Ip Banned: &aTrue" ) );
                             } else {
-                                lore.add( utils.chat( "&7Ip Baned: &cFalse" ) );
+                                lore.add( utils.chat( "&7Ip Banned: &cFalse" ) );
                             }
                             lore.add( utils.chat( "&7Ban ID:&a #" + bans.get( Integer.valueOf( this.index ) ) ) );
                             lore.add( utils.chat( "&aLeft click delete or close" ) );
@@ -199,11 +199,11 @@ public class openBansMenu extends PaginatedMenu {
                             ItemMeta meta = p_head.getItemMeta( );
                             ArrayList < String > lore = new ArrayList <>( );
                             meta.setDisplayName( this.plugin.bans.getConfig( ).get( "bans." + bans.get( Integer.valueOf( this.index ) ) + ".name" ).toString( ) );
-                            lore.add( utils.chat( "&7Baned by: " + this.plugin.bans.getConfig( ).getString( "bans." + bans.get( Integer.valueOf( this.index ) ) + ".baned_by" ) ) );
+                            lore.add( utils.chat( "&7Banned by: " + this.plugin.bans.getConfig( ).getString( "bans." + bans.get( Integer.valueOf( this.index ) ) + ".banned_by" ) ) );
                             lore.add( utils.chat( "&7Reason: &b" + this.plugin.bans.getConfig( ).getString( "bans." + bans.get( Integer.valueOf( this.index ) ) + ".reason" ) ) );
                             lore.add( utils.chat( "&7Created date: &c" + this.plugin.bans.getConfig( ).getString( "bans." + bans.get( Integer.valueOf( this.index ) ) + ".date" ) ) );
                             lore.add( utils.chat( "&7Expiry date: &c" + this.plugin.bans.getConfig( ).getString( "bans." + bans.get( Integer.valueOf( this.index ) ) + ".expdate" ) ) );
-                            if ( API.isStillBaned( bans.get( Integer.valueOf( this.index ) ).intValue( ) ).booleanValue( ) ) {
+                            if ( API.isStillBanned( bans.get( Integer.valueOf( this.index ) ).intValue( ) ).booleanValue( ) ) {
                                 lore.add( utils.chat( "&7Status: &aOpen" ) );
                                 if ( Days > 365L ) {
                                     lore.add( utils.chat( "&7Time left: &4PERMANENT" ) );
@@ -213,10 +213,10 @@ public class openBansMenu extends PaginatedMenu {
                             } else {
                                 lore.add( utils.chat( "&7Status: &c" + this.plugin.bans.getConfig( ).getString( "bans." + bans.get( Integer.valueOf( this.index ) ) + ".status" ) ) );
                             }
-                            if ( this.plugin.bans.getConfig( ).getBoolean( "bans." + bans.get( Integer.valueOf( this.index ) ) + ".IP-Baned" ) ) {
-                                lore.add( utils.chat( "&7Ip Baned: &aTrue" ) );
+                            if ( this.plugin.bans.getConfig( ).getBoolean( "bans." + bans.get( Integer.valueOf( this.index ) ) + ".IP-Banned" ) ) {
+                                lore.add( utils.chat( "&7Ip Banned: &aTrue" ) );
                             } else {
-                                lore.add( utils.chat( "&7Ip Baned: &cFalse" ) );
+                                lore.add( utils.chat( "&7Ip Banned: &cFalse" ) );
                             }
                             lore.add( utils.chat( "&7Ban ID:&a #" + bans.get( Integer.valueOf( this.index ) ) ) );
                             lore.add( utils.chat( "&aLeft click delete or close" ) );
