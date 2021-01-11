@@ -27,6 +27,7 @@ public class onChat implements Listener{
         }
         if ( persistent.has( new NamespacedKey( main.plugin , "frozen" ) , PersistentDataType.STRING ) ) {
             if ( utils.getBoolean( "freeze.cancel_chat_while_frozen" ) ) {
+                utils.tell(p,utils.getString( "server_prefix" ) + "&4You can't talk while &3&lFrozen" );
                 e.setCancelled( true );
             }
         }

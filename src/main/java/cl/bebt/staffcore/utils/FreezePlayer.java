@@ -33,9 +33,14 @@ public class FreezePlayer {
             try {
                 PlayerData.set( new NamespacedKey( plugin , "frozen_helmet" ) , PersistentDataType.STRING , Serializer.serialize( p.getInventory( ).getHelmet( ) ) );
             } catch ( NullPointerException ignored ) {
+                ignored.printStackTrace();
             }
-            if ( utils.getBoolean( "freeze.freeze_alerts" ) ) {
+            
+            
+            if ( utils.getBoolean( "freeze.set_ice_block" ) ) {
                 p.getInventory( ).setItem( 39 , new ItemStack( Material.BLUE_ICE ) );
+            } else {
+                utils.tell(p, "&anop");
             }
         } else {
             utils.PlaySound( p , "un_freeze" );
@@ -53,7 +58,7 @@ public class FreezePlayer {
             }
             status = main.plugin.getConfig( ).getString( "freeze.unfreeze" );
             
-            if ( utils.getBoolean( "freeze.freeze_alerts" ) ) {
+            if ( utils.getBoolean( "freeze.set_ice_block" ) ) {
                 try {
                     ItemStack helmet = Serializer.deserialize( PlayerData.get( new NamespacedKey( plugin , "frozen_helmet" ) , PersistentDataType.STRING ) );
                     p.getInventory( ).setHelmet( helmet );
@@ -61,6 +66,8 @@ public class FreezePlayer {
                 } catch ( NullPointerException ignored ) {
                     p.getInventory( ).setHelmet( null );
                 }
+            } else {
+                utils.tell(p, "&anop");
             }
         }
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {

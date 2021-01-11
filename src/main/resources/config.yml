@@ -10,7 +10,7 @@
 
 # Please jut change the text inside the "", otherwise the plugin will get bugged!                         #
 # If you need some help, or you have any suggestion please join in my discord:                            #
-# ------------------> https://discord.gg/fQ8DA7n <------------------                                      #
+# ------------------> https://discord.gg/rgekTwy <------------------                                      #
 # I made the config file, so you can be able to change almost every msg the plugin sent.                  #
 
 # ------------> Mysql <--------------
@@ -79,7 +79,7 @@ staff:
   un_vanished: "&7Vanish &cOff"
   freeze_message: "&4&lYou have been Frozen!"
   freeze_message_description: "&4&lDon't log out and join in the Discord"
-  freeze_ds: "discord.gg/invite/dFh8Q3n"
+  freeze_ds: "https://discord.gg/rgekTwy"
   freeze_unfrozen: "&4&lWe apologize, you can keep playing!"
   freeze_bypass: " &cHas permissions to bypass a freeze"
   never_seen: "&cThe player &a%player% &chas never connected to the server"

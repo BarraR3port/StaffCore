@@ -170,11 +170,13 @@ public final class main extends JavaPlugin {
         getServer( ).getMessenger( ).registerOutgoingPluginChannel( plugin , "BungeeCord" );
         Bukkit.getPluginManager( ).registerEvents( new GetReportMessage( plugin ) , plugin );
         Bukkit.getPluginManager( ).registerEvents( new MenuListener( ) , plugin );
-        Bukkit.getPluginManager( ).registerEvents( new FreezeListeners( plugin ) , plugin );
+        if ( !utils.isOlderVersion() ){
+            Bukkit.getPluginManager( ).registerEvents( new FreezeListeners( plugin ) , plugin );
+            Bukkit.getPluginManager( ).registerEvents( new InventoryListeners( plugin ) , plugin );
+        }
         Bukkit.getPluginManager( ).registerEvents( new onPlayerJoin( plugin ) , plugin );
         Bukkit.getPluginManager( ).registerEvents( new onPLayerLeave( plugin ) , plugin );
         Bukkit.getPluginManager( ).registerEvents( new onChat( ) , plugin );
-        Bukkit.getPluginManager( ).registerEvents( new InventoryListeners( plugin ) , plugin );
         Bukkit.getServer( ).getScheduler( ).scheduleSyncRepeatingTask( this , new TPS( ) , 100L , 1L );
         Bukkit.getServer( ).getScheduler( ).scheduleSyncRepeatingTask( this , ( ) -> {
             for ( Player players : Bukkit.getOnlinePlayers( ) ) {
@@ -216,7 +218,7 @@ public final class main extends JavaPlugin {
             c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&l         DISABLING STAFF-CORE." ) );
             c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&lYour config file its not configure well." ) );
             c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1------------------------------------------" ) );
-            plugin.getPluginLoader().disablePlugin(plugin);
+            //plugin.getPluginLoader().disablePlugin(plugin);
         }
     }
     
