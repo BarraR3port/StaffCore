@@ -18,7 +18,7 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.ArrayList;
 
 public class ReportManager extends Menu {
-    private static final SQLGetter data = main.plugin.data;
+    
     private final main plugin;
     
     public ReportManager( PlayerMenuUtility playerMenuUtility , main plugin ){

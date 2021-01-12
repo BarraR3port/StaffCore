@@ -30,7 +30,6 @@ public class GmSurvival implements CommandExecutor {
                 sender.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&4&lUse: gms <player>" ) );
             } else if ( args.length == 1 ) {
                 Player p = Bukkit.getPlayer( args[0] );
-                PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
                 if ( p instanceof Player ) {
                     if ( !(p.getGameMode( ) == GameMode.SURVIVAL) ) {
                         p.setGameMode( GameMode.SURVIVAL );
@@ -43,13 +42,16 @@ public class GmSurvival implements CommandExecutor {
                                 p.setFlying( true );
                             }
                         } else {
-                            if ( PlayerData.has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ) {
-                                SetFly.SetFly( p , true );
-                            }
-                            if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) ) {
-                                p.setAllowFlight( true );
-                                p.setFlying( true );
-                            }
+                            try {
+                                PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
+                                if ( PlayerData.has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ) {
+                                    SetFly.SetFly( p , true );
+                                }
+                                if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) ) {
+                                    p.setAllowFlight( true );
+                                    p.setFlying( true );
+                                }
+                            } catch ( NoSuchMethodError ignored ){ }
                         }
                         sender.sendMessage( utils.chat( plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&7You set Survival mode to: " + p.getName( ) ) );
                     } else {
@@ -63,7 +65,6 @@ public class GmSurvival implements CommandExecutor {
         }
         if ( args.length == 0 ) {
             Player p = ( Player ) sender;
-            PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
             if ( p.hasPermission( "staffcore.gms" ) ) {
                 if ( !(p.getGameMode( ) == GameMode.SURVIVAL) ) {
                     p.setGameMode( GameMode.SURVIVAL );
@@ -76,13 +77,16 @@ public class GmSurvival implements CommandExecutor {
                             p.setFlying( true );
                         }
                     } else {
-                        if ( PlayerData.has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ) {
-                            SetFly.SetFly( p , true );
-                        }
-                        if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) ) {
-                            p.setAllowFlight( true );
-                            p.setFlying( true );
-                        }
+                        try{
+                            PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
+                            if ( PlayerData.has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ) {
+                                SetFly.SetFly( p , true );
+                            }
+                            if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) ) {
+                                p.setAllowFlight( true );
+                                p.setFlying( true );
+                            }
+                        } catch ( NoSuchMethodError ignored ){ }
                     }
                     p.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "survival" ) ) );
                 } else {
@@ -94,7 +98,6 @@ public class GmSurvival implements CommandExecutor {
         } else if ( args.length == 1 ) {
             if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
                 Player p = Bukkit.getPlayer( args[0] );
-                PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
                 if ( sender.hasPermission( "staffcore.gms" ) ) {
                     if ( !(p.getGameMode( ) == GameMode.SURVIVAL) ) {
                         p.setGameMode( GameMode.SURVIVAL );
@@ -107,13 +110,16 @@ public class GmSurvival implements CommandExecutor {
                                 p.setFlying( true );
                             }
                         } else {
-                            if ( PlayerData.has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ) {
-                                SetFly.SetFly( p , true );
-                            }
-                            if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) ) {
-                                p.setAllowFlight( true );
-                                p.setFlying( true );
-                            }
+                            try{
+                                PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
+                                if ( PlayerData.has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ) {
+                                    SetFly.SetFly( p , true );
+                                }
+                                if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) ) {
+                                    p.setAllowFlight( true );
+                                    p.setFlying( true );
+                                }
+                            } catch ( NoSuchMethodError ignored ){ }
                         }
                         if ( !(sender == p) ) {
                             sender.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7You set Survival mode to: " + p.getName( ) ) );

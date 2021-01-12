@@ -65,24 +65,28 @@ public class utils {
     }
     
     public static void PlaySound( Player p , String path ){
-        if ( plugin.getConfig( ).getBoolean( "sounds" ) ) {
-            Sound sound = Sound.valueOf( plugin.getConfig( ).getString( "custom_sounds." + path ) );
-            p.playSound( p.getLocation( ) , sound , 1 , 1 );
-        }
+        try{
+            if ( plugin.getConfig( ).getBoolean( "sounds" ) ) {
+                Sound sound = Sound.valueOf( plugin.getConfig( ).getString( "custom_sounds." + path ) );
+                p.playSound( p.getLocation( ) , sound , 1 , 1 );
+            }
+        } catch ( IllegalArgumentException ignored ){ }
     }
     
     public static void PlayParticle( Player p , String path ){
-        if ( plugin.getConfig( ).getBoolean( "custom_particles." + path + ".enabled" ) ) {
-            Particle particle = Particle.valueOf( plugin.getConfig( ).getString( "custom_particles." + path + ".particle" ) );
-            int count = plugin.getConfig( ).getInt( "custom_particles." + path + ".count" );
-            int times = plugin.getConfig( ).getInt( "custom_particles." + path + ".number_of_times" );
-            int offSetX = plugin.getConfig( ).getInt( "custom_particles." + path + ".offSetX" );
-            int offSetY = plugin.getConfig( ).getInt( "custom_particles." + path + ".offSetY" );
-            int offSetZ = plugin.getConfig( ).getInt( "custom_particles." + path + ".offSetZ" );
-            for ( int i = 0; i < times; i++ ) {
-                p.getWorld( ).spawnParticle( particle , p.getLocation( ) , count , offSetX , offSetY , offSetZ );
+        try{
+            if ( plugin.getConfig( ).getBoolean( "custom_particles." + path + ".enabled" ) ) {
+                Particle particle = Particle.valueOf( plugin.getConfig( ).getString( "custom_particles." + path + ".particle" ) );
+                int count = plugin.getConfig( ).getInt( "custom_particles." + path + ".count" );
+                int times = plugin.getConfig( ).getInt( "custom_particles." + path + ".number_of_times" );
+                int offSetX = plugin.getConfig( ).getInt( "custom_particles." + path + ".offSetX" );
+                int offSetY = plugin.getConfig( ).getInt( "custom_particles." + path + ".offSetY" );
+                int offSetZ = plugin.getConfig( ).getInt( "custom_particles." + path + ".offSetZ" );
+                for ( int i = 0; i < times; i++ ) {
+                    p.getWorld( ).spawnParticle( particle , p.getLocation( ) , count , offSetX , offSetY , offSetZ );
+                }
             }
-        }
+        } catch ( IllegalArgumentException ignored ){ }
     }
     
     public static String stringify( List < String > l , String Ip ){
@@ -297,7 +301,7 @@ public class utils {
         } else if ( getString( "server_version" ).equalsIgnoreCase( "1.7" ) ){
             return true;
         } else {
-            return null;
+            return true;
         }
     }
 }

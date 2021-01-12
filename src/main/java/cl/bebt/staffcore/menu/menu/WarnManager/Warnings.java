@@ -1,6 +1,6 @@
 package cl.bebt.staffcore.menu.menu.WarnManager;
 
-import cl.bebt.staffcore.API.API;
+import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.Menu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
@@ -122,7 +122,7 @@ public class Warnings extends Menu {
                     lore.add( utils.chat( "&7Reason: &b" + SQLGetter.getWarned( i , "Reason" ) ) );
                     lore.add( utils.chat( "&7Created date: &c" + SQLGetter.getWarned( i , "Date" ) ) );
                     lore.add( utils.chat( "&7Expiry date: &c" + SQLGetter.getWarned( i , "ExpDate" ) ) );
-                    if ( API.isStillWarned( i ) ) {
+                    if ( StaffCoreAPI.isStillWarned( i ) ) {
                         lore.add( utils.chat( "&7Status: &aOpen" ) );
                         if ( Days > 365 ) {
                             lore.add( utils.chat( "&7Time left: &4PERMANENT" ) );
@@ -165,7 +165,7 @@ public class Warnings extends Menu {
                     lore.add( utils.chat( "&7Reason: &b" + plugin.warns.getConfig( ).getString( "warns." + i + ".reason" ) ) );
                     lore.add( utils.chat( "&7Created date: &c" + plugin.warns.getConfig( ).getString( "warns." + i + ".date" ) ) );
                     lore.add( utils.chat( "&7Expiry date: &c" + plugin.warns.getConfig( ).getString( "warns." + i + ".expdate" ) ) );
-                    if ( API.isStillWarned( i ) ) {
+                    if ( StaffCoreAPI.isStillWarned( i ) ) {
                         lore.add( utils.chat( "&7Status: &aOpen" ) );
                         if ( Days > 365 ) {
                             lore.add( utils.chat( "&7Time left: &4PERMANENT" ) );

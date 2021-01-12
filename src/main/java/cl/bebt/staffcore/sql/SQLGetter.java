@@ -428,6 +428,17 @@ public class SQLGetter {
             //ignored.printStackTrace();
         }
     }
+    public static void createTables(){
+        createTable( "vanish" );
+        createTable( "staff" );
+        createTable( "frozen" );
+        createTable( "flying" );
+        createTable( "staffchat" );
+        createAltsTable( );
+        createReportTable( );
+        createBansTable( );
+        createWarnsTable( );
+    }
     
     public static boolean PlayerExists( String tableName , String playerName ){
         try {

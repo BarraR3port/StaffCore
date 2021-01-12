@@ -12,7 +12,7 @@ import org.bukkit.plugin.Plugin;
 
 public class SetVanish {
     private static final Plugin plugin = main.plugin;
-    private static final SQLGetter data = main.plugin.data;
+    
     
     public static void setVanish( Player p , Boolean bol ){
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );

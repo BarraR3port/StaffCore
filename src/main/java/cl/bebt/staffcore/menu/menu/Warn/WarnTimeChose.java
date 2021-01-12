@@ -3,7 +3,6 @@ package cl.bebt.staffcore.menu.menu.Warn;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.Menu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
-import cl.bebt.staffcore.sql.SQLGetter;
 import cl.bebt.staffcore.utils.WarnPlayer;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.ChatColor;
@@ -21,7 +20,7 @@ import java.util.ArrayList;
 
 public class WarnTimeChose extends Menu {
     
-    private static final SQLGetter data = main.plugin.data;
+    
     
     private final main plugin;
     

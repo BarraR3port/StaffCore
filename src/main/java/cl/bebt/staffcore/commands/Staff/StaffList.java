@@ -21,20 +21,24 @@ public class StaffList implements CommandExecutor {
     
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        if ( sender instanceof Player ) {
-            Player p = ( Player ) sender;
-            if ( p.hasPermission( "staffcore.stafflist" ) ) {
-                if ( utils.getBoolean( "bungeecord.enabled" ) ) {
-                    main.staffMembers.clear( );
-                    main.playersServerMap.clear( );
-                    main.playersServerPingMap.clear( );
-                    main.playersServerGamemodesMap.clear( );
-                    SendMsg.sendStaffListRequest( p.getName( ) , utils.getString( "bungeecord.server" ) );
-                } else {
-                    new StaffListGui( new PlayerMenuUtility( p ) , plugin ).open( p );
+        if ( !utils.isOlderVersion( ) ){
+            if ( sender instanceof Player ) {
+                Player p = ( Player ) sender;
+                if ( p.hasPermission( "staffcore.stafflist" ) ) {
+                    if ( utils.getBoolean( "bungeecord.enabled" ) ) {
+                        main.staffMembers.clear( );
+                        main.playersServerMap.clear( );
+                        main.playersServerPingMap.clear( );
+                        main.playersServerGamemodesMap.clear( );
+                        SendMsg.sendStaffListRequest( p.getName( ) , utils.getString( "bungeecord.server" ) );
+                    } else {
+                        new StaffListGui( new PlayerMenuUtility( p ) , plugin ).open( p );
+                    }
+                    
                 }
-                
             }
+        } else {
+            utils.tell(sender,plugin.getConfig( ).getString( "server_prefix" )+"&cThis command can't be executed in older versions");
         }
         return true;
     }

@@ -50,9 +50,6 @@ commands:
   weather:
     description: Change the weather
     aliases: [ clima ]
-  head:
-    description: It gives you your head or Others
-    aliases: [ skull,cabeza ]
   suicide:
     description: Kill yourselfe
     aliases: [ suicidarme ]

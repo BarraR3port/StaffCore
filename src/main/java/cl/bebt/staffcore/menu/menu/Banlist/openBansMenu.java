@@ -1,6 +1,6 @@
 package cl.bebt.staffcore.menu.menu.Banlist;
 
-import cl.bebt.staffcore.API.API;
+import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PaginatedMenu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
@@ -159,7 +159,7 @@ public class openBansMenu extends PaginatedMenu {
                             lore.add( utils.chat( "&7Reason: &b" + SQLGetter.getBanned( bans.get( Integer.valueOf( this.index ) ).intValue( ) , "Reason" ) ) );
                             lore.add( utils.chat( "&7Created date: &c" + SQLGetter.getBanned( bans.get( Integer.valueOf( this.index ) ).intValue( ) , "Date" ) ) );
                             lore.add( utils.chat( "&7Expiry date: &c" + SQLGetter.getBanned( bans.get( Integer.valueOf( this.index ) ).intValue( ) , "ExpDate" ) ) );
-                            if ( API.isStillBanned( bans.get( Integer.valueOf( this.index ) ).intValue( ) ).booleanValue( ) ) {
+                            if ( StaffCoreAPI.isStillBanned( bans.get( Integer.valueOf( this.index ) ).intValue( ) ).booleanValue( ) ) {
                                 lore.add( utils.chat( "&7Status: &aOpen" ) );
                                 if ( Days > 365L ) {
                                     lore.add( utils.chat( "&7Time left: &4PERMANENT" ) );
@@ -203,7 +203,7 @@ public class openBansMenu extends PaginatedMenu {
                             lore.add( utils.chat( "&7Reason: &b" + this.plugin.bans.getConfig( ).getString( "bans." + bans.get( Integer.valueOf( this.index ) ) + ".reason" ) ) );
                             lore.add( utils.chat( "&7Created date: &c" + this.plugin.bans.getConfig( ).getString( "bans." + bans.get( Integer.valueOf( this.index ) ) + ".date" ) ) );
                             lore.add( utils.chat( "&7Expiry date: &c" + this.plugin.bans.getConfig( ).getString( "bans." + bans.get( Integer.valueOf( this.index ) ) + ".expdate" ) ) );
-                            if ( API.isStillBanned( bans.get( Integer.valueOf( this.index ) ).intValue( ) ).booleanValue( ) ) {
+                            if ( StaffCoreAPI.isStillBanned( bans.get( Integer.valueOf( this.index ) ).intValue( ) ).booleanValue( ) ) {
                                 lore.add( utils.chat( "&7Status: &aOpen" ) );
                                 if ( Days > 365L ) {
                                     lore.add( utils.chat( "&7Time left: &4PERMANENT" ) );

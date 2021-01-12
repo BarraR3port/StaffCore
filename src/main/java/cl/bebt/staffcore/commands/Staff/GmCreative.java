@@ -46,7 +46,6 @@ public class GmCreative implements CommandExecutor {
         if ( (sender instanceof Player) ) {
             if ( args.length == 0 ) {
                 Player p = ( Player ) sender;
-                
                 if ( p.hasPermission( "staffcore.gmc" ) ) {
                     if ( !(p.getGameMode( ) == GameMode.CREATIVE) ) {
                         p.setGameMode( GameMode.CREATIVE );
@@ -64,7 +63,6 @@ public class GmCreative implements CommandExecutor {
             } else if ( args.length == 1 ) {
                 if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
                     Player p = Bukkit.getPlayer( args[0] );
-                    
                     if ( sender.hasPermission( "staffcore.gmc" ) ) {
                         if ( !(p.getGameMode( ) == GameMode.CREATIVE) ) {
                             p.setGameMode( GameMode.CREATIVE );

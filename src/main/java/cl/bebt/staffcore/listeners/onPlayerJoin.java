@@ -1,10 +1,13 @@
 package cl.bebt.staffcore.listeners;
 
-import cl.bebt.staffcore.API.API;
+import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.sql.SQLGetter;
 import cl.bebt.staffcore.utils.*;
-import net.md_5.bungee.api.chat.*;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -14,7 +17,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.Plugin;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,14 +26,14 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class onPlayerJoin implements Listener {
-    private static final SQLGetter data = main.plugin.data;
-
+    
+    
     private static main plugin;
-
+    
     public onPlayerJoin(main plugin) {
         onPlayerJoin.plugin = plugin;
     }
-
+    
     @EventHandler
     void onPlayerPreJoin(PlayerLoginEvent e) {
         Player p = e.getPlayer();
@@ -53,13 +55,13 @@ public class onPlayerJoin implements Listener {
                 try {
                     if (SQLGetter.getBanned(i, "Name").equals(p.getName()) &&
                             SQLGetter.getBanned(i, "Status").equals("open") &&
-                            API.isStillBanned(i).booleanValue()) {
+                            StaffCoreAPI.isStillBanned( i ) ) {
                         e.disallow(PlayerLoginEvent.Result.KICK_OTHER, KickBannedPlayerSql(i));
                         break;
                     }
                     if (SQLGetter.getBannedIp(i).equals(IP) &&
                             SQLGetter.getBanned(i, "Status").equals("open") && SQLGetter.getBanned(i, "IP_Banned").equals("true") &&
-                            API.isStillBanned(i).booleanValue()) {
+                            StaffCoreAPI.isStillBanned(i)) {
                         e.disallow(PlayerLoginEvent.Result.KICK_OTHER, KickBannedPlayerSql(i));
                         break;
                     }
@@ -84,147 +86,149 @@ public class onPlayerJoin implements Listener {
                 try {
                     if (Objects.equals(plugin.bans.getConfig().getString("bans." + i + ".name"), p.getName()) &&
                             Objects.equals(plugin.bans.getConfig().getString("bans." + i + ".status"), "open") &&
-                            API.isStillBanned(i).booleanValue()) {
+                            StaffCoreAPI.isStillBanned(i)) {
                         e.disallow(PlayerLoginEvent.Result.KICK_OTHER, KickBannedPlayer(i));
                         break;
                     }
                     if (plugin.bans.getConfig().getBoolean("bans." + i + ".IP-Banned") &&
                             Objects.equals(plugin.bans.getConfig().getString("bans." + i + ".IP"), IP) &&
                             Objects.equals(plugin.bans.getConfig().getString("bans." + i + ".status"), "open") &&
-                            API.isStillBanned(i).booleanValue()) {
+                            StaffCoreAPI.isStillBanned(i)) {
                         e.disallow(PlayerLoginEvent.Result.KICK_OTHER, KickBannedPlayer(i));
                         break;
                     }
-                } catch (NullPointerException nullPointerException) {}
+                } catch (NullPointerException ignored ) {}
             }
         }
     }
-
+    
     @EventHandler
     void onPlayerJoinEvent(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-        PersistentDataContainer PlayerData = p.getPersistentDataContainer();
         if (p.hasPermission("staffcore.vanish") &&
                 plugin.getConfig().getBoolean("staff.vanish_on_join")) {
-            SetVanish.setVanish(p, Boolean.valueOf(true));
+            SetVanish.setVanish(p, true);
             utils.tell(p, plugin.getConfig().getString("staff.staff_prefix") + plugin.getConfig().getString("staff.vanished"));
         }
-        if (utils.currentPlayerWarns(p.getName()) != 0 && utils.getBoolean("warns.notify").booleanValue()) {
+        if (utils.currentPlayerWarns(p.getName()) != 0 && utils.getBoolean("warns.notify")) {
             String msg = utils.getString("warns.alerts.notify");
             msg = msg.replace("%amount%", "" + utils.currentPlayerWarns(p.getName()));
             ComponentBuilder cb = new ComponentBuilder(utils.chat("&7Click to open your Warns"));
             TextComponent dis = new TextComponent(utils.chat(utils.getString("server_prefix") + msg));
             dis.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, cb.create()));
             dis.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/warningns"));
-            p.spigot().sendMessage((BaseComponent)dis);
+            p.spigot().sendMessage( dis );
         }
-        if (utils.mysqlEnabled()) {
-            if (SQLGetter.isTrue(p, "frozen").equals("true")) {
-                if (!p.getPersistentDataContainer().has(new NamespacedKey((Plugin)plugin, "frozen"), PersistentDataType.STRING))
-                    FreezePlayer.FreezePlayer(p, "CONSOLE", Boolean.valueOf(true));
-            } else if (SQLGetter.isTrue(p, "frozen").equals("false") &&
-                    p.getPersistentDataContainer().has(new NamespacedKey((Plugin)plugin, "frozen"), PersistentDataType.STRING)) {
-                FreezePlayer.FreezePlayer(p, "CONSOLE", Boolean.valueOf(false));
-            }
-            if (SQLGetter.isTrue(p, "staff").equals("true")) {
-                if (!p.getPersistentDataContainer().has(new NamespacedKey((Plugin)plugin, "staff"), PersistentDataType.STRING)) {
-                    SetStaffItems.On(p);
-                } else {
-                    p.setAllowFlight(true);
-                    p.setFlying(true);
+        try {
+            if ( utils.mysqlEnabled( ) ) {
+                if ( SQLGetter.isTrue( p , "frozen" ).equals( "true" ) ) {
+                    if ( !p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) )
+                        FreezePlayer.FreezePlayer( p , "CONSOLE" , true );
+                } else if ( SQLGetter.isTrue( p , "frozen" ).equals( "false" ) &&
+                        p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
+                    FreezePlayer.FreezePlayer( p , "CONSOLE" , false );
                 }
-            } else if (SQLGetter.isTrue(p, "staff").equals("false") &&
-                    p.getPersistentDataContainer().has(new NamespacedKey((Plugin)plugin, "staff"), PersistentDataType.STRING)) {
-                SetStaffItems.Off(p);
-            }
-            if (SQLGetter.isTrue(p, "vanish").equals("true")) {
-                if (!p.getPersistentDataContainer().has(new NamespacedKey((Plugin)plugin, "vanished"), PersistentDataType.STRING))
-                    SetVanish.setVanish(p, Boolean.valueOf(true));
-                for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-                    if (!player.getPersistentDataContainer().has(new NamespacedKey((Plugin)plugin, "vanished"), PersistentDataType.STRING) || SQLGetter.isTrue(player, "vanish").equals("false")) {
-                        if (p.hasPermission("staffcore.vanish.see"))
-                            return;
-                        player.hidePlayer((Plugin)plugin, p);
-                        continue;
+                if ( SQLGetter.isTrue( p , "staff" ).equals( "true" ) ) {
+                    if ( !p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) ) {
+                        SetStaffItems.On( p );
+                    } else {
+                        p.setAllowFlight( true );
+                        p.setFlying( true );
                     }
-                    player.showPlayer((Plugin)plugin, p);
-                    player.sendMessage(utils.chat(plugin.getConfig().getString("staff.staff_prefix") + p.getDisplayName() + " &3(&dVanished&3)"));
-                    utils.PlaySound(player, "vanished_join");
+                } else if ( SQLGetter.isTrue( p , "staff" ).equals( "false" ) &&
+                        p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) ) {
+                    SetStaffItems.Off( p );
                 }
-            }
-            if (SQLGetter.isTrue(p, "vanish").equals("false")) {
-                if (!p.getPersistentDataContainer().has(new NamespacedKey((Plugin)plugin, "vanished"), PersistentDataType.STRING))
-                    SetVanish.setVanish(p, Boolean.valueOf(false));
-                for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-                    if (player.getPersistentDataContainer().has(new NamespacedKey((Plugin)plugin, "vanished"), PersistentDataType.STRING) ||
-                            SQLGetter.isTrue(player, "vanish").equals("true")) {
-                        if (p.hasPermission("staffcore.vanish.see"))
-                            return;
-                        p.hidePlayer((Plugin)plugin, player);
-                    }
-                }
-            }
-            if (SQLGetter.isTrue(p, "flying").equals("true"))
-                if (!p.getPersistentDataContainer().has(new NamespacedKey((Plugin)plugin, "flying"), PersistentDataType.STRING)) {
-                    SetFly.SetFly(p, Boolean.valueOf(true));
-                } else {
-                    p.setAllowFlight(true);
-                    p.setFlying(true);
-                }
-            if (SQLGetter.isTrue(p, "staffchat").equals("true"))
-                p.getPersistentDataContainer().set(new NamespacedKey((Plugin)plugin, "staffchat"), PersistentDataType.STRING, "staffchat");
-            if (SQLGetter.isTrue(p, "staffchat").equals("false"))
-                p.getPersistentDataContainer().remove(new NamespacedKey((Plugin)plugin, "staffchat"));
-        } else {
-            if (PlayerData.has(new NamespacedKey((Plugin)plugin, "flying"), PersistentDataType.STRING)) {
-                SetFly.SetFly(p, Boolean.valueOf(true));
-            } else if (!PlayerData.has(new NamespacedKey((Plugin)plugin, "flying"), PersistentDataType.STRING) &&
-                    !PlayerData.has(new NamespacedKey((Plugin)plugin, "staff"), PersistentDataType.STRING) &&
-                    !PlayerData.has(new NamespacedKey((Plugin)plugin, "vanished"), PersistentDataType.STRING)) {
-                SetFly.SetFly(p, Boolean.valueOf(false));
-            }
-            if (PlayerData.has(new NamespacedKey((Plugin)plugin, "vanished"), PersistentDataType.STRING) || PlayerData.has(new NamespacedKey((Plugin)plugin, "staff"), PersistentDataType.STRING)) {
-                p.setAllowFlight(true);
-                p.setFlying(true);
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (!player.hasPermission("staffcore.vanish.see") && !player.hasPermission("staffcore.vanish")) {
-                        if (!player.getPersistentDataContainer().has(new NamespacedKey((Plugin)plugin, "staff"), PersistentDataType.STRING)) {
-                            player.hidePlayer((Plugin)plugin, p);
+                if ( SQLGetter.isTrue( p , "vanish" ).equals( "true" ) ) {
+                    if ( !p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) )
+                        SetVanish.setVanish( p , true );
+                    for ( Player player : Bukkit.getServer( ).getOnlinePlayers( ) ) {
+                        if ( !player.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || SQLGetter.isTrue( player , "vanish" ).equals( "false" ) ) {
+                            if ( p.hasPermission( "staffcore.vanish.see" ) )
+                                return;
+                            player.hidePlayer( plugin , p );
                             continue;
                         }
-                        p.showPlayer((Plugin)plugin, player);
-                        continue;
+                        player.showPlayer( plugin , p );
+                        player.sendMessage( utils.chat( plugin.getConfig( ).getString( "staff.staff_prefix" ) + p.getDisplayName( ) + " &3(&dVanished&3)" ) );
+                        utils.PlaySound( player , "vanished_join" );
                     }
-                    if (player.getPersistentDataContainer().has(new NamespacedKey((Plugin)plugin, "staff"), PersistentDataType.STRING) || player
-                            .getPersistentDataContainer().has(new NamespacedKey((Plugin)plugin, "vanished"), PersistentDataType.STRING) || player
-                            .hasPermission("staffcore.vanish.see")) {
-                        p.showPlayer((Plugin)plugin, player);
-                        player.showPlayer((Plugin)plugin, p);
-                        player.sendMessage(utils.chat(plugin.getConfig().getString("staff.staff_prefix") + p.getDisplayName() + " &3(&dVanished&3)"));
-                        utils.PlaySound(player, "vanished_join");
-                        continue;
-                    }
-                    player.hidePlayer((Plugin)plugin, p);
                 }
-            } else {
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (p.hasPermission("staffcore.vanish.see") && p.hasPermission("staffcore.vanish")) {
-                        if (player.getPersistentDataContainer().has(new NamespacedKey((Plugin)plugin, "staff"), PersistentDataType.STRING) || player.getPersistentDataContainer().has(new NamespacedKey((Plugin)plugin, "vanished"), PersistentDataType.STRING)) {
-                            p.showPlayer((Plugin)plugin, player);
-                            player.showPlayer((Plugin)plugin, p);
+                if ( SQLGetter.isTrue( p , "vanish" ).equals( "false" ) ) {
+                    if ( !p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) )
+                        SetVanish.setVanish( p , false );
+                    for ( Player player : Bukkit.getServer( ).getOnlinePlayers( ) ) {
+                        if ( player.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) ||
+                                SQLGetter.isTrue( player , "vanish" ).equals( "true" ) ) {
+                            if ( p.hasPermission( "staffcore.vanish.see" ) )
+                                return;
+                            p.hidePlayer( plugin , player );
                         }
-                        continue;
                     }
-                    if (player.getPersistentDataContainer().has(new NamespacedKey((Plugin)plugin, "staff"), PersistentDataType.STRING) || player.getPersistentDataContainer().has(new NamespacedKey((Plugin)plugin, "vanished"), PersistentDataType.STRING)) {
-                        p.hidePlayer((Plugin)plugin, player);
-                        continue;
+                }
+                if ( SQLGetter.isTrue( p , "flying" ).equals( "true" ) )
+                    if ( !p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ) {
+                        SetFly.SetFly( p , true );
+                    } else {
+                        p.setAllowFlight( true );
+                        p.setFlying( true );
                     }
-                    p.showPlayer((Plugin)plugin, player);
+                if ( SQLGetter.isTrue( p , "staffchat" ).equals( "true" ) )
+                    p.getPersistentDataContainer( ).set( new NamespacedKey( plugin , "staffchat" ) , PersistentDataType.STRING , "staffchat" );
+                if ( SQLGetter.isTrue( p , "staffchat" ).equals( "false" ) )
+                    p.getPersistentDataContainer( ).remove( new NamespacedKey( plugin , "staffchat" ) );
+            } else {
+                PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
+                if ( PlayerData.has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ) {
+                    SetFly.SetFly( p , true );
+                } else if ( !PlayerData.has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) &&
+                        !PlayerData.has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) &&
+                        !PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) ) {
+                    SetFly.SetFly( p , false );
+                }
+                if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) ) {
+                    p.setAllowFlight( true );
+                    p.setFlying( true );
+                    for ( Player player : Bukkit.getOnlinePlayers( ) ) {
+                        if ( !player.hasPermission( "staffcore.vanish.see" ) && !player.hasPermission( "staffcore.vanish" ) ) {
+                            if ( !player.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) ) {
+                                player.hidePlayer( plugin , p );
+                                continue;
+                            }
+                            p.showPlayer( plugin , player );
+                            continue;
+                        }
+                        if ( player.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) || player
+                                .getPersistentDataContainer( ).has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || player
+                                .hasPermission( "staffcore.vanish.see" ) ) {
+                            p.showPlayer( plugin , player );
+                            player.showPlayer( plugin , p );
+                            player.sendMessage( utils.chat( plugin.getConfig( ).getString( "staff.staff_prefix" ) + p.getDisplayName( ) + " &3(&dVanished&3)" ) );
+                            utils.PlaySound( player , "vanished_join" );
+                            continue;
+                        }
+                        player.hidePlayer( plugin , p );
+                    }
+                } else {
+                    for ( Player player : Bukkit.getOnlinePlayers( ) ) {
+                        if ( p.hasPermission( "staffcore.vanish.see" ) && p.hasPermission( "staffcore.vanish" ) ) {
+                            if ( player.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) || player.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) ) {
+                                p.showPlayer( plugin , player );
+                                player.showPlayer( plugin , p );
+                            }
+                            continue;
+                        }
+                        if ( player.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) || player.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) ) {
+                            p.hidePlayer( plugin , player );
+                            continue;
+                        }
+                        p.showPlayer( plugin , player );
+                    }
                 }
             }
-        }
+        } catch(NoSuchMethodError ignored){ }
     }
-
+    
     String KickBannedPlayerSql(int Id) {
         try {
             String reason = SQLGetter.getBanned(Id, "Reason");
@@ -268,7 +272,7 @@ public class onPlayerJoin implements Listener {
             return null;
         }
     }
-
+    
     String KickBannedPlayer(int Id) {
         try {
             String p = plugin.bans.getConfig().getString("bans." + Id + ".banned_by");

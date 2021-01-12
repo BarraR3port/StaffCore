@@ -1,6 +1,6 @@
 package cl.bebt.staffcore.menu.menu.Banlist;
 
-import cl.bebt.staffcore.API.API;
+import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PaginatedMenu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
@@ -160,7 +160,7 @@ public class closedBansMenu extends PaginatedMenu {
                             lore.add( utils.chat( "&7Expiry date: &c" + SQLGetter.getBanned( bans.get( Integer.valueOf( this.index ) ).intValue( ) , "ExpDate" ) ) );
                             if ( SQLGetter.getBanned( bans.get( Integer.valueOf( this.index ) ).intValue( ) , "Status" ).equals( "closed" ) ) {
                                 lore.add( utils.chat( "&7Status: &cClosed" ) );
-                            } else if ( API.isStillBanned( bans.get( Integer.valueOf( this.index ) ).intValue( ) ).booleanValue( ) ) {
+                            } else if ( StaffCoreAPI.isStillBanned( bans.get( Integer.valueOf( this.index ) ).intValue( ) ).booleanValue( ) ) {
                                 lore.add( utils.chat( "&7Status: &aOpen" ) );
                                 if ( Days > 365L ) {
                                     lore.add( utils.chat( "&7Time left: &4PERMANENT" ) );

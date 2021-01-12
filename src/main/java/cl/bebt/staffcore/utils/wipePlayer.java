@@ -41,10 +41,11 @@ public class wipePlayer {
                 }
                 try {
                     SetStaffItems.Off( Bukkit.getPlayer( p ) );
-                } catch ( NullPointerException ignored ) {
-                }
+                } catch ( NullPointerException | NoSuchMethodError ignored ) { }
                 SQLGetter.wipe( p );
+                try{
                 PersistentDataContainer( p, plugin );
+                } catch (  NoSuchMethodError ignored ) { }
                 SQLGetter.deleteAlts( p );
             } else {
                 if ( plugin.getConfig( ).getBoolean( "wipe.bans" ) ) {
@@ -86,9 +87,10 @@ public class wipePlayer {
                 }
                 try {
                     SetStaffItems.Off( Bukkit.getPlayer( p ) );
-                } catch ( NullPointerException ignored ) {
-                }
-                PersistentDataContainer( p, plugin );
+                } catch ( NullPointerException | NoSuchMethodError ignored ) { }
+                try{
+                    PersistentDataContainer( p, plugin );
+                } catch (  NoSuchMethodError ignored ) { }
                 plugin.alts.reloadConfig( );
                 plugin.alts.getConfig( ).set( "alts." + p , null );
                 plugin.alts.saveConfig( );

@@ -20,15 +20,19 @@ public class ReportList implements CommandExecutor {
     
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        if ( !(sender instanceof Player) ) {
-            utils.tell( sender , "&aHey, you need to be a player to execute this command!" );
-        } else {
-            if ( sender.hasPermission( "staffcore.reportlist" ) ) {
-                Player p = ( Player ) sender;
-                new ReportManager( main.getPlayerMenuUtility( p ) , main.plugin ).open( p );
+        if ( !utils.isOlderVersion( ) ){
+            if ( !(sender instanceof Player) ) {
+                utils.tell( sender , "&aHey, you need to be a player to execute this command!" );
             } else {
-                utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) );
+                if ( sender.hasPermission( "staffcore.reportlist" ) ) {
+                    Player p = ( Player ) sender;
+                    new ReportManager( main.getPlayerMenuUtility( p ) , main.plugin ).open( p );
+                } else {
+                    utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) );
+                }
             }
+        } else {
+            utils.tell(sender,plugin.getConfig( ).getString( "server_prefix" )+"&cThis command can't be executed in older versions");
         }
         return false;
     }

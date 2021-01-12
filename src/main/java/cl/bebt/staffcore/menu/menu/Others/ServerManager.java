@@ -7,7 +7,6 @@ import cl.bebt.staffcore.menu.menu.Banlist.BanManager;
 import cl.bebt.staffcore.menu.menu.Chat.ChatManager;
 import cl.bebt.staffcore.menu.menu.Reports.ReportManager;
 import cl.bebt.staffcore.menu.menu.WarnManager.WarnManager;
-import cl.bebt.staffcore.sql.SQLGetter;
 import cl.bebt.staffcore.utils.Items;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.Material;
@@ -21,7 +20,7 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.ArrayList;
 
 public class ServerManager extends MenuC {
-    private static final SQLGetter data = main.plugin.data;
+    
     private final main plugin;
     
     public ServerManager( PlayerMenuUtility playerMenuUtility , main plugin ){

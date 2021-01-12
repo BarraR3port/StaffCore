@@ -23,24 +23,28 @@ public class Warn implements TabExecutor {
     
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        if ( !(sender instanceof Player) ) {
-        
-        } else {
-            if ( args.length == 1 ) {
-                Player p = ( Player ) sender;
-                if ( p.hasPermission( "staffcore.warn" ) ) {
-                    if ( utils.isRegistered( args[0] ) ) {
-                        new WarnPlayer( p , args[0] , plugin );
-                    } else {
-                        utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&cThe player &a" + args[0] + " &cis not registered." );
-                    }
-                } else {
-                    utils.tell( sender , utils.getString( "server_prefix" ) + utils.getString( "no_permissions" ) );
-                }
-                
+        if ( !utils.isOlderVersion( ) ){
+            if ( !(sender instanceof Player) ) {
+                utils.tell( sender, "&cThis command can only be executed by players." );
             } else {
-                utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&cWrong use, use /warn <player>" );
+                if ( args.length == 1 ) {
+                    Player p = ( Player ) sender;
+                    if ( p.hasPermission( "staffcore.warn" ) ) {
+                        if ( utils.isRegistered( args[0] ) ) {
+                            new WarnPlayer( p , args[0] , plugin );
+                        } else {
+                            utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&cThe player &a" + args[0] + " &cis not registered." );
+                        }
+                    } else {
+                        utils.tell( sender , utils.getString( "server_prefix" ) + utils.getString( "no_permissions" ) );
+                    }
+                    
+                } else {
+                    utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&cWrong use, use /warn <player>" );
+                }
             }
+        } else {
+            utils.tell(sender,plugin.getConfig( ).getString( "server_prefix" )+"&cThis command can't be executed in older versions");
         }
         return false;
     }

@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class SetStaffItems {
-    private static final SQLGetter data = main.plugin.data;
+    
     private static main plugin;
     
     public SetStaffItems( main plugin ){

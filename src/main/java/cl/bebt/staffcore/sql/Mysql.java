@@ -10,11 +10,6 @@ import java.sql.SQLException;
 public class Mysql {
     
     private static Connection connection;
-    private final String host = main.plugin.getConfig( ).getString( "mysql.host" );
-    private final String port = main.plugin.getConfig( ).getString( "mysql.port" );
-    private final String database = main.plugin.getConfig( ).getString( "mysql.database" );
-    private final String username = main.plugin.getConfig( ).getString( "mysql.username" );
-    private final String password = main.plugin.getConfig( ).getString( "mysql.password" );
     
     public static boolean isConnected( ){
         return (connection != null);
@@ -33,7 +28,12 @@ public class Mysql {
         return connection;
     }
     
-    public void connect( ) throws SQLException{
+    public static void connect( ) throws SQLException{
+        String host = main.plugin.getConfig( ).getString( "mysql.host" );
+        String port = main.plugin.getConfig( ).getString( "mysql.port" );
+        String database = main.plugin.getConfig( ).getString( "mysql.database" );
+        String username = main.plugin.getConfig( ).getString( "mysql.username" );
+        String password = main.plugin.getConfig( ).getString( "mysql.password" );
         if ( !isConnected( ) ) {
             connection = DriverManager.getConnection( "jdbc:mysql://" +
                             host + ":" + port + "/" + database + "?useSSL=false" ,

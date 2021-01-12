@@ -22,37 +22,41 @@ public class unBan implements TabExecutor {
     }
     
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        if ( sender instanceof Player ) {
-            if ( args.length == 1 ) {
-                Player p = ( Player ) sender;
-                if ( p.hasPermission( "staffcore.unban" ) ) {
-                    ArrayList < Integer > ids = BanIds( args[0] );
-                    try {
-                        for ( Iterator < Integer > iterator = ids.iterator( ); iterator.hasNext( ); ) {
-                            int i = iterator.next( ).intValue( );
-                            BanPlayer.unBan( p , i );
+        if ( !utils.isOlderVersion( ) ) {
+            if ( sender instanceof Player ) {
+                if ( args.length == 1 ) {
+                    Player p = ( Player ) sender;
+                    if ( p.hasPermission( "staffcore.unban" ) ) {
+                        ArrayList < Integer > ids = BanIds( args[0] );
+                        try {
+                            for ( Iterator < Integer > iterator = ids.iterator( ); iterator.hasNext( ); ) {
+                                int i = iterator.next( ).intValue( );
+                                BanPlayer.unBan( p , i );
+                            }
+                        } catch ( NullPointerException ignored ) {
+                            utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&cThe player " + args[0] + " didn't got un banned" );
                         }
-                    } catch ( NullPointerException ignored ) {
-                        utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&cThe player " + args[0] + " didn't got un banned" );
+                    } else {
+                        utils.tell( sender , utils.getString( "staff.staff_prefix" ) + utils.getString( "no_permissions" ) );
                     }
                 } else {
-                    utils.tell( sender , utils.getString( "staff.staff_prefix" ) + utils.getString( "no_permissions" ) );
+                    utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&7Use /unban <&aplayer&7>" );
+                }
+            } else if ( args.length == 1 ) {
+                ArrayList < Integer > ids = BanIds( args[0] );
+                try {
+                    for ( Iterator < Integer > iterator = ids.iterator( ); iterator.hasNext( ); ) {
+                        int i = iterator.next( ).intValue( );
+                        BanPlayer.unBan( sender , i );
+                    }
+                } catch ( NullPointerException ignored ) {
+                    utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&cThe player " + args[0] + " didn't got un banned" );
                 }
             } else {
                 utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&7Use /unban <&aplayer&7>" );
             }
-        } else if ( args.length == 1 ) {
-            ArrayList < Integer > ids = BanIds( args[0] );
-            try {
-                for ( Iterator < Integer > iterator = ids.iterator( ); iterator.hasNext( ); ) {
-                    int i = iterator.next( ).intValue( );
-                    BanPlayer.unBan( sender , i );
-                }
-            } catch ( NullPointerException ignored ) {
-                utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&cThe player " + args[0] + " didn't got un banned" );
-            }
         } else {
-            utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&7Use /unban <&aplayer&7>" );
+            utils.tell(sender,plugin.getConfig( ).getString( "server_prefix" )+"&cThis command can't be executed in older versions");
         }
         return true;
     }

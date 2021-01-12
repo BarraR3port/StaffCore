@@ -18,11 +18,11 @@ import java.util.Date;
 import java.util.List;
 
 @SuppressWarnings({"unused"})
-public class API {
+public class StaffCoreAPI {
     private static main plugin;
     
-    public API( main plugin ){
-        API.plugin = plugin;
+    public StaffCoreAPI( main plugin ){
+        StaffCoreAPI.plugin = plugin;
     }
     
     public static String getIP( String player ){
@@ -274,5 +274,21 @@ public class API {
     
     public static void warnPlayer( Player player , String warned , String reason ){
         WarnPlayer.createWarn( player , warned , reason , utils.getInt( "warns.expire_after" ) , utils.getString( "warns.expire_after_quantity" ) );
+    }
+    
+    public static void muteGlobalChat(){
+        main.plugin.chatMuted = true;
+    }
+    
+    public static void unMuteGlobalChat(){
+        main.plugin.chatMuted = false;
+    }
+    
+    public static void mutePlayerChat(CommandSender sender, Player muted){
+        ToggleChat.MutePlayer( sender, muted );
+    }
+    
+    public static void unMutePlayerChat(CommandSender sender, Player muted){
+        ToggleChat.unMute( sender, muted );
     }
 }

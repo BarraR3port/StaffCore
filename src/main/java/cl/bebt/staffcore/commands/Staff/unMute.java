@@ -26,53 +26,34 @@ public class unMute implements TabExecutor {
     @Override
     public List < String > onTabComplete( CommandSender sender , Command command , String alias , String[] args ){
         List < String > muted = new ArrayList <>( );
-        if ( args.length == 1 ) {
-            for ( Player p : Bukkit.getOnlinePlayers( ) ) {
-                if ( p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "muted" ) , PersistentDataType.STRING ) ) {
-                    muted.add( p.getName( ) );
-                } else if ( !CountdownManager.checkMuteCountdown( p ) ) {
-                    muted.add( p.getName( ) );
+        if ( !utils.isOlderVersion( ) ) {
+            if ( args.length == 1 ) {
+                for ( Player p : Bukkit.getOnlinePlayers( ) ) {
+                    if ( p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "muted" ) , PersistentDataType.STRING ) ) {
+                        muted.add( p.getName( ) );
+                    } else if ( !CountdownManager.checkMuteCountdown( p ) ) {
+                        muted.add( p.getName( ) );
+                    }
                 }
-            }
-            if ( muted.isEmpty( ) ) {
-                muted.add( utils.chat( "&cThere are no muted players!" ) );
+                if ( muted.isEmpty( ) ) {
+                    muted.add( utils.chat( "&cThere are no muted players!" ) );
+                    return muted;
+                }
                 return muted;
             }
-            return muted;
         }
-        
         return null;
     }
     
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        if ( !(sender instanceof Player) ) {
-            if ( args.length == 0 ) {
-                if ( plugin.chatMuted == false ) {
-                    utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&cThe chat is not muted" );
-                } else {
-                    Bukkit.broadcastMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7The CONSOLE &cUnMuted &7the chat!" ) );
-                    ToggleChat.Mute( false );
-                }
-            } else if ( args.length == 1 ) {
-                if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
-                    Player muted = Bukkit.getPlayer( args[0] );
-                    ToggleChat.unMute( sender , muted );
-                } else {
-                    utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "player_dont_exist" ) );
-                }
-            } else {
-                utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&cWrong usage." );
-                utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&cUse unmute <PlayerName>" );
-            }
-        } else {
-            Player p = ( Player ) sender;
-            if ( p.hasPermission( "staffcore.unmute" ) ) {
+        if ( !utils.isOlderVersion( ) ) {
+            if ( !(sender instanceof Player) ) {
                 if ( args.length == 0 ) {
                     if ( plugin.chatMuted == false ) {
-                        utils.tell( p , plugin.getConfig( ).getString( "server_prefix" ) + "&cThe chat is not muted" );
+                        utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&cThe chat is not muted" );
                     } else {
-                        Bukkit.broadcastMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7The player &r" + p.getDisplayName( ) + " &aUnMuted the chat" ) );
+                        Bukkit.broadcastMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7The CONSOLE &cUnMuted &7the chat!" ) );
                         ToggleChat.Mute( false );
                     }
                 } else if ( args.length == 1 ) {
@@ -87,8 +68,32 @@ public class unMute implements TabExecutor {
                     utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&cUse unmute <PlayerName>" );
                 }
             } else {
-                utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) );
+                Player p = ( Player ) sender;
+                if ( p.hasPermission( "staffcore.unmute" ) ) {
+                    if ( args.length == 0 ) {
+                        if ( plugin.chatMuted == false ) {
+                            utils.tell( p , plugin.getConfig( ).getString( "server_prefix" ) + "&cThe chat is not muted" );
+                        } else {
+                            Bukkit.broadcastMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7The player &r" + p.getDisplayName( ) + " &aUnMuted the chat" ) );
+                            ToggleChat.Mute( false );
+                        }
+                    } else if ( args.length == 1 ) {
+                        if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
+                            Player muted = Bukkit.getPlayer( args[0] );
+                            ToggleChat.unMute( sender , muted );
+                        } else {
+                            utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "player_dont_exist" ) );
+                        }
+                    } else {
+                        utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&cWrong usage." );
+                        utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&cUse unmute <PlayerName>" );
+                    }
+                } else {
+                    utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) );
+                }
             }
+        } else {
+            utils.tell(sender,plugin.getConfig( ).getString( "server_prefix" )+"&cThis command can't be executed in older versions");
         }
         return true;
         

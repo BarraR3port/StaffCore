@@ -11,7 +11,6 @@ import org.bukkit.plugin.Plugin;
 
 public class SetFly {
     private static final Plugin plugin = main.plugin;
-    private static final SQLGetter data = main.plugin.data;
     
     public static void SetFly( Player p , Boolean bol ){
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
