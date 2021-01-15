@@ -276,11 +276,11 @@ public class StaffCoreAPI {
         WarnPlayer.createWarn( player , warned , reason , utils.getInt( "warns.expire_after" ) , utils.getString( "warns.expire_after_quantity" ) );
     }
     
-    public static void muteGlobalChat(){
+    public static void muteGlobalChat( ){
         main.plugin.chatMuted = true;
     }
     
-    public static void unMuteGlobalChat(){
+    public static void unMuteGlobalChat( ){
         main.plugin.chatMuted = false;
     }
     
@@ -291,4 +291,33 @@ public class StaffCoreAPI {
     public static void unMutePlayerChat(CommandSender sender, Player muted){
         ToggleChat.unMute( sender, muted );
     }
+    
+    public static List<String> getVanishedPlayer( ){
+        if ( mysqlEnabled( ) ) {
+            return SQLGetter.getVanishedPlayers();
+        } else {
+            List<String> vanishedPlayer = new ArrayList<>();
+            for ( Player p : Bukkit.getOnlinePlayers( ) ) {
+                if ( p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "vanished" ), PersistentDataType.STRING ) ){
+                    vanishedPlayer.add( p.getName() );
+                }
+            }
+            return vanishedPlayer;
+        }
+    }
+    
+    public static List<String> getStaffPlayer( ){
+        if ( mysqlEnabled( ) ) {
+            return SQLGetter.getStaffPlayers();
+        } else {
+            List<String> staffPlayer = new ArrayList<>();
+            for ( Player p : Bukkit.getOnlinePlayers( ) ) {
+                if ( p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staff" ), PersistentDataType.STRING ) ){
+                    staffPlayer.add( p.getName() );
+                }
+            }
+            return staffPlayer;
+        }
+    }
+    
 }

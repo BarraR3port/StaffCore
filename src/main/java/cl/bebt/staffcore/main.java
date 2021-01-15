@@ -137,17 +137,17 @@ public final class main extends JavaPlugin {
                                 utils.tell( players , getConfig( ).getString( "server_prefix" ) + "&aYou were UnMuted!" );
                             }
                         }
-                        
-                        
-                    } catch ( NullPointerException | ArrayIndexOutOfBoundsException ignored ) {
-                    }
+                    } catch ( NullPointerException | ArrayIndexOutOfBoundsException ignored ) { }
                 }
             } , 10L , 10L );
+        } else {
+            c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------------------" ) );
+            c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&l              STAFF-CORE." ) );
+            c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&lRunning STAFF-CORE in a old version Server." ) );
+            c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------------------" ) );
         }
         new UpdateChecker( plugin , 82324 ).getLatestVersion( version -> {
-            if ( getDescription( ).getVersion( ).equals( version ) ) {
-                c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&aYou are using &bStaff-Core!" + getDescription( ).getVersion( ) ) );
-            } else {
+            if ( !getDescription( ).getVersion( ).equals( version ) ) {
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&c     Hey, there is a new version out!" ) );
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&b         Staff-Core " + version ) );
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------" ) );
@@ -160,10 +160,6 @@ public final class main extends JavaPlugin {
                 }
             }
         } );
-        c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------------------" ) );
-        c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&l              STAFF-CORE." ) );
-        c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&lRunning STAFF-CORE in a old version Server." ) );
-        c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------------------" ) );
         if ( getConfig( ).getBoolean( "mysql.enabled" ) ) {
             try {
                 Mysql.connect( );
