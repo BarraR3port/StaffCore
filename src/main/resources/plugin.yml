@@ -1,5 +1,5 @@
 name: StaffCore
-version: 4.3.8
+version: 4.3.9
 main: cl.bebt.staffcore.main
 author: BarraR3port
 prefix: StaffCore
@@ -96,6 +96,10 @@ commands:
     description: Warn Players
   warningns:
     description: See Players Warnings
+  helpop:
+    description: Ask for help to the Staff Members
+  trolmode:
+    description: Toggles the trolmode
 permissions:
   staffcore.*:
     description: Give's all StaffCore Permissions.
@@ -117,7 +121,6 @@ permissions:
       staffcore.day: true
       staffcore.night: true
       staffcore.weather: true
-      staffcore.head: true
       staffcore.suicide: true
       staffcore.staff: true
       staffcore.sc: true
@@ -131,3 +134,4 @@ permissions:
       staffcore.alts: true
       staffcore.wipe: true
       staffcore.invender: true
+      staffcore.trolmode: true

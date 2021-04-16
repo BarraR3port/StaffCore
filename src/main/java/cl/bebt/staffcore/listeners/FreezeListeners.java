@@ -1,5 +1,6 @@
 package cl.bebt.staffcore.listeners;
 
+import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.menu.Inventory.openChest;
 import cl.bebt.staffcore.menu.menu.Others.ServerManager;
@@ -29,13 +30,13 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.HashMap;
 
 public class FreezeListeners implements Listener{
-
+    
     private final main plugin;
-
+    
     public FreezeListeners( main plugin ){
         this.plugin = plugin;
     }
-
+    
     @EventHandler
     public < chart > void onPlayerMove( PlayerMoveEvent e ){
         Player p = e.getPlayer( );
@@ -65,7 +66,7 @@ public class FreezeListeners implements Listener{
             p.spigot( ).sendMessage( dis );
         }
     }
-
+    
     //                       Vanish and Freeze                              \\
     @SuppressWarnings("ConstantConditions")
     @EventHandler
@@ -74,126 +75,128 @@ public class FreezeListeners implements Listener{
         Action a = e.getAction( );
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) ) {
-            try {
-                if ( e.getAction( ).equals( Action.RIGHT_CLICK_BLOCK ) ) {
-                    switch (e.getClickedBlock( ).getType( )) {
-                        case CRIMSON_DOOR: {
-                            e.setCancelled( true );
-                        }
-                        case CRIMSON_TRAPDOOR: {
-                            e.setCancelled( true );
-                        }
-                        case WARPED_DOOR: {
-                            e.setCancelled( true );
-                        }
-                        case WARPED_FENCE_GATE: {
-                            e.setCancelled( true );
-                        }
-                        case CRIMSON_FENCE_GATE: {
-                            e.setCancelled( true );
-                        }
-                        case WARPED_TRAPDOOR: {
-                            e.setCancelled( true );
-                        }
-                        case CHEST: {
-                            e.setCancelled( true );
-                            HashMap < Integer, ItemStack > chest_slots = new HashMap <>( );
-                            Chest chest = ( Chest ) e.getClickedBlock( ).getState( );
-                            int size = chest.getInventory( ).getSize( );
-                            for ( int i = 0; i < size; i++ ) {
-                                try {
-                                    chest_slots.put( i , chest.getInventory( ).getItem( i ) );
-                                } catch ( NullPointerException ignored ) {
-                                }
+            if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ){
+                try {
+                    if ( e.getAction( ).equals( Action.RIGHT_CLICK_BLOCK ) ) {
+                        switch (e.getClickedBlock( ).getType( )) {
+                            case CRIMSON_DOOR: {
+                                e.setCancelled( true );
                             }
-                            new openChest( main.getPlayerMenuUtility( p ) , chest_slots , size ).open( p );
-                        }
-                        case CHEST_MINECART: {
-                            e.setCancelled( true );
-                        }
-                        case TRAPPED_CHEST: {
-                            e.setCancelled( true );
-                            HashMap < Integer, ItemStack > chest_slots = new HashMap <>( );
-                            Chest chest = ( Chest ) e.getClickedBlock( ).getState( );
-                            int size = chest.getInventory( ).getSize( );
-                            for ( int i = 0; i < size; i++ ) {
-                                try {
-                                    chest_slots.put( i , chest.getInventory( ).getItem( i ) );
-                                } catch ( NullPointerException ignored ) {
-                                }
+                            case CRIMSON_TRAPDOOR: {
+                                e.setCancelled( true );
                             }
-                            new openChest( main.getPlayerMenuUtility( p ) , chest_slots , size ).open( p );
+                            case WARPED_DOOR: {
+                                e.setCancelled( true );
+                            }
+                            case WARPED_FENCE_GATE: {
+                                e.setCancelled( true );
+                            }
+                            case CRIMSON_FENCE_GATE: {
+                                e.setCancelled( true );
+                            }
+                            case WARPED_TRAPDOOR: {
+                                e.setCancelled( true );
+                            }
+                            case CHEST: {
+                                e.setCancelled( true );
+                                HashMap < Integer, ItemStack > chest_slots = new HashMap <>( );
+                                Chest chest = ( Chest ) e.getClickedBlock( ).getState( );
+                                int size = chest.getInventory( ).getSize( );
+                                for ( int i = 0; i < size; i++ ) {
+                                    try {
+                                        chest_slots.put( i , chest.getInventory( ).getItem( i ) );
+                                    } catch ( NullPointerException ignored ) {
+                                    }
+                                }
+                                new openChest( main.getPlayerMenuUtility( p ) , chest_slots , size ).open( p );
+                            }
+                            case CHEST_MINECART: {
+                                e.setCancelled( true );
+                            }
+                            case TRAPPED_CHEST: {
+                                e.setCancelled( true );
+                                HashMap < Integer, ItemStack > chest_slots = new HashMap <>( );
+                                Chest chest = ( Chest ) e.getClickedBlock( ).getState( );
+                                int size = chest.getInventory( ).getSize( );
+                                for ( int i = 0; i < size; i++ ) {
+                                    try {
+                                        chest_slots.put( i , chest.getInventory( ).getItem( i ) );
+                                    } catch ( NullPointerException ignored ) {
+                                    }
+                                }
+                                new openChest( main.getPlayerMenuUtility( p ) , chest_slots , size ).open( p );
+                            }
+                            case ENDER_CHEST: {
+                                e.setCancelled( true );
+                            }
+                            case DARK_OAK_DOOR: {
+                                e.setCancelled( true );
+                            }
+                            case OAK_DOOR: {
+                                e.setCancelled( true );
+                            }
+                            case ACACIA_DOOR: {
+                                e.setCancelled( true );
+                            }
+                            case BIRCH_DOOR: {
+                                e.setCancelled( true );
+                            }
+                            case IRON_DOOR: {
+                                e.setCancelled( true );
+                            }
+                            case JUNGLE_DOOR: {
+                                e.setCancelled( true );
+                            }
+                            case SPRUCE_DOOR: {
+                                e.setCancelled( true );
+                            }
+                            case ACACIA_TRAPDOOR: {
+                                e.setCancelled( true );
+                            }
+                            case BIRCH_TRAPDOOR: {
+                                e.setCancelled( true );
+                            }
+                            case DARK_OAK_TRAPDOOR: {
+                                e.setCancelled( true );
+                            }
+                            case IRON_TRAPDOOR: {
+                                e.setCancelled( true );
+                            }
+                            case JUNGLE_TRAPDOOR: {
+                                e.setCancelled( true );
+                            }
+                            case OAK_TRAPDOOR: {
+                                e.setCancelled( true );
+                            }
+                            case SPRUCE_TRAPDOOR: {
+                                e.setCancelled( true );
+                            }
+                            case ACACIA_FENCE_GATE: {
+                                e.setCancelled( true );
+                            }
+                            case BIRCH_FENCE_GATE: {
+                                e.setCancelled( true );
+                            }
+                            case JUNGLE_FENCE_GATE: {
+                                e.setCancelled( true );
+                            }
+                            case OAK_FENCE_GATE: {
+                                e.setCancelled( true );
+                            }
+                            case SPRUCE_FENCE_GATE: {
+                                e.setCancelled( true );
+                            }
+                            case DARK_OAK_FENCE_GATE: {
+                                e.setCancelled( true );
+                            }
+                            case LEVER: {
+                                e.setCancelled( true );
+                            }
+                            break;
                         }
-                        case ENDER_CHEST: {
-                            e.setCancelled( true );
-                        }
-                        case DARK_OAK_DOOR: {
-                            e.setCancelled( true );
-                        }
-                        case OAK_DOOR: {
-                            e.setCancelled( true );
-                        }
-                        case ACACIA_DOOR: {
-                            e.setCancelled( true );
-                        }
-                        case BIRCH_DOOR: {
-                            e.setCancelled( true );
-                        }
-                        case IRON_DOOR: {
-                            e.setCancelled( true );
-                        }
-                        case JUNGLE_DOOR: {
-                            e.setCancelled( true );
-                        }
-                        case SPRUCE_DOOR: {
-                            e.setCancelled( true );
-                        }
-                        case ACACIA_TRAPDOOR: {
-                            e.setCancelled( true );
-                        }
-                        case BIRCH_TRAPDOOR: {
-                            e.setCancelled( true );
-                        }
-                        case DARK_OAK_TRAPDOOR: {
-                            e.setCancelled( true );
-                        }
-                        case IRON_TRAPDOOR: {
-                            e.setCancelled( true );
-                        }
-                        case JUNGLE_TRAPDOOR: {
-                            e.setCancelled( true );
-                        }
-                        case OAK_TRAPDOOR: {
-                            e.setCancelled( true );
-                        }
-                        case SPRUCE_TRAPDOOR: {
-                            e.setCancelled( true );
-                        }
-                        case ACACIA_FENCE_GATE: {
-                            e.setCancelled( true );
-                        }
-                        case BIRCH_FENCE_GATE: {
-                            e.setCancelled( true );
-                        }
-                        case JUNGLE_FENCE_GATE: {
-                            e.setCancelled( true );
-                        }
-                        case OAK_FENCE_GATE: {
-                            e.setCancelled( true );
-                        }
-                        case SPRUCE_FENCE_GATE: {
-                            e.setCancelled( true );
-                        }
-                        case DARK_OAK_FENCE_GATE: {
-                            e.setCancelled( true );
-                        }
-                        case LEVER: {
-                            e.setCancelled( true );
-                        }
-                        break;
                     }
+                } catch ( NullPointerException | NoClassDefFoundError ignored ) {
                 }
-            } catch ( NullPointerException | NoClassDefFoundError ignored ) {
             }
         }
         if ( e.getHand( ) == EquipmentSlot.OFF_HAND ) return;
@@ -237,13 +240,10 @@ public class FreezeListeners implements Listener{
                         }
                         CountdownManager.setCountDown( p , 0.2D );
                     }
-
-
                 }
             }
         }
     }
-
     @EventHandler
     public void onFoodLevelChange( FoodLevelChangeEvent e ){
         if ( e.getEntity( ) instanceof Player ) {
@@ -257,7 +257,7 @@ public class FreezeListeners implements Listener{
             }
         }
     }
-
+    
     @EventHandler
     public void checkDamage( EntityDamageEvent event ){
         if ( event.getEntity( ) instanceof Player ) {
@@ -268,12 +268,14 @@ public class FreezeListeners implements Listener{
                         || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING )
                         || PlayerData.has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING )
                 ) {
-                    event.setCancelled( true );
+                    if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+                        event.setCancelled( true );
+                    }
                 }
             }
         }
     }
-
+    
     @EventHandler
     public void PlayerRespawnEvent( PlayerRespawnEvent e ){
         Player p = e.getPlayer( );
@@ -281,16 +283,18 @@ public class FreezeListeners implements Listener{
         if ( PlayerData.has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) ) {
             SetStaffItems.On( p );
         }
-
+        
     }
-
+    
     @SuppressWarnings("ConstantConditions")
     @EventHandler
     public void onBreakBlock( BlockBreakEvent e ){
         Player p = e.getPlayer( );
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-            e.setCancelled( true );
+            if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+                e.setCancelled( true );
+            }
         }
         try {
             if ( p.getInventory( ).getItemInMainHand( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "vanishOn" ) , PersistentDataType.STRING ) ) {
@@ -320,17 +324,16 @@ public class FreezeListeners implements Listener{
             if ( p.getInventory( ).getItemInMainHand( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "invsee" ) , PersistentDataType.STRING ) ) {
                 e.setCancelled( true );
             }
-        } catch ( NullPointerException ignored ) {
-        }
+        } catch ( NullPointerException ignored ) { }
     }
-
-
     @EventHandler
     public void onPlaceBlock( BlockPlaceEvent e ){
         Player p = e.getPlayer( );
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-            e.setCancelled( true );
+            if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+                e.setCancelled( true );
+            }
         }
         if ( p.getInventory( ).getItemInMainHand( ).isSimilar( SetStaffItems.freeze( ) ) ) {
             e.setCancelled( true );
@@ -342,7 +345,7 @@ public class FreezeListeners implements Listener{
             e.setCancelled( true );
         }
     }
-
+    
     @EventHandler
     public void onHit( EntityDamageByEntityEvent e ){
         Entity mob = e.getDamager( );
@@ -351,31 +354,36 @@ public class FreezeListeners implements Listener{
                 Player p = ( Player ) e.getDamager( );
                 PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
                 if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-                    e.setCancelled( true );
+                    if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+                        e.setCancelled( true );
+                    }
                 }
-            } catch ( ClassCastException ignored ) {
-            }
+            } catch ( ClassCastException ignored ) { }
         }
     }
-
+    
     @EventHandler
     public void onDamage( EntityDamageEvent e ){
         Entity p = e.getEntity( );
         if ( p instanceof Player ) {
             PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
             if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-                e.setCancelled( true );
+                if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+                    e.setCancelled( true );
+                }
             }
         }
     }
-
+    
     @EventHandler
     public void onDrop( PlayerDropItemEvent e ){
         Player p = e.getPlayer( );
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-            e.setCancelled( true );
-            return;
+            if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+                e.setCancelled( true );
+                return;
+            }
         }
         if ( e.getItemDrop( ).getItemStack( ).isSimilar( SetStaffItems.staffOff( ) ) ) {
             utils.PlaySound( p , "staff_items_drop" );
@@ -403,24 +411,28 @@ public class FreezeListeners implements Listener{
             e.setCancelled( true );
         }
     }
-
+    
     @EventHandler
     public void onItemPickUp( EntityPickupItemEvent e ){
         Entity p = e.getEntity( );
         if ( p instanceof Player ) {
             PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
             if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-                e.setCancelled( true );
+                if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+                    e.setCancelled( true );
+                }
             }
         }
     }
-
+    
     @EventHandler
     public void onEntityInteract( PlayerInteractEntityEvent e ){
         Player player = e.getPlayer( );
         PersistentDataContainer PlayerData = player.getPersistentDataContainer( );
         if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-            e.setCancelled( true );
+            if ( !StaffCoreAPI.getTrolStatus( player.getName( ) ) ) {
+                e.setCancelled( true );
+            }
         }
         if ( e.getHand( ) == EquipmentSlot.OFF_HAND ) {
             return;
@@ -431,7 +443,7 @@ public class FreezeListeners implements Listener{
                 PersistentDataContainer pData = p.getPersistentDataContainer( );
                 if ( pData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
                     FreezePlayer.FreezePlayer( p , player.getName( ) , false );
-
+                    
                 } else if ( !((pData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ))) ) {
                     if ( p.hasPermission( "staffcore.freeze.bypas" ) ) {
                         player.sendMessage( utils.chat( plugin.getConfig( ).getString( "staff.staff_prefix" ) + p.getName( ) + plugin.getConfig( ).getString( "staff.freeze_bypass" ) ) );
@@ -448,9 +460,8 @@ public class FreezeListeners implements Listener{
                 new OpenInvSee( player , p );
             }
         }
-
     }
-
+    
     @EventHandler
     public void onEntityInteract( PlayerCommandPreprocessEvent e ){
         Player player = e.getPlayer( );
@@ -461,18 +472,20 @@ public class FreezeListeners implements Listener{
             }
         }
     }
-
+    
     @EventHandler
     public void onBowUse( EntityShootBowEvent e ){
         if ( e.getEntity( ) instanceof Player && e.getProjectile( ) instanceof Arrow ) {
             Player p = ( Player ) e.getEntity( );
             PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
             if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-                e.setCancelled( true );
+                if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+                    e.setCancelled( true );
+                }
             }
         }
     }
-
+    
     @EventHandler
     public void onTarget( EntityTargetEvent e ){
         if ( e.getTarget( ) instanceof Player ) {
@@ -481,64 +494,76 @@ public class FreezeListeners implements Listener{
             if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
                 e.setCancelled( true );
             }
-
+            
         }
     }
-
+    
     @EventHandler
     public void onBucketEmpty( PlayerBucketEmptyEvent e ){
         Player p = e.getPlayer( );
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-            e.setCancelled( true );
+            if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+                e.setCancelled( true );
+            }
         }
     }
-
+    
     @EventHandler
     public void onBucketFill( PlayerBucketFillEvent e ){
         Player p = e.getPlayer( );
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-            e.setCancelled( true );
+            if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+                e.setCancelled( true );
+            }
         }
     }
-
+    
     @EventHandler
     public void onBed( PlayerBedEnterEvent e ){
         Player p = e.getPlayer( );
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-            e.setCancelled( true );
+            if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+                e.setCancelled( true );
+            }
         }
     }
-
+    
     @EventHandler
     public void onFish( PlayerFishEvent e ){
         Player p = e.getPlayer( );
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-            e.setCancelled( true );
+            if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+                e.setCancelled( true );
+            }
         }
     }
-
+    
     @EventHandler
     public void onConsume( PlayerItemConsumeEvent e ){
         Player p = e.getPlayer( );
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-            e.setCancelled( true );
+            if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+                e.setCancelled( true );
+            }
         }
     }
-
+    
     @EventHandler
     public void onPickArrow( PlayerPickupArrowEvent e ){
         Player p = e.getPlayer( );
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-            e.setCancelled( true );
+            if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+                e.setCancelled( true );
+            }
         }
     }
-
+    
     @EventHandler
     public void onRecipeDiscoverEvent( PlayerRecipeDiscoverEvent e ){
         Player p = e.getPlayer( );
@@ -547,18 +572,20 @@ public class FreezeListeners implements Listener{
             e.setCancelled( true );
         }
     }
-
+    
     @EventHandler
     public void onTrow( ProjectileLaunchEvent e ){
         if ( e.getEntity( ).getShooter( ) instanceof Player ) {
             Player p = ( Player ) e.getEntity( ).getShooter( );
             PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
             if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-                e.setCancelled( true );
+                if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+                    e.setCancelled( true );
+                }
             }
         }
     }
-
+    
     @EventHandler
     public void onPlayerInteract( PlayerInteractEvent e ){
         Player p = e.getPlayer( );
@@ -570,15 +597,14 @@ public class FreezeListeners implements Listener{
             try {
                 if ( substring.equals( "EGG" ) ) {
                     if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-                        e.setCancelled( true );
+                        if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+                            e.setCancelled( true );
+                        }
                     }
                 }
-            } catch ( StringIndexOutOfBoundsException ignored ) {
-            }
+            } catch ( StringIndexOutOfBoundsException ignored ) { }
         }
     }
-
-
 }
 
 

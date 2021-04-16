@@ -5,6 +5,7 @@ import cl.bebt.staffcore.menu.MenuC;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.menu.menu.Banlist.BanManager;
 import cl.bebt.staffcore.menu.menu.Chat.ChatManager;
+import cl.bebt.staffcore.menu.menu.ClientSettings.ClientSettings;
 import cl.bebt.staffcore.menu.menu.Reports.ReportManager;
 import cl.bebt.staffcore.menu.menu.WarnManager.WarnManager;
 import cl.bebt.staffcore.utils.Items;
@@ -41,6 +42,11 @@ public class ServerManager extends MenuC {
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
+        if ( e.getCurrentItem().getType( ) == Material.PLAYER_HEAD ){
+            p.closeInventory();
+            new ClientSettings( main.getPlayerMenuUtility( p ) , plugin ).open( p );
+            e.setCancelled( true );
+        }
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "bans" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
             new BanManager( main.getPlayerMenuUtility( p ) , plugin ).open( p );

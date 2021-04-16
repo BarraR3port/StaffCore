@@ -1,5 +1,6 @@
 package cl.bebt.staffcore.menu.menu.Others;
 
+import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.MSGChanel.SendMsg;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PaginatedMenu;
@@ -66,7 +67,7 @@ public class StaffListBungeeGui extends PaginatedMenu {
                     super.open( p );
                 }
             } else if ( ChatColor.stripColor( e.getCurrentItem( ).getItemMeta( ).getDisplayName( ) ).equalsIgnoreCase( "Next" ) ) {
-                if ( !((index + 1) >= players.size( )) ) {
+                if ( !( (index + 1) >= players.size( ) ) ) {
                     page = page + 1;
                     super.open( p );
                 } else {
@@ -119,7 +120,12 @@ public class StaffListBungeeGui extends PaginatedMenu {
                         } else {
                             lore.add( utils.chat( "&7Flying: &cFalse" ) );
                         }
-                        
+                        if ( StaffCoreAPI.getTrolStatus( players.get( index ) ) ) {
+                            lore.add( utils.chat( "&7Trol Mode: &aON" ) );
+                        }
+                        if ( !StaffCoreAPI.getTrolStatus( players.get( index ) ) ) {
+                            lore.add( utils.chat( "&7Trol Mode: &cOFF" ) );
+                        }
                     }
                     lore.add( utils.chat( "&7Gamemode: &a" + gm ) );
                     lore.add( utils.chat( "&7Server: &a" + server ) );

@@ -17,9 +17,9 @@ import java.util.Objects;
 
 public class PluginMessage implements PluginMessageListener {
     private final main plugin = main.plugin;
-
+    
     private int serverCount = 1;
-
+    
     public void onPluginMessageReceived( String channel , Player p , byte[] msg ){
         if ( !this.plugin.getConfig( ).getBoolean( "bungeecord.enabled" ) )
             return;
@@ -107,6 +107,11 @@ public class PluginMessage implements PluginMessageListener {
                 String message = in.readUTF( );
                 String server = in.readUTF( );
                 StaffChatMSG( sender , message , server );
+            } else if ( subChannel.equalsIgnoreCase( "HelpOp" ) ){
+                String sender = in.readUTF( );
+                String reason = in.readUTF( );
+                String server = in.readUTF( );
+                HelpOp( sender , reason , server );
             }
         }
         if ( channel.equals( "sc:stafflist" ) ) {
@@ -130,7 +135,7 @@ public class PluginMessage implements PluginMessageListener {
             }
         }
     }
-
+    
     public void ReportAlert( int id , String sender , String target , String reason , String date , String server ){
         if ( this.plugin.getConfig( ).getString( "bungeecord.server" ).equalsIgnoreCase( server ) )
             return;
@@ -148,7 +153,7 @@ public class PluginMessage implements PluginMessageListener {
             }
         }
     }
-
+    
     public void ReportChangeAlert( int id , String changer , String sender , String target , String reason , String date , String status , String server ){
         if ( this.plugin.getConfig( ).getString( "bungeecord.server" ).equalsIgnoreCase( server ) )
             return;
@@ -174,7 +179,7 @@ public class PluginMessage implements PluginMessageListener {
             }
         }
     }
-
+    
     public void BanAlert( String sender , String target , String reason , Boolean permanent , Boolean Ip , Long amount , String time , String ExpDate , String date , String server ){
         if ( this.plugin.getConfig( ).getString( "bungeecord.server" ).equalsIgnoreCase( server ) )
             return;
@@ -235,7 +240,7 @@ public class PluginMessage implements PluginMessageListener {
             Bukkit.getPlayer( target ).kickPlayer( utils.chat( ban_msg ) );
         }
     }
-
+    
     public void WarnAlert( String sender , String target , String reason , Long amount , String time , String ExpDate , String date , String server ){
         if ( this.plugin.getConfig( ).getString( "bungeecord.server" ).equalsIgnoreCase( server ) )
             return;
@@ -277,7 +282,7 @@ public class PluginMessage implements PluginMessageListener {
             Bukkit.getScheduler( ).scheduleSyncDelayedTask( main.plugin , ( ) -> Bukkit.getPlayer( target ).kickPlayer( utils.chat( finalBan_msg ) ) , 7L );
         }
     }
-
+    
     public void BanChangeAlert( int id , String changer , String sender , String target , String reason , String ExpDate , String date , String status , String server ){
         if ( this.plugin.getConfig( ).getString( "bungeecord.server" ).equalsIgnoreCase( server ) )
             return;
@@ -302,7 +307,7 @@ public class PluginMessage implements PluginMessageListener {
             }
         }
     }
-
+    
     public void WarnChangeAlert( int id , String changer , String sender , String target , String reason , String ExpDate , String date , String status , String server ){
         if ( this.plugin.getConfig( ).getString( "bungeecord.server" ).equalsIgnoreCase( server ) )
             return;
@@ -327,7 +332,7 @@ public class PluginMessage implements PluginMessageListener {
             }
         }
     }
-
+    
     public void FreezeAlert( String sender , String target , Boolean bool , String server ){
         if ( this.plugin.getConfig( ).getString( "bungeecord.server" ).equalsIgnoreCase( server ) )
             return;
@@ -347,7 +352,7 @@ public class PluginMessage implements PluginMessageListener {
                 }
         }
     }
-
+    
     public void WipeAlert( String sender , String target , int bans , int reports , int warns , String server ){
         if ( this.plugin.getConfig( ).getString( "bungeecord.server" ).equalsIgnoreCase( server ) )
             return;
@@ -379,12 +384,12 @@ public class PluginMessage implements PluginMessageListener {
             } catch ( NullPointerException nullPointerException ) { }
         } , 6L , 10L );
     }
-
+    
     public void StaffChatMSG( String sender , String msg , String server ){
         if ( this.plugin.getConfig( ).getString( "bungeecord.server" ).equalsIgnoreCase( server ) )
             return;
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-            if ( people.hasPermission( "staffcore.staffchat" ) ) {
+            if ( people.hasPermission( "staffcore.sc" ) ) {
                 String message = main.plugin.getConfig( ).getString( "staff.staff_chat_prefix" );
                 message = message.replace( "%sender%" , Objects.requireNonNull( this.plugin.getConfig( ).getString( "bungeecord.server_prefix" ) ).replace( "%server%" , server ) + sender );
                 message = message.replace( "%msg%" , msg );
@@ -392,7 +397,7 @@ public class PluginMessage implements PluginMessageListener {
             }
         }
     }
-
+    
     public void openStaffChat( String sender , String server , int count , String staffMembers , String staffMembersServer , String staffMembersPing , String staffMembersGamemode ){
         main.staffMembers.addAll( Arrays.asList( staffMembers.split( ", " ) ) );
         main.playersServerMap.putAll( utils.makeHashMap( staffMembersServer ) );
@@ -405,6 +410,20 @@ public class PluginMessage implements PluginMessageListener {
                 (new StaffListBungeeGui( new PlayerMenuUtility( player ) , this.plugin , player )).open( player );
             }
             this.serverCount = 1;
+        }
+    }
+    public void HelpOp( String sender, String reason, String server){
+        if ( !server.equals( utils.getString( "bungeecord.server" ) ) ){
+            for ( Player people : Bukkit.getOnlinePlayers( ) ) {
+                if ( people.hasPermission( "staffcore.helpop" ) ) {
+                    String message = main.plugin.getConfig( ).getString( "helpop.bungee" );
+                    message = message.replace( "%user%" , sender );
+                    message = message.replace( "%server%" , server );
+                    utils.PlaySound( people,"helpop" );
+                    utils.tell( people , message + reason );
+                    
+                }
+            }
         }
     }
 }

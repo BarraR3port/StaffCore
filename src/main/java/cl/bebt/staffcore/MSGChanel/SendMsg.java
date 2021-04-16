@@ -6,7 +6,6 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,7 +27,7 @@ public class SendMsg {
             out.writeUTF(reason);
             out.writeUTF(date);
             out.writeUTF(server);
-            Bukkit.getServer().sendPluginMessage((Plugin)plugin, "sc:alerts", out.toByteArray());
+            Bukkit.getServer().sendPluginMessage(plugin, "sc:alerts", out.toByteArray());
         }
     }
 
@@ -47,7 +46,7 @@ public class SendMsg {
             out.writeUTF(date);
             out.writeUTF(status);
             out.writeUTF(server);
-            Bukkit.getServer().sendPluginMessage((Plugin)plugin, "sc:alerts", out.toByteArray());
+            Bukkit.getServer().sendPluginMessage(plugin, "sc:alerts", out.toByteArray());
         }
     }
 
@@ -68,7 +67,7 @@ public class SendMsg {
             out.writeUTF(ExpDate);
             out.writeUTF(date);
             out.writeUTF(server);
-            Bukkit.getServer().sendPluginMessage((Plugin)plugin, "sc:alerts", out.toByteArray());
+            Bukkit.getServer().sendPluginMessage(plugin, "sc:alerts", out.toByteArray());
         }
     }
 
@@ -88,7 +87,7 @@ public class SendMsg {
             out.writeUTF(date);
             out.writeUTF(status);
             out.writeUTF(server);
-            Bukkit.getServer().sendPluginMessage((Plugin)plugin, "sc:alerts", out.toByteArray());
+            Bukkit.getServer().sendPluginMessage(plugin, "sc:alerts", out.toByteArray());
         }
     }
 
@@ -108,7 +107,7 @@ public class SendMsg {
             out.writeUTF(date);
             out.writeUTF(status);
             out.writeUTF(server);
-            Bukkit.getServer().sendPluginMessage((Plugin)plugin, "sc:alerts", out.toByteArray());
+            Bukkit.getServer().sendPluginMessage(plugin, "sc:alerts", out.toByteArray());
         }
     }
 
@@ -127,7 +126,7 @@ public class SendMsg {
             out.writeUTF(ExpDate);
             out.writeUTF(date);
             out.writeUTF(server);
-            Bukkit.getServer().sendPluginMessage((Plugin)plugin, "sc:alerts", out.toByteArray());
+            Bukkit.getServer().sendPluginMessage(plugin, "sc:alerts", out.toByteArray());
         }
     }
 
@@ -142,7 +141,7 @@ public class SendMsg {
             out.writeUTF(target);
             out.writeBoolean(bool.booleanValue());
             out.writeUTF(server);
-            Bukkit.getServer().sendPluginMessage((Plugin)plugin, "sc:alerts", out.toByteArray());
+            Bukkit.getServer().sendPluginMessage(plugin, "sc:alerts", out.toByteArray());
         }
     }
 
@@ -159,7 +158,7 @@ public class SendMsg {
             out.writeInt(reports);
             out.writeInt(warns);
             out.writeUTF(server);
-            Bukkit.getServer().sendPluginMessage((Plugin)plugin, "sc:alerts", out.toByteArray());
+            Bukkit.getServer().sendPluginMessage(plugin, "sc:alerts", out.toByteArray());
         }
     }
 
@@ -173,7 +172,7 @@ public class SendMsg {
             out.writeUTF(sender);
             out.writeUTF(msg);
             out.writeUTF(server);
-            Bukkit.getServer().sendPluginMessage((Plugin)plugin, "sc:alerts", out.toByteArray());
+            Bukkit.getServer().sendPluginMessage(plugin, "sc:alerts", out.toByteArray());
         }
     }
 
@@ -186,7 +185,7 @@ public class SendMsg {
             out.writeUTF("SendSLRequest");
             out.writeUTF(sender);
             out.writeUTF(server);
-            Bukkit.getServer().sendPluginMessage((Plugin)plugin, "sc:stafflist", out.toByteArray());
+            Bukkit.getServer().sendPluginMessage(plugin, "sc:stafflist", out.toByteArray());
         }
     }
 
@@ -218,7 +217,7 @@ public class SendMsg {
         out.writeUTF(staffMembersServer);
         out.writeUTF(staffMembersPing);
         out.writeUTF(staffMembersGamemode);
-        Bukkit.getServer().sendPluginMessage((Plugin)plugin, "sc:stafflist", out.toByteArray());
+        Bukkit.getServer().sendPluginMessage(plugin, "sc:stafflist", out.toByteArray());
     }
 
     public static void connectPlayerToServer(String player, String server) {
@@ -229,6 +228,18 @@ public class SendMsg {
         out.writeUTF("ConnectOther");
         out.writeUTF(player);
         out.writeUTF(server);
-        Bukkit.getServer().sendPluginMessage((Plugin)plugin, "BungeeCord", out.toByteArray());
+        Bukkit.getServer().sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
+    }
+    
+    public static void helpOp(String player, String reason, String server) {
+        Collection<Player> networkPlayers = ( Collection < Player > ) Bukkit.getServer().getOnlinePlayers();
+        if (networkPlayers == null || networkPlayers.isEmpty())
+            return;
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("HelpOp");
+        out.writeUTF(player);
+        out.writeUTF(reason);
+        out.writeUTF(server);
+        Bukkit.getServer().sendPluginMessage(plugin, "sc:alerts", out.toByteArray());
     }
 }

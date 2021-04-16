@@ -43,7 +43,7 @@ public class SetStaffItems {
         PlayerData.set( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING , "staff" );
         utils.tell( p , plugin.getConfig( ).getString( "staff.staff_prefix" ) + plugin.getConfig( ).getString( "staff.staff_enabled" ) );
         if ( utils.mysqlEnabled( ) ) {
-            SQLGetter.setTrue( p.getName( ) , "staff" , "true" );
+            SQLGetter.set( p.getName( ) , "staff" , "true" );
         }
     }
     
@@ -75,7 +75,7 @@ public class SetStaffItems {
         PlayerData.remove( new NamespacedKey( plugin , "staff" ) );
         utils.tell( p , plugin.getConfig( ).getString( "staff.staff_prefix" ) + plugin.getConfig( ).getString( "staff.staff_disabled" ) );
         if ( utils.mysqlEnabled( ) ) {
-            SQLGetter.setTrue( p.getName( ) , "staff" , "false" );
+            SQLGetter.set( p.getName( ) , "staff" , "false" );
         }
         
     }

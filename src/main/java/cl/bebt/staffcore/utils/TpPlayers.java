@@ -6,6 +6,8 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import static java.lang.Math.round;
+
 public class TpPlayers {
     
     private static final main plugin = main.plugin;
@@ -120,9 +122,9 @@ public class TpPlayers {
         try {
             sender.teleport( new Location( sender.getWorld( ) , x , y , z ) );
             String message = plugin.getConfig( ).getString( "tp.to_cords" );
-            message = message.replace( "%x%" , String.valueOf( x ) );
-            message = message.replace( "%y%" , String.valueOf( y ) );
-            message = message.replace( "%z%" , String.valueOf( z ) );
+            message = message.replace( "%x%" , String.valueOf( round( x ) ) );
+            message = message.replace( "%y%" , String.valueOf( round( y ) ) );
+            message = message.replace( "%z%" , String.valueOf( round( z ) ) );
             utils.tell( sender , utils.getString( "server_prefix" ) + message );
             
         } catch ( NullPointerException offline ) {
@@ -144,16 +146,16 @@ public class TpPlayers {
                 target.teleport( new Location( target.getWorld( ) , x , y , z ) );
             }
             String message = plugin.getConfig( ).getString( "tp.player_to_cords" );
-            message = message.replace( "%x%" , String.valueOf( x ) );
-            message = message.replace( "%y%" , String.valueOf( y ) );
-            message = message.replace( "%z%" , String.valueOf( z ) );
+            message = message.replace( "%x%" , String.valueOf( round( x ) ) );
+            message = message.replace( "%y%" , String.valueOf( round( y ) ) );
+            message = message.replace( "%z%" , String.valueOf( round( z ) ) );
             message = message.replace( "%target%" , target.getName( ) );
             utils.tell( sender , utils.getString( "server_prefix" ) + message );
             if ( !bol && utils.getBoolean( "alerts.tp_to_them" ) ) {
                 String message2 = plugin.getConfig( ).getString( "tp.to_cords_by" );
-                message2 = message2.replace( "%x%" , String.valueOf( x ) );
-                message2 = message2.replace( "%y%" , String.valueOf( y ) );
-                message2 = message2.replace( "%z%" , String.valueOf( z ) );
+                message2 = message2.replace( "%x%" , String.valueOf( round( x ) ) );
+                message2 = message2.replace( "%y%" , String.valueOf( round( y ) ) );
+                message2 = message2.replace( "%z%" , String.valueOf( round( z ) ) );
                 message2 = message2.replace( "%sender%" , sender.getName( ) );
                 utils.tell( target , utils.getString( "server_prefix" ) + message2 );
             }
@@ -174,17 +176,17 @@ public class TpPlayers {
                     players.teleport( new Location( sender.getWorld( ) , x , y , z ) );
                     if ( !players.equals( sender ) ) {
                         String message2 = plugin.getConfig( ).getString( "tp.to_cords_by" );
-                        message2 = message2.replace( "%x%" , String.valueOf( x ) );
-                        message2 = message2.replace( "%y%" , String.valueOf( y ) );
-                        message2 = message2.replace( "%z%" , String.valueOf( z ) );
+                        message2 = message2.replace( "%x%" , String.valueOf( round( x ) ) );
+                        message2 = message2.replace( "%y%" , String.valueOf( round( y ) ) );
+                        message2 = message2.replace( "%z%" , String.valueOf( round( z ) ) );
                         message2 = message2.replace( "%sender%" , sender.getName( ) );
                         utils.tell( players , utils.getString( "server_prefix" ) + message2 );
                     }
                 }
                 String message = plugin.getConfig( ).getString( "tp.all_to_cords" );
-                message = message.replace( "%x%" , String.valueOf( x ) );
-                message = message.replace( "%y%" , String.valueOf( y ) );
-                message = message.replace( "%z%" , String.valueOf( z ) );
+                message = message.replace( "%x%" , String.valueOf( round( x ) ) );
+                message = message.replace( "%y%" , String.valueOf( round( y ) ) );
+                message = message.replace( "%z%" , String.valueOf( round( z ) ) );
                 message = message.replace( "%count%" , String.valueOf( (Bukkit.getServer( ).getOnlinePlayers( ).size( ) - 1) ) );
                 utils.tell( sender , utils.getString( "server_prefix" ) + message );
             }

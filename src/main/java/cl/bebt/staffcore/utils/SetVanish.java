@@ -31,7 +31,7 @@ public class SetVanish {
                         }
                     }
                 }
-                SQLGetter.setTrue( p.getName( ) , "vanish" , "true" );
+                SQLGetter.set( p.getName( ) , "vanish" , "true" );
             } else {
                 for ( Player player : Bukkit.getOnlinePlayers( ) ) {
                     if ( !player.hasPermission( "staffcore.vanish.see" ) && !player.hasPermission( "staffcore.vanish" ) ) {
@@ -77,7 +77,7 @@ public class SetVanish {
             p.setSaturation( 5f );
             PlayerData.remove( new NamespacedKey( plugin , "vanished" ) );
             if ( utils.mysqlEnabled( ) ) {
-                SQLGetter.setTrue( p.getName( ) , "vanish" , "false" );
+                SQLGetter.set( p.getName( ) , "vanish" , "false" );
             }
             for ( Player people : Bukkit.getOnlinePlayers( ) ) {
                 people.showPlayer( plugin , p );

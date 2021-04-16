@@ -271,34 +271,37 @@ public class utils {
                         Users.add( name );
                     }
                 }
-            } catch ( NullPointerException ignored ) {
-            
-            }
-            
+            } catch ( NullPointerException ignored ) { }
         }
         return Users;
     }
     
     public static Boolean isOlderVersion(){
-        if ( getString( "server_version" ).equalsIgnoreCase( "1.16" ) ){
+        String version = plugin.getServer().getBukkitVersion();
+        version = version.substring( 0,4 );
+        if ( version.endsWith( "." ) ) { version = version.substring( 0,version.length( ) - 1 ); }
+        version = version.replace( "-","" );
+        version = version.trim();
+        
+        if ( version.equalsIgnoreCase( "1.16" ) ){
             return false;
-        } else if ( getString( "server_version" ).equalsIgnoreCase( "1.15" ) ){
+        } else if ( version.equalsIgnoreCase( "1.15" ) ){
             return false;
-        } else if ( getString( "server_version" ).equalsIgnoreCase( "1.14" ) ){
+        } else if ( version.equalsIgnoreCase( "1.14" ) ){
             return false;
-        } else if ( getString( "server_version" ).equalsIgnoreCase( "1.13" ) ){
+        } else if ( version.equalsIgnoreCase( "1.13" ) ){
             return true;
-        } else if ( getString( "server_version" ).equalsIgnoreCase( "1.12" ) ){
+        } else if ( version.equalsIgnoreCase( "1.12" ) ){
             return true;
-        } else if ( getString( "server_version" ).equalsIgnoreCase( "1.11" ) ){
+        } else if ( version.equalsIgnoreCase( "1.11" ) ){
             return true;
-        } else if ( getString( "server_version" ).equalsIgnoreCase( "1.10" ) ){
+        } else if ( version.equalsIgnoreCase( "1.10" ) ){
             return true;
-        } else if ( getString( "server_version" ).equalsIgnoreCase( "1.9" ) ){
+        } else if ( version.equalsIgnoreCase( "1.9" ) ){
             return true;
-        } else if ( getString( "server_version" ).equalsIgnoreCase( "1.8" ) ){
+        } else if ( version.equalsIgnoreCase( "1.8" ) ){
             return true;
-        } else if ( getString( "server_version" ).equalsIgnoreCase( "1.7" ) ){
+        } else if ( version.equalsIgnoreCase( "1.7" ) ){
             return true;
         } else {
             return true;

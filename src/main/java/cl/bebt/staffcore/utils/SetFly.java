@@ -20,7 +20,7 @@ public class SetFly {
                 p.setFlying( true );
             }
             if ( utils.mysqlEnabled( ) ) {
-                SQLGetter.setTrue( p.getName( ) , "flying" , "true" );
+                SQLGetter.set( p.getName( ) , "flying" , "true" );
             }
         } else {
             if ( !(p.getGameMode( ) == GameMode.CREATIVE || p.getGameMode( ) == GameMode.SPECTATOR || PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING )) ) {
@@ -31,7 +31,7 @@ public class SetFly {
                 }
             }
             if ( utils.mysqlEnabled( ) ) {
-                SQLGetter.setTrue( p.getName( ) , "flying" , "false" );
+                SQLGetter.set( p.getName( ) , "flying" , "false" );
             }
         }
     }

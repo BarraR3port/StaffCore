@@ -9,6 +9,7 @@ import cl.bebt.staffcore.commands.Time.Day;
 import cl.bebt.staffcore.commands.Time.Night;
 import cl.bebt.staffcore.commands.Time.Weather;
 import cl.bebt.staffcore.commands.WarningsCommand;
+import cl.bebt.staffcore.commands.staffcore;
 import cl.bebt.staffcore.configs.AltsStorage;
 import cl.bebt.staffcore.configs.BanConfig;
 import cl.bebt.staffcore.configs.ReportConfig;
@@ -32,11 +33,14 @@ import java.util.HashMap;
 import java.util.List;
 
 public final class main extends JavaPlugin {
+    
     private static final HashMap < Player, PlayerMenuUtility > playerMenuUtilityMap = new HashMap <>( );
     
     public static main plugin;
     
     public static List < String > staffMembers = new ArrayList <>( );
+    
+    public static List < String > toggledStaffChat = new ArrayList <>( );
     
     public static HashMap < String, String > playersServerMap = new HashMap <>( );
     
@@ -60,17 +64,24 @@ public final class main extends JavaPlugin {
     
     public Boolean chatMuted = false;
     
-    public static PlayerMenuUtility getPlayerMenuUtility( Player p ){
-        if ( playerMenuUtilityMap.containsKey( p ) )
-            return playerMenuUtilityMap.get( p );
-        PlayerMenuUtility playerMenuUtility = new PlayerMenuUtility( p );
-        playerMenuUtilityMap.put( p , playerMenuUtility );
-        return playerMenuUtility;
-    }
+    ConsoleCommandSender c = Bukkit.getConsoleSender( );
     
     public void onEnable( ){
         plugin = this;
-        ConsoleCommandSender c = Bukkit.getConsoleSender( );
+        new UpdateChecker( plugin , 82324 ).getLatestVersion( version -> {
+            if ( !getDescription( ).getVersion( ).equals( version ) ) {
+                c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&c     Hey, there is a new version out!" ) );
+                c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&b         Staff-Core " + version ) );
+                c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------" ) );
+                if (utils.getBoolean( "disable_outdated_plugin" ) ){
+                    c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&lDISABLING STAFF-CORE. USE THE LATEST VERSION " ) );
+                    c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&lYou can disable this option (disable_outdated_plugin) in the config file." ) );
+                    c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&lBut I recommend to use the latest version. " ) );
+                    c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------" ) );
+                    plugin.getPluginLoader().disablePlugin( this );
+                }
+            }
+        } );
         loadConfigManager( );
         new StaffCoreAPI( plugin );
         new wipePlayer( plugin );
@@ -109,7 +120,10 @@ public final class main extends JavaPlugin {
         new StaffList( plugin );
         new Warn( plugin );
         new WarningsCommand( plugin );
+        new HelpOp( plugin );
+        new TrolMode( plugin );
         Bukkit.getPluginManager( ).registerEvents( new onPlayerJoin( plugin ) , plugin );
+        Bukkit.getPluginManager( ).registerEvents( new onChat( ) , plugin );
         if ( !utils.isOlderVersion() ) {
             c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------" ) );
             c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&a    Plugin &5" + getName( ) + "&a&l ACTIVATED" ) );
@@ -121,7 +135,6 @@ public final class main extends JavaPlugin {
             Bukkit.getPluginManager( ).registerEvents( new FreezeListeners( plugin ) , plugin );
             Bukkit.getPluginManager( ).registerEvents( new InventoryListeners( plugin ) , plugin );
             Bukkit.getPluginManager( ).registerEvents( new onPLayerLeave( plugin ) , plugin );
-            Bukkit.getPluginManager( ).registerEvents( new onChat( ) , plugin );
             Bukkit.getServer( ).getScheduler( ).scheduleSyncRepeatingTask( this , new TPS( ) , 100L , 1L );
             Bukkit.getServer( ).getScheduler( ).scheduleSyncRepeatingTask( this , ( ) -> {
                 for ( Player players : Bukkit.getOnlinePlayers( ) ) {
@@ -146,25 +159,12 @@ public final class main extends JavaPlugin {
             c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&lRunning STAFF-CORE in a old version Server." ) );
             c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------------------" ) );
         }
-        new UpdateChecker( plugin , 82324 ).getLatestVersion( version -> {
-            if ( !getDescription( ).getVersion( ).equals( version ) ) {
-                c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&c     Hey, there is a new version out!" ) );
-                c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&b         Staff-Core " + version ) );
-                c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------" ) );
-                if (utils.getBoolean( "disable_outdated_plugin" ) ){
-                    c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&lDISABLING STAFF-CORE. USE THE LATEST VERSION " ) );
-                    c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&lYou can disable this option (disable_outdated_plugin) in the config file." ) );
-                    c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&lBut I recommend to use the latest version. " ) );
-                    c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------" ) );
-                    plugin.getPluginLoader().disablePlugin( this );
-                }
-            }
-        } );
         if ( getConfig( ).getBoolean( "mysql.enabled" ) ) {
             try {
                 Mysql.connect( );
                 SQLGetter.createTables();
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "             &a&lMysql: &aTRUE" ) );
+                SQLGetter.addToggledPlayersToList();
             } catch ( SQLException e ) {
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "             &a&lMysql: &cFALSE" ) );
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&a      Disabling Staff-Core &6" + getDescription( ).getVersion( ) ) );
@@ -185,20 +185,19 @@ public final class main extends JavaPlugin {
         if ( Mysql.isConnected( )) {
             new VanishMysql( plugin );
             new FreezeMysql( plugin );
-            new StaffChatToggleMysql( plugin );
+            new ToggleStaffChatMysql( plugin );
             new FlyMysql( plugin );
             new StaffMysql( plugin );
         } else {
             new Vanish( plugin );
             new Fly( plugin );
             new Freeze( plugin );
-            new StaffChatToggle( plugin );
+            new ToggleStaffChat( plugin );
             new Staff( plugin );
         }
     }
     
     public void onDisable( ){
-        ConsoleCommandSender c = Bukkit.getConsoleSender( );
         c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------" ) );
         c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&a    Plugin &5" + plugin.getName( ) + "&4&l DISABLED" ) );
         c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------" ) );
@@ -223,5 +222,12 @@ public final class main extends JavaPlugin {
         this.alts.reloadConfig( );
         this.warns = new WarnConfig( plugin );
         this.warns.reloadConfig( );
+    }
+    public static PlayerMenuUtility getPlayerMenuUtility( Player p ){
+        if ( playerMenuUtilityMap.containsKey( p ) )
+            return playerMenuUtilityMap.get( p );
+        PlayerMenuUtility playerMenuUtility = new PlayerMenuUtility( p );
+        playerMenuUtilityMap.put( p , playerMenuUtility );
+        return playerMenuUtility;
     }
 }

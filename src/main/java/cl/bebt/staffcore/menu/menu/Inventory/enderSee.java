@@ -138,13 +138,11 @@ public class enderSee extends InventoryMenu {
         
     }
     
-    
     @Override
     public void handleMenu( InventoryCloseEvent e ){
         main.enderSee.remove( e.getPlayer( ) , target );
         utils.PlaySound( ( Player ) e.getPlayer( ) , "endersee_close" );
     }
-    
     
     @Override
     public void setMenuItemsPlayer( Player p ){
@@ -152,8 +150,7 @@ public class enderSee extends InventoryMenu {
         for ( int i = 0; i < 9; i++ ) {
             try {
                 hotbar.put( i , target.getInventory( ).getItem( i ) );
-            } catch ( NullPointerException ignored ) {
-            }
+            } catch ( NullPointerException ignored ) { }
         }
         HashMap < Integer, ItemStack > inv = new HashMap <>( );
         for ( int c = 0; c <= 35; c++ ) {

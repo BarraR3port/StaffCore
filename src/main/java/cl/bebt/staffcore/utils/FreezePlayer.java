@@ -27,7 +27,7 @@ public class FreezePlayer {
             utils.PlayParticle( p , "unfreeze_player" );
             PlayerData.set( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING , "frozen" );
             if ( utils.mysqlEnabled( ) ) {
-                SQLGetter.setTrue( p.getName( ) , "frozen" , "true" );
+                SQLGetter.set( p.getName( ) , "frozen" , "true" );
             }
             status = main.plugin.getConfig( ).getString( "freeze.freeze" );
             try {
@@ -54,7 +54,7 @@ public class FreezePlayer {
             }
             PlayerData.remove( new NamespacedKey( plugin , "frozen" ) );
             if ( utils.mysqlEnabled( ) ) {
-                SQLGetter.setTrue( p.getName( ) , "frozen" , "false" );
+                SQLGetter.set( p.getName( ) , "frozen" , "false" );
             }
             status = main.plugin.getConfig( ).getString( "freeze.unfreeze" );
             

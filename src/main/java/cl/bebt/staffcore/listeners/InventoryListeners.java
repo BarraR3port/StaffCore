@@ -1,5 +1,6 @@
 package cl.bebt.staffcore.listeners;
 
+import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.InventoryMenu;
 import cl.bebt.staffcore.utils.Items;
@@ -104,7 +105,9 @@ public class InventoryListeners implements Listener{
         if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) ||
                 PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
             if ( e.getClick( ) == ClickType.CONTROL_DROP || e.getClick( ) == ClickType.DROP || e.getClick( ) == ClickType.CREATIVE ) {
-                e.setCancelled( true );
+                if ( !StaffCoreAPI.getTrolStatus( e.getWhoClicked().getName( ) ) ) {
+                    e.setCancelled( true );
+                }
             }
         }
     }

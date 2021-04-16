@@ -53,7 +53,7 @@ public class unMute implements TabExecutor {
                     if ( plugin.chatMuted == false ) {
                         utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&cThe chat is not muted" );
                     } else {
-                        Bukkit.broadcastMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7The CONSOLE &cUnMuted &7the chat!" ) );
+                        Bukkit.broadcastMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7The CONSOLE &cUn Muted &7the chat!" ) );
                         ToggleChat.Mute( false );
                     }
                 } else if ( args.length == 1 ) {
@@ -74,7 +74,7 @@ public class unMute implements TabExecutor {
                         if ( plugin.chatMuted == false ) {
                             utils.tell( p , plugin.getConfig( ).getString( "server_prefix" ) + "&cThe chat is not muted" );
                         } else {
-                            Bukkit.broadcastMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7The player &r" + p.getDisplayName( ) + " &aUnMuted the chat" ) );
+                            Bukkit.broadcastMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7The player &r" + p.getDisplayName( ) + " &aUn    Muted the chat" ) );
                             ToggleChat.Mute( false );
                         }
                     } else if ( args.length == 1 ) {

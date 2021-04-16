@@ -3,7 +3,7 @@
 #   | (___ \_| `| |-'  ,--.    _| |_    _| |_      ______    / .'   \_|   .--.    _ .--.   .---.          #
 #    _.____`.   | |   `'_\ :  '-| |-'  '-| |-'    |______|   | |        / .'`\ \ [ `/'`\] / /__\\         #
 #   | \____) |  | |,  // | |,   | |      | |                 \ `.___.'\ | \__. |  | |     | \__.,         #
-#    \______.'  \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.3.8 #
+#   \______.'   \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.3.9 #
 #
 # By BarraR3port
 
@@ -35,9 +35,7 @@ server_prefix: "&8[&a&lSTAFF CORE&r&8]&r "
 player_dont_exist: "&cThe player does not exist!"
 no_online_players: "&cNo players &aOnline&c!"
 no_permissions: "&cYou don't have permissions!."
-disable_outdated_plugin: true # ON ENABLE IF THE PLUGIN IS OUTDATED, IT WILL AUTOMATIC BE DISABLED.
-server_version: "1.16" # If you are using a version under 1.14 yo need to put 1.13,
-                       # this will make almost the hole plugin useless, only notifications will work.
+disable_outdated_plugin: false # ON ENABLE IF THE PLUGIN IS OUTDATED, IT WILL AUTOMATIC BE DISABLED.
 # ------------> GAMEMODES <----------
 creative: "&7Creative!"
 creative_already: "&cYou are already in Creative!"
@@ -108,6 +106,7 @@ custom_sounds:
   warn_alerts: "BLOCK_NOTE_BLOCK_PLING"
   close_ban: "BLOCK_NOTE_BLOCK_PLING"
   un_ban: "ENTITY_WITHER_BREAK_BLOCK"
+  helpop: "BLOCK_NOTE_BLOCK_PLING"
 # ------------> PARTICLES <----------
 custom_particles:
   freeze_player:
@@ -239,9 +238,6 @@ warns:
       - "           &a&7ID: &4%id%"
       - " "
     notify: "&4Hey you have %amount% warnings, be careful"
-
-
-
 # ------------> FREEZE <-----------
 freeze:
   freeze: "&cFrozen"
@@ -285,6 +281,12 @@ wipe:
     - ""
     - "&a&7Wiped by: &a%wiper%"
     - ""
+# ------------> HELPOP <----------
+helpop:
+  tostaff: "&7[&aHELPOP&7] &7[&c%user%&7] "
+  tousers: "&7[&aHELPOP&7] &aA member of the staff will help you out!"
+  bungee: "&7[&aHELPOP&7] &7[&c%user%&7] &7[&c%server%&7] "
+
 # ------------> ALERT OPTIONS <----------
 alerts:
   tp_to_them: true # Alert players when someone teleported to them.

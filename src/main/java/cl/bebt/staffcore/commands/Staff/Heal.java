@@ -48,15 +48,14 @@ public class Heal implements CommandExecutor {
                             p.setHealth( 20 );
                             p.setSaturation( 5f );
                             utils.tell( p , plugin.getConfig( ).getString( "server_prefix" ) + "&7You've been healed and feed" );
-                            
                         } else {
                             jugador.setFoodLevel( 20 );
                             jugador.setHealth( 20 );
                             jugador.setSaturation( 5f );
                             utils.tell( p , plugin.getConfig( ).getString( "server_prefix" ) + "&7You've healed and feed: " + jugador.getName( ) );
-                            jugador.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7You've been healed and feed" ) );
+                            utils.tell( jugador, plugin.getConfig( ).getString( "server_prefix" ) + "&7You've been healed and feed" );
                         }
-                    } else if ( !(Bukkit.getPlayer( args[0] ) instanceof Player) ) {
+                    } else {
                         utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "player_dont_exist" ) );
                     }
                 }

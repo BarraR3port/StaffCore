@@ -9,6 +9,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.text.ParseException;
@@ -116,6 +117,9 @@ public class StaffCoreAPI {
             return false;
         }
     }
+    public static boolean getTrolStatus( String player ){
+        return Bukkit.getPlayer( player ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "trol" ) , PersistentDataType.STRING );
+    }
     
     public static boolean isBanned( String player ){
         if ( mysqlEnabled( ) )
@@ -156,9 +160,9 @@ public class StaffCoreAPI {
     public static void setStaffChatStatus( Player target , boolean status ){
         if ( mysqlEnabled( ) ) {
             if ( status ) {
-                SQLGetter.setTrue( target.getName( ) , "staffchat" , "true" );
+                SQLGetter.set( target.getName( ) , "staffchat" , "true" );
             } else {
-                SQLGetter.setTrue( target.getName( ) , "staffchat" , "false" );
+                SQLGetter.set( target.getName( ) , "staffchat" , "false" );
             }
         } else if ( status ) {
             target.getPersistentDataContainer( ).set( new NamespacedKey( plugin , "staffchat" ) , PersistentDataType.STRING , "staffchat" );
@@ -184,6 +188,15 @@ public class StaffCoreAPI {
             }
         }
         return bannedPlayers;
+    }
+    
+    public static void setTrolMode( Player p , Boolean bol ){
+        PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
+        if ( bol ) {
+            PlayerData.set( new NamespacedKey( plugin , "trol" ) , PersistentDataType.STRING , "trol" );
+        } else {
+            PlayerData.remove( new NamespacedKey( plugin , "trol" ) );
+        }
     }
     
     public static ArrayList < String > getWarnedPlayers( ){
@@ -319,5 +332,4 @@ public class StaffCoreAPI {
             return staffPlayer;
         }
     }
-    
 }

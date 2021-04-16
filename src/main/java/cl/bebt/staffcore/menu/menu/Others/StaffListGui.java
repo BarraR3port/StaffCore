@@ -1,5 +1,6 @@
 package cl.bebt.staffcore.menu.menu.Others;
 
+import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PaginatedMenu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
@@ -115,6 +116,12 @@ public class StaffListGui extends PaginatedMenu {
                     }
                     if ( players.get( index ).getGameMode( ).equals( GameMode.SPECTATOR ) ) {
                         lore.add( utils.chat( "&7Gamemode: &aSpectator" ) );
+                    }
+                    if ( StaffCoreAPI.getTrolStatus( players.get( index ).getName( ) ) ) {
+                        lore.add( utils.chat( "&7Trol Mode: &aON" ) );
+                    }
+                    if ( !StaffCoreAPI.getTrolStatus( players.get( index ).getName( ) ) ) {
+                        lore.add( utils.chat( "&7Trol Mode: &cOFF" ) );
                     }
                     meta.setLore( lore );
                     meta.getPersistentDataContainer( ).set( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING , "staff" );

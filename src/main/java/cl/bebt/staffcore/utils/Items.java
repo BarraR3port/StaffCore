@@ -1,5 +1,6 @@
 package cl.bebt.staffcore.utils;
 
+import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.sql.SQLGetter;
 import org.bukkit.Bukkit;
@@ -39,6 +40,12 @@ public class Items {
             }
             if ( !target.getPersistentDataContainer( ).has( new NamespacedKey( main.plugin , "vanished" ) , PersistentDataType.STRING ) ) {
                 lore.add( utils.chat( "&a► &7Vanished &cOff" ) );
+            }
+            if ( StaffCoreAPI.getTrolStatus( target.getName( ) ) ) {
+                lore.add( utils.chat( "&a► &7Trol Mode: &aON" ) );
+            }
+            if ( !StaffCoreAPI.getTrolStatus( target.getName( ) ) ) {
+                lore.add( utils.chat( "&a► &7Trol Mode: &cOFF" ) );
             }
         }
         head_meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "head" ) , PersistentDataType.STRING , "head" );
@@ -118,13 +125,15 @@ public class Items {
         metaServer.setDisplayName( utils.chat( "&5SERVER STATUS:" ) );
         metaServer.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "server" ) , PersistentDataType.STRING , "server" );
         double tps = Math.round( utils.getTPS( ) * 100.0D ) / 100.0D;
-        Runtime r = Runtime.getRuntime( );
+        int mb = 1024 * 1024;
+        Runtime instance = Runtime.getRuntime();
+        
         if ( tps > 20 ) {
             tps = 20D;
         }
         lore.add( utils.chat( "&a► &7Tps: &a" + tps ) );
         lore.add( utils.chat( "&a► &7Online players: &a" + Bukkit.getOnlinePlayers( ).size( ) + "/" + Bukkit.getMaxPlayers( ) ) );
-        lore.add( utils.chat( "&a► &7Ram in use: &a" + +(r.totalMemory( ) - r.freeMemory( )) / 1048576 ) + "/" + (r.totalMemory( ) / 1048576) );
+        lore.add( utils.chat( "&a► &7Ram in use: &a" + (instance.totalMemory( ) - instance.freeMemory( ) ) / mb ) + "/" + instance.maxMemory() / mb );
         lore.add( utils.chat( "&5PUNISHMENTS STATUS:" ) );
         if ( utils.mysqlEnabled( ) ) {
             lore.add( utils.chat( "&a► &7Current Bans: &a" + SQLGetter.getCurrents( "bans" ) ) );
@@ -163,6 +172,12 @@ public class Items {
         }
         if ( !p.getPersistentDataContainer( ).has( new NamespacedKey( main.plugin , "vanished" ) , PersistentDataType.STRING ) ) {
             lore.add( utils.chat( "&a► &7Vanished &cOff" ) );
+        }
+        if ( StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+            lore.add( utils.chat( "&a► &7Trol Mode: &aON" ) );
+        }
+        if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+            lore.add( utils.chat( "&a► &7Trol Mode: &cOFF" ) );
         }
         lore.add( utils.chat( "&a► &7Gamemode: &b" + p.getGameMode( ).toString( ) ) );
         lore.add( utils.chat( "&a► &7Ping: &a" + utils.getPing( p ) ) );

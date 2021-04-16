@@ -686,7 +686,7 @@ public class SQLGetter {
         }
     }
     
-    public static void setTrue( String player , String tableName , String bol ){
+    public static void set( String player , String tableName , String bol ){
         int intento = 0;
         while (intento < 4) {
             if ( PlayerExists( tableName , player ) ) {
@@ -822,6 +822,13 @@ public class SQLGetter {
                 break;
             } catch ( SQLException ignored ) {
                 intento++;
+            }
+        }
+    }
+    public static void addToggledPlayersToList( ){
+        for (String s : getPlayersNames( ) ) {
+            if ( isTrue( s , "staffchat" ).equalsIgnoreCase( "true" ) ) {
+                main.toggledStaffChat.add( s );
             }
         }
     }

@@ -1,4 +1,4 @@
-package cl.bebt.staffcore.commands.Staff;
+package cl.bebt.staffcore.commands;
 
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.utils.UpdateChecker;
@@ -43,8 +43,18 @@ public class staffcore implements TabExecutor {
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         
         if ( !(sender instanceof Player) ) {
-            if ( args.length == 0 )
-                utils.tell( sender , this.plugin.getConfig( ).getString( "server_prefix" ) + "&7Use &9/staffcore version/vanished/staff/reload" );
+            if ( args.length == 0 ) {
+                utils.tell( sender," " );
+                utils.tell( sender," " );
+                utils.tell( sender,"&aMysql: &d" + utils.mysqlEnabled( ) );
+                utils.tell( sender," " );
+                utils.tell( sender," " );
+                utils.tell( sender," " );
+                utils.tell( sender," " );
+                utils.tell( sender," " );
+                utils.tell( sender," " );
+            }
+            
             if ( args.length == 1 ) {
                 if ( args[0].equalsIgnoreCase( "version" ) ) {
                     utils.tell( sender , " " );
@@ -120,8 +130,18 @@ public class staffcore implements TabExecutor {
             }
         } else if ( sender.hasPermission( "staffcore.staff" ) ) {
             if ( args.length == 0 ) {
-                utils.tell( sender , this.plugin.getConfig( ).getString( "server_prefix" ) + "&7Use &9/staffcore version/vanished/staff/reload" );
-            } else if ( args.length == 1 ) {
+                utils.tell( sender," " );
+                utils.tell( sender,"                 &6&5StaffCore  &6" );
+                utils.tell( sender," " );
+                utils.tell( sender,"          &aVersion: &d" + this.plugin.getDescription( ).getVersion( ) );
+                utils.tell( sender,"          &aAuthor: &d" + this.plugin.getDescription( ).getAuthors( ) );
+                utils.tell( sender,"          &aMysql: &d" + utils.mysqlEnabled( ) );
+                utils.tell( sender,"          &aBungeeCord: &d" + utils.getBoolean( "bungeecord.enabled" ) );
+                utils.tell( sender,"          &aServer Version: &d" + utils.getServerVersion() );
+                utils.tell( sender,"          &aTPS: &d" + ( int ) utils.getTPS( ) );
+                utils.tell( sender," " );
+            }
+            else if ( args.length == 1 ) {
                 if ( args[0].equalsIgnoreCase( "version" ) ) {
                     utils.tell( sender , " " );
                     utils.tell( sender , "                 &bAuthor: &5" + this.plugin.getDescription( ).getAuthors( ) );
@@ -140,12 +160,16 @@ public class staffcore implements TabExecutor {
                     } );
                     utils.tell( sender , " " );
                 } else if ( args[0].equalsIgnoreCase( "reload" ) ) {
-                    this.plugin.reloadConfig( );
-                    this.plugin.reports.reloadConfig( );
-                    this.plugin.bans.reloadConfig( );
-                    this.plugin.alts.reloadConfig( );
-                    this.plugin.warns.reloadConfig( );
-                    utils.tell( sender , "&aStaffCore Reload!" );
+                    if ( sender.hasPermission( "staffcore.reload" ) ) {
+                        this.plugin.reloadConfig( );
+                        this.plugin.reports.reloadConfig( );
+                        this.plugin.bans.reloadConfig( );
+                        this.plugin.alts.reloadConfig( );
+                        this.plugin.warns.reloadConfig( );
+                        utils.tell( sender , "&aStaffCore Reload!" );
+                    } else {
+                        utils.tell( sender , this.plugin.getConfig( ).getString( "server_prefix" ) + this.plugin.getConfig( ).getString( "no_permissions" ) );
+                    }
                 } else if ( args[0].equalsIgnoreCase( "vanished" ) ) {
                     if ( !utils.isOlderVersion( ) ){
                         Player p = ( Player ) sender;

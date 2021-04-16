@@ -18,14 +18,30 @@ public class Teleport implements CommandExecutor {
         plugin.getCommand( "tp" ).setExecutor( this );
     }
     
-    private static Boolean isCord( String x , String y , String z ){
+    private static Boolean isCord( Player p , String x , String y , String z ){
         try {
-            double ex = Double.parseDouble( x );
-            double way = Double.parseDouble( y );
-            double ze = Double.parseDouble( z );
+            double ex;
+            double way;
+            double ze;
+            if ( x.equalsIgnoreCase( "~" ) ){
+                ex = p.getLocation().getX();
+            } else {
+                ex = Double.parseDouble( x );
+            }
+            if ( y.equalsIgnoreCase( "~" ) ){
+                way = p.getLocation().getY();
+            } else {
+                way = Double.parseDouble( y );
+            }
+            if ( z.equalsIgnoreCase( "~" ) ){
+                ze = p.getLocation().getZ();
+            } else {
+                ze = Double.parseDouble( z );
+            }
             double sum = ex + way + ze;
             return true;
-        } catch ( NumberFormatException | NullPointerException error ) {
+        } catch ( NumberFormatException error ) {
+            
             return false;
         }
     }
@@ -33,9 +49,24 @@ public class Teleport implements CommandExecutor {
     private static Boolean isCordAndPlayer( String x , String y , String z , String player ){
         if ( Bukkit.getPlayer( player ) instanceof Player ) {
             try {
-                double ex = Double.parseDouble( x );
-                double way = Double.parseDouble( y );
-                double ze = Double.parseDouble( z );
+                double ex;
+                double way;
+                double ze;
+                if ( x.equalsIgnoreCase( "~" ) ){
+                    ex = Bukkit.getPlayer( player ).getLocation().getX();
+                } else {
+                    ex = Double.parseDouble( x );
+                }
+                if ( y.equalsIgnoreCase( "~" ) ){
+                    way = Bukkit.getPlayer( player ).getLocation().getY();
+                } else {
+                    way = Double.parseDouble( y );
+                }
+                if ( z.equalsIgnoreCase( "~" ) ){
+                    ze = Bukkit.getPlayer( player ).getLocation().getZ();
+                } else {
+                    ze = Double.parseDouble( z );
+                }
                 double sum = ex + way + ze;
                 return true;
             } catch ( NumberFormatException | NullPointerException error ) {
@@ -49,9 +80,24 @@ public class Teleport implements CommandExecutor {
     private static Boolean isPlayerAndCord( String player , String x , String y , String z ){
         if ( Bukkit.getPlayer( player ) instanceof Player ) {
             try {
-                double ex = Double.parseDouble( x );
-                double way = Double.parseDouble( y );
-                double ze = Double.parseDouble( z );
+                double ex;
+                double way;
+                double ze;
+                if ( x.equalsIgnoreCase( "~" ) ){
+                    ex = Bukkit.getPlayer( player ).getLocation().getX();
+                } else {
+                    ex = Double.parseDouble( x );
+                }
+                if ( y.equalsIgnoreCase( "~" ) ){
+                    way = Bukkit.getPlayer( player ).getLocation().getY();
+                } else {
+                    way = Double.parseDouble( y );
+                }
+                if ( z.equalsIgnoreCase( "~" ) ){
+                    ze = Bukkit.getPlayer( player ).getLocation().getZ();
+                } else {
+                    ze = Double.parseDouble( z );
+                }
                 double sum = ex + way + ze;
                 return true;
             } catch ( NumberFormatException | NullPointerException error ) {
@@ -83,17 +129,47 @@ public class Teleport implements CommandExecutor {
                 return true;
             } else if ( args.length == 4 ) {
                 if ( isCordAndPlayer( args[0] , args[1] , args[2] , args[3] ) ) {
-                    double x = Double.parseDouble( args[0] );
-                    double y = Double.parseDouble( args[1] );
-                    double z = Double.parseDouble( args[2] );
+                    double x;
+                    double y;
+                    double z;
                     Player target = Bukkit.getPlayer( args[3] );
+                    if ( args[0].equalsIgnoreCase( "~" ) ){
+                        x = target.getLocation().getX();
+                    } else {
+                        x = Double.parseDouble( args[0] );
+                    }
+                    if ( args[1].equalsIgnoreCase( "~" ) ){
+                        y = target.getLocation().getY();
+                    } else {
+                        y = Double.parseDouble( args[1] );
+                    }
+                    if ( args[2].equalsIgnoreCase( "~" ) ){
+                        z = target.getLocation().getZ();
+                    } else {
+                        z = Double.parseDouble( args[2] );
+                    }
                     TpPlayers.tpToCordsAndPlayer( sender , target , x , y , z );
                     return true;
                 } else if ( isPlayerAndCord( args[0] , args[1] , args[2] , args[3] ) ) {
+                    double x;
+                    double y;
+                    double z;
                     Player target = Bukkit.getPlayer( args[0] );
-                    double x = Double.parseDouble( args[1] );
-                    double y = Double.parseDouble( args[2] );
-                    double z = Double.parseDouble( args[3] );
+                    if ( args[1].equalsIgnoreCase( "~" ) ){
+                        x = target.getLocation().getX();
+                    } else {
+                        x = Double.parseDouble( args[1] );
+                    }
+                    if ( args[2].equalsIgnoreCase( "~" ) ){
+                        y = target.getLocation().getY();
+                    } else {
+                        y = Double.parseDouble( args[2] );
+                    }
+                    if ( args[3].equalsIgnoreCase( "~" ) ){
+                        z = target.getLocation().getZ();
+                    } else {
+                        z = Double.parseDouble( args[3] );
+                    }
                     TpPlayers.tpToCordsAndPlayer( sender , target , x , y , z );
                     return true;
                 } else {
@@ -135,10 +211,25 @@ public class Teleport implements CommandExecutor {
                     }
                     TpPlayers.tpPlayerToPlayer( p , args[0] , args[1] );
                 } else if ( args.length == 3 ) {
-                    if ( isCord( args[0] , args[1] , args[2] ) ) {
-                        double x = Double.parseDouble( args[0] );
-                        double y = Double.parseDouble( args[1] );
-                        double z = Double.parseDouble( args[2] );
+                    if ( isCord( p , args[0] , args[1] , args[2] ) ) {
+                        double x;
+                        double y;
+                        double z;
+                        if ( args[0].equalsIgnoreCase( "~" ) ){
+                            x = p.getLocation().getX();
+                        } else {
+                            x = Double.parseDouble( args[0] );
+                        }
+                        if ( args[1].equalsIgnoreCase( "~" ) ){
+                            y = p.getLocation().getY();
+                        } else {
+                            y = Double.parseDouble( args[1] );
+                        }
+                        if ( args[2].equalsIgnoreCase( "~" ) ){
+                            z = p.getLocation().getZ();
+                        } else {
+                            z = Double.parseDouble( args[2] );
+                        }
                         TpPlayers.tpToCords( p , x , y , z );
                     } else {
                         for ( String s : plugin.getConfig( ).getStringList( "tp.wrong" ) ) {
@@ -148,10 +239,25 @@ public class Teleport implements CommandExecutor {
                     return true;
                 } else if ( args.length == 4 ) {
                     if ( args[0].equalsIgnoreCase( "all" ) ) {
-                        if ( isCord( args[1] , args[2] , args[3] ) ) {
-                            double x = Double.parseDouble( args[1] );
-                            double y = Double.parseDouble( args[2] );
-                            double z = Double.parseDouble( args[3] );
+                        if ( isCord( p , args[1] , args[2] , args[3] ) ) {
+                            double x;
+                            double y;
+                            double z;
+                            if ( args[0].equalsIgnoreCase( "~" ) ){
+                                x = p.getLocation().getX();
+                            } else {
+                                x = Double.parseDouble( args[0] );
+                            }
+                            if ( args[1].equalsIgnoreCase( "~" ) ){
+                                y = p.getLocation().getY();
+                            } else {
+                                y = Double.parseDouble( args[1] );
+                            }
+                            if ( args[2].equalsIgnoreCase( "~" ) ){
+                                z = p.getLocation().getZ();
+                            } else {
+                                z = Double.parseDouble( args[2] );
+                            }
                             TpPlayers.tpAllToCords( p , x , y , z );
                         } else {
                             for ( String s : plugin.getConfig( ).getStringList( "tp.wrong" ) ) {
@@ -160,10 +266,25 @@ public class Teleport implements CommandExecutor {
                         }
                         return true;
                     } else if ( args[3].equalsIgnoreCase( "all" ) ) {
-                        if ( isCord( args[0] , args[1] , args[2] ) ) {
-                            double x = Double.parseDouble( args[0] );
-                            double y = Double.parseDouble( args[1] );
-                            double z = Double.parseDouble( args[2] );
+                        if ( isCord( p , args[0] , args[1] , args[2] ) ) {
+                            double x;
+                            double y;
+                            double z;
+                            if ( args[0].equalsIgnoreCase( "~" ) ){
+                                x = p.getLocation().getX();
+                            } else {
+                                x = Double.parseDouble( args[0] );
+                            }
+                            if ( args[1].equalsIgnoreCase( "~" ) ){
+                                y = p.getLocation().getY();
+                            } else {
+                                y = Double.parseDouble( args[1] );
+                            }
+                            if ( args[2].equalsIgnoreCase( "~" ) ){
+                                z = p.getLocation().getZ();
+                            } else {
+                                z = Double.parseDouble( args[2] );
+                            }
                             TpPlayers.tpAllToCords( p , x , y , z );
                         } else {
                             for ( String s : plugin.getConfig( ).getStringList( "tp.wrong" ) ) {
@@ -172,17 +293,47 @@ public class Teleport implements CommandExecutor {
                         }
                         return true;
                     } else if ( isCordAndPlayer( args[0] , args[1] , args[2] , args[3] ) ) {
-                        double x = Double.parseDouble( args[0] );
-                        double y = Double.parseDouble( args[1] );
-                        double z = Double.parseDouble( args[2] );
+                        double x;
+                        double y;
+                        double z;
                         Player target = Bukkit.getPlayer( args[3] );
+                        if ( args[0].equalsIgnoreCase( "~" ) ){
+                            x = target.getLocation().getX();
+                        } else {
+                            x = Double.parseDouble( args[0] );
+                        }
+                        if ( args[1].equalsIgnoreCase( "~" ) ){
+                            y = target.getLocation().getY();
+                        } else {
+                            y = Double.parseDouble( args[1] );
+                        }
+                        if ( args[2].equalsIgnoreCase( "~" ) ){
+                            z = target.getLocation().getZ();
+                        } else {
+                            z = Double.parseDouble( args[2] );
+                        }
                         TpPlayers.tpToCordsAndPlayer( p , target , x , y , z );
                         return true;
                     } else if ( isPlayerAndCord( args[0] , args[1] , args[2] , args[3] ) ) {
+                        double x;
+                        double y;
+                        double z;
                         Player target = Bukkit.getPlayer( args[0] );
-                        double x = Double.parseDouble( args[1] );
-                        double y = Double.parseDouble( args[2] );
-                        double z = Double.parseDouble( args[3] );
+                        if ( args[1].equalsIgnoreCase( "~" ) ){
+                            x = p.getLocation().getX();
+                        } else {
+                            x = Double.parseDouble( args[1] );
+                        }
+                        if ( args[2].equalsIgnoreCase( "~" ) ){
+                            y = p.getLocation().getY();
+                        } else {
+                            y = Double.parseDouble( args[2] );
+                        }
+                        if ( args[3].equalsIgnoreCase( "~" ) ){
+                            z = p.getLocation().getZ();
+                        } else {
+                            z = Double.parseDouble( args[3] );
+                        }
                         TpPlayers.tpToCordsAndPlayer( p , target , x , y , z );
                         return true;
                     } else {

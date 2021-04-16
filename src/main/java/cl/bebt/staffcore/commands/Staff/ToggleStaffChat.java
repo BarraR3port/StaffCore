@@ -12,11 +12,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-public class StaffChatToggle implements CommandExecutor, Listener{
+public class ToggleStaffChat implements CommandExecutor, Listener{
     
     private final main plugin;
     
-    public StaffChatToggle( main plugin ){
+    public ToggleStaffChat( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "togglestaffchat" ).setExecutor( this );
     }
