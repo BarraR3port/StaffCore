@@ -25,23 +25,31 @@ public class TrolMode implements CommandExecutor {
             if ( sender instanceof Player ) {
                 if ( args.length == 0 ) {
                     Player p = ( Player ) sender;
-                    StaffCoreAPI.setTrolMode( p , !StaffCoreAPI.getTrolStatus( p.getName( ) ) );
-                    if ( StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
-                        utils.tell( p , utils.getString( "staff.staff_prefix" ) + "&7Trol Mode &aON" );
+                    if (p.hasPermission("staffcore.trol") ) {
+                        StaffCoreAPI.setTrolMode( p , !StaffCoreAPI.getTrolStatus( p.getName( ) ) );
+                        if ( StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+                            utils.tell( p , utils.getString( "staff.staff_prefix" ) + "&7Trol Mode &aON" );
+                        } else {
+                            utils.tell( p , utils.getString( "staff.staff_prefix" ) + "&7Trol Mode &cOFF" );
+                        }
                     } else {
-                        utils.tell( p , utils.getString( "staff.staff_prefix" ) + "&7Trol Mode &cOFF" );
+                        utils.tell( p,plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) );
                     }
                 }
                 if ( args.length == 1 ){
                     if ( Bukkit.getPlayer( args[0] ) != null ){
-                        Player target = Bukkit.getPlayer( args[0] );
-                        StaffCoreAPI.setTrolMode( target, !StaffCoreAPI.getTrolStatus( args[0] ) );
-                        if ( StaffCoreAPI.getTrolStatus( args[0] ) ) {
-                            utils.tell( target , utils.getString( "staff.staff_prefix" ) + "&7Trol Mode &aON" );
-                            utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&aEnabled &7Trol Mode to &9"+ args[0] );
+                        if (sender.hasPermission("staffcore.trol") ) {
+                            Player target = Bukkit.getPlayer( args[0] );
+                            StaffCoreAPI.setTrolMode( target , !StaffCoreAPI.getTrolStatus( args[0] ) );
+                            if ( StaffCoreAPI.getTrolStatus( args[0] ) ) {
+                                utils.tell( target , utils.getString( "staff.staff_prefix" ) + "&7Trol Mode &aON" );
+                                utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&aEnabled &7Trol Mode to &9" + args[0] );
+                            } else {
+                                utils.tell( target , utils.getString( "staff.staff_prefix" ) + "&7Trol Mode &cOFF" );
+                                utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&cDisabled &7Trol Mode to &9" + args[0] );
+                            }
                         } else {
-                            utils.tell( target , utils.getString( "staff.staff_prefix" ) + "&7Trol Mode &cOFF" );
-                            utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&cDisabled &7Trol Mode to &9"+ args[0] );
+                            utils.tell( sender,plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) );
                         }
                     }
                 }
