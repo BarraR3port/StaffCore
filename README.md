@@ -20,6 +20,6 @@ Step 2. Add the dependency
 	<dependency>
 	    <groupId>com.github.BarraR3port</groupId>
 	    <artifactId>Staff-Core</artifactId>
-	    <version>3.4.8</version>
+	    <version>3.4.9</version>
 	</dependency>
 [![](https://jitpack.io/v/BarraR3port/Staff-Core.svg)](https://jitpack.io/#BarraR3port/Staff-Core)
