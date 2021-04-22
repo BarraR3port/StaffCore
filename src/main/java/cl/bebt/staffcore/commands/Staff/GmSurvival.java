@@ -33,6 +33,7 @@ public class GmSurvival implements CommandExecutor {
                 if ( p instanceof Player ) {
                     if ( !(p.getGameMode( ) == GameMode.SURVIVAL) ) {
                         p.setGameMode( GameMode.SURVIVAL );
+                        p.setInvulnerable( false );
                         if ( plugin.getConfig( ).getBoolean( "mysql" ) ) {
                             if ( SQLGetter.isTrue( p , "flying" ).equalsIgnoreCase( "true" ) ) {
                                 SetFly.SetFly( p , true );
@@ -68,6 +69,7 @@ public class GmSurvival implements CommandExecutor {
             if ( p.hasPermission( "staffcore.gms" ) ) {
                 if ( !(p.getGameMode( ) == GameMode.SURVIVAL) ) {
                     p.setGameMode( GameMode.SURVIVAL );
+                    p.setInvulnerable( false );
                     if ( plugin.getConfig( ).getBoolean( "mysql" ) ) {
                         if ( SQLGetter.isTrue( p , "flying" ).equalsIgnoreCase( "true" ) ) {
                             SetFly.SetFly( p , true );
@@ -101,6 +103,7 @@ public class GmSurvival implements CommandExecutor {
                 if ( sender.hasPermission( "staffcore.gms" ) ) {
                     if ( !(p.getGameMode( ) == GameMode.SURVIVAL) ) {
                         p.setGameMode( GameMode.SURVIVAL );
+                        p.setInvulnerable( false );
                         if ( plugin.getConfig( ).getBoolean( "mysql" ) ) {
                             if ( SQLGetter.isTrue( p , "flying" ).equalsIgnoreCase( "true" ) ) {
                                 SetFly.SetFly( p , true );

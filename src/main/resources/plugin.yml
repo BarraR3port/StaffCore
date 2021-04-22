@@ -1,5 +1,5 @@
 name: StaffCore
-version: 4.3.9
+version: 4.4
 main: cl.bebt.staffcore.main
 author: BarraR3port
 prefix: StaffCore
@@ -134,4 +134,4 @@ permissions:
       staffcore.alts: true
       staffcore.wipe: true
       staffcore.invender: true
-      staffcore.trolmode: true
+      staffcore.trol: true

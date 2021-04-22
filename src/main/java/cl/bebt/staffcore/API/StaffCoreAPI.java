@@ -189,6 +189,20 @@ public class StaffCoreAPI {
         }
         return bannedPlayers;
     }
+    public static ArrayList < String > getReportedPlayers( ){
+        ArrayList < String > reportedPlayers = new ArrayList <>( );
+        if ( utils.mysqlEnabled( ) ) {
+            reportedPlayers.addAll( SQLGetter.getReportedPlayers( ) );
+        } else {
+            ConfigurationSection inventorySection = plugin.reports.getConfig( ).getConfigurationSection( "reports" );
+            for ( String key : inventorySection.getKeys( false ) ) {
+                String name = plugin.reports.getConfig( ).getString( "reports." + key + ".name" );
+                if ( !reportedPlayers.contains( name ) )
+                    reportedPlayers.add( name );
+            }
+        }
+        return reportedPlayers;
+    }
     
     public static void setTrolMode( Player p , Boolean bol ){
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
@@ -319,7 +333,7 @@ public class StaffCoreAPI {
         }
     }
     
-    public static List<String> getStaffPlayer( ){
+    public static List<String> getStaffPlayers( ){
         if ( mysqlEnabled( ) ) {
             return SQLGetter.getStaffPlayers();
         } else {

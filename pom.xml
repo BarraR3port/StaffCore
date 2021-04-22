@@ -6,7 +6,7 @@
 
     <groupId>cl.bebt.staffcore</groupId>
     <artifactId>staffcore</artifactId>
-    <version>4.3.9</version>
+    <version>4.4</version>
     <packaging>jar</packaging>
 
     <name>StaffCore</name>
@@ -73,8 +73,12 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.4-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
+            <version>1.16.5-R0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.16.5-R0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

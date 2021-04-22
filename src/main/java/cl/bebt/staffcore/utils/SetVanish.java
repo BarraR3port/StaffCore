@@ -47,24 +47,20 @@ public class SetVanish {
                 }
             }
             PlayerData.set( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING , "vanished" );
-            if ( !(p.getGameMode( ) == GameMode.CREATIVE || p.getGameMode( ) == GameMode.SPECTATOR ||
-                    PlayerData.has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ||
-                    PlayerData.has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING )) ) {
-                p.setAllowFlight( true );
-                p.setFlying( true );
-                p.setInvulnerable( true );
-            }
+            p.setAllowFlight( true );
+            p.setFlying( true );
+            p.setInvulnerable( true );
+            p.setFoodLevel( 20 );
+            p.setHealth( 20 );
+            p.setSaturation( 5f );
             if ( p.getInventory( ).contains( SetStaffItems.vanishOff( ) ) ) {
                 p.getInventory( ).remove( SetStaffItems.vanishOff( ) );
                 p.getInventory( ).addItem( SetStaffItems.vanishOn( ) );
             }
-            p.setFoodLevel( 20 );
-            p.setHealth( 20 );
-            p.setSaturation( 5f );
         } else {
-            if ( !(p.getGameMode( ) == GameMode.CREATIVE || p.getGameMode( ) == GameMode.SPECTATOR ||
-                    PlayerData.has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ||
-                    PlayerData.has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING )) ) {
+            if ( p.getGameMode( ).equals( GameMode.SURVIVAL ) || p.getGameMode( ).equals( GameMode.ADVENTURE ) ||
+                    !PlayerData.has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ||
+                    !PlayerData.has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) ) {
                 p.setAllowFlight( false );
                 p.setFlying( false );
                 p.setInvulnerable( false );

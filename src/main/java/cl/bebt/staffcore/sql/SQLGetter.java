@@ -163,6 +163,22 @@ public class SQLGetter {
         }
         return players;
     }
+    public static List < String > getReportedPlayers( ){
+        List < String > players = new ArrayList <>( );
+        try {
+            PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "SELECT Name FROM sc_reports" );
+            ResultSet results = statement.executeQuery( );
+            while (results.next( )) {
+                String aDBName = results.getString( 1 );
+                if ( !players.contains( aDBName ) ) {
+                    players.add( aDBName );
+                }
+            }
+        } catch ( SQLException throwable ) {
+            throwable.printStackTrace( );
+        }
+        return players;
+    }
     public static List < String > getVanishedPlayers( ){
         List < String > players = new ArrayList <>( );
         try {

@@ -40,6 +40,7 @@ public class SetStaffItems {
         p.getInventory( ).setItem( 5 , randomTp( ) );
         p.getInventory( ).setItem( 6 , InvSee( ) );
         p.getInventory( ).setItem( 8 , staffOff( ) );
+        p.setInvulnerable( true );
         PlayerData.set( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING , "staff" );
         utils.tell( p , plugin.getConfig( ).getString( "staff.staff_prefix" ) + plugin.getConfig( ).getString( "staff.staff_enabled" ) );
         if ( utils.mysqlEnabled( ) ) {
@@ -56,8 +57,7 @@ public class SetStaffItems {
                 ItemStack[] armor = Serializer.itemStackArrayFromBase64( PlayerData.get( new NamespacedKey( plugin , "staff_armor" ) , PersistentDataType.STRING ) );
                 p.getInventory( ).setContents( inventory );
                 p.getInventory( ).setArmorContents( armor );
-            } catch ( IOException | NullPointerException ignore ) {
-            }
+            } catch ( IOException | NullPointerException ignore ) { }
             p.getInventory( ).removeItem( vanishOn( ) );
             p.getInventory( ).removeItem( vanishOff( ) );
             p.getInventory( ).removeItem( staffOff( ) );
@@ -67,9 +67,10 @@ public class SetStaffItems {
             p.getInventory( ).removeItem( randomTp( ) );
             p.updateInventory( );
         } , 6L );
-        if ( !p.getGameMode( ).equals( GameMode.CREATIVE ) || p.getGameMode( ).equals( GameMode.SPECTATOR ) ) {
+        if ( p.getGameMode( ).equals( GameMode.SURVIVAL ) || p.getGameMode( ).equals( GameMode.ADVENTURE ) ) {
             p.setAllowFlight( false );
             p.setFlying( false );
+            p.setInvulnerable( false );
         }
         SetVanish.setVanish( p , false );
         PlayerData.remove( new NamespacedKey( plugin , "staff" ) );
