@@ -36,57 +36,57 @@ public class Weather implements TabExecutor {
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {
-            if ( args.length == 0 ) {
-                utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&7Correct use: &5weather clear/rain/storm" );
-            } else if ( args.length == 1 ) {
+            if ( args.length == 1 ) {
                 if ( args[0].equalsIgnoreCase( "clear" ) ) {
                     for ( World world : Bukkit.getServer( ).getWorlds( ) ) {
                         world.setThundering( false );
                         world.setStorm( false );
                     }
-                    Bukkit.broadcastMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7Weather: &eClean!" ) );
+                    Bukkit.broadcastMessage( utils.chat( utils.getString( "time.weather.clear" , "lg" , "sv" ) ) );
                 }
                 if ( args[0].equalsIgnoreCase( "rain" ) ) {
                     for ( World world : Bukkit.getServer( ).getWorlds( ) ) {
                         world.setStorm( true );
                         world.setThundering( false );
                     }
-                    Bukkit.broadcastMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7Weather: &bRaining!" ) );
+                    Bukkit.broadcastMessage( utils.chat( utils.getString( "time.weather.rain" , "lg" , "sv" ) ) );
                 }
                 if ( args[0].equalsIgnoreCase( "storm" ) ) {
                     for ( World world : Bukkit.getServer( ).getWorlds( ) ) {
                         world.setStorm( true );
                         world.setThundering( true );
                     }
-                    Bukkit.broadcastMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7Weather: &3Storm!!" ) );
+                    Bukkit.broadcastMessage( utils.chat( utils.getString( "time.weather.storm" , "lg" , "sv" ) ) );
                 }
+            } else {
+                utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "weather <rain/clear/storm>" ) );
             }
         }
         Player p = ( Player ) sender;
         if ( p.hasPermission( "staffcore.weather" ) ) {
-            if ( args.length == 0 ) {
-                utils.tell( p , plugin.getConfig( ).getString( "server_prefix" ) + "&cCorrect use: &5/weather clear/rain/storm" );
-            } else if ( args.length == 1 ) {
+            if ( args.length == 1 ) {
                 if ( args[0].equalsIgnoreCase( "clear" ) ) {
                     p.getLocation( ).getWorld( ).setThundering( false );
                     p.getLocation( ).getWorld( ).setStorm( false );
-                    p.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7Weather: &eClean!" ) );
-                    
+                    Bukkit.broadcastMessage( utils.chat( utils.getString( "time.weather.clear" , "lg" , "sv" ) ) );
                 }
                 if ( args[0].equalsIgnoreCase( "rain" ) ) {
                     p.getLocation( ).getWorld( ).setStorm( true );
                     p.getLocation( ).getWorld( ).setThundering( false );
-                    p.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7Weather: &bRaining!" ) );
+                    Bukkit.broadcastMessage( utils.chat( utils.getString( "time.weather.rain" , "lg" , "sv" ) ) );
                 }
                 if ( args[0].equalsIgnoreCase( "storm" ) ) {
                     p.getLocation( ).getWorld( ).setStorm( true );
                     p.getLocation( ).getWorld( ).setThundering( true );
-                    p.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7Weather: &3Storm!!" ) );
+                    Bukkit.broadcastMessage( utils.chat( utils.getString( "time.weather.storm" , "lg" , "sv" ) ) );
                 }
+            } else {
+                utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "weather <rain/clear/storm>" ) );
             }
         } else {
-            utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) );
+            utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
         }
+        
         return true;
     }
 }

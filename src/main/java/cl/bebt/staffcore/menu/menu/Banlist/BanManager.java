@@ -6,7 +6,6 @@ import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.menu.menu.Others.ServerManager;
 import cl.bebt.staffcore.sql.SQLGetter;
 import cl.bebt.staffcore.utils.utils;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -26,7 +25,7 @@ public class BanManager extends Menu {
     }
     
     public String getMenuName( ){
-        return utils.chat( "&cBan manager" );
+        return utils.chat( utils.getString( "banlist.ban_manager.name" , "menu" , null ) );
     }
     
     public int getSlots( ){
@@ -37,21 +36,19 @@ public class BanManager extends Menu {
         Player p = ( Player ) e.getWhoClicked( );
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "openBans" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            (new openBansMenu( main.getPlayerMenuUtility( p ) , this.plugin )).open( p );
+            new openBansMenu( main.getPlayerMenuUtility( p ) , this.plugin ).open( p );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "closeBans" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            (new closedBansMenu( main.getPlayerMenuUtility( p ) , this.plugin )).open( p );
+            new closedBansMenu( main.getPlayerMenuUtility( p ) , this.plugin ).open( p );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "panel" ) , PersistentDataType.STRING ) ) {
             e.setCancelled( true );
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
+        } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
+            p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
-                p.closeInventory( );
-                (new ServerManager( main.getPlayerMenuUtility( p ) , this.plugin )).open( p );
+                new ServerManager( main.getPlayerMenuUtility( p ) , this.plugin ).open( p );
                 e.setCancelled( true );
-            } else if ( e.getClick( ).isRightClick( ) ) {
-                p.closeInventory( );
             }
         }
     }
@@ -65,7 +62,7 @@ public class BanManager extends Menu {
                 try {
                     if ( SQLGetter.getBanned( j , "Status" ).equals( "closed" ) )
                         close++;
-                } catch ( NullPointerException nullPointerException ) {
+                } catch ( NullPointerException ignored ) {
                 }
             }
             return close;
@@ -77,7 +74,7 @@ public class BanManager extends Menu {
             try {
                 if ( this.plugin.bans.getConfig( ).get( "bans." + id + ".status" ).equals( "closed" ) )
                     close++;
-            } catch ( NullPointerException nullPointerException ) {
+            } catch ( NullPointerException ignored ) {
             }
         }
         return close;
@@ -92,7 +89,7 @@ public class BanManager extends Menu {
                 try {
                     if ( SQLGetter.getBanned( j , "Status" ).equals( "open" ) )
                         opens++;
-                } catch ( NullPointerException nullPointerException ) {
+                } catch ( NullPointerException ignored ) {
                 }
             }
             return opens;
@@ -104,7 +101,7 @@ public class BanManager extends Menu {
             try {
                 if ( this.plugin.bans.getConfig( ).get( "bans." + id + ".status" ).equals( "open" ) )
                     opens++;
-            } catch ( NullPointerException nullPointerException ) {
+            } catch ( NullPointerException ignored ) {
             }
         }
         return opens;
@@ -155,7 +152,7 @@ public class BanManager extends Menu {
         }
         this.inventory.setItem( 20 , openBans );
         this.inventory.setItem( 21 , redPanel( ) );
-        this.inventory.setItem( 22 , makeItem( Material.BARRIER , ChatColor.DARK_RED + "Close" ) );
+        this.inventory.setItem( 22 , close( ) );
         this.inventory.setItem( 23 , redPanel( ) );
         this.inventory.setItem( 24 , closeBans );
     }

@@ -42,7 +42,6 @@ public class SetStaffItems {
         p.getInventory( ).setItem( 8 , staffOff( ) );
         p.setInvulnerable( true );
         PlayerData.set( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING , "staff" );
-        utils.tell( p , plugin.getConfig( ).getString( "staff.staff_prefix" ) + plugin.getConfig( ).getString( "staff.staff_enabled" ) );
         if ( utils.mysqlEnabled( ) ) {
             SQLGetter.set( p.getName( ) , "staff" , "true" );
         }
@@ -57,7 +56,8 @@ public class SetStaffItems {
                 ItemStack[] armor = Serializer.itemStackArrayFromBase64( PlayerData.get( new NamespacedKey( plugin , "staff_armor" ) , PersistentDataType.STRING ) );
                 p.getInventory( ).setContents( inventory );
                 p.getInventory( ).setArmorContents( armor );
-            } catch ( IOException | NullPointerException ignore ) { }
+            } catch ( IOException | NullPointerException ignored ) {
+            }
             p.getInventory( ).removeItem( vanishOn( ) );
             p.getInventory( ).removeItem( vanishOff( ) );
             p.getInventory( ).removeItem( staffOff( ) );
@@ -74,11 +74,9 @@ public class SetStaffItems {
         }
         SetVanish.setVanish( p , false );
         PlayerData.remove( new NamespacedKey( plugin , "staff" ) );
-        utils.tell( p , plugin.getConfig( ).getString( "staff.staff_prefix" ) + plugin.getConfig( ).getString( "staff.staff_disabled" ) );
         if ( utils.mysqlEnabled( ) ) {
             SQLGetter.set( p.getName( ) , "staff" , "false" );
         }
-        
     }
     
     public static ItemStack vanishOn( ){

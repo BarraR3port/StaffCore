@@ -9,45 +9,37 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class invSeeChest implements CommandExecutor{
-    
-    private final main plugin;
+public class invSeeChest implements CommandExecutor {
     
     public invSeeChest( main plugin ){
-        this.plugin = plugin;
         plugin.getCommand( "invsee" ).setExecutor( this );
     }
     
-    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        if ( !utils.isOlderVersion( ) ){
-            if ( !(sender instanceof Player) ) {
-                utils.tell( sender , "&aHey, you need to be a player to execute this command!" );
-            } else {
-                if ( args.length == 0 ) {
-                    if ( sender.hasPermission( "staffcore.invsee" ) ) {
-                        utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&4Wrong usage" );
-                        utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&4Use: /invsee <playername>!" );
-                    } else {
-                        utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) );
-                    }
-                } else if ( args.length == 1 ) {
+        if ( !utils.isOlderVersion( ) ) {
+            if ( sender instanceof Player ) {
+                if ( args.length == 1 ) {
                     if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
                         if ( sender.hasPermission( "staffcore.invsee" ) ) {
                             Player p = ( Player ) sender;
                             Player p2 = Bukkit.getPlayer( args[0] );
+                            utils.tell( p , utils.getString( "invsee.inventory" , "lg" , "staff" ).replace( "%player%" , p2.getName( ) ) );
                             new OpenInvSee( p , p2 );
                         } else {
-                            utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) );
+                            utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
                         }
                     } else {
-                        utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "player_dont_exist" ) );
+                        utils.tell( sender , utils.getString( "p_dont_exist" , "lg" , "sv" ) );
                     }
+                } else {
+                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "invsee <player>" ) );
                 }
+            } else {
+                utils.tell( sender , utils.getString( "only_players" , "lg" , "sv" ) );
             }
         } else {
-            utils.tell(sender,plugin.getConfig( ).getString( "server_prefix" )+"&cThis command can't be executed in older versions");
+            utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
         }
         return false;
     }

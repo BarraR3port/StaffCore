@@ -7,7 +7,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,37 +65,29 @@ public class CheckAlts implements TabExecutor {
     
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        if ( sender instanceof Player ) {
-            Player p = ( Player ) sender;
-            if ( p.hasPermission( "staffcore.alts" ) ) {
-                if ( args.length == 1 ) {
-                    try {
-                        List < String > alts = alts( args[0] );
-                        if ( alts.isEmpty( ) ) {
-                            utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&a" + args[0] + " &cdon't have alts." );
-                        } else {
-                            utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&a" + args[0] + "'s &7alts:" );
-                            for ( String alt : alts ) {
-                                List < String > ips = ips( alt );
-                                //String ips_tostring = utils.stringify(ips(alt));
-                                if ( !alt.equalsIgnoreCase( args[0] ) ) {
-                                    utils.tell( p , "&7  ► &a" + alt );
-                                    for ( String ip : ips ) {
-                                        utils.tell( p , "&7    ► &a" + ip );
-                                    }
+        if ( sender.hasPermission( "staffcore.alts" ) ) {
+            if ( args.length == 1 ) {
+                try {
+                    List < String > alts = alts( args[0] );
+                    if ( alts.isEmpty( ) ) {
+                        utils.tell( sender , utils.getString( "alts.no_alts" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
+                    } else {
+                        utils.tell( sender , utils.getString( "alts.alts" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
+                        for ( String alt : alts ) {
+                            List < String > ips = ips( alt );
+                            if ( !alt.equalsIgnoreCase( args[0] ) ) {
+                                utils.tell( sender , "&7  ► &a" + alt );
+                                for ( String ip : ips ) {
+                                    utils.tell( sender , "&7    ► &a" + ip );
                                 }
                             }
                         }
-                    } catch ( NullPointerException error ) {
-                        String msg = plugin.getConfig( ).getString( "staff.never_seen" );
-                        msg = msg.replace( "%player%" , args[0] );
-                        utils.tell( p , main.plugin.getConfig( ).getString( "staff.staff_prefix" ) + msg );
                     }
-                } else {
-                    utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&7Use /alts <player>" );
+                } catch ( NullPointerException error ) {
+                    utils.tell( sender , utils.getString( "never_seen" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
                 }
             } else {
-                utils.tell( p , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) );
+                utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "alts <player>" ) );
             }
         }
         return true;
@@ -110,8 +101,6 @@ public class CheckAlts implements TabExecutor {
             if ( !Players.isEmpty( ) ) {
                 Players.remove( sender.getName( ) );
                 version.addAll( Players );
-            } else {
-                utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&cNo players saved!" );
             }
         }
         return version;

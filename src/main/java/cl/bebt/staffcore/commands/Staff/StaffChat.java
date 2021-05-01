@@ -23,43 +23,37 @@ public class StaffChat implements CommandExecutor {
     
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        if ( !utils.isOlderVersion( ) ){
+        if ( !utils.isOlderVersion( ) ) {
             if ( !(sender instanceof Player) ) {
                 if ( args.length > 0 ) {
-                    SendMsg.sendStaffChatMSG( "CONSOLE" , String.join( " " , args ) , plugin.getConfig( ).getString( "bungeecord.server" ) );
+                    SendMsg.sendStaffChatMSG( "CONSOLE" , String.join( " " , args ) , utils.getServer( ) );
                     for ( Player people : Bukkit.getOnlinePlayers( ) ) {
                         if ( people.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) || people.hasPermission( "staff.staffchat" ) ) {
-                            String message = plugin.getConfig( ).getString( "staff.staff_chat_prefix" );
-                            message = message.replace( "%sender%" , "CONSOLE" );
-                            message = message.replace( "%msg%" , String.join( " " , args ) );
-                            utils.tell( people , message );
+                            utils.tell( people , utils.getString( "staff_chat.prefix" , "lg" , null ).replace( "%sender%" , "CONSOLE" ).replace( "%msg%" , String.join( " " , args ) ) );
                         }
                     }
                 } else {
-                    utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&ause /sc <msg>" );
+                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "sc <msg>" ) );
                 }
             } else {
                 if ( args.length > 0 ) {
                     Player p = ( Player ) sender;
                     if ( p.hasPermission( "staffcore.sc" ) ) {
-                        SendMsg.sendStaffChatMSG( p.getName( ) , String.join( " " , args ) , plugin.getConfig( ).getString( "bungeecord.server" ) );
+                        SendMsg.sendStaffChatMSG( p.getName( ) , String.join( " " , args ) , utils.getServer( ) );
                         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
                             if ( people.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) || people.hasPermission( "staff.staffchat" ) ) {
-                                String message = plugin.getConfig( ).getString( "staff.staff_chat_prefix" );
-                                message = message.replace( "%sender%" , p.getName( ) );
-                                message = message.replace( "%msg%" , String.join( " " , args ) );
-                                utils.tell( people , message );
+                                utils.tell( people , utils.getString( "staff_chat.prefix" , "lg" , null ).replace( "%sender%" , p.getName( ) ).replace( "%msg%" , String.join( " " , args ) ) );
                             }
                         }
                     } else {
-                        utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) );
+                        utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
                     }
                 } else {
-                    utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&ause /sc <msg>" );
+                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "sc <msg>" ) );
                 }
             }
         } else {
-            utils.tell(sender,plugin.getConfig( ).getString( "server_prefix" )+"&cThis command can't be executed in older versions");
+            utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
         }
         return true;
     }

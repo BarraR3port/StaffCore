@@ -5,8 +5,6 @@ import cl.bebt.staffcore.menu.PaginatedMenu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.menu.menu.Others.ServerManager;
 import cl.bebt.staffcore.utils.utils;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -27,7 +25,7 @@ public class WarnManager extends PaginatedMenu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( "&cWarns:" );
+        return utils.chat( utils.getString( "warns.warnings.name" , "menu" , null ) );
     }
     
     @Override
@@ -43,30 +41,26 @@ public class WarnManager extends PaginatedMenu {
             p.closeInventory( );
             String warned = e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).get( new NamespacedKey( plugin , "name" ) , PersistentDataType.STRING );
             new Warnings( main.getPlayerMenuUtility( p ) , plugin , p , warned ).open( p );
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
+        } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
+            p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
-                p.closeInventory( );
                 new ServerManager( main.getPlayerMenuUtility( p ) , plugin ).open( p );
-                e.setCancelled( true );
-            } else if ( e.getClick( ).isRightClick( ) ) {
-                p.closeInventory( );
             }
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.DARK_OAK_BUTTON ) ) {
-            if ( ChatColor.stripColor( e.getCurrentItem( ).getItemMeta( ).getDisplayName( ) ).equalsIgnoreCase( "Back" ) ) {
-                if ( page == 0 ) {
-                    utils.tell( p , "&7You are already in the first page" );
-                } else {
-                    page = page - 1;
-                    super.open( p );
-                }
-            } else if ( ChatColor.stripColor( e.getCurrentItem( ).getItemMeta( ).getDisplayName( ) ).equalsIgnoreCase( "Next" ) ) {
-                e.setCancelled( true );
-                if ( !((index + 1) > warnedPlayers.size( )) ) {
-                    page = page + 1;
-                    super.open( p );
-                } else {
-                    utils.tell( p , "&7You are already in the last page" );
-                }
+        } else if ( e.getCurrentItem( ).equals( back( ) ) ) {
+            if ( page == 0 ) {
+                utils.tell( p , utils.getString( "menu.already_in_first_page" , "lg" , "sv" ) );
+            } else {
+                page--;
+                p.closeInventory( );
+                open( p );
+            }
+        } else if ( e.getCurrentItem( ).equals( next( ) ) ) {
+            if ( index + 1 <= warnedPlayers.size( ) ) {
+                page++;
+                p.closeInventory( );
+                open( p );
+            } else {
+                utils.tell( p , utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
             }
         }
     }

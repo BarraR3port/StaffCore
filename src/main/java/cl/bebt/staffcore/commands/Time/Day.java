@@ -20,25 +20,29 @@ public class Day implements CommandExecutor {
     
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        if ( !(sender instanceof Player) ) {
-            for ( World world : Bukkit.getServer( ).getWorlds( ) ) {
-                world.setTime( 1000 );
-                world.setThundering( false );
-                world.setStorm( false );
+        if ( args.length == 0 ) {
+            if ( !(sender instanceof Player) ) {
+                for ( World world : Bukkit.getServer( ).getWorlds( ) ) {
+                    world.setTime( 1000 );
+                    world.setThundering( false );
+                    world.setStorm( false );
+                }
+                Bukkit.broadcastMessage( utils.chat( utils.getString( "time.day.set_by_console" , "lg" , "sv" ) ) );
+                return true;
             }
-            Bukkit.broadcastMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7Time set &e&lDay &r&7by console" ) );
-            return true;
-        }
-        Player p = ( Player ) sender;
-        if ( p.hasPermission( "staffcore.day" ) ) {
-            for ( World world : Bukkit.getServer( ).getWorlds( ) ) {
-                world.setTime( 1000 );
-                world.setThundering( false );
-                world.setStorm( false );
+            Player p = ( Player ) sender;
+            if ( p.hasPermission( "staffcore.day" ) ) {
+                for ( World world : Bukkit.getServer( ).getWorlds( ) ) {
+                    world.setTime( 1000 );
+                    world.setThundering( false );
+                    world.setStorm( false );
+                }
+                Bukkit.broadcastMessage( utils.chat( utils.getString( "time.day.set_by_console" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) ) );
+            } else {
+                utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
             }
-            Bukkit.broadcastMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7Time set &e&lDay&r &7by &r" + p.getDisplayName( ) ) );
         } else {
-            utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) );
+            utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "day" ) );
         }
         return true;
     }

@@ -163,6 +163,7 @@ public class SQLGetter {
         }
         return players;
     }
+    
     public static List < String > getReportedPlayers( ){
         List < String > players = new ArrayList <>( );
         try {
@@ -179,6 +180,7 @@ public class SQLGetter {
         }
         return players;
     }
+    
     public static List < String > getVanishedPlayers( ){
         List < String > players = new ArrayList <>( );
         try {
@@ -195,6 +197,7 @@ public class SQLGetter {
         }
         return players;
     }
+    
     public static List < String > getStaffPlayers( ){
         List < String > players = new ArrayList <>( );
         try {
@@ -211,6 +214,7 @@ public class SQLGetter {
         }
         return players;
     }
+    
     public static List < Integer > getPlayersIds( String p , String table , String typeId ){
         List < Integer > ids = new ArrayList <>( );
         try {
@@ -320,35 +324,25 @@ public class SQLGetter {
     
     public static void wipe( String player ){
         try {
-            PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "DELETE FROM sc_flying WHERE sc_flying.Name = ?" );
-            statement.setString( 1 , player );
-            statement.executeUpdate( );
-        } catch ( SQLException ignored ) {
-        }
-        try {
             PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "DELETE FROM sc_frozen WHERE sc_frozen.Name = ?" );
             statement.setString( 1 , player );
             statement.executeUpdate( );
-        } catch ( SQLException ignored ) {
-        }
+        } catch ( SQLException ignored ) { }
         try {
             PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "DELETE FROM sc_staff WHERE sc_staff.Name = ?" );
             statement.setString( 1 , player );
             statement.executeUpdate( );
-        } catch ( SQLException ignored ) {
-        }
+        } catch ( SQLException ignored ) { }
         try {
             PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "DELETE FROM sc_staffchat WHERE sc_staffchat.Name = ?" );
             statement.setString( 1 , player );
             statement.executeUpdate( );
-        } catch ( SQLException ignored ) {
-        }
+        } catch ( SQLException ignored ) { }
         try {
             PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "DELETE FROM sc_vanish WHERE sc_vanish.Name = ?" );
             statement.setString( 1 , player );
             statement.executeUpdate( );
-        } catch ( SQLException ignored ) {
-        }
+        } catch ( SQLException ignored ) { }
         
     }
     
@@ -475,11 +469,11 @@ public class SQLGetter {
             //ignored.printStackTrace();
         }
     }
-    public static void createTables(){
+    
+    public static void createTables( ){
         createTable( "vanish" );
         createTable( "staff" );
         createTable( "frozen" );
-        createTable( "flying" );
         createTable( "staffchat" );
         createAltsTable( );
         createReportTable( );
@@ -722,6 +716,14 @@ public class SQLGetter {
         }
     }
     
+    public static void addToggledPlayersToList( ){
+        for ( String s : getPlayersNames( ) ) {
+            if ( isTrue( s , "staffchat" ).equalsIgnoreCase( "true" ) ) {
+                main.toggledStaffChat.add( s );
+            }
+        }
+    }
+    
     /**
      * This will create a Report into the Report Table.
      **/
@@ -838,13 +840,6 @@ public class SQLGetter {
                 break;
             } catch ( SQLException ignored ) {
                 intento++;
-            }
-        }
-    }
-    public static void addToggledPlayersToList( ){
-        for (String s : getPlayersNames( ) ) {
-            if ( isTrue( s , "staffchat" ).equalsIgnoreCase( "true" ) ) {
-                main.toggledStaffChat.add( s );
             }
         }
     }

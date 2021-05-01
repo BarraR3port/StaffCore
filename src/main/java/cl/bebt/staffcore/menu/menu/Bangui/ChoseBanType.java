@@ -33,7 +33,7 @@ public class ChoseBanType extends Menu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( "&cChose Ban Type" );
+        return utils.chat( utils.getString( "bangui.chose_ban_type.name" , "menu" , null ) );
     }
     
     @Override
@@ -58,9 +58,11 @@ public class ChoseBanType extends Menu {
             p.closeInventory( );
             p.getPersistentDataContainer( ).remove( new NamespacedKey( plugin , "ban-ip" ) );
             new ChoseBanType( playerMenuUtility , plugin , player , banned , reason ).open( p );
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
+        } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
-            new BanMenu( playerMenuUtility , main.plugin , player , banned ).open( p );
+            if ( e.getClick( ).isLeftClick( ) ) {
+                new BanMenu( playerMenuUtility , main.plugin , player , banned ).open( p );
+            }
         }
     }
     
@@ -106,11 +108,15 @@ public class ChoseBanType extends Menu {
     
     public ItemStack tempBan( ){
         ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.CARVED_PUMPKIN );
+        ItemStack item = new ItemStack( Material.getMaterial( utils.getString( "quantity.temp.item" , "item" , null ) ) );
         ItemMeta meta = item.getItemMeta( );
-        lore.add( utils.chat( "&cClick to &aTemp Ban &r" + banned ) );
+        for ( String key : utils.getStringList( "quantity.temp.lore" , "item" ) ) {
+            key = key.replace( "%player%" , banned );
+            key = key.replace( "%type%" , "Ban" );
+            lore.add( utils.chat( key ) );
+        }
         meta.setLore( lore );
-        meta.setDisplayName( utils.chat( "&aTemp Ban" ) );
+        meta.setDisplayName( utils.chat( utils.getString( "quantity.temp.name" , "item" , null ).replace( "%type%" , "Ban" ) ) );
         meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "tempban" ) , PersistentDataType.STRING , "tempban" );
         item.setItemMeta( meta );
         return item;
@@ -118,31 +124,49 @@ public class ChoseBanType extends Menu {
     
     public ItemStack permBan( ){
         ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.JACK_O_LANTERN );
+        ItemStack item = new ItemStack( Material.getMaterial( utils.getString( "quantity.perm.item" , "item" , null ) ) );
         ItemMeta meta = item.getItemMeta( );
-        lore.add( utils.chat( "&cClick to &4Perm Ban &r" + banned ) );
+        for ( String key : utils.getStringList( "quantity.perm.lore" , "item" ) ) {
+            key = key.replace( "%player%" , banned );
+            key = key.replace( "%type%" , "Ban" );
+            lore.add( utils.chat( key ) );
+        }
         meta.setLore( lore );
-        meta.setDisplayName( utils.chat( "&4Perm Ban" ) );
+        meta.setDisplayName( utils.chat( utils.getString( "quantity.temp.name" , "item" , null ).replace( "%type%" , "Ban" ) ) );
         meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "permban" ) , PersistentDataType.STRING , "permban" );
         item.setItemMeta( meta );
         return item;
     }
     
     public ItemStack ban_ip( ){
-        ItemStack item = new ItemStack( Material.REDSTONE );
+        ArrayList < String > lore = new ArrayList <>( );
+        ItemStack item = new ItemStack( Material.getMaterial( utils.getString( "quantity.ip.item" , "item" , null ) ) );
         ItemMeta meta = item.getItemMeta( );
         meta.addEnchant( Enchantment.PROTECTION_ENVIRONMENTAL , 1 , true );
         meta.addItemFlags( ItemFlag.HIDE_ENCHANTS );
-        meta.setDisplayName( utils.chat( "&7Ban IP: &aTrue" ) );
+        for ( String key : utils.getStringList( "quantity.ip.lore" , "item" ) ) {
+            key = key.replace( "%player%" , banned );
+            key = key.replace( "%type%" , "Ban" );
+            lore.add( utils.chat( key ) );
+        }
+        meta.setLore( lore );
+        meta.setDisplayName( utils.chat( utils.getString( "quantity.ip.name" , "item" , null ).replace( "%type%" , "Ban" ) ) );
         meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "ban-ip" ) , PersistentDataType.STRING , "ban-ip" );
         item.setItemMeta( meta );
         return item;
     }
     
     public ItemStack ban_normal( ){
-        ItemStack item = new ItemStack( Material.REDSTONE );
+        ArrayList < String > lore = new ArrayList <>( );
+        ItemStack item = new ItemStack( Material.getMaterial( utils.getString( "quantity.normal.item" , "item" , null ) ) );
         ItemMeta meta = item.getItemMeta( );
-        meta.setDisplayName( utils.chat( "&7Ban IP: &cFalse" ) );
+        for ( String key : utils.getStringList( "quantity.normal.lore" , "item" ) ) {
+            key = key.replace( "%player%" , banned );
+            key = key.replace( "%type%" , "Ban" );
+            lore.add( utils.chat( key ) );
+        }
+        meta.setLore( lore );
+        meta.setDisplayName( utils.chat( utils.getString( "quantity.normal.name" , "item" , null ).replace( "%type%" , "Ban" ) ) );
         meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "ban-normal" ) , PersistentDataType.STRING , "ban-normal" );
         item.setItemMeta( meta );
         return item;

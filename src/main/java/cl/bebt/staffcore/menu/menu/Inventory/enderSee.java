@@ -31,7 +31,7 @@ public class enderSee extends InventoryMenu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( "&c" + target.getName( ) + "'s Ender Chest:" );
+        return utils.chat( utils.getString( "inventory.ender_see.name" , "menu" , null ).replace( "%player%" , target.getName( ) ) );
     }
     
     @Override
@@ -46,7 +46,6 @@ public class enderSee extends InventoryMenu {
         ItemStack cursor = e.getCursor( );
         int slot = e.getSlot( );
         if ( e.getClick( ) == ClickType.DOUBLE_CLICK ) {
-            utils.tell( p , utils.getString( "staff.staff_prefix" ) + "&cYou can't double click while you are seen a player Ender Chest" );
             e.setCancelled( true );
             return;
         }
@@ -56,7 +55,6 @@ public class enderSee extends InventoryMenu {
         }
         
         if ( e.getClick( ) == ClickType.DROP || e.getClick( ) == ClickType.CONTROL_DROP ) {
-            utils.tell( p , utils.getString( "staff.staff_prefix" ) + "&cYou can't drop items while you are seen a player Ender Chest" );
             e.setCancelled( true );
             return;
         }
@@ -150,7 +148,8 @@ public class enderSee extends InventoryMenu {
         for ( int i = 0; i < 9; i++ ) {
             try {
                 hotbar.put( i , target.getInventory( ).getItem( i ) );
-            } catch ( NullPointerException ignored ) { }
+            } catch ( NullPointerException ignored ) {
+            }
         }
         HashMap < Integer, ItemStack > inv = new HashMap <>( );
         for ( int c = 0; c <= 35; c++ ) {

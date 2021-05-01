@@ -7,28 +7,29 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Suicide implements CommandExecutor{
-
+public class Suicide implements CommandExecutor {
+    
     private final main plugin;
-
+    
     public Suicide( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "suicide" ).setExecutor( this );
     }
-
+    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        if ( !(sender instanceof Player) ) {
-            sender.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&cYou can't suicide, you are the console lol" ) );
-            return true;
-        }
-        Player p = ( Player ) sender;
-        if ( p.hasPermission( "staffcore.suicide" ) ) {
-            p.setHealth( 0 );
+        if ( sender instanceof Player ) {
+            
+            Player p = ( Player ) sender;
+            if ( p.hasPermission( "staffcore.suicide" ) ) {
+                p.setHealth( 0 );
+            } else {
+                utils.tell( sender , utils.getString( "no_permission" , "lg" , "sv" ) );
+            }
         } else {
-            utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) );
+            utils.tell( sender , utils.getString( "only_players" , "lg" , "sv" ) );
         }
-
+        
         return true;
     }
 }

@@ -36,9 +36,9 @@ public class Warnings extends Menu {
     @Override
     public String getMenuName( ){
         if ( p.getName( ).equalsIgnoreCase( warned ) ) {
-            return utils.chat( "&cYour Warnings:" );
+            return utils.chat( utils.getString( "warns.warnings.owns" , "menu" , null ) );
         } else {
-            return utils.chat( "&c" + warned + "'s Warnings:" );
+            return utils.chat( utils.getString( "warns.warnings.others" , "menu" , null ).replace( "%player%" , warned ) );
         }
     }
     
@@ -74,26 +74,26 @@ public class Warnings extends Menu {
             }
         }
         
-        if ( utils.getInt( "warns.max_warns" ) == 3 ) {
+        if ( utils.getInt( "warns.max_warns" , null ) == 3 ) {
             inventory.setItem( 10 , super.bluePanel( ) );
             inventory.setItem( 11 , super.bluePanel( ) );
             inventory.setItem( 15 , super.bluePanel( ) );
             inventory.setItem( 16 , super.bluePanel( ) );
         }
-        if ( utils.getInt( "warns.max_warns" ) == 4 ) {
+        if ( utils.getInt( "warns.max_warns" , null ) == 4 ) {
             inventory.setItem( 10 , super.bluePanel( ) );
             inventory.setItem( 15 , super.bluePanel( ) );
             inventory.setItem( 16 , super.bluePanel( ) );
         }
-        if ( utils.getInt( "warns.max_warns" ) == 5 ) {
+        if ( utils.getInt( "warns.max_warns" , null ) == 5 ) {
             inventory.setItem( 10 , super.bluePanel( ) );
             inventory.setItem( 16 , super.bluePanel( ) );
         }
-        if ( utils.getInt( "warns.max_warns" ) == 6 ) {
+        if ( utils.getInt( "warns.max_warns" , null ) == 6 ) {
             inventory.setItem( 16 , super.bluePanel( ) );
         }
-        if ( utils.getInt( "warns.max_warns" ) < 3 || utils.getInt( "warns.max_warns" ) > 7 ) {
-            utils.tell( p , utils.getString( "server_prefix" ) + "&cThe warning config is wrong, configure the 'max_warns' " );
+        if ( utils.getInt( "warns.max_warns" , null ) < 3 || utils.getInt( "warns.max_warns" , null ) > 7 ) {
+            utils.tell( p , utils.getString( "warns.bad_configuration" , "lg" , "staff" ) );
         } else {
             if ( utils.mysqlEnabled( ) ) {
                 ArrayList < Integer > ids = SQLGetter.getWarnIds( warned );

@@ -22,12 +22,8 @@ public class Fly implements CommandExecutor {
     
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        if ( !utils.isOlderVersion( ) ){
+        if ( !utils.isOlderVersion( ) ) {
             if ( !(sender instanceof Player) ) {
-                if ( args.length == 0 ) {
-                    sender.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&4Wrong usage" ) );
-                    sender.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&4&lUse: fly <player>" ) );
-                }
                 if ( args.length == 1 ) {
                     if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
                         Player p = Bukkit.getPlayer( args[0] );
@@ -35,33 +31,34 @@ public class Fly implements CommandExecutor {
                         if ( PlayerData.has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ) {
                             PlayerData.remove( new NamespacedKey( plugin , "flying" ) );
                             SetFly.SetFly( p , false );
-                            utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + plugin.getConfig( ).getString( "staff.fly_disabled" ) );
+                            utils.tell( sender , utils.getString( "fly.disabled" , "lg" , "staff" ) );
                         } else if ( !(PlayerData.has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING )) ) {
                             PlayerData.set( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING , "flying" );
                             SetFly.SetFly( p , true );
-                            utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + plugin.getConfig( ).getString( "staff.fly_enabled" ) );
+                            utils.tell( sender , utils.getString( "fly.enabled" , "lg" , "staff" ) );
                         }
                     } else {
-                        utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + plugin.getConfig( ).getString( "player_dont_exist" ) );
+                        utils.tell( sender , utils.getString( "p_dont_exist" , "lg" , "sv" ) );
                     }
+                } else {
+                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "fly | fly <player>" ) );
                 }
             } else {
                 if ( args.length == 0 ) {
-                    
                     Player p = ( Player ) sender;
                     PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
                     if ( p.hasPermission( "staffcore.fly" ) ) {
                         if ( PlayerData.has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ) {
                             PlayerData.remove( new NamespacedKey( plugin , "flying" ) );
                             SetFly.SetFly( p , false );
-                            utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + plugin.getConfig( ).getString( "staff.fly_disabled" ) );
+                            utils.tell( sender , utils.getString( "fly.disabled" , "lg" , "staff" ) );
                         } else if ( !(PlayerData.has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING )) ) {
                             PlayerData.set( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING , "flying" );
                             SetFly.SetFly( p , true );
-                            utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + plugin.getConfig( ).getString( "staff.fly_enabled" ) );
+                            utils.tell( sender , utils.getString( "fly.enabled" , "lg" , "staff" ) );
                         }
                     } else {
-                        utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) );
+                        utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
                     }
                 } else if ( args.length == 1 ) {
                     if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
@@ -71,24 +68,26 @@ public class Fly implements CommandExecutor {
                             if ( PlayerData.has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ) {
                                 PlayerData.remove( new NamespacedKey( plugin , "flying" ) );
                                 SetFly.SetFly( p , false );
-                                utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + plugin.getConfig( ).getString( "staff.fly_disabled" ) + " &7to&r " + p.getDisplayName( ) );
-                                utils.tell( p , plugin.getConfig( ).getString( "staff.staff_prefix" ) + plugin.getConfig( ).getString( "staff.fly_disabled" ) );
+                                utils.tell( sender , utils.getString( "fly.disabled_to" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
+                                utils.tell( p , utils.getString( "fly.disabled" , "lg" , "staff" ) );
                             } else if ( !(PlayerData.has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING )) ) {
                                 PlayerData.set( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING , "flying" );
                                 SetFly.SetFly( p , true );
-                                utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + plugin.getConfig( ).getString( "staff.fly_enabled" ) + " &7to&r  " + p.getDisplayName( ) );
-                                utils.tell( p , plugin.getConfig( ).getString( "staff.staff_prefix" ) + plugin.getConfig( ).getString( "staff.fly_enabled" ) );
+                                utils.tell( sender , utils.getString( "fly.enabled_to" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
+                                utils.tell( p , utils.getString( "fly.enabled" , "lg" , "staff" ) );
                             }
                         } else {
-                            utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) );
+                            utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
                         }
-                    } else if ( !(Bukkit.getPlayer( args[0] ) instanceof Player) ) {
-                        utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "player_dont_exist" ) );
+                    } else {
+                        utils.tell( sender , utils.getString( "p_dont_exist" , "lg" , "sv" ) );
                     }
+                } else {
+                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "fly | fly <player>" ) );
                 }
             }
         } else {
-            utils.tell(sender,plugin.getConfig( ).getString( "server_prefix" )+"&cThis command can't be executed in older versions");
+            utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
         }
         return true;
     }

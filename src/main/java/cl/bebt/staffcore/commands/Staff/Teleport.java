@@ -11,10 +11,7 @@ import org.bukkit.entity.Player;
 
 public class Teleport implements CommandExecutor {
     
-    private final main plugin;
-    
     public Teleport( main plugin ){
-        this.plugin = plugin;
         plugin.getCommand( "tp" ).setExecutor( this );
     }
     
@@ -23,18 +20,18 @@ public class Teleport implements CommandExecutor {
             double ex;
             double way;
             double ze;
-            if ( x.equalsIgnoreCase( "~" ) ){
-                ex = p.getLocation().getX();
+            if ( x.equalsIgnoreCase( "~" ) ) {
+                ex = p.getLocation( ).getX( );
             } else {
                 ex = Double.parseDouble( x );
             }
-            if ( y.equalsIgnoreCase( "~" ) ){
-                way = p.getLocation().getY();
+            if ( y.equalsIgnoreCase( "~" ) ) {
+                way = p.getLocation( ).getY( );
             } else {
                 way = Double.parseDouble( y );
             }
-            if ( z.equalsIgnoreCase( "~" ) ){
-                ze = p.getLocation().getZ();
+            if ( z.equalsIgnoreCase( "~" ) ) {
+                ze = p.getLocation( ).getZ( );
             } else {
                 ze = Double.parseDouble( z );
             }
@@ -52,18 +49,18 @@ public class Teleport implements CommandExecutor {
                 double ex;
                 double way;
                 double ze;
-                if ( x.equalsIgnoreCase( "~" ) ){
-                    ex = Bukkit.getPlayer( player ).getLocation().getX();
+                if ( x.equalsIgnoreCase( "~" ) ) {
+                    ex = Bukkit.getPlayer( player ).getLocation( ).getX( );
                 } else {
                     ex = Double.parseDouble( x );
                 }
-                if ( y.equalsIgnoreCase( "~" ) ){
-                    way = Bukkit.getPlayer( player ).getLocation().getY();
+                if ( y.equalsIgnoreCase( "~" ) ) {
+                    way = Bukkit.getPlayer( player ).getLocation( ).getY( );
                 } else {
                     way = Double.parseDouble( y );
                 }
-                if ( z.equalsIgnoreCase( "~" ) ){
-                    ze = Bukkit.getPlayer( player ).getLocation().getZ();
+                if ( z.equalsIgnoreCase( "~" ) ) {
+                    ze = Bukkit.getPlayer( player ).getLocation( ).getZ( );
                 } else {
                     ze = Double.parseDouble( z );
                 }
@@ -83,18 +80,18 @@ public class Teleport implements CommandExecutor {
                 double ex;
                 double way;
                 double ze;
-                if ( x.equalsIgnoreCase( "~" ) ){
-                    ex = Bukkit.getPlayer( player ).getLocation().getX();
+                if ( x.equalsIgnoreCase( "~" ) ) {
+                    ex = Bukkit.getPlayer( player ).getLocation( ).getX( );
                 } else {
                     ex = Double.parseDouble( x );
                 }
-                if ( y.equalsIgnoreCase( "~" ) ){
-                    way = Bukkit.getPlayer( player ).getLocation().getY();
+                if ( y.equalsIgnoreCase( "~" ) ) {
+                    way = Bukkit.getPlayer( player ).getLocation( ).getY( );
                 } else {
                     way = Double.parseDouble( y );
                 }
-                if ( z.equalsIgnoreCase( "~" ) ){
-                    ze = Bukkit.getPlayer( player ).getLocation().getZ();
+                if ( z.equalsIgnoreCase( "~" ) ) {
+                    ze = Bukkit.getPlayer( player ).getLocation( ).getZ( );
                 } else {
                     ze = Double.parseDouble( z );
                 }
@@ -113,7 +110,7 @@ public class Teleport implements CommandExecutor {
         if ( !(sender instanceof Player) ) {
             if ( args.length == 0 || ((args.length == 1) && (args[0].equalsIgnoreCase( "all" ))) || args.length == 3 ||
                     (args.length == 4 && (args[0].equalsIgnoreCase( "all" ) || args[3].equalsIgnoreCase( "all" ))) ) {
-                for ( String s : plugin.getConfig( ).getStringList( "tp.wrong" ) ) {
+                for ( String s : utils.getStringList( "tp.wrong" , "alerts" ) ) {
                     utils.tell( sender , s );
                 }
                 return true;
@@ -133,18 +130,18 @@ public class Teleport implements CommandExecutor {
                     double y;
                     double z;
                     Player target = Bukkit.getPlayer( args[3] );
-                    if ( args[0].equalsIgnoreCase( "~" ) ){
-                        x = target.getLocation().getX();
+                    if ( args[0].equalsIgnoreCase( "~" ) ) {
+                        x = target.getLocation( ).getX( );
                     } else {
                         x = Double.parseDouble( args[0] );
                     }
-                    if ( args[1].equalsIgnoreCase( "~" ) ){
-                        y = target.getLocation().getY();
+                    if ( args[1].equalsIgnoreCase( "~" ) ) {
+                        y = target.getLocation( ).getY( );
                     } else {
                         y = Double.parseDouble( args[1] );
                     }
-                    if ( args[2].equalsIgnoreCase( "~" ) ){
-                        z = target.getLocation().getZ();
+                    if ( args[2].equalsIgnoreCase( "~" ) ) {
+                        z = target.getLocation( ).getZ( );
                     } else {
                         z = Double.parseDouble( args[2] );
                     }
@@ -155,25 +152,25 @@ public class Teleport implements CommandExecutor {
                     double y;
                     double z;
                     Player target = Bukkit.getPlayer( args[0] );
-                    if ( args[1].equalsIgnoreCase( "~" ) ){
-                        x = target.getLocation().getX();
+                    if ( args[1].equalsIgnoreCase( "~" ) ) {
+                        x = target.getLocation( ).getX( );
                     } else {
                         x = Double.parseDouble( args[1] );
                     }
-                    if ( args[2].equalsIgnoreCase( "~" ) ){
-                        y = target.getLocation().getY();
+                    if ( args[2].equalsIgnoreCase( "~" ) ) {
+                        y = target.getLocation( ).getY( );
                     } else {
                         y = Double.parseDouble( args[2] );
                     }
-                    if ( args[3].equalsIgnoreCase( "~" ) ){
-                        z = target.getLocation().getZ();
+                    if ( args[3].equalsIgnoreCase( "~" ) ) {
+                        z = target.getLocation( ).getZ( );
                     } else {
                         z = Double.parseDouble( args[3] );
                     }
                     TpPlayers.tpToCordsAndPlayer( sender , target , x , y , z );
                     return true;
                 } else {
-                    for ( String s : plugin.getConfig( ).getStringList( "tp.wrong" ) ) {
+                    for ( String s : utils.getStringList( "tp.wrong" , "alerts" ) ) {
                         utils.tell( sender , s );
                     }
                     return true;
@@ -183,7 +180,7 @@ public class Teleport implements CommandExecutor {
             Player p = ( Player ) sender;
             if ( p.hasPermission( "staffcore.tp" ) ) {
                 if ( args.length == 0 ) {
-                    for ( String s : plugin.getConfig( ).getStringList( "tp.wrong" ) ) {
+                    for ( String s : utils.getStringList( "tp.wrong" , "alerts" ) ) {
                         utils.tell( sender , s );
                     }
                 } else if ( args.length == 1 ) {
@@ -200,14 +197,14 @@ public class Teleport implements CommandExecutor {
                     if ( p.hasPermission( "staffcore.tp.all" ) ) {
                         if ( args[0].equalsIgnoreCase( "all" ) ) {
                             TpPlayers.tpAll( p , args[1] );
-                            return true;
+                            return false;
                         } else if ( args[1].equalsIgnoreCase( "all" ) ) {
                             TpPlayers.tpAll( p , args[0] );
-                            return true;
+                            return false;
                         }
                     } else {
-                        utils.tell( sender , utils.getString( "server_prefix" ) + utils.getString( "no_permissions" ) );
-                        return true;
+                        utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
+                        return false;
                     }
                     TpPlayers.tpPlayerToPlayer( p , args[0] , args[1] );
                 } else if ( args.length == 3 ) {
@@ -215,24 +212,24 @@ public class Teleport implements CommandExecutor {
                         double x;
                         double y;
                         double z;
-                        if ( args[0].equalsIgnoreCase( "~" ) ){
-                            x = p.getLocation().getX();
+                        if ( args[0].equalsIgnoreCase( "~" ) ) {
+                            x = p.getLocation( ).getX( );
                         } else {
                             x = Double.parseDouble( args[0] );
                         }
-                        if ( args[1].equalsIgnoreCase( "~" ) ){
-                            y = p.getLocation().getY();
+                        if ( args[1].equalsIgnoreCase( "~" ) ) {
+                            y = p.getLocation( ).getY( );
                         } else {
                             y = Double.parseDouble( args[1] );
                         }
-                        if ( args[2].equalsIgnoreCase( "~" ) ){
-                            z = p.getLocation().getZ();
+                        if ( args[2].equalsIgnoreCase( "~" ) ) {
+                            z = p.getLocation( ).getZ( );
                         } else {
                             z = Double.parseDouble( args[2] );
                         }
                         TpPlayers.tpToCords( p , x , y , z );
                     } else {
-                        for ( String s : plugin.getConfig( ).getStringList( "tp.wrong" ) ) {
+                        for ( String s : utils.getStringList( "tp.wrong" , "alerts" ) ) {
                             utils.tell( sender , s );
                         }
                     }
@@ -243,24 +240,24 @@ public class Teleport implements CommandExecutor {
                             double x;
                             double y;
                             double z;
-                            if ( args[0].equalsIgnoreCase( "~" ) ){
-                                x = p.getLocation().getX();
+                            if ( args[0].equalsIgnoreCase( "~" ) ) {
+                                x = p.getLocation( ).getX( );
                             } else {
                                 x = Double.parseDouble( args[0] );
                             }
-                            if ( args[1].equalsIgnoreCase( "~" ) ){
-                                y = p.getLocation().getY();
+                            if ( args[1].equalsIgnoreCase( "~" ) ) {
+                                y = p.getLocation( ).getY( );
                             } else {
                                 y = Double.parseDouble( args[1] );
                             }
-                            if ( args[2].equalsIgnoreCase( "~" ) ){
-                                z = p.getLocation().getZ();
+                            if ( args[2].equalsIgnoreCase( "~" ) ) {
+                                z = p.getLocation( ).getZ( );
                             } else {
                                 z = Double.parseDouble( args[2] );
                             }
                             TpPlayers.tpAllToCords( p , x , y , z );
                         } else {
-                            for ( String s : plugin.getConfig( ).getStringList( "tp.wrong" ) ) {
+                            for ( String s : utils.getStringList( "tp.wrong" , "alerts" ) ) {
                                 utils.tell( sender , s );
                             }
                         }
@@ -270,24 +267,24 @@ public class Teleport implements CommandExecutor {
                             double x;
                             double y;
                             double z;
-                            if ( args[0].equalsIgnoreCase( "~" ) ){
-                                x = p.getLocation().getX();
+                            if ( args[0].equalsIgnoreCase( "~" ) ) {
+                                x = p.getLocation( ).getX( );
                             } else {
                                 x = Double.parseDouble( args[0] );
                             }
-                            if ( args[1].equalsIgnoreCase( "~" ) ){
-                                y = p.getLocation().getY();
+                            if ( args[1].equalsIgnoreCase( "~" ) ) {
+                                y = p.getLocation( ).getY( );
                             } else {
                                 y = Double.parseDouble( args[1] );
                             }
-                            if ( args[2].equalsIgnoreCase( "~" ) ){
-                                z = p.getLocation().getZ();
+                            if ( args[2].equalsIgnoreCase( "~" ) ) {
+                                z = p.getLocation( ).getZ( );
                             } else {
                                 z = Double.parseDouble( args[2] );
                             }
                             TpPlayers.tpAllToCords( p , x , y , z );
                         } else {
-                            for ( String s : plugin.getConfig( ).getStringList( "tp.wrong" ) ) {
+                            for ( String s : utils.getStringList( "tp.wrong" , "alerts" ) ) {
                                 utils.tell( sender , s );
                             }
                         }
@@ -297,18 +294,18 @@ public class Teleport implements CommandExecutor {
                         double y;
                         double z;
                         Player target = Bukkit.getPlayer( args[3] );
-                        if ( args[0].equalsIgnoreCase( "~" ) ){
-                            x = target.getLocation().getX();
+                        if ( args[0].equalsIgnoreCase( "~" ) ) {
+                            x = target.getLocation( ).getX( );
                         } else {
                             x = Double.parseDouble( args[0] );
                         }
-                        if ( args[1].equalsIgnoreCase( "~" ) ){
-                            y = target.getLocation().getY();
+                        if ( args[1].equalsIgnoreCase( "~" ) ) {
+                            y = target.getLocation( ).getY( );
                         } else {
                             y = Double.parseDouble( args[1] );
                         }
-                        if ( args[2].equalsIgnoreCase( "~" ) ){
-                            z = target.getLocation().getZ();
+                        if ( args[2].equalsIgnoreCase( "~" ) ) {
+                            z = target.getLocation( ).getZ( );
                         } else {
                             z = Double.parseDouble( args[2] );
                         }
@@ -319,32 +316,32 @@ public class Teleport implements CommandExecutor {
                         double y;
                         double z;
                         Player target = Bukkit.getPlayer( args[0] );
-                        if ( args[1].equalsIgnoreCase( "~" ) ){
-                            x = p.getLocation().getX();
+                        if ( args[1].equalsIgnoreCase( "~" ) ) {
+                            x = p.getLocation( ).getX( );
                         } else {
                             x = Double.parseDouble( args[1] );
                         }
-                        if ( args[2].equalsIgnoreCase( "~" ) ){
-                            y = p.getLocation().getY();
+                        if ( args[2].equalsIgnoreCase( "~" ) ) {
+                            y = p.getLocation( ).getY( );
                         } else {
                             y = Double.parseDouble( args[2] );
                         }
-                        if ( args[3].equalsIgnoreCase( "~" ) ){
-                            z = p.getLocation().getZ();
+                        if ( args[3].equalsIgnoreCase( "~" ) ) {
+                            z = p.getLocation( ).getZ( );
                         } else {
                             z = Double.parseDouble( args[3] );
                         }
                         TpPlayers.tpToCordsAndPlayer( p , target , x , y , z );
                         return true;
                     } else {
-                        for ( String s : plugin.getConfig( ).getStringList( "tp.wrong" ) ) {
+                        for ( String s : utils.getStringList( "tp.wrong" , "alerts" ) ) {
                             utils.tell( sender , s );
                         }
                         return true;
                     }
                 }
             } else {
-                utils.tell( sender , utils.getString( "server_prefix" ) + utils.getString( "no_permissions" ) );
+                utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
             }
         }
         return true;

@@ -5,7 +5,6 @@ import cl.bebt.staffcore.menu.Menu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.utils.BanPlayer;
 import cl.bebt.staffcore.utils.utils;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
@@ -33,7 +32,7 @@ public class QuantityBanned extends Menu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( "&cChose between &ds/m/h/d" );
+        return utils.chat( utils.getString( "bangui.quantity_banned.name" , "menu" , null ) );
     }
     
     @Override
@@ -66,9 +65,11 @@ public class QuantityBanned extends Menu {
             BanPlayer.BanCooldown( sender , banned , reason , time , "d" );
             p.getPersistentDataContainer( ).remove( new NamespacedKey( plugin , "days" ) );
             p.getPersistentDataContainer( ).remove( new NamespacedKey( plugin , "amount" ) );
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
+        } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
-            new ChoseBanType( playerMenuUtility , plugin , player , banned , reason ).open( p );
+            if ( e.getClick( ).isLeftClick( ) ) {
+                new AmountBanned( playerMenuUtility , plugin , player , banned , reason ).open( p );
+            }
         }
     }
     
@@ -102,58 +103,78 @@ public class QuantityBanned extends Menu {
         }
         inventory.setItem( 20 , seconds( ) );
         inventory.setItem( 21 , minutes( ) );
-        inventory.setItem( 22 , makeItem( Material.BARRIER , ChatColor.DARK_RED + "Close" ) );
+        inventory.setItem( 22 , close( ) );
         inventory.setItem( 23 , hours( ) );
         inventory.setItem( 24 , days( ) );
     }
     
     public ItemStack seconds( ){
-        ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.MAGENTA_CONCRETE );
-        ItemMeta meta = item.getItemMeta( );
         long time = player.getPersistentDataContainer( ).get( new NamespacedKey( plugin , "amount" ) , PersistentDataType.INTEGER );
-        lore.add( utils.chat( "&cBan &r" + banned + " &c for &a" + time + " &cSeconds." ) );
+        ArrayList < String > lore = new ArrayList <>( );
+        ItemStack item = new ItemStack( Material.getMaterial( utils.getString( "quantity.seconds.item" , "item" , null ) ) );
+        ItemMeta meta = item.getItemMeta( );
+        for ( String key : utils.getStringList( "quantity.seconds.lore" , "item" ) ) {
+            key = key.replace( "%player%" , banned );
+            key = key.replace( "%seconds%" , String.valueOf( time ) );
+            key = key.replace( "%type%" , "Ban" );
+            lore.add( utils.chat( key ) );
+        }
         meta.setLore( lore );
-        meta.setDisplayName( utils.chat( "&4SECONDS" ) );
+        meta.setDisplayName( utils.chat( utils.getString( "quantity.seconds.name" , "item" , null ).replace( "%type%" , "Ban" ) ) );
         meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "seconds" ) , PersistentDataType.STRING , "seconds" );
         item.setItemMeta( meta );
         return item;
     }
     
     public ItemStack minutes( ){
-        ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.PURPLE_CONCRETE );
-        ItemMeta meta = item.getItemMeta( );
         long time = player.getPersistentDataContainer( ).get( new NamespacedKey( plugin , "amount" ) , PersistentDataType.INTEGER );
-        lore.add( utils.chat( "&cBan &r" + banned + " &c for &a" + time + " &cMinutes." ) );
+        ArrayList < String > lore = new ArrayList <>( );
+        ItemStack item = new ItemStack( Material.getMaterial( utils.getString( "quantity.minutes.item" , "item" , null ) ) );
+        ItemMeta meta = item.getItemMeta( );
+        for ( String key : utils.getStringList( "quantity.minutes.lore" , "item" ) ) {
+            key = key.replace( "%player%" , banned );
+            key = key.replace( "%minutes%" , String.valueOf( time ) );
+            key = key.replace( "%type%" , "Ban" );
+            lore.add( utils.chat( key ) );
+        }
         meta.setLore( lore );
-        meta.setDisplayName( utils.chat( "&4MINUTES" ) );
+        meta.setDisplayName( utils.chat( utils.getString( "quantity.minutes.name" , "item" , null ).replace( "%type%" , "Ban" ) ) );
         meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "minutes" ) , PersistentDataType.STRING , "minutes" );
         item.setItemMeta( meta );
         return item;
     }
     
     public ItemStack hours( ){
-        ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.BLUE_CONCRETE );
-        ItemMeta meta = item.getItemMeta( );
         long time = player.getPersistentDataContainer( ).get( new NamespacedKey( plugin , "amount" ) , PersistentDataType.INTEGER );
-        lore.add( utils.chat( "&cBan &r" + banned + " &c for &a" + time + " &cHours." ) );
+        ArrayList < String > lore = new ArrayList <>( );
+        ItemStack item = new ItemStack( Material.getMaterial( utils.getString( "quantity.hours.item" , "item" , null ) ) );
+        ItemMeta meta = item.getItemMeta( );
+        for ( String key : utils.getStringList( "quantity.hours.lore" , "item" ) ) {
+            key = key.replace( "%player%" , banned );
+            key = key.replace( "%hours%" , String.valueOf( time ) );
+            key = key.replace( "%type%" , "Ban" );
+            lore.add( utils.chat( key ) );
+        }
         meta.setLore( lore );
-        meta.setDisplayName( utils.chat( "&4HOURS" ) );
+        meta.setDisplayName( utils.chat( utils.getString( "quantity.hours.name" , "item" , null ).replace( "%type%" , "Ban" ) ) );
         meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "hours" ) , PersistentDataType.STRING , "hours" );
         item.setItemMeta( meta );
         return item;
     }
     
     public ItemStack days( ){
-        ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.RED_CONCRETE );
-        ItemMeta meta = item.getItemMeta( );
         long time = player.getPersistentDataContainer( ).get( new NamespacedKey( plugin , "amount" ) , PersistentDataType.INTEGER );
-        lore.add( utils.chat( "&cBan &r" + banned + " &c for &a" + time + " &cDays." ) );
+        ArrayList < String > lore = new ArrayList <>( );
+        ItemStack item = new ItemStack( Material.getMaterial( utils.getString( "quantity.days.item" , "item" , null ) ) );
+        ItemMeta meta = item.getItemMeta( );
+        for ( String key : utils.getStringList( "quantity.days.lore" , "item" ) ) {
+            key = key.replace( "%player%" , banned );
+            key = key.replace( "%days%" , String.valueOf( time ) );
+            key = key.replace( "%type%" , "Ban" );
+            lore.add( utils.chat( key ) );
+        }
         meta.setLore( lore );
-        meta.setDisplayName( utils.chat( "&4DAYS" ) );
+        meta.setDisplayName( utils.chat( utils.getString( "quantity.days.name" , "item" , null ).replace( "%type%" , "Ban" ) ) );
         meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "days" ) , PersistentDataType.STRING , "days" );
         item.setItemMeta( meta );
         return item;

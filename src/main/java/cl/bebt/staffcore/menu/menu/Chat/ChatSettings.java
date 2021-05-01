@@ -5,14 +5,12 @@ import cl.bebt.staffcore.menu.MenuC;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
@@ -27,7 +25,7 @@ public class ChatSettings extends MenuC {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( "&cClear Chat Manager" );
+        return utils.chat( utils.getString( "chat.clear_chat_manager.name" , "menu" , null ) );
     }
     
     @Override
@@ -38,7 +36,6 @@ public class ChatSettings extends MenuC {
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
-        PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "head" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
             new ClearChat( main.getPlayerMenuUtility( p ) , plugin ).open( p );
@@ -49,12 +46,12 @@ public class ChatSettings extends MenuC {
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "clearAll" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
             utils.ccAll( );
-            Bukkit.broadcastMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&4The player&r " + p.getName( ) + " &4cleared the chat!" ) );
+            Bukkit.broadcastMessage( utils.chat( utils.getString( "clear_chat.global" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) ) );
             e.setCancelled( true );
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
+        } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
-                new ChatManager( main.getPlayerMenuUtility( p ) , main.plugin ).open( p );
+                new ChatManager( main.getPlayerMenuUtility( p ) , plugin ).open( p );
             }
         }
     }
@@ -74,8 +71,8 @@ public class ChatSettings extends MenuC {
         
         metaTChat.setLore( lore );
         metaHead.setLore( lore );
-        metaTChat.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "clearAll" ) , PersistentDataType.STRING , "clearAll" );
-        metaHead.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "head" ) , PersistentDataType.STRING , "head" );
+        metaTChat.getPersistentDataContainer( ).set( new NamespacedKey( plugin , "clearAll" ) , PersistentDataType.STRING , "clearAll" );
+        metaHead.getPersistentDataContainer( ).set( new NamespacedKey( plugin , "head" ) , PersistentDataType.STRING , "head" );
         
         ClearChat.setItemMeta( metaTChat );
         Head.setItemMeta( metaHead );
@@ -108,7 +105,7 @@ public class ChatSettings extends MenuC {
         }
         inventory.setItem( 20 , ClearChat );
         inventory.setItem( 21 , super.redPanel( ) );
-        inventory.setItem( 22 , makeItem( Material.BARRIER , ChatColor.DARK_RED + "Close" ) );
+        inventory.setItem( 22 , close( ) );
         inventory.setItem( 23 , super.redPanel( ) );
         inventory.setItem( 24 , Head );
         inventory.setItem( 25 , super.redPanel( ) );

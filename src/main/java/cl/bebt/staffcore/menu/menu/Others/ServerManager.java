@@ -31,7 +31,7 @@ public class ServerManager extends MenuC {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( "&cServer Manager" );
+        return utils.chat( utils.getString( "others.server_manager.name" , "menu" , null ) );
     }
     
     @Override
@@ -42,8 +42,8 @@ public class ServerManager extends MenuC {
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
-        if ( e.getCurrentItem().getType( ) == Material.PLAYER_HEAD ){
-            p.closeInventory();
+        if ( e.getCurrentItem( ).getType( ) == Material.PLAYER_HEAD ) {
+            p.closeInventory( );
             new ClientSettings( main.getPlayerMenuUtility( p ) , plugin ).open( p );
             e.setCancelled( true );
         }
@@ -145,7 +145,7 @@ public class ServerManager extends MenuC {
         inventory.setItem( 23 , ChatManager );
         inventory.setItem( 24 , WarnManager );
         
-        inventory.setItem( 13 , Items.PlayerStatus( p ) );
+        inventory.setItem( 13 , Items.PlayerStats( p ) );
         inventory.setItem( 31 , Items.ServerStatus( ) );
     }
 }

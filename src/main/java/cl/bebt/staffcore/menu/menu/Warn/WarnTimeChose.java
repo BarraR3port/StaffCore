@@ -5,7 +5,6 @@ import cl.bebt.staffcore.menu.Menu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.utils.WarnPlayer;
 import cl.bebt.staffcore.utils.utils;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -19,7 +18,6 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.ArrayList;
 
 public class WarnTimeChose extends Menu {
-    
     
     
     private final main plugin;
@@ -40,7 +38,7 @@ public class WarnTimeChose extends Menu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( "&cChose the Warn Time" );
+        return utils.chat( utils.getString( "warns.time.name" , "menu" , null ) );
     }
     
     @Override
@@ -53,8 +51,8 @@ public class WarnTimeChose extends Menu {
         Player p = ( Player ) e.getWhoClicked( );
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "default" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            long amount = utils.getInt( "warns.expire_after" );
-            String time = utils.getString( "warns.expire_after_quantity" );
+            long amount = utils.getInt( "warns.expire_after" , null );
+            String time = utils.getString( "warns.expire_after_quantity" , null , null );
             WarnPlayer.createWarn( p , warned , reason , amount , time );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "specific" ) , PersistentDataType.STRING ) ) {
@@ -63,13 +61,11 @@ public class WarnTimeChose extends Menu {
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "panel" ) , PersistentDataType.STRING ) ) {
             e.setCancelled( true );
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
+        } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
+            p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
-                p.closeInventory( );
                 new WarnMenu( playerMenuUtility , plugin , warned ).open( p );
                 e.setCancelled( true );
-            } else if ( e.getClick( ).isRightClick( ) ) {
-                p.closeInventory( );
             }
         }
     }
@@ -91,7 +87,7 @@ public class WarnTimeChose extends Menu {
         int currentWarns = utils.currentPlayerWarns( warned );
         lore.add( utils.chat( "&5Click to Warn " + warned ) );
         lore.add( utils.chat( "for the the default time." ) );
-        lore.add( utils.chat( "&a(&c" + utils.getString( "warns.expire_after" ) + utils.getString( "warns.expire_after_quantity" ) + "&a)" ) );
+        lore.add( utils.chat( "&a(&c" + utils.getString( "warns.expire_after" , null , null ) + utils.getString( "warns.expire_after_quantity" , null , null ) + "&a)" ) );
         
         or_meta.setLore( lore );
         lore.clear( );
@@ -102,8 +98,8 @@ public class WarnTimeChose extends Menu {
         lore.clear( );
         lore.add( utils.chat( "&cCurrents warns: &6" + currentWarns ) );
         
-        if ( currentWarns < utils.getInt( "warns.max_warns" ) && utils.getBoolean( "warns.ban_on_exceeded" ) ) {
-            lore.add( utils.chat( "&cWarns left: &6" + (utils.getInt( "warns.max_warns" ) - currentWarns) ) );
+        if ( currentWarns < utils.getInt( "warns.max_warns" , null ) && utils.getBoolean( "warns.ban_on_exceeded" , null ) ) {
+            lore.add( utils.chat( "&cWarns left: &6" + (utils.getInt( "warns.max_warns" , null ) - currentWarns) ) );
         }
         
         head_meta.setLore( lore );
@@ -149,7 +145,7 @@ public class WarnTimeChose extends Menu {
         }
         inventory.setItem( 20 , defaultTime );
         inventory.setItem( 21 , super.redPanel( ) );
-        inventory.setItem( 22 , makeItem( Material.BARRIER , ChatColor.DARK_RED + "Close" ) );
+        inventory.setItem( 22 , close( ) );
         inventory.setItem( 23 , super.redPanel( ) );
         inventory.setItem( 24 , specificTime );
         inventory.setItem( 13 , head );

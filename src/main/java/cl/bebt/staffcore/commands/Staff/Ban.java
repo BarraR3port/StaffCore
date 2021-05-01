@@ -32,7 +32,7 @@ public class Ban implements TabExecutor {
                 if ( p.hasPermission( "staffcore.ban" ) ) {
                     p.getPersistentDataContainer( ).remove( new NamespacedKey( plugin , "ban-ip" ) );
                     if ( args.length == 0 ) {
-                        utils.tell( p , plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&7Use /ban <player> <time> <-ip> <reason>" );
+                        utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "ban <player> <time> <-ip> <reason>" ) );
                     } else if ( args.length == 1 ) {
                         if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
                             new BanMenu( main.getPlayerMenuUtility( p ) , plugin , p , args[0] ).open( p );
@@ -53,9 +53,8 @@ public class Ban implements TabExecutor {
                                     return true;
                                 }
                             } catch ( NullPointerException | IndexOutOfBoundsException ignored ) {
-                                String msg = plugin.getConfig( ).getString( "staff.never_seen" );
-                                msg = msg.replace( "%player%" , args[0] );
-                                utils.tell( p , main.plugin.getConfig( ).getString( "staff.staff_prefix" ) + msg );
+                                utils.tell( p , utils.getString( "never_seen" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
+                                ignored.printStackTrace( );
                             }
                         }
                     } else {
@@ -90,11 +89,11 @@ public class Ban implements TabExecutor {
                         }
                     }
                 } else {
-                    utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) );
+                    utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
                 }
             }
         } else {
-            utils.tell(sender,plugin.getConfig( ).getString( "server_prefix" )+"&cThis command can't be executed in older versions");
+            utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
         }
         return true;
     }
@@ -107,8 +106,6 @@ public class Ban implements TabExecutor {
             if ( !Players.isEmpty( ) ) {
                 Players.remove( sender.getName( ) );
                 version.addAll( Players );
-            } else {
-                utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&cNo players saved!" );
             }
         }
         return version;

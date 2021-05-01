@@ -8,8 +8,8 @@ import cl.bebt.staffcore.menu.menu.Chat.ChatSettings;
 import cl.bebt.staffcore.menu.menu.Chat.MuteChatManager;
 import cl.bebt.staffcore.menu.menu.Others.ServerManager;
 import cl.bebt.staffcore.sql.SQLGetter;
+import cl.bebt.staffcore.utils.Items;
 import cl.bebt.staffcore.utils.utils;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -25,7 +25,6 @@ import java.util.ArrayList;
 
 public class ClientSettings extends MenuC {
     
-    
     private final main plugin;
     
     public ClientSettings( PlayerMenuUtility playerMenuUtility , main plugin ){
@@ -34,7 +33,7 @@ public class ClientSettings extends MenuC {
     }
     
     public String getMenuName( ){
-        return utils.chat( "&cClient Settings" );
+        return utils.chat( utils.getString( "others.client_settings.name" , "menu" , null ) );
     }
     
     public int getSlots( ){
@@ -69,35 +68,39 @@ public class ClientSettings extends MenuC {
             new ClientSettings( main.getPlayerMenuUtility( p ) , this.plugin ).open( p );
             p.updateInventory( );
             e.setCancelled( true );
-        }
-        
-        
-        else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "TrolModeOn" ) , PersistentDataType.STRING ) ) {
+        } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "TrollModeOn" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            StaffCoreAPI.setTrolMode( p, !StaffCoreAPI.getTrolStatus( p.getName( ) ) );
-            utils.tell( p , utils.getString( "staff.staff_prefix" ) + "&7Trol Mode &cOFF" );
+            StaffCoreAPI.setTrollMode( p , !StaffCoreAPI.getTrollStatus( p.getName( ) ) );
+            utils.tell( p , utils.getString( "troll.disabled" , "lg" , "staff" ) );
             new ClientSettings( main.getPlayerMenuUtility( p ) , this.plugin ).open( p );
             p.updateInventory( );
             e.setCancelled( true );
-        } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "TrolModeOff" ) , PersistentDataType.STRING ) ) {
+        } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "TrollModeOff" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            StaffCoreAPI.setTrolMode( p, !StaffCoreAPI.getTrolStatus( p.getName( ) ) );
-            utils.tell( p , utils.getString( "staff.staff_prefix" ) + "&7Trol Mode &aON" );
+            StaffCoreAPI.setTrollMode( p , !StaffCoreAPI.getTrollStatus( p.getName( ) ) );
+            utils.tell( p , utils.getString( "troll.enabled" , "lg" , "staff" ) );
             new ClientSettings( main.getPlayerMenuUtility( p ) , this.plugin ).open( p );
             p.updateInventory( );
             e.setCancelled( true );
-        }
-        else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "ccmanager" ) , PersistentDataType.STRING ) ) {
+        } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "ccmanager" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
             new ChatSettings( main.getPlayerMenuUtility( p ) , this.plugin ).open( p );
             e.setCancelled( true );
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
+        } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "FakeJoinOrLeave" ) , PersistentDataType.STRING ) ) {
+            p.closeInventory( );
+            if ( p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "FakeJoinOrLeave" ) , PersistentDataType.STRING ) ) {
+                p.getPersistentDataContainer( ).remove( new NamespacedKey( plugin , "FakeJoinOrLeave" ) );
+                utils.tell( p , utils.getString( "fake_join_leave_msg.disabled" , "lg" , "staff" ) );
+            } else {
+                p.getPersistentDataContainer( ).set( new NamespacedKey( plugin , "FakeJoinOrLeave" ) , PersistentDataType.STRING , "FakeJoinOrLeave" );
+                utils.tell( p , utils.getString( "fake_join_leave_msg.enabled" , "lg" , "staff" ) );
+            }
+            new ClientSettings( main.getPlayerMenuUtility( p ) , this.plugin ).open( p );
+        } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
+            p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
-                p.closeInventory( );
-                (new ServerManager( main.getPlayerMenuUtility( p ) , this.plugin )).open( p );
+                new ServerManager( main.getPlayerMenuUtility( p ) , this.plugin ).open( p );
                 e.setCancelled( true );
-            } else if ( e.getClick( ).isRightClick( ) ) {
-                p.closeInventory( );
             }
         }
     }
@@ -106,19 +109,19 @@ public class ClientSettings extends MenuC {
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack TStaffChatOn = new ItemStack( Material.ENDER_EYE , 1 );
         ItemStack TStaffChatOff = new ItemStack( Material.ENDER_EYE , 1 );
-        ItemStack TrolModeOn = new ItemStack( Material.TRIDENT , 1 );
-        ItemStack TrolModeOff = new ItemStack( Material.TRIDENT , 1 );
+        ItemStack TrollModeOn = new ItemStack( Material.TRIDENT , 1 );
+        ItemStack TrollModeOff = new ItemStack( Material.TRIDENT , 1 );
         
         ItemMeta metaTStaffOn = TStaffChatOn.getItemMeta( );
         ItemMeta metaTStaffOff = TStaffChatOff.getItemMeta( );
-        ItemMeta metaTrolModeOn = TrolModeOn.getItemMeta( );
-        ItemMeta metaTrolModeOff = TrolModeOff.getItemMeta( );
+        ItemMeta metaTrollModeOn = TrollModeOn.getItemMeta( );
+        ItemMeta metaTrollModeOff = TrollModeOff.getItemMeta( );
         
         metaTStaffOn.setDisplayName( utils.chat( "&8Staff Chat &aOn" ) );
         metaTStaffOff.setDisplayName( utils.chat( "&8Staff Chat &cOff" ) );
-        metaTrolModeOn.setDisplayName( utils.chat( "&8Trol Mode &aOn" ) );
-        metaTrolModeOff.setDisplayName( utils.chat( "&8Trol Mode &cOff" ) );
-    
+        metaTrollModeOn.setDisplayName( utils.chat( "&8Troll Mode &aOn" ) );
+        metaTrollModeOff.setDisplayName( utils.chat( "&8Troll Mode &cOff" ) );
+        
         lore.add( utils.chat( "&7Click to turn &cOFF &7the Staff Chat." ) );
         metaTStaffOn.setLore( lore );
         lore.clear( );
@@ -126,27 +129,27 @@ public class ClientSettings extends MenuC {
         metaTStaffOff.setLore( lore );
         lore.clear( );
         
-        lore.add( utils.chat( "&7Click to turn &cOFF &7the Trol Mode." ) );
-        metaTrolModeOn.setLore( lore );
+        lore.add( utils.chat( "&7Click to turn &cOFF &7the Troll Mode." ) );
+        metaTrollModeOn.setLore( lore );
         lore.clear( );
-        lore.add( utils.chat( "&7Click to turn &aON &7the Trol Mode." ) );
-        metaTrolModeOff.setLore( lore );
+        lore.add( utils.chat( "&7Click to turn &aON &7the Troll Mode." ) );
+        metaTrollModeOff.setLore( lore );
         lore.clear( );
-    
+        
         metaTStaffOn.addEnchant( Enchantment.MENDING , 1 , false );
         metaTStaffOn.addItemFlags( ItemFlag.HIDE_ENCHANTS );
-        metaTrolModeOn.addEnchant( Enchantment.MENDING , 1 , false );
-        metaTrolModeOn.addItemFlags( ItemFlag.HIDE_ENCHANTS );
-    
+        metaTrollModeOn.addEnchant( Enchantment.MENDING , 1 , false );
+        metaTrollModeOn.addItemFlags( ItemFlag.HIDE_ENCHANTS );
+        
         metaTStaffOn.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "TStaffOn" ) , PersistentDataType.STRING , "TStaffOn" );
         metaTStaffOff.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "TStaffOff" ) , PersistentDataType.STRING , "TStaffOff" );
-        metaTrolModeOn.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "TrolModeOn" ) , PersistentDataType.STRING , "TrolModeOn" );
-        metaTrolModeOff.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "TrolModeOff" ) , PersistentDataType.STRING , "TrolModeOff" );
-    
+        metaTrollModeOn.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "TrollModeOn" ) , PersistentDataType.STRING , "TrollModeOn" );
+        metaTrollModeOff.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "TrollModeOff" ) , PersistentDataType.STRING , "TrollModeOff" );
+        
         TStaffChatOn.setItemMeta( metaTStaffOn );
         TStaffChatOff.setItemMeta( metaTStaffOff );
-        TrolModeOn.setItemMeta( metaTrolModeOn );
-        TrolModeOff.setItemMeta( metaTrolModeOff );
+        TrollModeOn.setItemMeta( metaTrollModeOn );
+        TrollModeOff.setItemMeta( metaTrollModeOff );
         
         int i;
         for ( i = 0; i < 10; i++ ) {
@@ -176,15 +179,24 @@ public class ClientSettings extends MenuC {
         } else if ( !p.getPersistentDataContainer( ).has( new NamespacedKey( main.plugin , "staffchat" ) , PersistentDataType.STRING ) ) {
             this.inventory.setItem( 20 , TStaffChatOff );
         }
-        if ( StaffCoreAPI.getTrolStatus( p.getName( ) ) ){
-            this.inventory.setItem( 22 , TrolModeOn );
+        if ( StaffCoreAPI.getTrollStatus( p.getName( ) ) ) {
+            this.inventory.setItem( 22 , TrollModeOn );
         } else {
-            this.inventory.setItem( 22 , TrolModeOff );
+            this.inventory.setItem( 22 , TrollModeOff );
         }
         this.inventory.setItem( 21 , redPanel( ) );
         this.inventory.setItem( 23 , redPanel( ) );
-        this.inventory.setItem( 24 , makeItem( Material.LEAD , "&6Coming Soon" ) );
+        if ( utils.getBoolean( "alerts.fake_join_leave_msg", null ) ){
+            if ( p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "FakeJoinOrLeave" ) , PersistentDataType.STRING ) ) {
+                this.inventory.setItem( 24 , Items.FakeJoinOrLeave( true ) );
+            } else {
+                this.inventory.setItem( 24 , Items.FakeJoinOrLeave( false ) );
+            }
+        } else {
+            this.inventory.setItem( 24 , Items.ComingSoon( ) );
+        }
+        
         this.inventory.setItem( 25 , redPanel( ) );
-        this.inventory.setItem( 31 , makeItem( Material.BARRIER , ChatColor.DARK_RED + "Close" ) );
+        this.inventory.setItem( 31 , close( ) );
     }
 }

@@ -8,7 +8,9 @@ import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.sql.SQLGetter;
 import cl.bebt.staffcore.utils.TpPlayers;
 import cl.bebt.staffcore.utils.utils;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 public class StaffListBungeeGui extends PaginatedMenu {
     
     private final main plugin;
+    
     private final Player p;
     
     public StaffListBungeeGui( PlayerMenuUtility playerMenuUtility , main plugin , Player p ){
@@ -30,7 +33,7 @@ public class StaffListBungeeGui extends PaginatedMenu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( "&cStaffList" );
+        return utils.chat( utils.getString( "others.staff_list.name" , "menu" , null ) );
     }
     
     @Override
@@ -53,26 +56,26 @@ public class StaffListBungeeGui extends PaginatedMenu {
             if ( Bukkit.getPlayer( target ) instanceof Player ) {
                 TpPlayers.tpToPlayer( p , target );
             } else {
-                utils.tell( p , utils.getString( "staff.staff_prefix" ) + "&7Connecting to &a" + main.playersServerMap.get( target ) + " &7where &a" + target + " &7is." );
+                utils.tell( p , utils.getString( "tp.connect_to_server_where_player_is" , "lg" , "staff" ).replace( "%server%" , main.playersServerMap.get( target ) ).replace( "%player%" , target ) );
                 SendMsg.connectPlayerToServer( p.getName( ) , main.playersServerMap.get( target ) );
             }
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
+        } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.DARK_OAK_BUTTON ) ) {
-            if ( ChatColor.stripColor( e.getCurrentItem( ).getItemMeta( ).getDisplayName( ) ).equalsIgnoreCase( "Back" ) ) {
-                if ( page == 0 ) {
-                    p.sendMessage( ChatColor.GRAY + "You are already on the first page." );
-                } else {
-                    page = page - 1;
-                    super.open( p );
-                }
-            } else if ( ChatColor.stripColor( e.getCurrentItem( ).getItemMeta( ).getDisplayName( ) ).equalsIgnoreCase( "Next" ) ) {
-                if ( !( (index + 1) >= players.size( ) ) ) {
-                    page = page + 1;
-                    super.open( p );
-                } else {
-                    p.sendMessage( ChatColor.GRAY + "You are on the last page." );
-                }
+        } else if ( e.getCurrentItem( ).equals( back( ) ) ) {
+            if ( page == 0 ) {
+                utils.tell( p , utils.getString( "menu.already_in_first_page" , "lg" , "sv" ) );
+            } else {
+                page--;
+                p.closeInventory( );
+                open( p );
+            }
+        } else if ( e.getCurrentItem( ).equals( next( ) ) ) {
+            if ( index + 1 <= players.size( ) ) {
+                page++;
+                p.closeInventory( );
+                open( p );
+            } else {
+                utils.tell( p , utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
             }
         }
     }
@@ -99,7 +102,7 @@ public class StaffListBungeeGui extends PaginatedMenu {
                     String gm = main.playersServerGamemodesMap.get( players.get( index ) );
                     ArrayList < String > lore = new ArrayList <>( );
                     meta.setDisplayName( utils.chat( "&a" + players.get( index ) ) );
-                    if ( utils.getBoolean( "mysql.enabled" ) ) {
+                    if ( utils.getBoolean( "mysql.enabled" , null ) ) {
                         if ( SQLGetter.isTrue( players.get( index ) , "staff" ).equals( "true" ) ) {
                             lore.add( utils.chat( "&7Staff Mode: &aTrue" ) );
                         } else {
@@ -115,16 +118,16 @@ public class StaffListBungeeGui extends PaginatedMenu {
                         } else {
                             lore.add( utils.chat( "&7Staff Chat: &cFalse" ) );
                         }
-                        if ( SQLGetter.isTrue( players.get( index ) , "flying" ).equals( "true" ) || GameMode.valueOf( gm ).equals( GameMode.CREATIVE ) ) {
+                        if ( GameMode.valueOf( gm ).equals( GameMode.CREATIVE ) || p.getPersistentDataContainer().has( new NamespacedKey( plugin,"flying" ), PersistentDataType.STRING ) ) {
                             lore.add( utils.chat( "&7Flying: &aTrue" ) );
                         } else {
                             lore.add( utils.chat( "&7Flying: &cFalse" ) );
                         }
-                        if ( StaffCoreAPI.getTrolStatus( players.get( index ) ) ) {
-                            lore.add( utils.chat( "&7Trol Mode: &aON" ) );
+                        if ( StaffCoreAPI.getTrollStatus( players.get( index ) ) ) {
+                            lore.add( utils.chat( "&7Troll Mode: &aON" ) );
                         }
-                        if ( !StaffCoreAPI.getTrolStatus( players.get( index ) ) ) {
-                            lore.add( utils.chat( "&7Trol Mode: &cOFF" ) );
+                        if ( !StaffCoreAPI.getTrollStatus( players.get( index ) ) ) {
+                            lore.add( utils.chat( "&7Troll Mode: &cOFF" ) );
                         }
                     }
                     lore.add( utils.chat( "&7Gamemode: &a" + gm ) );

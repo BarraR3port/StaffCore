@@ -19,46 +19,30 @@ public class ClearChat implements CommandExecutor {
     
     @Override
     public boolean onCommand( CommandSender sender , Command command , String label , String[] args ){
-        if ( !(sender instanceof Player) ) {
+        if ( sender.hasPermission( "staffcore.clearchat" ) ) {
             if ( args.length == 0 ) {
                 utils.ccAll( );
-                Bukkit.broadcastMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&4The console cleared the chat! " ) );
+                Bukkit.broadcastMessage( utils.chat( utils.getString( "clear_chat.global" , "lg" , "sv" ).replace( "%player%" , sender.getName( ) ) ) );
             } else if ( args.length == 1 ) {
                 if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
-                    Player jugador = Bukkit.getPlayer( args[0] );
-                    utils.ccPlayer( jugador );
-                    sender.sendMessage( utils.chat( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&4You cleaned the chat of: " + jugador.getName( ) ) ) );
-                    jugador.sendMessage( utils.chat( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&4The console cleared your chat! " ) ) );
-                } else if ( !(Bukkit.getPlayer( args[0] ) instanceof Player) ) {
-                    sender.sendMessage( utils.chat( plugin.getConfig( ).getString( "staff.staff_prefix" ) + plugin.getConfig( ).getString( "player_dont_exist" ) ) );
-                }
-            }
-        }
-        if ( sender instanceof Player ) {
-            if ( sender.hasPermission( "staffcore.clearchat" ) ) {
-                if ( args.length == 0 ) {
-                    utils.ccAll( );
-                    Bukkit.broadcastMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&4The player&r " + sender.getName( ) + " &4cleared the chat!" ) );
-                } else if ( args.length == 1 ) {
-                    if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
-                        Player jugador = Bukkit.getPlayer( args[0] );
-                        if ( sender.getName( ).equals( jugador.getName( ) ) ) {
-                            utils.ccPlayer( jugador );
-                            sender.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&4You cleaned your chat" ) );
-                            return true;
-                        } else {
-                            utils.ccPlayer( jugador );
-                            sender.sendMessage( utils.chat( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&4You cleaned the chat of: " + jugador.getName( ) ) ) );
-                            jugador.sendMessage( utils.chat( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&4The player&r " + sender.getName( ) + " &4cleaned the chat!" ) ) );
-                        }
+                    Player p = Bukkit.getPlayer( args[0] );
+                    if ( sender.getName( ).equals( p.getName( ) ) ) {
+                        utils.ccPlayer( p );
+                        utils.tell( sender , utils.getString( "clear_chat.own" , "lg" , "sv" ) );
                     } else {
-                        sender.sendMessage( utils.chat( plugin.getConfig( ).getString( "staff.staff_prefix" ) + plugin.getConfig( ).getString( "player_dont_exist" ) ) );
+                        utils.ccPlayer( p );
+                        utils.tell( sender , utils.getString( "clear_chat.global" , "lg" , "sv" ).replace( "%player%" , sender.getName( ) ) );
+                        utils.tell( p , utils.getString( "clear_chat.player" , "lg" , "sv" ) );
+                        
                     }
+                } else {
+                    utils.tell( sender , utils.chat( utils.getString( "p_dont_exist" , "lg" , "sv" ) ) );
                 }
             } else {
-                sender.sendMessage( utils.chat( plugin.getConfig( ).getString( "staff.staff_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) ) );
-                return false;
+                utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "cc | cc <player>" ) );
             }
+        } else {
+            utils.tell( sender , utils.chat( utils.getString( "no_permission" , "lg" , "staff" ) ) );
         }
         return true;
     }

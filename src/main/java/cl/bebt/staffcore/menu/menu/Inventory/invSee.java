@@ -31,7 +31,7 @@ public class invSee extends InventoryMenu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( "&c" + target.getName( ) + "'s inventory:" );
+        return utils.chat( utils.getString( "inventory.inv_see.name" , "menu" , null ).replace( "%player%" , target.getName( ) ) );
     }
     
     @Override
@@ -46,7 +46,6 @@ public class invSee extends InventoryMenu {
         ItemStack cursor = e.getCursor( );
         int slot = e.getSlot( );
         if ( e.getClick( ) == ClickType.DOUBLE_CLICK ) {
-            utils.tell( p , utils.getString( "staff.staff_prefix" ) + "&cYou can't double click while you are seen a player inventory" );
             e.setCancelled( true );
             return;
         }
@@ -56,7 +55,6 @@ public class invSee extends InventoryMenu {
         }
         
         if ( e.getClick( ) == ClickType.DROP || e.getClick( ) == ClickType.CONTROL_DROP ) {
-            utils.tell( p , utils.getString( "staff.staff_prefix" ) + "&cYou can't drop items while you are seen a player inventory" );
             e.setCancelled( true );
             return;
         }

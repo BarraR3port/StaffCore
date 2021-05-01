@@ -5,7 +5,6 @@ import cl.bebt.staffcore.menu.MenuC;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -28,7 +27,7 @@ public class MuteChatManager extends MenuC {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( "&cMute Chat Manager" );
+        return utils.chat( utils.getString( "chat.mute_chat_manager.name" , "menu" , null ) );
     }
     
     @Override
@@ -50,15 +49,15 @@ public class MuteChatManager extends MenuC {
             p.closeInventory( );
             plugin.chatMuted = true;
             new MuteChatManager( main.getPlayerMenuUtility( p ) , plugin ).open( p );
-            Bukkit.broadcastMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7The player&r " + p.getDisplayName( ) + " &cMuted &7the chat" ) );
+            Bukkit.broadcastMessage( utils.chat( utils.getString( "toggle_chat.mute_by_player","lg","sv" ).replace( "%player%",p.getName( ) ) ) );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "TChatOff" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
             plugin.chatMuted = false;
             new MuteChatManager( main.getPlayerMenuUtility( p ) , plugin ).open( p );
-            Bukkit.broadcastMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7The player&r " + p.getDisplayName( ) + " &aUnMuted &7the chat" ) );
+            Bukkit.broadcastMessage( utils.chat( utils.getString( "toggle_chat.un_mute_by_player","lg","sv" ).replace( "%player%",p.getName( ) ) ) );
             e.setCancelled( true );
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
+        } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
                 new ChatManager( main.getPlayerMenuUtility( p ) , main.plugin ).open( p );
@@ -134,7 +133,7 @@ public class MuteChatManager extends MenuC {
             inventory.setItem( 20 , TChatOff );
         }
         inventory.setItem( 21 , super.redPanel( ) );
-        inventory.setItem( 22 , makeItem( Material.BARRIER , ChatColor.DARK_RED + "Close" ) );
+        inventory.setItem( 22 , close( ) );
         inventory.setItem( 23 , super.redPanel( ) );
         inventory.setItem( 24 , Head );
         inventory.setItem( 25 , super.redPanel( ) );

@@ -1,0 +1,194 @@
+#     ______     _                ___      ___                  ______                                    #
+#   .' ____ \   / |_            .' ..]   .' ..]               .' ___  |                                   #
+#   | (___ \_| `| |-'  ,--.    _| |_    _| |_      ______    / .'   \_|   .--.    _ .--.   .---.          #
+#    _.____`.   | |   `'_\ :  '-| |-'  '-| |-'    |______|   | |        / .'`\ \ [ `/'`\] / /__\\         #
+#   | \____) |  | |,  // | |,   | |      | |                 \ `.___.'\ | \__. |  | |     | \__.,         #
+#   \______.'   \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.4   #
+#                                                                                                         #
+#                                                                     Translated by BarraR3port : [ES_CL] #
+
+# ------------> ALTS <----------
+alts:
+  no_alts: "&7El jugador &9%player% &cno tiene alts"
+  alts: "&9%player%'s &7alts"
+
+# ------------> BANS <----------
+bans:
+  no_banned_players: "&7No hay jugadores baneados"
+  other_reason: "&7Escribe la razon en el chat"
+
+# ------------> CHAT <----------
+clear_chat:
+  global: "&7El jugador &9%player% limpió el chat!"
+  player: "&7Limpiado el chat de &9%player%"
+  own: "&7Limpiaste tu chat"
+
+toggle_chat:
+  mute_chat: "&7El jugador &9%player% &7ha muteado el chat"
+  un_mute_chat: "&7El jugador &9%player% &7ha desmuteado chat"
+  mute_by_console: "&7la CONSOLA muteó el chat!"
+  un_mute_by_console: "&7La CONSOLA desmuteó chat!"
+  mute_by_player: "&7El jugador &9%player% &7te ha muteado"
+  un_mute_by_player: "&7El jugador &9%player% &7te ha desmuteado"
+  the_chat_is_not_muted: "&7El chat no está muteado"
+  muted_try_to_chat: "&cEstás muteado"
+  chat_muted: "&7El chat está muteado, por lo tanto no puedes hablar"
+  chat_not_muted: "&7El chat no está muteado"
+  time_remaining: "&cTiempo restante: &c%days%d:%hours%h:%minutes%mn:%seconds%s"
+
+# ------------> COMMON STUFF <----------
+wrong_usage: "&cUsaste mal el comando, usa &7/%command%"
+p_dont_exist: "&cEl jugador no está en los registros"
+no_online_players: "&cNo hay jugadores Online"
+no_permission: "&cNo tienes permisos"
+not_for_older_versions: "&cEste comando no puede se ejecutado en versiones anteriores"
+never_seen: "&cEl jugador &9%player% &cnunca se ha conectado al server"
+only_players: "&7Este comando sólo puede ser ejecutado por jugadores"
+offline: "&7El jugador &9%player% &7no está Online"
+error: "&cHa ocurrido un error"
+no_players_saved: "&7No hay jugadores en los registros"
+language_changed: "&7Idioma cambiado a: %language%"
+
+# ------------> DISCORD <----------
+discord:
+  could_not_connect: "&cEl DiscordWebHook no está configurado en la config.yml"
+
+# ------------> FLY <----------
+fly:
+  enabled: "&7Fly &aActivado"
+  enabled_to: "&7Fly &aActivado &7a &9%player%"
+  disabled: "&7Fly &cDesactivado"
+  disabled_to: "&7Fly &cDesactivado &7a &9%player%"
+
+# ------------> FAKE JOIN/LEAVE <----------
+fake_join_leave_msg:
+  enabled: "&7Fake Join/Leave msg &aActivado"
+  disabled: "&7Fake Join/Leave msg &cDesactivado"
+  join_msg: "&e%player% ha entrado al juego"
+  leave_msg: "&e%player% ha salido del juego"
+
+# ------------> FREEZE <----------
+freeze:
+  freeze: "&cCongelado"
+  unfreeze: "&aDescongelado"
+  unfreeze_ur_self: "&7Te has Descongelado"
+  freeze_bypass: "&7El jugador &9%player% &7tiene permisos para no obedecer a tu congelamiento"
+  freeze_message_description: "&4&lNo te desconectes y entra al Discord"
+  freeze_ds: "https://discord.gg/rgekTwy"
+  freeze_message: "&4&lHas sido congelado"
+  talk_while_frozen: "&7No puedes hablar cuando estás congelado"
+
+# ------------> GAMEMODE <----------
+creative:
+  enabled: "&7Creativo &aActivado"
+  enabled_to: "&7Creativo &aActivado &7a &9%player%"
+  disabled: "&7Creativo &cDesactivado"
+  disabled_to: "&7Creativo &cDesactivado &7a &9%player%"
+  already: "&7El jugador &9%player% ya está Creativo"
+
+survival:
+  enabled: "&7Survival &aActivado"
+  enabled_to: "&7Survival &aActivado &7a &9%player%"
+  disabled: "&7Survival &cDesactivado"
+  disabled_to: "&7Survival &cDesactivado &7a &9%player%"
+  already: "&7El jugador &9%player% ya está en Survival"
+
+# ------------> HEAL <----------
+heal:
+  heal: "&7Has sido curado"
+  heal_to: "&7Has curado a: &9%player%"
+
+# ------------> HELP OP <----------
+helpop:
+  tostaff: "&7[&aHELPOP&7] &7[&c%player%&7] "
+  tousers: "&7[&aHELPOP&7] &aUn miembro del staff te va a ayudar"
+  bungee: "&7[&aHELPOP&7] &7[&c%player%&7] &7[&c%server%&7] "
+
+# ------------> INV SEE <----------
+invsee:
+  inventory: "&7Abriendo el inventario de: &9%player%"
+  ender_chest: "&7Abriendo el ender chest de: &9%player%"
+  disconnected: "&7El jugador &9%player% &7se ha desconectado, y no puedes ver o editar su Inventario/Ender Chest"
+
+# ------------> IP <------------
+ip: "&7Tu ip es: &5%ip%"
+ip_other: "&7La ip de &9%player% &7es: &5%ip%"
+
+# ------------> MENU <--------------
+menu:
+  already_in_last_page: "&7Estás en la última página"
+  already_in_first_page: "&7Estás en la primera página"
+
+# ------------> PING <-----------
+ping_other: "&7El ping de &9%player% &7es: &9%ping%"
+ping: "&7Tu ping es: %9%ping%"
+
+# ------------> STAFF <----------
+staff:
+  enabled: "&7StaffMode &aActivado"
+  enabled_to: "&7StaffMode &cActivado &7a &9%player%"
+  disabled: "&7StaffMode &cDesactivado"
+  disabled_to: "&7StaffMode &cDesactivado &7a &9%player%"
+
+# ------------> STAFF-CHAT <----------
+staff_chat:
+  enabled: "&7Staff-Chat &aActivado"
+  enabled_to: "&7StaffMode &cActivado &7a &9%player%"
+  disabled: "&7Staff-Chat &cDesactivado"
+  disabled_to: "&7StaffMode &cDesactivado &7a &9%player%"
+  prefix: "&8[&3&lSC&r&8] &a%sender%: &5%msg%"
+
+# ------------> TELEPORT <-----------
+tp:
+  player_to_player: "&7Has sido tepeado a &9%target%"
+  to_me: "&7El jugador &9%sender% &7se ha tepeado a ti"
+  to_yourself: "&7Te has tepeado a ti mismo"
+  to_him: "&7Tepeaste a &9%target% &7a si mismo"
+  tp_other: "&7El jugador &9%player% &7se ha tepeado a &9%target%"
+  not_found: "&cEl jugador &9%player% &7no está online"
+  to_cords: "&7Te has tepeado a &9%x% %y% %z%"
+  to_cords_by: "&7Te has tepeado a &a%x% %y% %z% &7por &9%sender%"
+  player_to_cords: "&7Has tepeado a &9%target% &7hacia &9%x% %y% %z%"
+  all: "&7Todos los jugadores has sido tepeados hacia a ti (&a%count%&7)"
+  all_to_cords: "&7Todos los jugadores han sido tepeados a &9%x% %y% %z% (&a%count%&7)"
+  offline_players: "&cEl jugador &9%target1% &7o &9%target2% &7no está conectado"
+  random: "&7Te has tepeado aleatoreamente a &9%player%"
+  not_enough: "&cNo hay suficientes jugadores para tepearse"
+  connect_to_server_where_player_is: "&7Conectando a &9%server% &7donde está: &9%player%"
+
+# ------------> TIME <-----------
+time:
+  day:
+    set_by_console: "&7Se ha hecho de &e&lDía &r&7gracias a la CONSOLA"
+    set_by_player: "&7Se ha hecho de &e&lDía &r&7gracias a &9%player%"
+  night:
+    set_by_console: "&7Se ha hecho de &8Noche &7gracias a la CONSOLA"
+    set_by_player: "&7Se ha hecho de &8Noche &7gracias a &9%player%"
+  weather:
+    rain: "&7Clima: &bLloviendo"
+    clear: "&7Clima: &eLimpiado"
+    storm: "&7Clima: &3Tormenta"
+
+# ------------> TROLL MODE <-----------
+troll:
+  enabled: "&7Troll Mode &aActivado"
+  enabled_to: "&7Troll Mode &aActivado &7a &9%player%"
+  disabled: "&7Troll Mode &cDesactivado"
+  disabled_to: "&7Troll Mode &cDesactivado &7a &9%player%"
+
+# ------------> VANISH <----------
+vanish:
+  enabled: "&7Vanish &aActivado"
+  enabled_to: "&7Vanished &aActivado &7a &9%player%"
+  disabled: "&7Vanish &cDesactivado"
+  disabled_to: "&7Vanished &cDesactivado &7a &9%player%"
+
+# -----------> WARNS <----------
+warns:
+  join_msg: "&7Click para abrir tus Warns"
+  notify: "&4Hey, tienes %amount% warnings, ten cuidado y comportate"
+  bad_configuration: "&cThe warning config is wrong, configure the 'max_warns' "
+
+# ------------> WIPE <----------
+wipe:
+  account_wiped: "&cTu cuenta ha sido limpiada"

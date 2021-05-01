@@ -19,7 +19,7 @@ public class FreezePlayer {
     
     public static void FreezePlayer( Player p , String freezer , Boolean bol ){
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
-        String status = null;
+        String status = "";
         if ( bol ) {
             p.setAllowFlight( true );
             p.setInvulnerable( true );
@@ -29,18 +29,12 @@ public class FreezePlayer {
             if ( utils.mysqlEnabled( ) ) {
                 SQLGetter.set( p.getName( ) , "frozen" , "true" );
             }
-            status = main.plugin.getConfig( ).getString( "freeze.freeze" );
+            status = utils.getString( "freeze.freeze" , "lg" , null );
             try {
                 PlayerData.set( new NamespacedKey( plugin , "frozen_helmet" ) , PersistentDataType.STRING , Serializer.serialize( p.getInventory( ).getHelmet( ) ) );
-            } catch ( NullPointerException ignored ) {
-                ignored.printStackTrace();
-            }
-            
-            
-            if ( utils.getBoolean( "freeze.set_ice_block" ) ) {
+            } catch ( NullPointerException ignored ) { }
+            if ( utils.getBoolean( "freeze.set_ice_block" , null ) ) {
                 p.getInventory( ).setItem( 39 , new ItemStack( Material.BLUE_ICE ) );
-            } else {
-                utils.tell(p, "&anop");
             }
         } else {
             utils.PlaySound( p , "un_freeze" );
@@ -56,9 +50,9 @@ public class FreezePlayer {
             if ( utils.mysqlEnabled( ) ) {
                 SQLGetter.set( p.getName( ) , "frozen" , "false" );
             }
-            status = main.plugin.getConfig( ).getString( "freeze.unfreeze" );
+            status = utils.getString( "freeze.unfreeze" , "lg" , null );
             
-            if ( utils.getBoolean( "freeze.set_ice_block" ) ) {
+            if ( utils.getBoolean( "freeze.set_ice_block" , null ) ) {
                 try {
                     ItemStack helmet = Serializer.deserialize( PlayerData.get( new NamespacedKey( plugin , "frozen_helmet" ) , PersistentDataType.STRING ) );
                     p.getInventory( ).setHelmet( helmet );
@@ -66,13 +60,11 @@ public class FreezePlayer {
                 } catch ( NullPointerException ignored ) {
                     p.getInventory( ).setHelmet( null );
                 }
-            } else {
-                utils.tell(p, "&anop");
             }
         }
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-            if ( utils.getBoolean( "alerts.freeze" ) || people.hasPermission( "staffcore.staff" ) ) {
-                for ( String key : main.plugin.getConfig( ).getStringList( "freeze.freeze_alerts" ) ) {
+            if ( utils.getBoolean( "alerts.freeze" , null ) || people.hasPermission( "staffcore.staff" ) ) {
+                for ( String key : utils.getStringList( "freeze" , "alerts" ) ) {
                     key = key.replace( "%frozen%" , p.getName( ) );
                     key = key.replace( "%freezer%" , freezer );
                     key = key.replace( "%status%" , status );
@@ -80,7 +72,7 @@ public class FreezePlayer {
                 }
             }
         }
-        SendMsg.sendFreezeAlert( freezer , p.getName( ) , bol , plugin.getConfig( ).getString( "bungeecord.server" ) );
+        SendMsg.sendFreezeAlert( freezer , p.getName( ) , bol , utils.getServer( ) );
     }
     
 }

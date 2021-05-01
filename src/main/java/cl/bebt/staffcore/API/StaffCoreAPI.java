@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.net.InetAddress;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -109,16 +110,15 @@ public class StaffCoreAPI {
     }
     
     public static boolean getFlyingStatus( String player ){
-        if ( mysqlEnabled( ) )
-            return SQLGetter.isTrue( player , "flying" ).equalsIgnoreCase( "true" );
+        return Bukkit.getPlayer( player ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING );
+    }
+    
+    public static boolean getTrollStatus( String player ){
         try {
-            return Bukkit.getPlayer( player ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING );
-        } catch ( NullPointerException error ) {
+            return Bukkit.getPlayer( player ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "troll" ) , PersistentDataType.STRING );
+        }catch ( NullPointerException error ){
             return false;
         }
-    }
-    public static boolean getTrolStatus( String player ){
-        return Bukkit.getPlayer( player ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "trol" ) , PersistentDataType.STRING );
     }
     
     public static boolean isBanned( String player ){
@@ -180,15 +180,18 @@ public class StaffCoreAPI {
         if ( utils.mysqlEnabled( ) ) {
             bannedPlayers.addAll( SQLGetter.getBannedPlayers( ) );
         } else {
-            ConfigurationSection inventorySection = plugin.bans.getConfig( ).getConfigurationSection( "bans" );
-            for ( String key : inventorySection.getKeys( false ) ) {
-                String name = plugin.bans.getConfig( ).getString( "bans." + key + ".name" );
-                if ( !bannedPlayers.contains( name ) )
-                    bannedPlayers.add( name );
-            }
+            try {
+                ConfigurationSection inventorySection = plugin.bans.getConfig( ).getConfigurationSection( "bans" );
+                for ( String key : inventorySection.getKeys( false ) ) {
+                    String name = plugin.bans.getConfig( ).getString( "bans." + key + ".name" );
+                    if ( !bannedPlayers.contains( name ) )
+                        bannedPlayers.add( name );
+                }
+            } catch ( NullPointerException ignored ) { }
         }
         return bannedPlayers;
     }
+    
     public static ArrayList < String > getReportedPlayers( ){
         ArrayList < String > reportedPlayers = new ArrayList <>( );
         if ( utils.mysqlEnabled( ) ) {
@@ -204,12 +207,12 @@ public class StaffCoreAPI {
         return reportedPlayers;
     }
     
-    public static void setTrolMode( Player p , Boolean bol ){
+    public static void setTrollMode( Player p , Boolean bol ){
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         if ( bol ) {
-            PlayerData.set( new NamespacedKey( plugin , "trol" ) , PersistentDataType.STRING , "trol" );
+            PlayerData.set( new NamespacedKey( plugin , "troll" ) , PersistentDataType.STRING , "troll" );
         } else {
-            PlayerData.remove( new NamespacedKey( plugin , "trol" ) );
+            PlayerData.remove( new NamespacedKey( plugin , "troll" ) );
         }
     }
     
@@ -300,7 +303,7 @@ public class StaffCoreAPI {
     }
     
     public static void warnPlayer( Player player , String warned , String reason ){
-        WarnPlayer.createWarn( player , warned , reason , utils.getInt( "warns.expire_after" ) , utils.getString( "warns.expire_after_quantity" ) );
+        WarnPlayer.createWarn( player , warned , reason , utils.getInt( "warns.expire_after" , null ) , utils.getString( "warns.expire_after_quantity" , null , null ) );
     }
     
     public static void muteGlobalChat( ){
@@ -311,39 +314,96 @@ public class StaffCoreAPI {
         main.plugin.chatMuted = false;
     }
     
-    public static void mutePlayerChat(CommandSender sender, Player muted){
-        ToggleChat.MutePlayer( sender, muted );
+    public static void mutePlayerChat( CommandSender sender , Player muted ){
+        ToggleChat.MutePlayer( sender , muted );
     }
     
-    public static void unMutePlayerChat(CommandSender sender, Player muted){
-        ToggleChat.unMute( sender, muted );
+    public static void unMutePlayerChat( CommandSender sender , Player muted ){
+        ToggleChat.unMute( sender , muted );
     }
     
-    public static List<String> getVanishedPlayer( ){
+    public static List < String > getVanishedPlayers( ){
         if ( mysqlEnabled( ) ) {
-            return SQLGetter.getVanishedPlayers();
+            return SQLGetter.getVanishedPlayers( );
         } else {
-            List<String> vanishedPlayer = new ArrayList<>();
+            List < String > vanishedPlayer = new ArrayList <>( );
             for ( Player p : Bukkit.getOnlinePlayers( ) ) {
-                if ( p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "vanished" ), PersistentDataType.STRING ) ){
-                    vanishedPlayer.add( p.getName() );
+                if ( p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) ) {
+                    vanishedPlayer.add( p.getName( ) );
                 }
             }
             return vanishedPlayer;
         }
     }
     
-    public static List<String> getStaffPlayers( ){
+    public static List < String > getStaffPlayers( ){
         if ( mysqlEnabled( ) ) {
-            return SQLGetter.getStaffPlayers();
+            return SQLGetter.getStaffPlayers( );
         } else {
-            List<String> staffPlayer = new ArrayList<>();
+            List < String > staffPlayer = new ArrayList <>( );
             for ( Player p : Bukkit.getOnlinePlayers( ) ) {
-                if ( p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staff" ), PersistentDataType.STRING ) ){
-                    staffPlayer.add( p.getName() );
+                if ( p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) ) {
+                    staffPlayer.add( p.getName( ) );
                 }
             }
             return staffPlayer;
         }
     }
+    
+    public static Boolean isOlderVersion( ){
+        return utils.isOlderVersion( );
+    }
+    
+    public static double getTPS( ){
+        return TPS.getTPS( );
+    }
+    
+    public static String getServerVersion( ){
+        return Bukkit.getServer( ).getClass( ).getPackage( ).getName( ).substring( 23 );
+    }
+    
+    public static int getCurrentBans( ){
+        if ( mysqlEnabled( ) ) {
+            return SQLGetter.getCurrents( "bans" );
+        } else {
+            return BanPlayer.currentBans( );
+        }
+    }
+    
+    public static int getCurrentWarns( ){
+        if ( mysqlEnabled( ) ) {
+            return SQLGetter.getCurrents( "warns" );
+        } else {
+            int current = 0;
+            try {
+                ConfigurationSection inventorySection = main.plugin.warns.getConfig( ).getConfigurationSection( "warns" );
+                for ( String key : inventorySection.getKeys( false ) )
+                    current++;
+            } catch ( NullPointerException ignored ) { }
+            return current;
+        }
+    }
+    
+    public static int getCurrentReports( ){
+        if ( mysqlEnabled( ) ) {
+            return SQLGetter.getCurrents( "reports" );
+        } else {
+            int current = 0;
+            try {
+                ConfigurationSection inventorySection = main.plugin.reports.getConfig( ).getConfigurationSection( "reports" );
+                for ( String key : inventorySection.getKeys( false ) )
+                    current++;
+            } catch ( NullPointerException ignored ) { }
+            return current;
+        }
+    }
+    
+    public static String getIp( Player p ){
+        InetAddress address = p.getAddress( ).getAddress( );
+        String ip = address.toString( );
+        ip = ip.replace( "/" , "" );
+        return ip;
+    }
+    
+    
 }

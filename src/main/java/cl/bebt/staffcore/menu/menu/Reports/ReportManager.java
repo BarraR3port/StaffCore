@@ -6,7 +6,6 @@ import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.menu.menu.Others.ServerManager;
 import cl.bebt.staffcore.sql.SQLGetter;
 import cl.bebt.staffcore.utils.utils;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -28,7 +27,7 @@ public class ReportManager extends Menu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( "&cReport manager" );
+        return utils.chat( utils.getString( "reports.manager.name" , "menu" , null ) );
     }
     
     @Override
@@ -49,13 +48,11 @@ public class ReportManager extends Menu {
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "panel" ) , PersistentDataType.STRING ) ) {
             e.setCancelled( true );
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
+        } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
+            p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
-                p.closeInventory( );
                 new ServerManager( main.getPlayerMenuUtility( p ) , plugin ).open( p );
                 e.setCancelled( true );
-            } else if ( e.getClick( ).isRightClick( ) ) {
-                p.closeInventory( );
             }
         }
     }
@@ -71,7 +68,7 @@ public class ReportManager extends Menu {
                     if ( SQLGetter.get( "reports" , id , "Status" ).equals( "close" ) ) {
                         close++;
                     }
-                } catch ( NullPointerException err ) {
+                } catch ( NullPointerException ignored ) {
                 }
             }
             return close;
@@ -84,7 +81,7 @@ public class ReportManager extends Menu {
                     if ( plugin.reports.getConfig( ).get( "reports." + id + ".status" ).equals( "close" ) ) {
                         close++;
                     }
-                } catch ( NullPointerException err ) {
+                } catch ( NullPointerException ignored ) {
                 }
             }
             return close;
@@ -102,7 +99,7 @@ public class ReportManager extends Menu {
                     if ( SQLGetter.get( "reports" , id , "Status" ).equals( "open" ) ) {
                         opens++;
                     }
-                } catch ( NullPointerException err ) {
+                } catch ( NullPointerException ignored ) {
                 }
             }
             return opens;
@@ -115,7 +112,7 @@ public class ReportManager extends Menu {
                     if ( plugin.reports.getConfig( ).get( "reports." + id + ".status" ).equals( "open" ) ) {
                         opens++;
                     }
-                } catch ( NullPointerException err ) {
+                } catch ( NullPointerException ignored ) {
                 }
             }
             return opens;
@@ -179,7 +176,7 @@ public class ReportManager extends Menu {
         }
         inventory.setItem( 20 , openReports );
         inventory.setItem( 21 , super.redPanel( ) );
-        inventory.setItem( 22 , makeItem( Material.BARRIER , ChatColor.DARK_RED + "Close" ) );
+        inventory.setItem( 22 , close( ) );
         inventory.setItem( 23 , super.redPanel( ) );
         inventory.setItem( 24 , closeReports );
     }

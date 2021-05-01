@@ -20,17 +20,17 @@ public class Heal implements CommandExecutor {
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {
-            if ( args.length == 0 ) {
-                utils.tell( sender , "&4&lUse feed <player>" );
-            } else if ( args.length == 1 ) {
+            if ( args.length == 1 ) {
                 if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
-                    Player jugador = Bukkit.getPlayer( args[0] );
-                    jugador.setFoodLevel( 20 );
-                    jugador.setHealth( 20 );
-                    jugador.setSaturation( 5f );
-                    utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&7You've healed and feed: " + jugador.getName( ) );
-                    jugador.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7You've been healed and feed" ) );
+                    Player p = Bukkit.getPlayer( args[0] );
+                    p.setFoodLevel( 20 );
+                    p.setHealth( 20 );
+                    p.setSaturation( 5f );
+                    utils.tell( sender , utils.getString( "heal.heal_to" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
+                    utils.tell( p , utils.getString( "heal.heal" , "lg" , "sv" ) );
                 }
+            } else {
+                utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "heal <player>" ) );
             }
         } else {
             Player p = ( Player ) sender;
@@ -39,28 +39,30 @@ public class Heal implements CommandExecutor {
                     p.setFoodLevel( 20 );
                     p.setHealth( 20 );
                     p.setSaturation( 5f );
-                    utils.tell( p , plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&7You've been healed and feed" );
+                    utils.tell( p , utils.getString( "heal.heal" , "lg" , "sv" ) );
                 } else if ( args.length == 1 ) {
                     if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
-                        Player jugador = Bukkit.getPlayer( args[0] );
-                        if ( jugador == p ) {
+                        Player target = Bukkit.getPlayer( args[0] );
+                        if ( target == p ) {
                             p.setFoodLevel( 20 );
                             p.setHealth( 20 );
                             p.setSaturation( 5f );
-                            utils.tell( p , plugin.getConfig( ).getString( "server_prefix" ) + "&7You've been healed and feed" );
+                            utils.tell( p , utils.getString( "heal.heal" , "lg" , "sv" ) );
                         } else {
-                            jugador.setFoodLevel( 20 );
-                            jugador.setHealth( 20 );
-                            jugador.setSaturation( 5f );
-                            utils.tell( p , plugin.getConfig( ).getString( "server_prefix" ) + "&7You've healed and feed: " + jugador.getName( ) );
-                            utils.tell( jugador, plugin.getConfig( ).getString( "server_prefix" ) + "&7You've been healed and feed" );
+                            target.setFoodLevel( 20 );
+                            target.setHealth( 20 );
+                            target.setSaturation( 5f );
+                            utils.tell( p , utils.getString( "heal.heal_to" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
+                            utils.tell( target , utils.getString( "heal.heal" , "lg" , "sv" ) );
                         }
                     } else {
-                        utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "player_dont_exist" ) );
+                        utils.tell( sender , utils.getString( "p_dont_exist" , "lg" , "sv" ) );
                     }
+                } else {
+                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "vanish | vanish <player>" ) );
                 }
             } else {
-                p.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) ) );
+                utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
             }
         }
         return true;

@@ -18,20 +18,15 @@ public class TpPlayers {
             try {
                 if ( !sender.equals( target ) ) {
                     sender.teleport( target.getLocation( ) );
-                    String message = plugin.getConfig( ).getString( "tp.player_to_player" );
-                    message = message.replace( "%target%" , target.getName( ) );
-                    utils.tell( sender , utils.getString( "server_prefix" ) + message );
+                    utils.tell( sender , utils.getString( "tp.player_to_player" , "lg" , "sv" ).replace( "%target%" , target.getName( ) ) );
                 } else {
-                    utils.tell( sender , utils.getString( "server_prefix" ) + utils.getString( "tp.to_yourself" ) );
+                    utils.tell( sender , utils.getString( "tp.to_yourself" , "lg" , "sv" ) );
                 }
             } catch ( NullPointerException offline ) {
-                utils.tell( sender , utils.getString( "server_prefix" ) + "&cThe player &a" + player + " &cis offline" );
-                offline.printStackTrace( );
+                utils.tell( sender , utils.getString( "offline" , "lg" , "sv" ).replace( "%player%" , player ) );
             }
         } else {
-            String message = plugin.getConfig( ).getString( "tp.not_found" );
-            message = message.replace( "%player%" , player );
-            utils.tell( sender , utils.getString( "server_prefix" ) + message );
+            utils.tell( sender , utils.getString( "tp.not_found" , "lg" , "sv" ).replace( "%target%" , player ) );
         }
     }
     
@@ -39,49 +34,32 @@ public class TpPlayers {
         if ( utils.isPlayer( player1 ) && utils.isPlayer( player2 ) ) {
             Player from = Bukkit.getPlayer( player1 );
             Player target = Bukkit.getPlayer( player2 );
-            boolean bol1 = false;
-            if ( from.equals( sender ) ) {
-                bol1 = true;
-            }
-            boolean bol2 = false;
-            if ( target.equals( sender ) ) {
-                bol2 = true;
-            }
+            boolean bol1 = from.equals( sender );
+            boolean bol2 = target.equals( sender );
             try {
                 if ( !from.equals( target ) ) {
                     from.teleport( target.getLocation( ) );
                     if ( !bol2 ) {
-                        String message = utils.getString( "tp.tp_other" );
-                        message = message.replace( "%player%" , player1 );
-                        message = message.replace( "%target%" , player2 );
-                        utils.tell( sender , utils.getString( "server_prefix" ) + message );
+                        utils.tell( sender , utils.getString( "tp.tp_other" , "lg" , "sv" ).replace( "%player%" , player1 ).replace( "%target%" , player2 ) );
                     }
                     if ( !bol1 ) {
-                        String message2 = utils.getString( "tp.player_to_player" );
-                        message2 = message2.replace( "%target%" , player2 );
-                        utils.tell( from , utils.getString( "server_prefix" ) + message2 );
+                        utils.tell( from , utils.getString( "tp.player_to_player" , "lg" , "sv" ).replace( "%target%" , player2 ) );
                     }
-                    if ( utils.getBoolean( "alerts.tp_to_them" ) ) {
-                        String message3 = utils.getString( "tp.to_me" );
-                        message3 = message3.replace( "%sender%" , player1 );
-                        utils.tell( target , utils.getString( "server_prefix" ) + message3 );
+                    if ( utils.getBoolean( "alerts.tp_to_them" , null ) ) {
+                        utils.tell( target , utils.getString( "tp.tp_to_them" , "lg" , "sv" ).replace( "%sender%" , player1 ) );
                     }
                 } else {
-                    utils.tell( sender , utils.getString( "server_prefix" ) + utils.getString( "tp.to_yourself" ) );
+                    utils.tell( sender , utils.getString( "tp.to_yourself" , "lg" , "sv" ) );
                 }
             } catch ( NullPointerException offline ) {
-                utils.tell( sender , utils.getString( "server_prefix" ) + "&cThe player &a" + player1 + " or " + player2 + " &cis offline" );
+                utils.tell( sender , utils.getString( "tp.offline_players" , "lg" , "sv" ).replace( "%target1%" , player1 ).replace( "%target2%" , player2 ) );
             }
         } else {
             if ( !utils.isPlayer( player1 ) ) {
-                String message = utils.getString( "tp.not_found" );
-                message = message.replace( "%player%" , player1 );
-                utils.tell( sender , utils.getString( "server_prefix" ) + message );
+                utils.tell( sender , utils.getString( "tp.not_found" , "lg" , "sv" ).replace( "%player%" , player1 ) );
             }
             if ( !utils.isPlayer( player2 ) ) {
-                String message = utils.getString( "tp.not_found" );
-                message = message.replace( "%player%" , player2 );
-                utils.tell( sender , utils.getString( "server_prefix" ) + message );
+                utils.tell( sender , utils.getString( "tp.not_found" , "lg" , "sv" ).replace( "%player%" , player2 ) );
             }
         }
     }
@@ -91,45 +69,40 @@ public class TpPlayers {
             try {
                 Player target = Bukkit.getPlayer( player );
                 if ( Bukkit.getServer( ).getOnlinePlayers( ).size( ) <= 1 ) {
-                    utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_online_players" ) );
+                    utils.tell( sender , utils.getString( "no_online_players" , "lg" , "sv" ) );
                 } else if ( Bukkit.getServer( ).getOnlinePlayers( ).size( ) > 1 ) {
                     for ( Player players : Bukkit.getServer( ).getOnlinePlayers( ) ) {
                         if ( !players.equals( target ) ) {
                             players.teleport( target );
-                            if ( utils.getBoolean( "alerts.tp_all_msg" ) ) {
-                                String message2 = plugin.getConfig( ).getString( "tp.player_to_player" );
-                                message2 = message2.replace( "%target%" , player );
-                                utils.tell( players , utils.getString( "server_prefix" ) + message2 );
+                            if ( utils.getBoolean( "alerts.tp_all_msg" , null ) ) {
+                                utils.tell( players , utils.getString( "tp.player_to_player" , "lg" , "sv" ).replace( "%target%" , player ) );
                             }
                         }
                     }
-                    String message = plugin.getConfig( ).getString( "tp.all" );
-                    message = message.replace( "%count%" , String.valueOf( (Bukkit.getServer( ).getOnlinePlayers( ).size( ) - 1) ) );
-                    utils.tell( target , utils.getString( "server_prefix" ) + message );
+                    utils.tell( target , utils.getString( "tp.all" , "lg" , "sv" ).replace( "%count%" , String.valueOf( (Bukkit.getServer( ).getOnlinePlayers( ).size( ) - 1) ) ) );
                 }
             } catch ( NullPointerException offline ) {
-                utils.tell( sender , utils.getString( "server_prefix" ) + "&cAn error occurred" );
+                utils.tell( sender , utils.getString( "tp.offline" , "lg" , "sv" ).replace( "%target1%" , player ) );
                 offline.printStackTrace( );
             }
         } else {
-            String message = plugin.getConfig( ).getString( "tp.not_found" );
-            message = message.replace( "%player%" , player );
-            utils.tell( sender , utils.getString( "server_prefix" ) + message );
+            utils.tell( sender , utils.getString( "tp.not_found" , "lg" , "sv" ).replace( "%player%" , player ) );
         }
     }
     
     public static void tpToCords( Player sender , double x , double y , double z ){
         try {
             sender.teleport( new Location( sender.getWorld( ) , x , y , z ) );
-            String message = plugin.getConfig( ).getString( "tp.to_cords" );
-            message = message.replace( "%x%" , String.valueOf( round( x ) ) );
-            message = message.replace( "%y%" , String.valueOf( round( y ) ) );
-            message = message.replace( "%z%" , String.valueOf( round( z ) ) );
-            utils.tell( sender , utils.getString( "server_prefix" ) + message );
+            utils.tell( sender , utils.getString( "tp.to_cords" , "lg" , "sv" )
+                    .replace( "%x%" , String.valueOf( round( x ) ) )
+                    .replace( "%y%" , String.valueOf( round( y ) ) )
+                    .replace( "%z%" , String.valueOf( round( z ) ) ) );
             
-        } catch ( NullPointerException offline ) {
-            utils.tell( sender , utils.getString( "server_prefix" ) + "&cAn error occurred" );
-            offline.printStackTrace( );
+        } catch ( NullPointerException error ) {
+            for ( String s : utils.getStringList( "tp.wrong" , "alerts" ) ) {
+                utils.tell( sender , s );
+            }
+            error.printStackTrace( );
         }
     }
     
@@ -145,24 +118,22 @@ public class TpPlayers {
             } else {
                 target.teleport( new Location( target.getWorld( ) , x , y , z ) );
             }
-            String message = plugin.getConfig( ).getString( "tp.player_to_cords" );
-            message = message.replace( "%x%" , String.valueOf( round( x ) ) );
-            message = message.replace( "%y%" , String.valueOf( round( y ) ) );
-            message = message.replace( "%z%" , String.valueOf( round( z ) ) );
-            message = message.replace( "%target%" , target.getName( ) );
-            utils.tell( sender , utils.getString( "server_prefix" ) + message );
-            if ( !bol && utils.getBoolean( "alerts.tp_to_them" ) ) {
-                String message2 = plugin.getConfig( ).getString( "tp.to_cords_by" );
-                message2 = message2.replace( "%x%" , String.valueOf( round( x ) ) );
-                message2 = message2.replace( "%y%" , String.valueOf( round( y ) ) );
-                message2 = message2.replace( "%z%" , String.valueOf( round( z ) ) );
-                message2 = message2.replace( "%sender%" , sender.getName( ) );
-                utils.tell( target , utils.getString( "server_prefix" ) + message2 );
+            utils.tell( sender , utils.getString( "tp.to_cords" , "lg" , "sv" )
+                    .replace( "%x%" , String.valueOf( round( x ) ) )
+                    .replace( "%y%" , String.valueOf( round( y ) ) )
+                    .replace( "%z%" , String.valueOf( round( z ) ) )
+                    .replace( "%target%" , target.getName( ) ) );
+            if ( !bol && utils.getBoolean( "alerts.tp_to_them" , null ) ) {
+                utils.tell( target , utils.getString( "tp.to_cords" , "lg" , "sv" )
+                        .replace( "%x%" , String.valueOf( round( x ) ) )
+                        .replace( "%y%" , String.valueOf( round( y ) ) )
+                        .replace( "%z%" , String.valueOf( round( z ) ) )
+                        .replace( "%sender%" , sender.getName( ) ) );
             }
             
             
         } catch ( NullPointerException offline ) {
-            utils.tell( sender , utils.getString( "server_prefix" ) + "&cAn error occurred" );
+            utils.tell( sender , utils.getString( "offline" , "lg" , "sv" ).replace( "%player%" , target.getName( ) ) );
             offline.printStackTrace( );
         }
     }
@@ -170,28 +141,28 @@ public class TpPlayers {
     public static void tpAllToCords( Player sender , double x , double y , double z ){
         try {
             if ( Bukkit.getServer( ).getOnlinePlayers( ).size( ) <= 1 ) {
-                utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_online_players" ) );
+                utils.tell( sender , utils.getString( "no_online_players" , "lg" , "sv" ) );
             } else if ( Bukkit.getServer( ).getOnlinePlayers( ).size( ) > 1 ) {
                 for ( Player players : Bukkit.getServer( ).getOnlinePlayers( ) ) {
                     players.teleport( new Location( sender.getWorld( ) , x , y , z ) );
                     if ( !players.equals( sender ) ) {
-                        String message2 = plugin.getConfig( ).getString( "tp.to_cords_by" );
-                        message2 = message2.replace( "%x%" , String.valueOf( round( x ) ) );
-                        message2 = message2.replace( "%y%" , String.valueOf( round( y ) ) );
-                        message2 = message2.replace( "%z%" , String.valueOf( round( z ) ) );
-                        message2 = message2.replace( "%sender%" , sender.getName( ) );
-                        utils.tell( players , utils.getString( "server_prefix" ) + message2 );
+                        utils.tell( players , utils.getString( "tp.to_cords_by" , "lg" , "sv" )
+                                .replace( "%x%" , String.valueOf( round( x ) ) )
+                                .replace( "%y%" , String.valueOf( round( y ) ) )
+                                .replace( "%z%" , String.valueOf( round( z ) ) )
+                                .replace( "%sender%" , sender.getName( ) ) );
                     }
                 }
-                String message = plugin.getConfig( ).getString( "tp.all_to_cords" );
-                message = message.replace( "%x%" , String.valueOf( round( x ) ) );
-                message = message.replace( "%y%" , String.valueOf( round( y ) ) );
-                message = message.replace( "%z%" , String.valueOf( round( z ) ) );
-                message = message.replace( "%count%" , String.valueOf( (Bukkit.getServer( ).getOnlinePlayers( ).size( ) - 1) ) );
-                utils.tell( sender , utils.getString( "server_prefix" ) + message );
+                utils.tell( sender , utils.getString( "tp.all_to_cords" , "lg" , "sv" )
+                        .replace( "%x%" , String.valueOf( round( x ) ) )
+                        .replace( "%y%" , String.valueOf( round( y ) ) )
+                        .replace( "%z%" , String.valueOf( round( z ) ) )
+                        .replace( "%count%" , String.valueOf( (Bukkit.getServer( ).getOnlinePlayers( ).size( ) - 1) ) ) );
             }
         } catch ( NullPointerException offline ) {
-            utils.tell( sender , utils.getString( "server_prefix" ) + "&cAn error occurred" );
+            for ( String s : utils.getStringList( "tp.wrong" , "alerts" ) ) {
+                utils.tell( sender , s );
+            }
             offline.printStackTrace( );
         }
         

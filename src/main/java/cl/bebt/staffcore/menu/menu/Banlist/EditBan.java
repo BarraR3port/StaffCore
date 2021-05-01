@@ -1,5 +1,6 @@
 package cl.bebt.staffcore.menu.menu.Banlist;
 
+import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.MSGChanel.SendMsg;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
@@ -8,7 +9,6 @@ import cl.bebt.staffcore.sql.SQLGetter;
 import cl.bebt.staffcore.utils.BanPlayer;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -21,16 +21,16 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 
-public class ChoseBan extends ReportMenu {
+public class EditBan extends ReportMenu {
     private static PlayerMenuUtility playerMenuUtility;
     
     private final main plugin;
     
     private final int Id;
     
-    public ChoseBan( PlayerMenuUtility playerMenuUtility , main plugin , String p2 , int Id ){
+    public EditBan( PlayerMenuUtility playerMenuUtility , main plugin , String p2 , int Id ){
         super( playerMenuUtility , plugin , p2 );
-        ChoseBan.playerMenuUtility = playerMenuUtility;
+        EditBan.playerMenuUtility = playerMenuUtility;
         this.plugin = plugin;
         this.Id = Id;
     }
@@ -40,7 +40,7 @@ public class ChoseBan extends ReportMenu {
     }
     
     public String getMenuName( ){
-        return utils.chat( "&cUn Ban or Close the ban?" );
+        return utils.chat( utils.getString( "banlist.edit_ban.name" , "menu" , null ) );
     }
     
     public int getSlots( ){
@@ -59,11 +59,10 @@ public class ChoseBan extends ReportMenu {
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "panel" ) , PersistentDataType.STRING ) ) {
             e.setCancelled( true );
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
+        } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
-                p.closeInventory( );
-                (new BanManager( main.getPlayerMenuUtility( p ) , main.plugin )).open( p );
+                new BanManager( main.getPlayerMenuUtility( p ) , plugin ).open( p );
             }
         }
     }
@@ -90,14 +89,14 @@ public class ChoseBan extends ReportMenu {
             baner = this.plugin.bans.getConfig( ).getString( "bans." + this.Id + ".banned_by" );
             banned = this.plugin.bans.getConfig( ).getString( "bans." + this.Id + ".name" );
             this.plugin.bans.getConfig( ).set( "bans." + this.Id + ".status" , "closed" );
-            this.plugin.bans.getConfig( ).set( "count" , Integer.valueOf( playerMenuUtility.currentBans( ) ) );
+            this.plugin.bans.getConfig( ).set( "count" , StaffCoreAPI.getCurrentBans( ) );
             this.plugin.bans.saveConfig( );
         }
-        SendMsg.sendBanChangeAlert( this.Id , p.getName( ) , baner , banned , reason , exp , created , status , this.plugin.getConfig( ).getString( "bungeecord.server" ) );
+        SendMsg.sendBanChangeAlert( this.Id , p.getName( ) , baner , banned , reason , exp , created , status , utils.getServer( ) );
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
             if ( people.hasPermission( "staffcore.staff" ) ) {
                 utils.PlaySound( p , "close_ban" );
-                for ( String key : main.plugin.getConfig( ).getStringList( "ban.ban_change" ) ) {
+                for ( String key : utils.getStringList( "ban.change" , "alerts" ) ) {
                     key = key.replace( "%changed_by%" , p.getName( ) );
                     key = key.replace( "%baner%" , baner );
                     key = key.replace( "%banned%" , banned );
@@ -163,27 +162,27 @@ public class ChoseBan extends ReportMenu {
             if ( SQLGetter.getBanned( this.Id , "Status" ).equals( "open" ) ) {
                 this.inventory.setItem( 20 , delete );
                 this.inventory.setItem( 21 , redPanel( ) );
-                this.inventory.setItem( 22 , makeItem( Material.BARRIER , ChatColor.DARK_RED + "closed" ) );
+                this.inventory.setItem( 22 , close( ) );
                 this.inventory.setItem( 23 , redPanel( ) );
                 this.inventory.setItem( 24 , closeBan );
             } else if ( SQLGetter.getBanned( this.Id , "Status" ).equals( "closed" ) ) {
                 this.inventory.setItem( 20 , redPanel( ) );
                 this.inventory.setItem( 21 , delete );
                 this.inventory.setItem( 22 , redPanel( ) );
-                this.inventory.setItem( 23 , makeItem( Material.BARRIER , ChatColor.DARK_RED + "closed" ) );
+                this.inventory.setItem( 23 , close( ) );
                 this.inventory.setItem( 24 , redPanel( ) );
             }
         } else if ( this.plugin.bans.getConfig( ).get( "bans." + this.Id + ".status" ).equals( "open" ) ) {
             this.inventory.setItem( 20 , delete );
             this.inventory.setItem( 21 , redPanel( ) );
-            this.inventory.setItem( 22 , makeItem( Material.BARRIER , ChatColor.DARK_RED + "closed" ) );
+            this.inventory.setItem( 22 , close( ) );
             this.inventory.setItem( 23 , redPanel( ) );
             this.inventory.setItem( 24 , closeBan );
         } else if ( this.plugin.bans.getConfig( ).get( "bans." + this.Id + ".status" ).equals( "closed" ) ) {
             this.inventory.setItem( 20 , redPanel( ) );
             this.inventory.setItem( 21 , delete );
             this.inventory.setItem( 22 , redPanel( ) );
-            this.inventory.setItem( 23 , makeItem( Material.BARRIER , ChatColor.DARK_RED + "closed" ) );
+            this.inventory.setItem( 23 , close( ) );
             this.inventory.setItem( 24 , redPanel( ) );
         }
     }

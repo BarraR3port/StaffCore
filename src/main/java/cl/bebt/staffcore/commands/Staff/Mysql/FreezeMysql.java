@@ -22,12 +22,9 @@ public class FreezeMysql implements CommandExecutor {
     
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        if ( !utils.isOlderVersion( ) ){
+        if ( !utils.isOlderVersion( ) ) {
             if ( !(sender instanceof Player) ) {
-                if ( args.length == 0 ) {
-                    sender.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&4Wrong usage" ) );
-                    sender.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&4&lUse: freeze <player>" ) );
-                } else if ( args.length == 1 ) {
+                if ( args.length == 1 ) {
                     Player p = Bukkit.getPlayer( args[0] );
                     String is = SQLGetter.isTrue( p , "frozen" );
                     if ( p instanceof Player ) {
@@ -37,14 +34,13 @@ public class FreezeMysql implements CommandExecutor {
                             FreezePlayer.FreezePlayer( p , "CONSOLE" , true );
                         }
                     }
+                } else {
+                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "freeze <player>" ) );
                 }
             } else if ( sender instanceof Player ) {
                 Player player = ( Player ) sender;
                 if ( player.hasPermission( "staffcore.freeze" ) ) {
-                    if ( args.length == 0 ) {
-                        utils.tell( player , plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&4&lWrong usage" );
-                        utils.tell( player , plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&4&lUse: freeze <player>" );
-                    } else if ( args.length == 1 ) {
+                    if ( args.length == 1 ) {
                         if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
                             Player p = Bukkit.getPlayer( args[0] );
                             String is = SQLGetter.isTrue( p , "frozen" );
@@ -52,34 +48,35 @@ public class FreezeMysql implements CommandExecutor {
                                 if ( is.equals( "true" ) ) {
                                     if ( p.hasPermission( "staffcore.unfreeze.himself" ) ) {
                                         FreezePlayer.FreezePlayer( p , player.getName( ) , false );
-                                        utils.tell( p , plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&a&lYou unfreeze yourself" );
-                                    } else if ( !(p.hasPermission( "staffcore.unfreeze.himself" )) ) {
-                                        utils.tell( p , plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&4&lYou have no permissions to unfreeze yourself!" );
+                                        utils.tell( p , utils.getString( "freeze.unfreeze_ur_self" , "lg" , "staff" ) );
+                                    } else {
+                                        utils.tell( p , utils.chat( utils.getString( "no_permission" , "lg" , "staff" ) ) );
                                     }
                                 } else if ( is.equals( "false" ) ) {
-                                    player.sendMessage( utils.chat( plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&4&lYou can't freeze yourself" ) );
-                                    player.sendMessage( utils.chat( plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&4&lUse: freeze <other_player>" ) );
+                                    utils.tell( p , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "freeze <player>" ) );
                                 }
                             } else if ( is.equals( "true" ) ) {
                                 FreezePlayer.FreezePlayer( p , player.getName( ) , false );
                             } else if ( is.equals( "false" ) ) {
                                 if ( p.hasPermission( "staffcore.freeze.bypas" ) ) {
-                                    utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + p.getName( ) + plugin.getConfig( ).getString( "staff.freeze_bypass" ) );
+                                    utils.tell( p , utils.getString( "freeze.freeze_bypass" , "lg" , "staff" ) );
                                     return false;
                                 } else {
                                     FreezePlayer.FreezePlayer( p , player.getName( ) , true );
                                 }
                             }
                         } else if ( !(Bukkit.getPlayer( args[0] ) instanceof Player) ) {
-                            utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "player_dont_exist" ) );
+                            utils.tell( sender , utils.getString( "p_dont_exist" , "lg" , "sv" ) );
                         }
+                    } else {
+                        utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "freeze <player>" ) );
                     }
                 } else if ( !(player.hasPermission( "staffcore.freeze" )) ) {
-                    sender.sendMessage( utils.chat( plugin.getConfig( ).getString( "staff.staff_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) ) );
+                    utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
                 }
             }
         } else {
-            utils.tell(sender,plugin.getConfig( ).getString( "server_prefix" )+"&cThis command can't be executed in older versions");
+            utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
         }
         return true;
     }

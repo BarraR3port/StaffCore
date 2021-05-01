@@ -24,45 +24,24 @@ public class Vanish implements CommandExecutor {
     
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        if ( !utils.isOlderVersion( ) ){
+        if ( !utils.isOlderVersion( ) ) {
             if ( !(sender instanceof Player) ) {
-                if ( args.length == 0 ) {
-                    sender.sendMessage( utils.chat( "&4&lWrong usage" ) );
-                    sender.sendMessage( utils.chat( "&4&lUse: vanish <player>" ) );
-                } else if ( args.length == 1 ) {
+                if ( args.length == 1 ) {
                     if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
                         Player p = Bukkit.getPlayer( args[0] );
                         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
-                        if ( p.hasPermission( "staffcore.vanish" ) ) {
-                            if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) ) {
-                                SetVanish.setVanish( p , false );
-                                if ( !p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) ) {
-                                    utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&cYou unvanished&r " + p.getDisplayName( ) );
-                                }
-                                if ( p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) ) {
-                                    p.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "staff.staff_disabled" ) ) );
-                                } else {
-                                    p.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "staff.un_vanished" ) ) );
-                                }
-                            } else if ( !(PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING )) ) {
-                                SetVanish.setVanish( p , true );
-                                if ( !p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) ) {
-                                    utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&aYou vanished&r " + p.getDisplayName( ) );
-                                }
-                                if ( p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) ) {
-                                    p.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "staff.staff_enabled" ) ) );
-                                } else {
-                                    p.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "staff.vanished" ) ) );
-                                }
-                            }
-                        } else if ( p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) ) {
+                        if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) ) {
                             SetVanish.setVanish( p , false );
-                            p.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "staff.un_vanished" ) ) );
-                            utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&cYou unvanished&r " + p.getDisplayName( ) );
+                            utils.tell( sender , utils.getString( "vanish.disabled_to" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
+                            utils.tell( p , utils.getString( "vanish.disabled" , "lg" , "staff" ) );
+                        } else {
+                            SetVanish.setVanish( p , true );
+                            utils.tell( sender , utils.getString( "vanish.enabled_to" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
+                            utils.tell( p , utils.getString( "vanish.enabled" , "lg" , "staff" ) );
                         }
-                    } else {
-                        utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "player_dont_exist" ) );
                     }
+                } else {
+                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "vanish | vanish <player>" ) );
                 }
             } else {
                 if ( sender.hasPermission( "staffcore.vanish" ) ) {
@@ -71,46 +50,42 @@ public class Vanish implements CommandExecutor {
                         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
                         if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) ) {
                             SetVanish.setVanish( p , false );
-                            p.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "staff.un_vanished" ) ) );
+                            utils.tell( p , utils.getString( "vanish.disabled" , "lg" , "staff" ) );
                         } else if ( !(PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING )) ) {
                             SetVanish.setVanish( p , true );
-                            p.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "staff.vanished" ) ) );
+                            utils.tell( p , utils.getString( "vanish.enabled" , "lg" , "staff" ) );
                         }
                     } else if ( args.length == 1 ) {
                         if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
                             Player p = Bukkit.getPlayer( args[0] );
-                            PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
-                            if ( !(p.hasPermission( "staffcore.vanish" )) ) {
+                            if ( !p.hasPermission( "staffcore.vanish" ) ) {
                                 if ( p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) ) {
                                     SetVanish.setVanish( p , false );
-                                    p.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "staff.un_vanished" ) ) );
-                                    utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&cYou unvanished&r " + p.getDisplayName( ) );
+                                    utils.tell( sender , utils.getString( "vanish.disabled_to" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
+                                    utils.tell( p , utils.getString( "vanish.disabled" , "lg" , "staff" ) );
                                 } else if ( !p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) ) {
-                                    utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&cThe player&r " + p.getDisplayName( ) + " &cDon't have permissions to use vanish!" );
+                                    SetVanish.setVanish( p , true );
+                                    utils.tell( sender , utils.getString( "vanish.enabled_to" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
+                                    utils.tell( p , utils.getString( "vanish.enabled" , "lg" , "staff" ) );
                                 }
-                            } else if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) ) {
-                                SetVanish.setVanish( p , false );
-                                utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&cYou unvanished&r " + p.getDisplayName( ) );
-                                p.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "staff.un_vanished" ) ) );
-                            } else if ( !(PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING )) ) {
-                                SetVanish.setVanish( p , true );
-                                utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&aYou vanished&r " + p.getDisplayName( ) );
-                                p.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "staff.vanished" ) ) );
+                            } else {
+                                utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
                             }
                         } else {
-                            utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "player_dont_exist" ) );
+                            utils.tell( sender , utils.getString( "p_dont_exist" , "lg" , "sv" ) );
                         }
+                    } else {
+                        utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "vanish | vanish <player>" ) );
                     }
                 } else {
-                    utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) );
-                    
+                    utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
                 }
-                
             }
         } else {
-            utils.tell(sender,plugin.getConfig( ).getString( "server_prefix" )+"&cThis command can't be executed in older versions");
+            utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
         }
         return true;
     }
 }
+
 

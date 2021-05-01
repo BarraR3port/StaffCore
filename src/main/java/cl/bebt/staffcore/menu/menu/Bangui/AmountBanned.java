@@ -4,7 +4,6 @@ import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PaginatedMenu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.utils.utils;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -29,7 +28,7 @@ public class AmountBanned extends PaginatedMenu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( "&cChose the amount:" );
+        return utils.chat( utils.getString( "bangui.amount_banned.name" , "menu" , null ) );
     }
     
     @Override
@@ -46,28 +45,29 @@ public class AmountBanned extends PaginatedMenu {
             int yep = e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).get( new NamespacedKey( plugin , "amount" ) , PersistentDataType.INTEGER );
             player.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "amount" ) , PersistentDataType.INTEGER , yep );
             new QuantityBanned( playerMenuUtility , plugin , player , banned , reason ).open( p );
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
+        } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
-            new ChoseBanType( playerMenuUtility , plugin , player , banned , reason ).open( p );
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.DARK_OAK_BUTTON ) ) {
-            if ( ChatColor.stripColor( e.getCurrentItem( ).getItemMeta( ).getDisplayName( ) ).equalsIgnoreCase( "Back" ) ) {
-                if ( page == 0 ) {
-                    p.sendMessage( ChatColor.GRAY + "You are already on the first page." );
-                } else {
-                    page = page - 1;
-                    p.closeInventory( );
-                    super.open( p );
-                }
-            } else if ( ChatColor.stripColor( e.getCurrentItem( ).getItemMeta( ).getDisplayName( ) ).equalsIgnoreCase( "Next" ) ) {
-                if ( !((index + 1) >= amount) ) {
-                    page = page + 1;
-                    p.closeInventory( );
-                    super.open( p );
-                } else {
-                    p.sendMessage( ChatColor.GRAY + "You are on the last page." );
-                }
+            if ( e.getClick( ).isLeftClick( ) ) {
+                new ChoseBanType( playerMenuUtility , plugin , player , banned , reason ).open( p );
+            }
+        } else if ( e.getCurrentItem( ).equals( back( ) ) ) {
+            if ( page == 0 ) {
+                utils.tell( p , utils.getString( "menu.already_in_first_page" , "lg" , "sv" ) );
+            } else {
+                page--;
+                p.closeInventory( );
+                open( p );
+            }
+        } else if ( e.getCurrentItem( ).equals( next( ) ) ) {
+            if ( index + 1 <= amount ) {
+                page++;
+                p.closeInventory( );
+                open( p );
+            } else {
+                utils.tell( p , utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
             }
         }
+        
     }
     
     @Override

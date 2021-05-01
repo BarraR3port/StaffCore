@@ -1,8 +1,8 @@
 package cl.bebt.staffcore.utils;
 
+import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.MSGChanel.SendMsg;
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -29,14 +29,14 @@ public class ReportPlayer {
                 plugin.reports.getConfig( ).set( "reports." + id + ".reason" , reason );
                 plugin.reports.getConfig( ).set( "reports." + id + ".time" , format.format( now ) );
                 plugin.reports.getConfig( ).set( "reports." + id + ".status" , "open" );
-                plugin.reports.getConfig( ).set( "current" , new PlayerMenuUtility( p ).current( ) );
+                plugin.reports.getConfig( ).set( "current" , StaffCoreAPI.getCurrentReports( ) );
                 plugin.reports.saveConfig( );
             }
         }
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-            if ( people.hasPermission( "staffcore.staff" ) || !people.equals( p ) || utils.getBoolean( "alerts.report" ) ) {
+            if ( people.hasPermission( "staffcore.staff" ) || !people.equals( p ) || utils.getBoolean( "alerts.report" , null ) ) {
                 utils.PlaySound( people , "reports_alerts" );
-                for ( String key : main.plugin.getConfig( ).getStringList( "report.report_alerts" ) ) {
+                for ( String key : utils.getStringList( "report.report_alerts" , "alerts" ) ) {
                     key = key.replace( "%reporter%" , p.getName( ) );
                     key = key.replace( "%reported%" , reported );
                     key = key.replace( "%reason%" , reason );
@@ -46,7 +46,7 @@ public class ReportPlayer {
                 }
             }
         }
-        SendMsg.sendReportAlert( id , p.getName( ) , reported , reason , format.format( now ) , plugin.getConfig( ).getString( "bungeecord.server" ) );
+        SendMsg.sendReportAlert( id , p.getName( ) , reported , reason , format.format( now ) , utils.getServer( ) );
     }
     
 }

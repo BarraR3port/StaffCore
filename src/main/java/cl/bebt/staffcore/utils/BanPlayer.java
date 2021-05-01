@@ -2,11 +2,11 @@ package cl.bebt.staffcore.utils;
 
 import cl.bebt.staffcore.MSGChanel.SendMsg;
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.sql.SQLGetter;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -48,11 +48,11 @@ public class BanPlayer {
             main.plugin.bans.getConfig( ).set( "current" , currentBans( ) );
             main.plugin.bans.saveConfig( );
         }
-        SendMsg.sendBanChangeAlert( Id , p.getName( ) , baner , banned , reason , exp , created , status , main.plugin.getConfig( ).getString( "bungeecord.server" ) );
+        SendMsg.sendBanChangeAlert( Id , p.getName( ) , baner , banned , reason , exp , created , status , utils.getString( "bungeecord.server" , null , null ) );
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-            if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.ban" ) ) {
+            if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.ban" , null ) ) {
                 utils.PlaySound( people , "un_ban" );
-                for ( String key : main.plugin.getConfig( ).getStringList( "ban.ban_change" ) ) {
+                for ( String key : utils.getStringList( "ban.change" , "alerts" ) ) {
                     key = key.replace( "%changed_by%" , player );
                     key = key.replace( "%baner%" , baner );
                     key = key.replace( "%banned%" , banned );
@@ -69,15 +69,12 @@ public class BanPlayer {
     
     public static int currentBans( ){
         int current = 0;
-        for ( int i = 0; i <= main.plugin.bans.getConfig( ).getInt( "count" ) + main.plugin.bans.getConfig( ).getInt( "current" ); i++ ) {
-            try {
-                if ( main.plugin.bans.getConfig( ).get( "bans." + i + ".status" ) != null ) {
-                    current++;
-                }
-            } catch ( NullPointerException ignored ) {
-            }
+        try {
+            ConfigurationSection inventorySection = main.plugin.bans.getConfig( ).getConfigurationSection( "bans" );
+            for ( String key : inventorySection.getKeys( false ) )
+                current++;
+        } catch ( NullPointerException ignored ) {
         }
-        main.plugin.bans.getConfig( ).set( "current" , current );
         return current;
     }
     
@@ -91,8 +88,7 @@ public class BanPlayer {
                 time.equalsIgnoreCase( "h" ) || time.equalsIgnoreCase( "d" ) ) {
             createBan( ( Player ) sender , banned , reason , amount , time , false );
         } else {
-            utils.tell( sender , main.plugin.getConfig( ).getString( "server_prefix" ) + "&cWrong usage." );
-            utils.tell( sender , main.plugin.getConfig( ).getString( "server_prefix" ) + "&cExample /ban &a" + banned );
+            utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "ban " + banned ) );
         }
     }
     
@@ -129,10 +125,7 @@ public class BanPlayer {
                 IP = IP.replace( "[" , "" );
                 IP = IP.replace( "]" , "" );
             } catch ( NullPointerException | IndexOutOfBoundsException ignored ) {
-                String msg = main.plugin.getConfig( ).getString( "staff.never_seen" );
-                msg = msg.replace( "%player%" , banned );
-                utils.tell( p , main.plugin.getConfig( ).getString( "staff.staff_prefix" ) + msg );
-                
+                utils.tell( p , utils.getString( "never_seen" , "lg" , "staff" ).replace( "%player%" , banned ) );
             }
         }
         if ( IP != null ) {
@@ -168,18 +161,18 @@ public class BanPlayer {
                 }
                 main.plugin.bans.getConfig( ).set( "bans." + id + ".IP" , IP );
                 main.plugin.bans.getConfig( ).set( "bans." + id + ".status" , "open" );
-                main.plugin.bans.getConfig( ).set( "current" , new PlayerMenuUtility( p ).currentBans( ) );
+                main.plugin.bans.getConfig( ).set( "current" , currentBans( ) );
                 main.plugin.bans.saveConfig( );
             }
             Boolean Ip = false;
             if ( p.getPersistentDataContainer( ).has( new NamespacedKey( main.plugin , "ban-ip" ) , PersistentDataType.STRING ) ) {
                 Ip = true;
             }
-            SendMsg.sendBanAlert( p.getName( ) , banned , reason , permanent , Ip , amount , time , format.format( ExpDate ) , format.format( now ) , main.plugin.getConfig( ).getString( "bungeecord.server" ) );
+            SendMsg.sendBanAlert( p.getName( ) , banned , reason , permanent , Ip , amount , time , format.format( ExpDate ) , format.format( now ) , utils.getString( "bungeecord.server" , null , null ) );
             for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-                if ( utils.getBoolean( "alerts.ban" ) || people.hasPermission( "staffcore.staff" ) ) {
+                if ( utils.getBoolean( "alerts.ban" , null ) || people.hasPermission( "staffcore.staff" ) ) {
                     utils.PlaySound( people , "ban_alerts" );
-                    for ( String key : main.plugin.getConfig( ).getStringList( "ban.ban_alerts" ) ) {
+                    for ( String key : utils.getStringList( "ban.alerts" , "alerts" ) ) {
                         key = key.replace( "%baner%" , p.getName( ) );
                         key = key.replace( "%banned%" , banned );
                         key = key.replace( "%reason%" , reason );
@@ -203,7 +196,7 @@ public class BanPlayer {
             }
             if ( Bukkit.getPlayer( banned ) instanceof Player ) {
                 String ban_msg = "\n";
-                for ( String msg : main.plugin.getConfig( ).getStringList( "ban.ban_msg" ) ) {
+                for ( String msg : utils.getStringList( "ban.msg" , "alerts" ) ) {
                     msg = msg.replace( "%baner%" , p.getName( ) );
                     msg = msg.replace( "%banned%" , banned );
                     msg = msg.replace( "%reason%" , reason );

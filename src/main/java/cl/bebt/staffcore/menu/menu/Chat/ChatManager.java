@@ -6,7 +6,6 @@ import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.menu.menu.Others.ServerManager;
 import cl.bebt.staffcore.sql.SQLGetter;
 import cl.bebt.staffcore.utils.utils;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -29,7 +28,7 @@ public class ChatManager extends MenuC {
     }
     
     public String getMenuName( ){
-        return utils.chat( "&cChat Manager" );
+        return utils.chat( utils.getString( "chat.chat_manager.name" , "menu" , null ) );
     }
     
     public int getSlots( ){
@@ -41,7 +40,7 @@ public class ChatManager extends MenuC {
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "mcmanager" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            (new MuteChatManager( main.getPlayerMenuUtility( p ) , this.plugin )).open( p );
+            new MuteChatManager( main.getPlayerMenuUtility( p ) , this.plugin ).open( p );
             p.updateInventory( );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "panel" ) , PersistentDataType.STRING ) ) {
@@ -52,7 +51,7 @@ public class ChatManager extends MenuC {
             if ( utils.mysqlEnabled( ) )
                 SQLGetter.set( p.getName( ) , "staffchat" , "false" );
             utils.tell( p , "&8[&3&lSC&r&8]&r &cOff" );
-            (new ChatManager( main.getPlayerMenuUtility( p ) , this.plugin )).open( p );
+            new ChatManager( main.getPlayerMenuUtility( p ) , this.plugin ).open( p );
             p.updateInventory( );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "TStaffOff" ) , PersistentDataType.STRING ) ) {
@@ -61,20 +60,18 @@ public class ChatManager extends MenuC {
             if ( utils.mysqlEnabled( ) )
                 SQLGetter.set( p.getName( ) , "staffchat" , "true" );
             utils.tell( p , "&8[&3&lSC&r&8]&r &aOn" );
-            (new ChatManager( main.getPlayerMenuUtility( p ) , this.plugin )).open( p );
+            new ChatManager( main.getPlayerMenuUtility( p ) , this.plugin ).open( p );
             p.updateInventory( );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "ccmanager" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            (new ChatSettings( main.getPlayerMenuUtility( p ) , this.plugin )).open( p );
+            new ChatSettings( main.getPlayerMenuUtility( p ) , this.plugin ).open( p );
             e.setCancelled( true );
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
+        } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
+            p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
-                p.closeInventory( );
-                (new ServerManager( main.getPlayerMenuUtility( p ) , this.plugin )).open( p );
+                new ServerManager( main.getPlayerMenuUtility( p ) , this.plugin ).open( p );
                 e.setCancelled( true );
-            } else if ( e.getClick( ).isRightClick( ) ) {
-                p.closeInventory( );
             }
         }
     }
@@ -125,6 +122,6 @@ public class ChatManager extends MenuC {
         this.inventory.setItem( 23 , ClearChat );
         this.inventory.setItem( 24 , redPanel( ) );
         this.inventory.setItem( 25 , redPanel( ) );
-        this.inventory.setItem( 31 , makeItem( Material.BARRIER , ChatColor.DARK_RED + "Close" ) );
+        this.inventory.setItem( 31 , close( ) );
     }
 }

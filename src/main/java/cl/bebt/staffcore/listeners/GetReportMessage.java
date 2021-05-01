@@ -9,21 +9,22 @@ import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 
-public class GetReportMessage implements Listener{
-
+public class GetReportMessage implements Listener {
+    
     private final main plugin;
-
+    
     public GetReportMessage( main plugin ){
         this.plugin = plugin;
     }
-
-    @EventHandler
+    
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void reportMessage( AsyncPlayerChatEvent e ){
         Player p = e.getPlayer( );
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
@@ -47,7 +48,7 @@ public class GetReportMessage implements Listener{
             PlayerData.remove( new NamespacedKey( main.plugin , "warnmsg" ) );
         }
     }
-
+    
     private int id( ){
         if ( utils.mysqlEnabled( ) ) {
             return plugin.data.getReportId( );
@@ -57,5 +58,5 @@ public class GetReportMessage implements Listener{
             return id;
         }
     }
-
+    
 }

@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
@@ -30,94 +31,92 @@ public class onPlayerJoin implements Listener {
     
     private static main plugin;
     
-    public onPlayerJoin(main plugin) {
+    public onPlayerJoin( main plugin ){
         onPlayerJoin.plugin = plugin;
     }
     
-    @EventHandler
-    void onPlayerPreJoin(PlayerLoginEvent e) {
-        Player p = e.getPlayer();
-        String IP = String.valueOf(e.getAddress());
-        IP = IP.replace("/", "");
-        int currents = BanPlayer.id();
-        if (utils.mysqlEnabled()) {
+    @EventHandler(priority = EventPriority.HIGHEST)
+    void onPlayerPreJoin( PlayerLoginEvent e ){
+        Player p = e.getPlayer( );
+        String IP = String.valueOf( e.getAddress( ) );
+        IP = IP.replace( "/" , "" );
+        int currents = BanPlayer.id( );
+        if ( utils.mysqlEnabled( ) ) {
             try {
-                if (!SQLGetter.PlayerExists("alts", p.getName())) {
-                    SQLGetter.createAlts(p.getName(), IP);
+                if ( !SQLGetter.PlayerExists( "alts" , p.getName( ) ) ) {
+                    SQLGetter.createAlts( p.getName( ) , IP );
                 } else {
-                    List<String> ips = utils.makeList(SQLGetter.getAlts(p.getName()));
-                    SQLGetter.addIps(p.getName(), utils.stringify(ips, IP));
+                    List < String > ips = utils.makeList( SQLGetter.getAlts( p.getName( ) ) );
+                    SQLGetter.addIps( p.getName( ) , utils.stringify( ips , IP ) );
                 }
-            } catch (NullPointerException|IndexOutOfBoundsException Exception) {
-                Exception.printStackTrace();
+            } catch ( NullPointerException | IndexOutOfBoundsException Exception ) {
+                Exception.printStackTrace( );
             }
-            for (int i = 1; i <= currents; i++) {
+            for ( int i = 1; i <= currents; i++ ) {
                 try {
-                    if (SQLGetter.getBanned(i, "Name").equals(p.getName()) &&
-                            SQLGetter.getBanned(i, "Status").equals("open") &&
+                    if ( SQLGetter.getBanned( i , "Name" ).equals( p.getName( ) ) &&
+                            SQLGetter.getBanned( i , "Status" ).equals( "open" ) &&
                             StaffCoreAPI.isStillBanned( i ) ) {
-                        e.disallow(PlayerLoginEvent.Result.KICK_OTHER, KickBannedPlayerSql(i));
+                        e.disallow( PlayerLoginEvent.Result.KICK_OTHER , KickBannedPlayerSql( i ) );
                         break;
                     }
-                    if (SQLGetter.getBannedIp(i).equals(IP) &&
-                            SQLGetter.getBanned(i, "Status").equals("open") && SQLGetter.getBanned(i, "IP_Banned").equals("true") &&
-                            StaffCoreAPI.isStillBanned(i)) {
-                        e.disallow(PlayerLoginEvent.Result.KICK_OTHER, KickBannedPlayerSql(i));
+                    if ( SQLGetter.getBannedIp( i ).equals( IP ) &&
+                            SQLGetter.getBanned( i , "Status" ).equals( "open" ) && SQLGetter.getBanned( i , "IP_Banned" ).equals( "true" ) &&
+                            StaffCoreAPI.isStillBanned( i ) ) {
+                        e.disallow( PlayerLoginEvent.Result.KICK_OTHER , KickBannedPlayerSql( i ) );
                         break;
                     }
-                } catch (NullPointerException nullPointerException) {}
+                } catch ( NullPointerException ignored ) {
+                }
             }
         } else {
             try {
-                List<String> ips = plugin.alts.getConfig().getStringList("alts." + p.getName());
-                int size = plugin.alts.getConfig().getStringList("alts." + p.getName()).size();
-                if (size > 0) {
-                    if (!ips.contains(IP))
-                        ips.add(IP);
+                List < String > ips = plugin.alts.getConfig( ).getStringList( "alts." + p.getName( ) );
+                int size = plugin.alts.getConfig( ).getStringList( "alts." + p.getName( ) ).size( );
+                if ( size > 0 ) {
+                    if ( !ips.contains( IP ) )
+                        ips.add( IP );
                 } else {
-                    ips.add(IP);
+                    ips.add( IP );
                 }
-                plugin.alts.getConfig().set("alts." + p.getName(), ips);
-                plugin.alts.saveConfig();
-            } catch (NullPointerException|IndexOutOfBoundsException Exception) {
-                Exception.printStackTrace();
+                plugin.alts.getConfig( ).set( "alts." + p.getName( ) , ips );
+                plugin.alts.saveConfig( );
+            } catch ( NullPointerException | IndexOutOfBoundsException Exception ) {
+                Exception.printStackTrace( );
             }
-            for (int i = 1; i <= currents; i++) {
+            for ( int i = 1; i <= currents; i++ ) {
                 try {
-                    if (Objects.equals(plugin.bans.getConfig().getString("bans." + i + ".name"), p.getName()) &&
-                            Objects.equals(plugin.bans.getConfig().getString("bans." + i + ".status"), "open") &&
-                            StaffCoreAPI.isStillBanned(i)) {
-                        e.disallow(PlayerLoginEvent.Result.KICK_OTHER, KickBannedPlayer(i));
+                    if ( Objects.equals( plugin.bans.getConfig( ).getString( "bans." + i + ".name" ) , p.getName( ) ) &&
+                            Objects.equals( plugin.bans.getConfig( ).getString( "bans." + i + ".status" ) , "open" ) &&
+                            StaffCoreAPI.isStillBanned( i ) ) {
+                        e.disallow( PlayerLoginEvent.Result.KICK_OTHER , KickBannedPlayer( i ) );
                         break;
                     }
-                    if (plugin.bans.getConfig().getBoolean("bans." + i + ".IP-Banned") &&
-                            Objects.equals(plugin.bans.getConfig().getString("bans." + i + ".IP"), IP) &&
-                            Objects.equals(plugin.bans.getConfig().getString("bans." + i + ".status"), "open") &&
-                            StaffCoreAPI.isStillBanned(i)) {
-                        e.disallow(PlayerLoginEvent.Result.KICK_OTHER, KickBannedPlayer(i));
+                    if ( plugin.bans.getConfig( ).getBoolean( "bans." + i + ".IP-Banned" ) &&
+                            Objects.equals( plugin.bans.getConfig( ).getString( "bans." + i + ".IP" ) , IP ) &&
+                            Objects.equals( plugin.bans.getConfig( ).getString( "bans." + i + ".status" ) , "open" ) &&
+                            StaffCoreAPI.isStillBanned( i ) ) {
+                        e.disallow( PlayerLoginEvent.Result.KICK_OTHER , KickBannedPlayer( i ) );
                         break;
                     }
-                } catch (NullPointerException ignored ) {}
+                } catch ( NullPointerException ignored ) {
+                }
             }
         }
     }
     
-    @EventHandler
-    void onPlayerJoinEvent(PlayerJoinEvent e) {
-        Player p = e.getPlayer();
-        if (p.hasPermission("staffcore.vanish") &&
-                plugin.getConfig().getBoolean("staff.vanish_on_join")) {
-            SetVanish.setVanish(p, true);
-            utils.tell(p, plugin.getConfig().getString("staff.staff_prefix") + plugin.getConfig().getString("staff.vanished"));
+    @EventHandler(priority = EventPriority.HIGHEST)
+    void onPlayerJoinEvent( PlayerJoinEvent e ){
+        Player p = e.getPlayer( );
+        if ( p.hasPermission( "staffcore.vanish" ) ) {
+            SetVanish.setVanish( p , true );
         }
-        if (utils.currentPlayerWarns(p.getName()) != 0 && utils.getBoolean("warns.notify")) {
-            String msg = utils.getString("warns.alerts.notify");
-            msg = msg.replace("%amount%", "" + utils.currentPlayerWarns(p.getName()));
-            ComponentBuilder cb = new ComponentBuilder(utils.chat("&7Click to open your Warns"));
-            TextComponent dis = new TextComponent(utils.chat(utils.getString("server_prefix") + msg));
-            dis.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, cb.create()));
-            dis.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/warningns"));
-            p.spigot().sendMessage( dis );
+        if ( utils.currentPlayerWarns( p.getName( ) ) != 0 && utils.getBoolean( "warns.notify" , null ) ) {
+            ComponentBuilder cb = new ComponentBuilder( utils.chat( utils.getString( "warns.join_msg" , "lg" , null ) ) );
+            TextComponent dis = new TextComponent( utils.chat( utils.getString( "warns.notify" , "lg" , "staff" ).replace( "%amount%" , String.valueOf( utils.currentPlayerWarns( p.getName( ) ) ) ) ) );
+            dis.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT , cb.create( ) ) );
+            dis.setClickEvent( new ClickEvent( ClickEvent.Action.RUN_COMMAND , "/warningns" ) );
+            p.spigot( ).sendMessage( dis );
         }
         try {
             if ( utils.mysqlEnabled( ) ) {
@@ -144,13 +143,12 @@ public class onPlayerJoin implements Listener {
                         SetVanish.setVanish( p , true );
                     for ( Player player : Bukkit.getServer( ).getOnlinePlayers( ) ) {
                         if ( !player.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || SQLGetter.isTrue( player , "vanish" ).equals( "false" ) ) {
-                            if ( p.hasPermission( "staffcore.vanish.see" ) )
+                            if ( !player.hasPermission( "staffcore.vanish.see" ) ) {
+                                player.hidePlayer( plugin , p );
                                 return;
-                            player.hidePlayer( plugin , p );
-                            continue;
+                            }
                         }
                         player.showPlayer( plugin , p );
-                        player.sendMessage( utils.chat( plugin.getConfig( ).getString( "staff.staff_prefix" ) + p.getDisplayName( ) + " &3(&dVanished&3)" ) );
                         utils.PlaySound( player , "vanished_join" );
                     }
                 }
@@ -166,13 +164,12 @@ public class onPlayerJoin implements Listener {
                         }
                     }
                 }
-                if ( SQLGetter.isTrue( p , "flying" ).equals( "true" ) )
-                    if ( !p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ) {
-                        SetFly.SetFly( p , true );
-                    } else {
-                        p.setAllowFlight( true );
-                        p.setFlying( true );
-                    }
+                if ( !p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ) {
+                    SetFly.SetFly( p , true );
+                } else {
+                    p.setAllowFlight( true );
+                    p.setFlying( true );
+                }
                 if ( SQLGetter.isTrue( p , "staffchat" ).equals( "true" ) )
                     p.getPersistentDataContainer( ).set( new NamespacedKey( plugin , "staffchat" ) , PersistentDataType.STRING , "staffchat" );
                 if ( SQLGetter.isTrue( p , "staffchat" ).equals( "false" ) )
@@ -203,7 +200,6 @@ public class onPlayerJoin implements Listener {
                                 .hasPermission( "staffcore.vanish.see" ) ) {
                             p.showPlayer( plugin , player );
                             player.showPlayer( plugin , p );
-                            player.sendMessage( utils.chat( plugin.getConfig( ).getString( "staff.staff_prefix" ) + p.getDisplayName( ) + " &3(&dVanished&3)" ) );
                             utils.PlaySound( player , "vanished_join" );
                             continue;
                         }
@@ -226,93 +222,94 @@ public class onPlayerJoin implements Listener {
                     }
                 }
             }
-        } catch(NoSuchMethodError ignored){ }
+        } catch ( NoSuchMethodError ignored ) {
+        }
     }
     
-    String KickBannedPlayerSql(int Id) {
+    String KickBannedPlayerSql( int Id ){
         try {
-            String reason = SQLGetter.getBanned(Id, "Reason");
-            Date now = new Date();
-            String created = SQLGetter.getBanned(Id, "Date");
-            String exp = SQLGetter.getBanned(Id, "ExpDate");
-            SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-            String baner = SQLGetter.getBanned(Id, "Baner");
-            String banned = SQLGetter.getBanned(Id, "Name");
+            String reason = SQLGetter.getBanned( Id , "Reason" );
+            Date now = new Date( );
+            String created = SQLGetter.getBanned( Id , "Date" );
+            String exp = SQLGetter.getBanned( Id , "ExpDate" );
+            SimpleDateFormat format = new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" );
+            String baner = SQLGetter.getBanned( Id , "Baner" );
+            String banned = SQLGetter.getBanned( Id , "Name" );
             Date d2 = null;
-            d2 = format.parse(exp);
-            long remaining = (d2.getTime() - now.getTime()) / 1000L;
-            long Days = TimeUnit.SECONDS.toDays(remaining);
-            long Seconds = remaining - TimeUnit.DAYS.toSeconds(Days);
-            long Hours = TimeUnit.SECONDS.toHours(Seconds);
-            Seconds -= TimeUnit.HOURS.toSeconds(Hours);
-            long Minutes = TimeUnit.SECONDS.toMinutes(Seconds);
-            Seconds -= TimeUnit.MINUTES.toSeconds(Minutes);
+            d2 = format.parse( exp );
+            long remaining = (d2.getTime( ) - now.getTime( )) / 1000L;
+            long Days = TimeUnit.SECONDS.toDays( remaining );
+            long Seconds = remaining - TimeUnit.DAYS.toSeconds( Days );
+            long Hours = TimeUnit.SECONDS.toHours( Seconds );
+            Seconds -= TimeUnit.HOURS.toSeconds( Hours );
+            long Minutes = TimeUnit.SECONDS.toMinutes( Seconds );
+            Seconds -= TimeUnit.MINUTES.toSeconds( Minutes );
             String ban_msg = "\n";
-            for (String msg : main.plugin.getConfig().getStringList("ban.join_banned")) {
-                msg = msg.replace("%baner%", baner);
-                msg = msg.replace("%banned%", banned);
-                msg = msg.replace("%reason%", reason);
-                if (Days >= 365L) {
-                    msg = msg.replace("%time_left%", "&4PERMANENT");
+            for ( String msg : utils.getStringList( "ban.join" , "alerts" ) ) {
+                msg = msg.replace( "%baner%" , baner );
+                msg = msg.replace( "%banned%" , banned );
+                msg = msg.replace( "%reason%" , reason );
+                if ( Days >= 365L ) {
+                    msg = msg.replace( "%time_left%" , "&4PERMANENT" );
                 } else {
-                    msg = msg.replace("%time_left%", Days + "d " + Hours + "h " + Minutes + "m " + Seconds + "s");
+                    msg = msg.replace( "%time_left%" , Days + "d " + Hours + "h " + Minutes + "m " + Seconds + "s" );
                 }
-                if (SQLGetter.getBanned(Id, "IP_Banned").equals("true")) {
-                    msg = msg.replace("%IP_BANED%", "&atrue");
-                } else if (SQLGetter.getBanned(Id, "IP_Banned").equals("false")) {
-                    msg = msg.replace("%IP_BANED%", "&cfalse");
+                if ( SQLGetter.getBanned( Id , "IP_Banned" ).equals( "true" ) ) {
+                    msg = msg.replace( "%IP_BANED%" , "&atrue" );
+                } else if ( SQLGetter.getBanned( Id , "IP_Banned" ).equals( "false" ) ) {
+                    msg = msg.replace( "%IP_BANED%" , "&cfalse" );
                 }
-                msg = msg.replace("%exp_date%", exp);
-                msg = msg.replace("%date%", created);
+                msg = msg.replace( "%exp_date%" , exp );
+                msg = msg.replace( "%date%" , created );
                 ban_msg = ban_msg + msg + "\n";
             }
-            return utils.chat(ban_msg);
-        } catch (ParseException|NullPointerException ignored) {
-            ignored.printStackTrace();
+            return utils.chat( ban_msg );
+        } catch ( ParseException | NullPointerException ignored ) {
+            ignored.printStackTrace( );
             return null;
         }
     }
     
-    String KickBannedPlayer(int Id) {
+    String KickBannedPlayer( int Id ){
         try {
-            String p = plugin.bans.getConfig().getString("bans." + Id + ".banned_by");
-            String banned = plugin.bans.getConfig().getString("bans." + Id + ".name");
-            String reason = plugin.bans.getConfig().getString("bans." + Id + ".reason");
-            Date now = new Date();
-            String created = plugin.bans.getConfig().getString("bans." + Id + ".date");
-            String exp = plugin.bans.getConfig().getString("bans." + Id + ".expdate");
-            SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            String p = plugin.bans.getConfig( ).getString( "bans." + Id + ".banned_by" );
+            String banned = plugin.bans.getConfig( ).getString( "bans." + Id + ".name" );
+            String reason = plugin.bans.getConfig( ).getString( "bans." + Id + ".reason" );
+            Date now = new Date( );
+            String created = plugin.bans.getConfig( ).getString( "bans." + Id + ".date" );
+            String exp = plugin.bans.getConfig( ).getString( "bans." + Id + ".expdate" );
+            SimpleDateFormat format = new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" );
             Date d2 = null;
-            d2 = format.parse(exp);
-            long remaining = (d2.getTime() - now.getTime()) / 1000L;
-            long Days = TimeUnit.SECONDS.toDays(remaining);
-            long Seconds = remaining - TimeUnit.DAYS.toSeconds(Days);
-            long Hours = TimeUnit.SECONDS.toHours(Seconds);
-            Seconds -= TimeUnit.HOURS.toSeconds(Hours);
-            long Minutes = TimeUnit.SECONDS.toMinutes(Seconds);
-            Seconds -= TimeUnit.MINUTES.toSeconds(Minutes);
+            d2 = format.parse( exp );
+            long remaining = (d2.getTime( ) - now.getTime( )) / 1000L;
+            long Days = TimeUnit.SECONDS.toDays( remaining );
+            long Seconds = remaining - TimeUnit.DAYS.toSeconds( Days );
+            long Hours = TimeUnit.SECONDS.toHours( Seconds );
+            Seconds -= TimeUnit.HOURS.toSeconds( Hours );
+            long Minutes = TimeUnit.SECONDS.toMinutes( Seconds );
+            Seconds -= TimeUnit.MINUTES.toSeconds( Minutes );
             String ban_msg = "\n";
-            for (String msg : main.plugin.getConfig().getStringList("ban.join_banned")) {
-                msg = msg.replace("%baner%", p);
-                msg = msg.replace("%banned%", banned);
-                msg = msg.replace("%reason%", reason);
-                if (Days >= 365L) {
-                    msg = msg.replace("%time_left%", "&4PERMANENT");
+            for ( String msg : utils.getStringList( "ban.join" , "alerts" ) ) {
+                msg = msg.replace( "%baner%" , p );
+                msg = msg.replace( "%banned%" , banned );
+                msg = msg.replace( "%reason%" , reason );
+                if ( Days >= 365L ) {
+                    msg = msg.replace( "%time_left%" , "&4PERMANENT" );
                 } else {
-                    msg = msg.replace("%time_left%", Days + "d " + Hours + "h " + Minutes + "m " + Seconds + "s");
+                    msg = msg.replace( "%time_left%" , Days + "d " + Hours + "h " + Minutes + "m " + Seconds + "s" );
                 }
-                if (plugin.bans.getConfig().getBoolean("bans." + Id + ".IP-Banned")) {
-                    msg = msg.replace("%IP_BANED%", "&atrue");
+                if ( plugin.bans.getConfig( ).getBoolean( "bans." + Id + ".IP-Banned" ) ) {
+                    msg = msg.replace( "%IP_BANED%" , "&atrue" );
                 } else {
-                    msg = msg.replace("%IP_BANED%", "&cfalse");
+                    msg = msg.replace( "%IP_BANED%" , "&cfalse" );
                 }
-                msg = msg.replace("%exp_date%", exp);
-                msg = msg.replace("%date%", created);
+                msg = msg.replace( "%exp_date%" , exp );
+                msg = msg.replace( "%date%" , created );
                 ban_msg = ban_msg + msg + "\n";
             }
-            return utils.chat(ban_msg);
-        } catch (ParseException|NullPointerException ignored) {
-            ignored.printStackTrace();
+            return utils.chat( ban_msg );
+        } catch ( ParseException | NullPointerException error ) {
+            error.printStackTrace( );
             return null;
         }
     }

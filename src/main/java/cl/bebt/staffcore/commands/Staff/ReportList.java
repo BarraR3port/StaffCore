@@ -10,29 +10,26 @@ import org.bukkit.entity.Player;
 
 public class ReportList implements CommandExecutor {
     
-    private final main plugin;
-    
     public ReportList( main plugin ){
-        this.plugin = plugin;
         plugin.getCommand( "reportlist" ).setExecutor( this );
     }
     
     
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        if ( !utils.isOlderVersion( ) ){
-            if ( !(sender instanceof Player) ) {
-                utils.tell( sender , "&aHey, you need to be a player to execute this command!" );
-            } else {
+        if ( !utils.isOlderVersion( ) ) {
+            if ( sender instanceof Player ) {
                 if ( sender.hasPermission( "staffcore.reportlist" ) ) {
                     Player p = ( Player ) sender;
                     new ReportManager( main.getPlayerMenuUtility( p ) , main.plugin ).open( p );
                 } else {
-                    utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) );
+                    utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
                 }
+            } else {
+                utils.tell( sender , utils.getString( "only_players" , "lg" , "sv" ) );
             }
         } else {
-            utils.tell(sender,plugin.getConfig( ).getString( "server_prefix" )+"&cThis command can't be executed in older versions");
+            utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
         }
         return false;
     }

@@ -98,8 +98,8 @@ commands:
     description: See Players Warnings
   helpop:
     description: Ask for help to the Staff Members
-  trolmode:
-    description: Toggles the trolmode
+  troll:
+    description: Toggles the trollmode
 permissions:
   staffcore.*:
     description: Give's all StaffCore Permissions.
@@ -134,4 +134,4 @@ permissions:
       staffcore.alts: true
       staffcore.wipe: true
       staffcore.invender: true
-      staffcore.trol: true
+      staffcore.troll: true

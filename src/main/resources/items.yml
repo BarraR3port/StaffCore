@@ -1,0 +1,83 @@
+#     ______     _                ___      ___                  ______                                    #
+#   .' ____ \   / |_            .' ..]   .' ..]               .' ___  |                                   #
+#   | (___ \_| `| |-'  ,--.    _| |_    _| |_      ______    / .'   \_|   .--.    _ .--.   .---.          #
+#    _.____`.   | |   `'_\ :  '-| |-'  '-| |-'    |______|   | |        / .'`\ \ [ `/'`\] / /__\\         #
+#   | \____) |  | |,  // | |,   | |      | |                 \ `.___.'\ | \__. |  | |     | \__.,         #
+#   \______.'   \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.4   #
+#                                                                                                         #
+#                                                                                By BarraR3port : [ITEMS] #
+
+# ------------> FAKE JOIN/LEAVE <----------
+fake_join_leave:
+  enabled: false # This is global, if you disable from here, nobody will be able to enable or disable for themself
+  lore:
+    - "&7When you enable this and you turn on/off the vanish,"
+    - "&7a msg will be sent to all the players that you "
+    - "&7leave/join the server."
+
+# ------------> QUANTITY <----------
+quantity:
+  temp:
+    name: "&aTemp %type%"
+    item: "CARVED_PUMPKIN"
+    lore:
+      - "&cClick to &aTemp %type% &9%player%"
+  perm:
+    name: "&4Perm %type%"
+    item: "JACK_O_LANTERN"
+    lore:
+      - "&cClick to &4Perm %type% &9%player%"
+  ip:
+    name: "&7%type% IP: &aTrue"
+    item: "REDSTONE"
+    lore:
+      - "&cClick to &a%type% Ip &9%player%"
+  normal:
+    name: "&7%type% IP: &cFalse"
+    item: "REDSTONE"
+    lore:
+      - "&cClick to &c%type% &9%player%"
+  seconds:
+    name: "&4SECONDS"
+    item: "MAGENTA_CONCRETE"
+    lore:
+      - "&cClick to &a%type% &9%player% for %seconds%s"
+  minutes:
+    name: "&4MINUTES"
+    item: "PURPLE_CONCRETE"
+    lore:
+      - "&cClick to &a%type% &9%player% for %minutes%m"
+  hours:
+    name: "&4HOURS"
+    item: "BLUE_CONCRETE"
+    lore:
+      - "&cClick to &a%type% &9%player% for %hours%h"
+  days:
+    name: "&4DAYS"
+    item: "RED_CONCRETE"
+    lore:
+      - "&cClick to &a%type% &9%player% for %days%d"
+
+# ------------> MENU ITEMS <--------------
+menu_items:
+  close:
+    name: "&cClose"
+    material: "BARRIER"
+    lore:
+      - "&aRight click to close"
+      - "&aLeft click to go back"
+  next:
+    name: "&7Next"
+    material: "DARK_OAK_BUTTON"
+    lore:
+      - "&aClick to pass to the next page"
+  back:
+    name: "&7Next"
+    material: "DARK_OAK_BUTTON"
+    lore:
+      - "&aClick to go back"
+  coming_soon:
+    name: "&6Coming Soon"
+    material: "BEDROCK"
+    lore:
+      - "&7Feature Coming Soon"

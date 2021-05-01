@@ -1,7 +1,6 @@
 package cl.bebt.staffcore.utils;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.sql.SQLGetter;
 import org.bukkit.GameMode;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -19,9 +18,6 @@ public class SetFly {
                 p.setAllowFlight( true );
                 p.setFlying( true );
             }
-            if ( utils.mysqlEnabled( ) ) {
-                SQLGetter.set( p.getName( ) , "flying" , "true" );
-            }
         } else {
             if ( !(p.getGameMode( ) == GameMode.CREATIVE || p.getGameMode( ) == GameMode.SPECTATOR || PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING )) ) {
                 p.setAllowFlight( false );
@@ -29,9 +25,6 @@ public class SetFly {
                 if ( plugin.getConfig( ).getBoolean( "staff.fly_invincible" ) ) {
                     p.setInvulnerable( false );
                 }
-            }
-            if ( utils.mysqlEnabled( ) ) {
-                SQLGetter.set( p.getName( ) , "flying" , "false" );
             }
         }
     }

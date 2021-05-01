@@ -9,29 +9,19 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class TpAll implements CommandExecutor {
-    private final main plugin;
     
     public TpAll( main plugin ){
-        this.plugin = plugin;
         plugin.getCommand( "tpall" ).setExecutor( this );
     }
     
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {
-            if ( args.length == 0 ) {
-                utils.tell( sender , "&4Wrong usage, use:" );
-                utils.tell( sender , "&c/tpall:" );
-                utils.tell( sender , "&c/tpall <player>" );
-                return true;
-            } else if ( args.length == 1 ) {
+            if ( args.length == 1 ) {
                 TpPlayers.tpAll( sender , args[0] );
             } else {
-                utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&4Wrong usage, use:" );
-                utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&cTo teleport all player to other: /tpall <player>" );
-                
+                utils.tell( sender , utils.getString( "no_permission" , "lg" , "tpall <player>" ) );
             }
-            
         } else {
             Player p = ( Player ) sender;
             if ( p.hasPermission( "staffcore.tp.all" ) ) {
@@ -41,11 +31,10 @@ public class TpAll implements CommandExecutor {
                 } else if ( args.length == 1 ) {
                     TpPlayers.tpAll( p , args[0] );
                 } else {
-                    utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&4Wrong usage, use:" );
-                    utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&cTo teleport all player to other: /tpall <player>" );
+                    utils.tell( sender , utils.getString( "no_permission" , "lg" , "tpall | tpall <player>" ) );
                 }
             } else {
-                utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) );
+                utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
             }
         }
         return true;

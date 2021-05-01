@@ -13,37 +13,29 @@ import java.util.List;
 
 public class Report implements TabExecutor {
     
-    private final main plugin;
-    
     public Report( main plugin ){
-        this.plugin = plugin;
         plugin.getCommand( "report" ).setExecutor( this );
     }
     
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !utils.isOlderVersion( ) ) {
-            if ( !(sender instanceof Player) ) {
-                if ( args.length == 0 ) {
-                    sender.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&4Wrong usage, use:" ) );
-                    sender.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&4&lUse: vanish <player>" ) );
-                }
-            } else {
+            if ( sender instanceof Player ) {
                 if ( sender.hasPermission( "staffcore.report" ) ) {
-                    if ( args.length == 0 ) {
-                        Player p = ( Player ) sender;
-                        p.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&4Wrong usage" ) );
-                        p.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&4&lUse: /report <player>" ) );
-                    } else if ( args.length == 1 ) {
+                    if ( args.length == 1 ) {
                         Player p = ( Player ) sender;
                         new ReportMenu( main.getPlayerMenuUtility( p ) , main.plugin , args[0] ).open( p );
+                    } else {
+                        utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "report <player>" ) );
                     }
                 } else {
-                    utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) );
+                    utils.tell( sender , utils.getString( "no_permission" , "lg" , "sv" ) );
                 }
+            } else {
+                utils.tell( sender , utils.getString( "only_players" , "lg" , "sv" ) );
             }
         } else {
-            utils.tell(sender,plugin.getConfig( ).getString( "server_prefix" )+"&cThis command can't be executed in older versions");
+            utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
         }
         return false;
     }
@@ -56,8 +48,6 @@ public class Report implements TabExecutor {
             if ( !Players.isEmpty( ) ) {
                 Players.remove( sender.getName( ) );
                 version.addAll( Players );
-            } else {
-                utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&cNo players saved!" );
             }
         }
         return version;

@@ -5,7 +5,6 @@ import cl.bebt.staffcore.menu.PaginatedMenu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.utils.WarnPlayer;
 import cl.bebt.staffcore.utils.utils;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -32,7 +31,7 @@ public class WarnQuantity extends PaginatedMenu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( "&cChose between &ds/m/h/d" );
+        return utils.chat( utils.getString( "chat.quantity.name" , "menu" , null ) );
     }
     
     @Override
@@ -57,26 +56,26 @@ public class WarnQuantity extends PaginatedMenu {
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "days" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
             WarnPlayer.createWarn( p , warned , reason , time , "d" );
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
+        } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
-            new WarnAmount( playerMenuUtility , main.plugin , p , warned , reason ).open( p );
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.DARK_OAK_BUTTON ) ) {
-            if ( ChatColor.stripColor( e.getCurrentItem( ).getItemMeta( ).getDisplayName( ) ).equalsIgnoreCase( "Back" ) ) {
-                if ( page == 0 ) {
-                    p.sendMessage( ChatColor.GRAY + "You are already on the first page." );
-                } else {
-                    page = page - 1;
-                    p.closeInventory( );
-                    super.open( p );
-                }
-            } else if ( ChatColor.stripColor( e.getCurrentItem( ).getItemMeta( ).getDisplayName( ) ).equalsIgnoreCase( "Next" ) ) {
-                if ( !((index + 1) >= amount) ) {
-                    page = page + 1;
-                    p.closeInventory( );
-                    super.open( p );
-                } else {
-                    p.sendMessage( ChatColor.GRAY + "You are on the last page." );
-                }
+            if ( e.getClick( ).isLeftClick( ) ) {
+                new WarnAmount( playerMenuUtility , main.plugin , p , warned , reason ).open( p );
+            }
+        } else if ( e.getCurrentItem( ).equals( back( ) ) ) {
+            if ( page == 0 ) {
+                utils.tell( p , utils.getString( "menu.already_in_first_page" , "lg" , "sv" ) );
+            } else {
+                page--;
+                p.closeInventory( );
+                open( p );
+            }
+        } else if ( e.getCurrentItem( ).equals( next( ) ) ) {
+            if ( index + 1 <= amount ) {
+                page++;
+                p.closeInventory( );
+                open( p );
+            } else {
+                utils.tell( p , utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
             }
         }
     }
@@ -111,7 +110,7 @@ public class WarnQuantity extends PaginatedMenu {
         }
         inventory.setItem( 20 , seconds( ) );
         inventory.setItem( 21 , minutes( ) );
-        inventory.setItem( 22 , makeItem( Material.BARRIER , ChatColor.DARK_RED + "Close" ) );
+        inventory.setItem( 22 , close( ) );
         inventory.setItem( 23 , hours( ) );
         inventory.setItem( 24 , days( ) );
     }

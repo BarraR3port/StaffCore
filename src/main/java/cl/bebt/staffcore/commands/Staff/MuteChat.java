@@ -37,16 +37,16 @@ public class MuteChat implements TabExecutor {
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {
-            if ( ( args.length == 1 ) || ( args.length == 2 ) && ( !utils.isOlderVersion( ) ) ){
-                utils.tell(sender,plugin.getConfig( ).getString( "server_prefix" )+"&cThis command can't be executed in older versions");
+            if ( (args.length == 1) || (args.length == 2) && utils.isOlderVersion( ) ) {
+                utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
                 return true;
             }
             if ( args.length == 0 ) {
-                if ( plugin.chatMuted == false ) {
-                    Bukkit.broadcastMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7The CONSOLE &cMuted &7the chat!" ) );
+                if ( !plugin.chatMuted ) {
+                    Bukkit.broadcastMessage( utils.chat( utils.getString( "toggle_chat.mute_by_console" , "lg" , "staff" ) ) );
                     ToggleChat.Mute( true );
                 } else {
-                    Bukkit.broadcastMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7The CONSOLE &cUn Muted &7the chat!" ) );
+                    Bukkit.broadcastMessage( utils.chat( utils.getString( "toggle_chat.un_mute_by_console" , "lg" , "staff" ) ) );
                     ToggleChat.Mute( false );
                 }
             } else if ( args.length == 1 ) {
@@ -54,7 +54,7 @@ public class MuteChat implements TabExecutor {
                     Player muted = Bukkit.getPlayer( args[0] );
                     ToggleChat.MutePlayer( sender , muted );
                 } else {
-                    utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "player_dont_exist" ) );
+                    utils.tell( sender , utils.getString( "p_dont_exist" , "lg" , "staff" ) );
                 }
             } else if ( args.length == 2 ) {
                 if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
@@ -66,30 +66,31 @@ public class MuteChat implements TabExecutor {
                         int ammount = Integer.parseInt( sb.toString( ) );
                         ToggleChat.MuteCooldown( sender , player , time , ammount );
                     } catch ( NumberFormatException e ) {
-                        utils.tell( sender , main.plugin.getConfig( ).getString( "server_prefix" ) + "&cWrong usage." );
-                        utils.tell( sender , main.plugin.getConfig( ).getString( "server_prefix" ) + "&cExample /mute &a" + args[0] + " &d10<s/m/h/d>" );
+                        utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "mute " + args[0] + " &d10<s/m/h/d>" ) );
                     }
                 }
-                if ( args[1] == "unmute" ) {
+                if ( args[1].equals( "unmute" ) ) {
                     Player player = Bukkit.getPlayer( args[0] );
                     ToggleChat.MuteCooldown( sender , player , "s" , 0 );
                 } else {
-                    utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "player_dont_exist" ) );
+                    utils.tell( sender , utils.getString( "p_dont_exist" , "lg" , "sv" ) );
                 }
+            } else {
+                utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "mute <player>" ) );
             }
         } else {
             Player p = ( Player ) sender;
             if ( p.hasPermission( "staffcore.mute" ) ) {
-                if ( ( args.length == 1 ) || ( args.length == 2 ) && ( !utils.isOlderVersion( ) ) ){
-                    utils.tell(sender,plugin.getConfig( ).getString( "server_prefix" )+"&cThis command can't be executed in older versions");
+                if ( (args.length == 1) || (args.length == 2) && utils.isOlderVersion( ) ) {
+                    utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
                     return true;
                 }
                 if ( args.length == 0 ) {
-                    if ( plugin.chatMuted == false ) {
-                        Bukkit.broadcastMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7The player &r" + p.getDisplayName( ) + " &cMuted the Chat!" ) );
+                    if ( !plugin.chatMuted ) {
+                        Bukkit.broadcastMessage( utils.chat( utils.getString( "toggle_chat.mute_chat" , "lg" , "staff" ).replace( "%player%",p.getName( ) ) ) );
                         ToggleChat.Mute( true );
                     } else {
-                        Bukkit.broadcastMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&7The player &r" + p.getDisplayName( ) + " &aUnMuted the chat" ) );
+                        Bukkit.broadcastMessage( utils.chat( utils.getString( "toggle_chat.un_mute_chat" , "lg" , "staff" ).replace( "%player%",p.getName( ) ) ) );
                         ToggleChat.Mute( false );
                     }
                 } else if ( args.length == 1 ) {
@@ -97,7 +98,7 @@ public class MuteChat implements TabExecutor {
                         Player muted = Bukkit.getPlayer( args[0] );
                         ToggleChat.MutePlayer( p , muted );
                     } else {
-                        utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "player_dont_exist" ) );
+                        utils.tell( sender , utils.getString( "p_dont_exist" , "lg" , "sv" ) );
                     }
                 } else if ( args.length == 2 ) {
                     if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
@@ -109,19 +110,18 @@ public class MuteChat implements TabExecutor {
                             int ammount = Integer.parseInt( sb.toString( ) );
                             ToggleChat.MuteCooldown( p , player , time , ammount );
                         } catch ( NumberFormatException e ) {
-                            utils.tell( sender , main.plugin.getConfig( ).getString( "server_prefix" ) + "&cWrong usage." );
-                            utils.tell( sender , main.plugin.getConfig( ).getString( "server_prefix" ) + "&cExample /mute &a" + args[0] + " &d10<s/m/h/d>" );
+                            utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "mute " + args[0] + " &d10<s/m/h/d>" ) );
                         }
-                    } else if ( args[1] == "unmute" ) {
+                    } else if ( args[1].equals( "unmute" ) ) {
                         Player player = Bukkit.getPlayer( args[0] );
                         ToggleChat.MuteCooldown( p , player , "s" , 0 );
                         return true;
                     } else {
-                        utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "player_dont_exist" ) );
+                        utils.tell( sender , utils.getString( "p_dont_exist" , "lg" , "sv" ) );
                     }
                 }
             } else {
-                p.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) ) );
+                utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
             }
         }
         

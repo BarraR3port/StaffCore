@@ -25,23 +25,22 @@ public class StaffMysql implements CommandExecutor {
     
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        if  ( !utils.isOlderVersion( ) ){
+        if ( !utils.isOlderVersion( ) ) {
             if ( !(sender instanceof Player) ) {
-                if ( args.length == 0 ) {
-                    sender.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&4Wrong usage" ) );
-                    sender.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&4&lUse: staff <player>" ) );
-                } else if ( args.length == 1 ) {
+                if ( args.length == 1 ) {
                     if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
                         Player p = Bukkit.getPlayer( args[0] );
                         String is = SQLGetter.isTrue( p , "staff" );
                         if ( is.equals( "true" ) ) {
                             SetStaffItems.Off( p );
-                            utils.tell( sender , "&7You remove &r" + p.getDisplayName( ) + " &7from staff mode" );
+                            utils.tell( sender , utils.getString( "staff.disabled_to" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
                         } else if ( is.equals( "false" ) ) {
                             SetStaffItems.On( p );
-                            utils.tell( sender , "&7You put &r" + p.getDisplayName( ) + " &7in staff mode" );
+                            utils.tell( sender , utils.getString( "staff.enabled_to" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
                         }
                     }
+                } else {
+                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "staff | staff <player>" ) );
                 }
             } else {
                 if ( args.length == 0 ) {
@@ -50,37 +49,40 @@ public class StaffMysql implements CommandExecutor {
                     if ( p.hasPermission( "staffcore.staff" ) ) {
                         if ( is.equals( "true" ) ) {
                             SetStaffItems.Off( p );
+                            utils.tell( sender , utils.getString( "staff.disabled" , "lg" , "staff" ) );
                         } else if ( is.equals( "false" ) ) {
                             SetStaffItems.On( p );
+                            utils.tell( sender , utils.getString( "staff.enabled" , "lg" , "staff" ) );
                         }
                     } else {
-                        utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) );
+                        utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
                     }
                 } else if ( args.length == 1 ) {
-                    if ( sender instanceof Player ) {
-                        if ( sender.hasPermission( "staffcore.staff" ) ) {
-                            if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
-                                Player p = Bukkit.getPlayer( args[0] );
-                                PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
-                                if ( PlayerData.has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) ) {
-                                    SetStaffItems.Off( p );
-                                    utils.tell( sender , "&7You remove &r" + p.getDisplayName( ) + " &7from staff mode" );
-                                    
-                                } else if ( !(PlayerData.has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING )) ) {
-                                    SetStaffItems.On( p );
-                                    utils.tell( sender , "&7You put &r" + p.getDisplayName( ) + " &7in staff mode" );
-                                }
-                            } else {
-                                utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + plugin.getConfig( ).getString( "player_dont_exist" ) );
+                    if ( sender.hasPermission( "staffcore.staff" ) ) {
+                        if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
+                            Player p = Bukkit.getPlayer( args[0] );
+                            PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
+                            if ( PlayerData.has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) ) {
+                                SetStaffItems.Off( p );
+                                utils.tell( sender , utils.getString( "staff.disabled_to" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
+                                utils.tell( p , utils.getString( "staff.disabled" , "lg" , "staff" ) );
+                            } else if ( !(PlayerData.has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING )) ) {
+                                SetStaffItems.On( p );
+                                utils.tell( sender , utils.getString( "staff.enabled_to" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
+                                utils.tell( p , utils.getString( "staff.enabled" , "lg" , "staff" ) );
                             }
                         } else {
-                            utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) );
+                            utils.tell( sender , utils.getString( "p_dont_exist" , "lg" , "sv" ) );
                         }
+                    } else {
+                        utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
                     }
+                } else {
+                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "staff | staff <player>" ) );
                 }
             }
         } else {
-            utils.tell(sender,plugin.getConfig( ).getString( "server_prefix" )+"&cThis command can't be executed in older versions");
+            utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
         }
         return true;
     }

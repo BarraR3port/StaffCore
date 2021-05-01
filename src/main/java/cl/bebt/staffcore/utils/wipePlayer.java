@@ -17,8 +17,9 @@ public class wipePlayer {
     private static main plugin;
     
     public wipePlayer( main plugin ){
-        this.plugin = plugin;
+        wipePlayer.plugin = plugin;
     }
+    
     public wipePlayer( CommandSender sender , String p ){
         int bans = 0;
         int reports = 0;
@@ -41,11 +42,13 @@ public class wipePlayer {
                 }
                 try {
                     SetStaffItems.Off( Bukkit.getPlayer( p ) );
-                } catch ( NullPointerException | NoSuchMethodError ignored ) { }
+                } catch ( NullPointerException | NoSuchMethodError ignored ) {
+                }
                 SQLGetter.wipe( p );
-                try{
-                PersistentDataContainer( p, plugin );
-                } catch (  NoSuchMethodError ignored ) { }
+                try {
+                    PersistentDataContainer( p , plugin );
+                } catch ( NoSuchMethodError ignored ) {
+                }
                 SQLGetter.deleteAlts( p );
             } else {
                 if ( plugin.getConfig( ).getBoolean( "wipe.bans" ) ) {
@@ -87,17 +90,19 @@ public class wipePlayer {
                 }
                 try {
                     SetStaffItems.Off( Bukkit.getPlayer( p ) );
-                } catch ( NullPointerException | NoSuchMethodError ignored ) { }
-                try{
-                    PersistentDataContainer( p, plugin );
-                } catch (  NoSuchMethodError ignored ) { }
+                } catch ( NullPointerException | NoSuchMethodError ignored ) {
+                }
+                try {
+                    PersistentDataContainer( p , plugin );
+                } catch ( NoSuchMethodError ignored ) {
+                }
                 plugin.alts.reloadConfig( );
                 plugin.alts.getConfig( ).set( "alts." + p , null );
                 plugin.alts.saveConfig( );
             }
             for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-                if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.wipe_players" ) ) {
-                    for ( String key : main.plugin.getConfig( ).getStringList( "wipe.wipe_msg" ) ) {
+                if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.wipe_players" , null ) ) {
+                    for ( String key : utils.getStringList( "wipe.wipe_msg" , "alerts" ) ) {
                         key = key.replace( "%wiper%" , sender.getName( ) );
                         key = key.replace( "%wiped%" , p );
                         key = key.replace( "%bans%" , String.valueOf( bans ) );
@@ -107,7 +112,7 @@ public class wipePlayer {
                     }
                 }
             }
-            SendMsg.sendWipeAlert( sender.getName( ) , p , bans , reports , warns , plugin.getConfig( ).getString( "bungeecord.server" ) );
+            SendMsg.sendWipeAlert( sender.getName( ) , p , bans , reports , warns , utils.getServer( ) );
         }
     }
     
@@ -152,11 +157,11 @@ public class wipePlayer {
                 SetStaffItems.Off( Bukkit.getPlayer( p ) );
             } catch ( NullPointerException ignored ) {
             }
-            PersistentDataContainer( p, plugin );
+            PersistentDataContainer( p , plugin );
         }
     }
     
-    private static void PersistentDataContainer( String p, main plugin ){
+    private static void PersistentDataContainer( String p , main plugin ){
         try {
             if ( Bukkit.getPlayer( p ) instanceof Player ) {
                 Player player = Bukkit.getPlayer( p );

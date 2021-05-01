@@ -21,24 +21,29 @@ public class StaffList implements CommandExecutor {
     
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        if ( !utils.isOlderVersion( ) ){
+        if ( !utils.isOlderVersion( ) ) {
             if ( sender instanceof Player ) {
-                Player p = ( Player ) sender;
-                if ( p.hasPermission( "staffcore.stafflist" ) ) {
-                    if ( utils.getBoolean( "bungeecord.enabled" ) ) {
-                        main.staffMembers.clear( );
-                        main.playersServerMap.clear( );
-                        main.playersServerPingMap.clear( );
-                        main.playersServerGamemodesMap.clear( );
-                        SendMsg.sendStaffListRequest( p.getName( ) , utils.getString( "bungeecord.server" ) );
+                if ( args.length == 0 ) {
+                    Player p = ( Player ) sender;
+                    if ( p.hasPermission( "staffcore.stafflist" ) ) {
+                        if ( utils.getBoolean( "bungeecord.enabled" , null ) ) {
+                            main.staffMembers.clear( );
+                            main.playersServerMap.clear( );
+                            main.playersServerPingMap.clear( );
+                            main.playersServerGamemodesMap.clear( );
+                            SendMsg.sendStaffListRequest( p.getName( ) , utils.getString( "bungeecord.server" , null , null ) );
+                        } else {
+                            new StaffListGui( new PlayerMenuUtility( p ) , plugin ).open( p );
+                        }
                     } else {
-                        new StaffListGui( new PlayerMenuUtility( p ) , plugin ).open( p );
+                        utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
                     }
-                    
+                } else {
+                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "stafflist" ) );
                 }
             }
         } else {
-            utils.tell(sender,plugin.getConfig( ).getString( "server_prefix" )+"&cThis command can't be executed in older versions");
+            utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
         }
         return true;
     }

@@ -31,9 +31,9 @@ public class wipe implements TabExecutor {
                         new wipePlayer( sender , args[0] );
                         Bukkit.getScheduler( ).scheduleSyncDelayedTask( plugin , ( ) -> {
                             try {
-                                utils.tell( Bukkit.getPlayer( args[0] ) , "&cYour account is Wiping" );
+                                utils.tell( Bukkit.getPlayer( args[0] ) , utils.getString( "wipe.account_wiped" , "lg" , "staff" ) );
                                 String ban_msg = "\n";
-                                for ( String msg : main.plugin.getConfig( ).getStringList( "wipe.wipe_kick_msg" ) ) {
+                                for ( String msg : utils.getStringList( "wipe.wipe_kick_msg" , "alerts" ) ) {
                                     msg = msg.replace( "%wiper%" , p.getName( ) );
                                     msg = msg.replace( "%wiped%" , args[0] );
                                     ban_msg = ban_msg + msg + "\n";
@@ -43,13 +43,13 @@ public class wipe implements TabExecutor {
                             }
                         } , 6L );
                     } else {
-                        utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&7The player &c" + args[0] + " &7is not registered" );
+                        utils.tell( sender , utils.getString( "never_seen" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
                     }
                 } else {
-                    utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&aPlease use: /wipe <player>" );
+                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "wipe <player>" ) );
                 }
             } else {
-                utils.tell( p , plugin.getConfig( ).getString( "no_permissions" ) );
+                utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
             }
         } else {
             if ( args.length == 1 ) {
@@ -57,9 +57,9 @@ public class wipe implements TabExecutor {
                     new wipePlayer( sender , args[0] );
                     Bukkit.getScheduler( ).scheduleSyncDelayedTask( plugin , ( ) -> {
                         try {
-                            utils.tell( Bukkit.getPlayer( args[0] ) , "&cYour account is Wiping" );
+                            utils.tell( Bukkit.getPlayer( args[0] ) , utils.getString( "wipe.account_wiped" , "lg" , "staff" ) );
                             String ban_msg = "\n";
-                            for ( String msg : main.plugin.getConfig( ).getStringList( "wipe.wipe_kick_msg" ) ) {
+                            for ( String msg : utils.getStringList( "wipe.wipe_kick_msg" , "alerts" ) ) {
                                 msg = msg.replace( "%wiper%" , "CONSOLE" );
                                 msg = msg.replace( "%wiped%" , args[0] );
                                 ban_msg = ban_msg + msg + "\n";
@@ -69,10 +69,10 @@ public class wipe implements TabExecutor {
                         }
                     } , 6L );
                 } else {
-                    utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&7The player &c" + args[0] + " &7is not registered" );
+                    utils.tell( sender , utils.getString( "never_seen" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
                 }
             } else {
-                utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&aPlease use: /wipe <player>" );
+                utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "wipe <player>" ) );
             }
         }
         return true;
@@ -86,8 +86,6 @@ public class wipe implements TabExecutor {
             if ( !Players.isEmpty( ) ) {
                 Players.remove( sender.getName( ) );
                 version.addAll( Players );
-            } else {
-                utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&cNo players saved!" );
             }
         }
         return version;

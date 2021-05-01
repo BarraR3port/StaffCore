@@ -5,8 +5,6 @@ import cl.bebt.staffcore.menu.PaginatedMenu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -25,7 +23,7 @@ public class MutePlayer extends PaginatedMenu {
     }
     
     public String getMenuName( ){
-        return utils.chat( "&cMute Players Chat" );
+        return utils.chat( utils.getString( "chat.mute_players_chat.name" , "menu" , null ) );
     }
     
     public int getSlots( ){
@@ -40,23 +38,23 @@ public class MutePlayer extends PaginatedMenu {
             Player jugador = p.getServer( ).getPlayer( e.getCurrentItem( ).getItemMeta( ).getDisplayName( ) );
             p.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "muted_player" ) , PersistentDataType.STRING , jugador.getName( ) );
             (new Amount( main.getPlayerMenuUtility( p ) , this.plugin , p )).open( p );
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
+        } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.DARK_OAK_BUTTON ) ) {
-            if ( ChatColor.stripColor( e.getCurrentItem( ).getItemMeta( ).getDisplayName( ) ).equalsIgnoreCase( "Back" ) ) {
-                if ( this.page == 0 ) {
-                    p.sendMessage( ChatColor.GRAY + "You are already on the first page." );
-                } else {
-                    this.page--;
-                    open( p );
-                }
-            } else if ( ChatColor.stripColor( e.getCurrentItem( ).getItemMeta( ).getDisplayName( ) ).equalsIgnoreCase( "Next" ) ) {
-                if ( this.index + 1 < players.size( ) ) {
-                    this.page++;
-                    open( p );
-                } else {
-                    p.sendMessage( ChatColor.GRAY + "You are on the last page." );
-                }
+        } else if ( e.getCurrentItem( ).equals( back( ) ) ) {
+            if ( page == 0 ) {
+                utils.tell( p , utils.getString( "menu.already_in_first_page" , "lg" , "sv" ) );
+            } else {
+                page--;
+                p.closeInventory( );
+                open( p );
+            }
+        } else if ( e.getCurrentItem( ).equals( next( ) ) ) {
+            if ( index + 1 <= players.size( ) ) {
+                page++;
+                p.closeInventory( );
+                open( p );
+            } else {
+                utils.tell( p , utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
             }
         }
     }

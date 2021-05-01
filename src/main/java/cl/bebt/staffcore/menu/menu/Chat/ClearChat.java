@@ -5,8 +5,6 @@ import cl.bebt.staffcore.menu.PaginatedMenu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -27,7 +25,7 @@ public class ClearChat extends PaginatedMenu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( "&cClear Players chat" );
+        return utils.chat( utils.getString( "chat.clear_chat.name" , "menu" , null ) );
     }
     
     @Override
@@ -44,31 +42,31 @@ public class ClearChat extends PaginatedMenu {
             Player jugador = p.getServer( ).getPlayer( e.getCurrentItem( ).getItemMeta( ).getDisplayName( ) );
             utils.ccPlayer( jugador );
             if ( p.equals( jugador ) ) {
-                p.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&4You cleaned your chat" ) );
+                utils.tell( p , utils.getString( "clear_chat.own" , "lg" , "staff" ) );
             } else {
-                p.sendMessage( utils.chat( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&4You cleaned the chat of: " + jugador.getName( ) ) ) );
-                jugador.sendMessage( utils.chat( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&4The player&r " + p.getName( ) + " &4cleaned the chat!" ) ) );
+                utils.tell( p , utils.getString( "clear_chat.player" , "lg" , "staff" ).replace( "%player%",jugador.getName( ) ) );
+                utils.tell( jugador , utils.getString( "clear_chat.global" , "lg" , "sv" ).replace( "%player%",p.getName( ) ) );
             }
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
+        } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
+            p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
-                p.closeInventory( );
                 new ChatSettings( main.getPlayerMenuUtility( p ) , main.plugin ).open( p );
             }
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.DARK_OAK_BUTTON ) ) {
-            if ( ChatColor.stripColor( e.getCurrentItem( ).getItemMeta( ).getDisplayName( ) ).equalsIgnoreCase( "Back" ) ) {
-                if ( page == 0 ) {
-                    p.sendMessage( ChatColor.GRAY + "You are already on the first page." );
-                } else {
-                    page = page - 1;
-                    super.open( p );
-                }
-            } else if ( ChatColor.stripColor( e.getCurrentItem( ).getItemMeta( ).getDisplayName( ) ).equalsIgnoreCase( "Next" ) ) {
-                if ( !((index + 1) >= players.size( )) ) {
-                    page = page + 1;
-                    super.open( p );
-                } else {
-                    p.sendMessage( ChatColor.GRAY + "You are on the last page." );
-                }
+        } else if ( e.getCurrentItem( ).equals( back( ) ) ) {
+            if ( page == 0 ) {
+                utils.tell( p , utils.getString( "menu.already_in_first_page" , "lg" , "sv" ) );
+            } else {
+                page--;
+                p.closeInventory( );
+                open( p );
+            }
+        } else if ( e.getCurrentItem( ).equals( next( ) ) ) {
+            if ( index + 1 <= players.size( ) ) {
+                page++;
+                p.closeInventory( );
+                open( p );
+            } else {
+                utils.tell( p , utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
             }
         }
     }

@@ -1,4 +1,4 @@
-package cl.bebt.staffcore.commands;
+package cl.bebt.staffcore.commands.Staff;
 
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WarningsCommand implements TabExecutor{
+public class WarningsCommand implements TabExecutor {
     private final main plugin;
     
     public WarningsCommand( main plugin ){
@@ -22,29 +22,29 @@ public class WarningsCommand implements TabExecutor{
     
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        if ( !utils.isOlderVersion( ) ){
+        if ( !utils.isOlderVersion( ) ) {
             if ( sender instanceof Player ) {
                 Player p = ( Player ) sender;
-                if (sender.hasPermission( "staffcore.warnings" ) ) {
+                if ( sender.hasPermission( "staffcore.warnings" ) ) {
                     if ( args.length == 0 ) {
                         new Warnings( new PlayerMenuUtility( p ) , plugin , p , p.getName( ) ).open( p );
                     } else if ( args.length == 1 ) {
                         try {
                             new Warnings( new PlayerMenuUtility( p ) , plugin , p , args[0] ).open( p );
                         } catch ( NullPointerException ignored ) {
-                            utils.tell( sender , utils.getString( "server_prefix" ) + "&cThe player " + args[0] + " is not online" );
+                            utils.tell( sender , utils.getString( "offline" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
                         }
                     } else {
-                        utils.tell( sender , utils.getString( "server_prefix" ) + "&cUse /warningns " );
+                        utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "warnings <player>" ) );
                     }
                 } else {
-                    utils.tell( sender , utils.getString( "server_prefix" ) + utils.getString( "no_permissions" ) );
+                    utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
                 }
             } else {
-                utils.tell( sender , "&cThis command can only used by players" );
+                utils.tell( sender , utils.getString( "only_players" , "lg" , "staff" ) );
             }
         } else {
-            utils.tell(sender,plugin.getConfig( ).getString( "server_prefix" )+"&cThis command can't be executed in older versions");
+            utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "staff" ) );
         }
         return true;
     }
@@ -57,8 +57,6 @@ public class WarningsCommand implements TabExecutor{
             if ( !Players.isEmpty( ) ) {
                 Players.remove( sender.getName( ) );
                 version.addAll( Players );
-            } else {
-                utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&cNo players saved!" );
             }
         }
         return version;

@@ -1,5 +1,6 @@
 package cl.bebt.staffcore.menu.menu.WarnManager;
 
+import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.MSGChanel.SendMsg;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
@@ -8,7 +9,6 @@ import cl.bebt.staffcore.sql.SQLGetter;
 import cl.bebt.staffcore.utils.WarnPlayer;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -44,7 +44,7 @@ public class ChoseWarn extends ReportMenu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( "&cUn Ban or Close the ban?" );
+        return utils.chat( utils.getString( "warns.chose.name" , "menu" , null ) );
     }
     
     @Override
@@ -64,10 +64,9 @@ public class ChoseWarn extends ReportMenu {
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "panel" ) , PersistentDataType.STRING ) ) {
             e.setCancelled( true );
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
+        } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
-                p.closeInventory( );
                 new Warnings( main.getPlayerMenuUtility( p ) , plugin , p , warned ).open( p );
             }
         }
@@ -95,14 +94,14 @@ public class ChoseWarn extends ReportMenu {
             warner = plugin.warns.getConfig( ).getString( "warns." + Id + ".warned_by" );
             warned = plugin.warns.getConfig( ).getString( "warns." + Id + ".name" );
             plugin.warns.getConfig( ).set( "warns." + Id + ".status" , "closed" );
-            plugin.warns.getConfig( ).set( "count" , playerMenuUtility.currentBans( ) );
+            plugin.warns.getConfig( ).set( "count" , StaffCoreAPI.getCurrentWarns( ) );
             plugin.warns.saveConfig( );
         }
-        SendMsg.sendWarnChangeAlert( Id , p.getName( ) , warner , warned , reason , exp , created , status , plugin.getConfig( ).getString( "bungeecord.server" ) );
+        SendMsg.sendWarnChangeAlert( Id , p.getName( ) , warner , warned , reason , exp , created , status , utils.getServer( ) );
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
             if ( people.hasPermission( "staffcore.staff" ) ) {
                 utils.PlaySound( p , "close_ban" );
-                for ( String key : main.plugin.getConfig( ).getStringList( "warns.alerts.warn_change" ) ) {
+                for ( String key : utils.getStringList( "warns.alerts.warn_change" , "alerts" ) ) {
                     key = key.replace( "%changed_by%" , p.getName( ) );
                     key = key.replace( "%warner%" , warner );
                     key = key.replace( "%warned%" , warned );
@@ -182,28 +181,28 @@ public class ChoseWarn extends ReportMenu {
             if ( SQLGetter.getWarned( Id , "Status" ).equals( "open" ) ) {
                 inventory.setItem( 20 , delete );
                 inventory.setItem( 21 , super.redPanel( ) );
-                inventory.setItem( 22 , makeItem( Material.BARRIER , ChatColor.DARK_RED + "closed" ) );
+                inventory.setItem( 22 , close( ) );
                 inventory.setItem( 23 , super.redPanel( ) );
                 inventory.setItem( 24 , closeWarn );
             } else if ( SQLGetter.getWarned( Id , "Status" ).equals( "closed" ) ) {
                 inventory.setItem( 20 , super.redPanel( ) );
                 inventory.setItem( 21 , delete );
                 inventory.setItem( 22 , super.redPanel( ) );
-                inventory.setItem( 23 , makeItem( Material.BARRIER , ChatColor.DARK_RED + "closed" ) );
+                inventory.setItem( 23 , close( ) );
                 inventory.setItem( 24 , super.redPanel( ) );
             }
         } else {
             if ( plugin.warns.getConfig( ).get( "warns." + Id + ".status" ).equals( "open" ) ) {
                 inventory.setItem( 20 , delete );
                 inventory.setItem( 21 , super.redPanel( ) );
-                inventory.setItem( 22 , makeItem( Material.BARRIER , ChatColor.DARK_RED + "closed" ) );
+                inventory.setItem( 22 , close( ) );
                 inventory.setItem( 23 , super.redPanel( ) );
                 inventory.setItem( 24 , closeWarn );
             } else if ( plugin.warns.getConfig( ).get( "warns." + Id + ".status" ).equals( "closed" ) ) {
                 inventory.setItem( 20 , super.redPanel( ) );
                 inventory.setItem( 21 , delete );
                 inventory.setItem( 22 , super.redPanel( ) );
-                inventory.setItem( 23 , makeItem( Material.BARRIER , ChatColor.DARK_RED + "closed" ) );
+                inventory.setItem( 23 , close( ) );
                 inventory.setItem( 24 , super.redPanel( ) );
             }
         }

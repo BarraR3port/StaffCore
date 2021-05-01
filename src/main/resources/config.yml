@@ -4,16 +4,14 @@
 #    _.____`.   | |   `'_\ :  '-| |-'  '-| |-'    |______|   | |        / .'`\ \ [ `/'`\] / /__\\         #
 #   | \____) |  | |,  // | |,   | |      | |                 \ `.___.'\ | \__. |  | |     | \__.,         #
 #   \______.'   \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.4   #
-#
-# By BarraR3port
-
-
-# Please jut change the text inside the "", otherwise the plugin will get bugged!                         #
+#                                                                                                         #
+#                                                                               By BarraR3port : [CONFIG] #
+#                                                                                                         #
 # If you need some help, or you have any suggestion please join in my discord:                            #
 # ------------------> https://discord.gg/rgekTwy <------------------                                      #
-# I made the config file, so you can be able to change almost every msg the plugin sent.                  #
+#                                                                                                         #
 
-# ------------> Mysql <--------------
+# ------------> MYSQL <--------------
 mysql:
   enabled: false  #<------------------ On true you will use mysql!
   host: "localhost" #<--------------- The host!
@@ -21,7 +19,8 @@ mysql:
   database: "staffcore" #<----------- The name of the database!
   username: "root" #<---------------- The username of the database!
   password: "" #<-------------------- Leave in blanc if you don't use password!
-# ------------> BungeeCord <--------------
+
+# ------------> BUNGEECORD <--------------
 # For using this, you will need to have enabled the mysql otherwise it won't work and may show up some errors
 # This is meant to notify all your StaffMembers about the Ban Alerts, Report Alerts, and so on.
 # The Mysql is needed cuz that's where the plugin is going to get all the data like: the reason, the name...
@@ -29,62 +28,50 @@ bungeecord:
   enabled: false
   server: "the_current_server" # This is the name of the server!
   server_prefix: " &7[&a%server%&7] "
+
 # ------------> STAFF-CORE <---------
 clean_messages: "&4&lCleaned all the msg!"
-server_prefix: "&8[&a&lSTAFF CORE&r&8]&r "
-player_dont_exist: "&cThe player does not exist!"
 no_online_players: "&cNo players &aOnline&c!"
-no_permissions: "&cYou don't have permissions!."
 disable_outdated_plugin: false # ON ENABLE IF THE PLUGIN IS OUTDATED, IT WILL AUTOMATIC BE DISABLED.
-# ------------> GAMEMODES <----------
-creative: "&7Creative!"
-creative_already: "&cYou are already in Creative!"
-survival: "&7Survival!"
-survival_already: "&cYou are already in Survival!"
-# ------------> TELEPORT <-----------
-tp:
-  player_to_player: "&7You have teleported to &a%target%"
-  to_me: "&7The player &a%sender% &7has teleported to you!"
-  to_yourself: "&7You have teleported to &aYourself"
-  to_him: "&7You have teleported %target% to &aHim"
-  tp_other: "&7The player &a%player% &7has teleported to &a%target%"
-  not_found: "&cThe player %player% is not online!"
-  to_cords: "&7You have teleported to &a%x% %y% %z%"
-  to_cords_by: "&7You have teleported to &a%x% %y% %z% by %sender%"
-  player_to_cords: "&7You have teleported %target% to &a%x% %y% %z%"
-  all: "&7All players have been teleported to you (&a%count%&7)"
-  all_to_cords: "&7All players have been teleported to &a%x% %y% %z% (&a%count%&7)"
-  wrong:
-    - "&4Wrong usage, use:"
-    - "&c/tp <otherplayer>"
-    - "&c/tp <player> <otherplaye>"
-    - "&c/tp <all> || /tpall"
-    - "&c/tp <all> <otherplayer>"
-    - "&c/tp <x> <y> <z>"
-    - "&c/tp <player> <x> <y> <z>"
-    - "&c/tp <all> <x> <y> <z>"
+server_prefix: "&8[&a&lSTAFF CORE&r&8]&r "
+staff_prefix: "&8[&3&lSTAFF&r&8]&r "
+language: "EN_NA" # Currently there is English (EN_NA) and Spanish (ES_CL)
+
+# ------------> DISCORD <--------------
+# If you have a discord and you want to implement webhooks with StaffCore, change it to true.
+# There are two different channels that StaffCore handles, the Alerts Channel & Debug Channel.
+# In the Alerts Channel, all the alerts will be sent to that channel, like bans, reports, etc.
+# In the Debug Channel, everything that happens in the plugin will be sent to that Channel, for exp:
+# If a player change his GameMode, or if a player kills another. (THIS IS STILL IN DEVELOPMENT, MORE STUFF SOON)
+# Now, How to implement this?, Easy, just Create a Channel > Edit Channel > Integrations > WebHooks > New WebHook >
+# Copy WebHook URL and pasted into each Type.
+discord:
+  type:
+    alerts:
+      enabled: true
+      name: "[STAFF CORE]"
+      name_image_url: "https://www.spigotmc.org/data/resource_icons/82/82324.jpg?1599952786" # You can put null
+      name_web_url: "https://github.com/BarraR3port" # You can put null if you don't want to use one
+      webhook_url: "THE DISCORD WEBHOOK URL"
+      custom_image: true
+      custom_image_url: "https://www.spigotmc.org/data/resource_icons/82/82324.jpg?1599952786"
+      color: 0xF456F4 # https://www.htmlcsscolor.com/
+    debug:
+      enabled: true
+      name: "[STAFF CORE]"
+      name_image_url: "https://www.spigotmc.org/data/resource_icons/82/82324.jpg?1599952786" # You can put null
+      name_web_url: "https://github.com/BarraR3port" # You can put null if you don't want to use one
+      webhook_url: "THE DISCORD WEBHOOK URL"
+      custom_image: true
+      custom_image_url: "https://www.spigotmc.org/data/resource_icons/82/82324.jpg?1599952786"
+      color: 0xFF0000 # https://www.htmlcsscolor.com/
+
 # ------------> STAFF <--------------
 staff:
   fly_invincible: true #<------------ On "true" the players with fly On, will be invincible!
-  staff_prefix: "&8[&3&lSTAFF&r&8]&r "
-  staff_chat_prefix: "&8[&3&lSC&r&8] &a%sender%: &5%msg%"
-  staff_enabled: "&7Staff mode &aOn"
-  staff_disabled: "&7Staff mode &cOff"
-  fly_enabled: "&7Fly &aOn!"
-  fly_disabled: "&7Fly &cOff!"
-  vanish_on_join: false #<------------ On "true" when the players join, they will automatically get vanished!
-  vanished: "&7Vanish &aOn"
-  un_vanished: "&7Vanish &cOff"
-  freeze_message: "&4&lYou have been Frozen!"
-  freeze_message_description: "&4&lDon't log out and join in the Discord"
-  freeze_ds: "https://discord.gg/rgekTwy"
-  freeze_unfrozen: "&4&lWe apologize, you can keep playing!"
-  freeze_bypass: " &cHas permissions to bypass a freeze"
-  never_seen: "&cThe player &a%player% &chas never connected to the server"
-  other_reason: "&aType the reason in the Chat!"
-  ip: "&7Your ip is:&a%ip%"
-  ip_other: "&a%target%'s ip: &5%ip%"
+
 # ------------> SOUNDS <-------------
+# Here is a list of all the sounds available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
 sounds: true #<---------------------- On True the plugin will execute some sounds!
 custom_sounds:
   staff_items_drop: "ENTITY_SLIME_ATTACK"
@@ -107,7 +94,9 @@ custom_sounds:
   close_ban: "BLOCK_NOTE_BLOCK_PLING"
   un_ban: "ENTITY_WITHER_BREAK_BLOCK"
   helpop: "BLOCK_NOTE_BLOCK_PLING"
+
 # ------------> PARTICLES <----------
+# Here is a list of all the particles available: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Particle.html
 custom_particles:
   freeze_player:
     enabled: true
@@ -133,125 +122,20 @@ custom_particles:
     offSetX: 3
     offSetY: 3
     offSetZ: 3
-# ------------> Report Alerts <----------
-report:
-  report_alerts: # Placeholders: %reporter% | %reported% | %reason% | %date%
-    - " "
-    - "                 &6&5Report Alerts &6"
-    - " "
-    - "         &3The player &r%reported% &3was &creported."
-    - " "
-    - "           &a&7Reported by: &r%reporter%"
-    - "           &a&7Reason: &4%reason%"
-    - "           &a&7Create Date &a%date%"
-    - " "
-  report_change: # Placeholders: %changed_by% | %reported% | %reporter% | %id% | %reason% | %create_date% | %report_status%
-    - " "
-    - "                 &6&5Report Changed &6"
-    - " "
-    - "    &a&aThe Report &cId: #&c%id% &awas &4%report_status% &aby: &c%changed_by%"
-    - " "
-    - "           &a&7Reported: &a%reported%"
-    - "           &a&7Reported by: &a%reporter%"
-    - "           &a&7Reason: &4%reason%"
-    - " "
-# ------------> Ban Alerts <----------
-ban:
-  ban_alerts:  # Placeholders: %baner% | %banned% | %reason% | %amount% | %time% | %exp_date% | %date%
-    - " "
-    - "                 &6&5Ban Alerts &6"
-    - " "
-    - "         &3The player &r%banned% &3was &cBanned."
-    - " "
-    - "           &a&7Banned by: &r%baner%"
-    - "           &a&7Reason: &4%reason%"
-    - "           &a&7Ip Banned: %IP_BANED%"
-    - "           &a&7For &a%amount%%time%"
-    - "           &a&7Until &a%exp_date%"
-    - "           &a&7Create Date &a%date%"
-    - " "
-  ban_change: # Placeholders: %changed_by% | %baner% | %banned% | %id% | %reason% | %create_date% | %exp_date% | %ban_status%
-    - " "
-    - "                 &6&5Ban Changed &6"
-    - " "
-    - "    &a&aThe Ban #&c%id% &awas &4%ban_status% &aby: &c%changed_by%"
-    - " "
-    - "           &a&7Banned: &a%banned%"
-    - "           &a&7Banned by: &a%baner%"
-    - "           &a&7Reason: &4%reason%"
-    - "           &a&7ID: &4%id%"
-    - " "
-  ban_msg: # Placeholders: %baner% | %banned% | %reason% | %amount% | %time% | %exp_date% | %date%
-    - "&6&5Ban System &6"
-    - ""
-    - "&4Your account %banned% were banned!"
-    - ""
-    - "&a&7Banned by: &a%baner%"
-    - "&a&7Reason: &4%reason%"
-    - "&a&7Ip Banned: %IP_BANED%"
-    - "&a&7For &a%amount%%time%"
-    - "&a&7Until &a%exp_date%"
-    - "&a&7Create Date &a%date%"
-    - ""
-  join_banned: # Placeholders: %baner% | %banned% | %reason% | %amount% | %time% | %exp_date% | %date%
-    - ""
-    - "&6&5Ban System &6"
-    - ""
-    - "&4Your account %banned% is banned!"
-    - ""
-    - "&a&7Banned by: &r%baner%"
-    - "&a&7Reason: &4%reason%"
-    - "&a&7Ip Banned: %IP_BANED%"
-    - "&a&7Time left: &c%time_left%"
-    - "&a&7Until &a%exp_date%"
-    - "&a&7Create Date &a%date%"
-    - ""
+
 # ------------> WARN SYSTEM <----------
 warns:
   max_warns: 4 # Max amount of warns that a player can have. (THE MAXIMUM AMOUNT IS 7 AND MIN 3)
   ban_on_exceeded: true # Ban on max warn exceeded.
   expire_after: 30 # Expire the warn after this amount of time.
-  expire_after_quantity: "d" # This can be: s | m | h | d
+  expire_after_quantity: "d" # This can be: SECONDS (s) | MINUTES (m) | HOURS (h) | DAYS (d)
   notify: true # Notify warned players when they join that the are warned
-  alerts:
-    warn_alerts: # Placeholders: %warner% | %warned% | %reason% | %amount% | %time% | %exp_date% | %date%
-      - " "
-      - "                 &6&5Warn Alerts &6"
-      - " "
-      - "         &3The player &r%warned% &3was &cWarned."
-      - " "
-      - "           &a&7Warned by: &r%warner%"
-      - "           &a&7Reason: &4%reason%"
-      - "           &a&7For &a%amount%%time%"
-      - "           &a&7Until &a%exp_date%"
-      - "           &a&7Create Date &a%date%"
-      - " "
-    warn_change: # Placeholders: %changed_by% | %warner% | %warned% | %id% | %reason% | %create_date% | %exp_date% | %warn_status%
-      - " "
-      - "                 &6&5Warn Changed &6"
-      - " "
-      - "    &a&aThe Warn #&c%id% &awas &4%warn_status% &aby: &c%changed_by%"
-      - " "
-      - "           &a&7Warned: &a%warned%"
-      - "           &a&7Warned by: &a%warner%"
-      - "           &a&7Reason: &4%reason%"
-      - "           &a&7ID: &4%id%"
-      - " "
-    notify: "&4Hey you have %amount% warnings, be careful"
+
 # ------------> FREEZE <-----------
 freeze:
-  freeze: "&cFrozen"
-  unfreeze: "&aUnfrozen"
   set_ice_block: true
   cancel_chat_while_frozen: true
-  freeze_alerts: # Placeholders: %frozen% | %freezer% | %status%
-    - " "
-    - "                 &6&5Freeze Alerts &6"
-    - " "
-    - "         &3The player &r%frozen% &3was %status%."
-    - " "
-    - "           &a%status% by: &r%freezer%"
-    - " "
+
 # ------------> WIPE <----------
 # Just to remember, when a player gets wiped, it will automatically gets kicked out from the
 # server. This happens because there are some data that the plugin needs to work fine, otherwise
@@ -262,30 +146,6 @@ wipe:
   reports: true
   warns: true
   wipe_on_ban: true
-  wipe_msg: # Placeholders: %wiper% | %wiped% | %bans% | %reports% | %warns%
-    - " "
-    - "                 &6&5Wipe Alerts &6"
-    - " "
-    - "         &3The player &r%wiped% &3was &aWiped."
-    - " "
-    - "           &aWiped by: &r%wiper%"
-    - "           &aBans wiped: %bans%"
-    - "           &aReports wiped: %reports%"
-    - "           &aWarns wiped: %warns%"
-    - " "
-  wipe_kick_msg: # Placeholders: %wiper% | %wiped%
-    - ""
-    - "&6&5Wipe System &6"
-    - ""
-    - "&4Your account has being Wiped Off!"
-    - ""
-    - "&a&7Wiped by: &a%wiper%"
-    - ""
-# ------------> HELPOP <----------
-helpop:
-  tostaff: "&7[&aHELPOP&7] &7[&c%user%&7] "
-  tousers: "&7[&aHELPOP&7] &aA member of the staff will help you out!"
-  bungee: "&7[&aHELPOP&7] &7[&c%user%&7] &7[&c%server%&7] "
 
 # ------------> ALERT OPTIONS <----------
 alerts:
@@ -297,3 +157,4 @@ alerts:
   freeze: true # Alert all players about a new frozen player.
   ban: false # Alert all players about a new banned player.
   warn: false # Alert all players about a new waned player.
+  fake_join_leave_msg: false # Alert players that a staff member leave the server when they turn on/off vanish.

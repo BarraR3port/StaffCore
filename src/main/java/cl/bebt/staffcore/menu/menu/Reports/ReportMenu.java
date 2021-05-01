@@ -27,7 +27,7 @@ public class ReportMenu extends ReportPlayerMenu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( "&cReport &4" + reported );
+        return utils.chat( utils.getString( "reports.menu.name" , "menu" , null ).replace( "%player%" , reported ) );
     }
     
     @Override
@@ -44,7 +44,6 @@ public class ReportMenu extends ReportPlayerMenu {
             return id;
         }
     }
-    
     
     @Override
     public void handleMenu( InventoryClickEvent e ){
@@ -81,8 +80,9 @@ public class ReportMenu extends ReportPlayerMenu {
             p.closeInventory( );
             PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
             PlayerData.set( new NamespacedKey( main.plugin , "reportmsg" ) , PersistentDataType.STRING , reported );
-            utils.tell( p , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "staff.other_reason" ) );
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
+            
+            utils.tell( p , utils.getString( "bans.other_reason","lg","sv" ) );
+        } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
         }
     }

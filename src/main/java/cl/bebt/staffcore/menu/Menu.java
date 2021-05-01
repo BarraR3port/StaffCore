@@ -53,6 +53,48 @@ public abstract class Menu implements InventoryHolder {
         return panel;
     }
     
+    protected ItemStack next( ){
+        ItemStack next = new ItemStack( Material.getMaterial( utils.getString( "menu_items.next.material" , "item" , null ) ) );
+        ItemMeta next_meta = next.getItemMeta( );
+        next_meta.setDisplayName( utils.chat( utils.getString( "menu_items.back.name" , "item" , null ) ) );
+        ArrayList < String > lore = new ArrayList <>( );
+        for ( String key : utils.getStringList( "menu_items.next.lore" , "item" ) ) {
+            lore.add( utils.chat( key ) );
+        }
+        next_meta.setLore( lore );
+        next_meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "next" ) , PersistentDataType.STRING , "next" );
+        next.setItemMeta( next_meta );
+        return next;
+    }
+    
+    protected ItemStack back( ){
+        ItemStack back = new ItemStack( Material.getMaterial( utils.getString( "menu_items.back.material" , "item" , null ) ) );
+        ItemMeta back_meta = back.getItemMeta( );
+        back_meta.setDisplayName( utils.chat( utils.getString( "menu_items.back.name" , "item" , null ) ) );
+        ArrayList < String > lore = new ArrayList <>( );
+        for ( String key : utils.getStringList( "menu_items.back.lore" , "item" ) ) {
+            lore.add( utils.chat( key ) );
+        }
+        back_meta.setLore( lore );
+        back_meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "back" ) , PersistentDataType.STRING , "back" );
+        back.setItemMeta( back_meta );
+        return back;
+    }
+    
+    protected ItemStack close( ){
+        ItemStack close = new ItemStack( Material.getMaterial( utils.getString( "menu_items.close.material" , "item" , null ) ) );
+        ItemMeta close_meta = close.getItemMeta( );
+        close_meta.setDisplayName( utils.chat( utils.getString( "menu_items.close.name" , "item" , null ) ) );
+        ArrayList < String > lore = new ArrayList <>( );
+        for ( String key : utils.getStringList( "menu_items.close.lore" , "item" ) ) {
+            lore.add( utils.chat( key ) );
+        }
+        close_meta.setLore( lore );
+        close_meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "BARRIER" ) , PersistentDataType.STRING , "BARRIER" );
+        close.setItemMeta( close_meta );
+        return close;
+    }
+    
     public abstract String getMenuName( );
     
     public abstract int getSlots( );
@@ -63,10 +105,7 @@ public abstract class Menu implements InventoryHolder {
     
     public void open( Player p ){
         inventory = Bukkit.createInventory( this , getSlots( ) , getMenuName( ) );
-        
-        //grab all the items specified to be used for this menu and add to inventory
         this.setMenuItems( );
-        //open the inventory for the player
         playerMenuUtility.getOwner( ).openInventory( inventory );
         
     }
@@ -76,13 +115,6 @@ public abstract class Menu implements InventoryHolder {
         ItemMeta itemMeta = item.getItemMeta( );
         itemMeta.setDisplayName( displayName );
         itemMeta.setLore( Arrays.asList( lore ) );
-        if ( item.getType( ).equals( Material.BARRIER ) ) {
-            ArrayList < String > go_back = new ArrayList < String >( );
-            go_back.add( utils.chat( "&aRight click to close" ) );
-            go_back.add( utils.chat( "&aLeft click to go back" ) );
-            itemMeta.setLore( go_back );
-            itemMeta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "BARRIER" ) , PersistentDataType.STRING , "BARRIER" );
-        }
         item.setItemMeta( itemMeta );
         return item;
     }

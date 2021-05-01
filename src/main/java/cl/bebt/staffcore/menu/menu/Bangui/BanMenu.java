@@ -27,7 +27,7 @@ public class BanMenu extends BanPlayerMenu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( "&cBan &4" + banned );
+        return utils.chat( utils.getString( "ban_menu.name" , "menu" , null ).replace( "%player%" , banned ) );
     }
     
     @Override
@@ -70,8 +70,8 @@ public class BanMenu extends BanPlayerMenu {
             p.closeInventory( );
             PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
             PlayerData.set( new NamespacedKey( main.plugin , "banmsg" ) , PersistentDataType.STRING , banned );
-            utils.tell( p , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "staff.other_reason" ) );
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
+            utils.tell( p , utils.getString( "bans.other_reason" , "lg" , "sv" ) );
+        } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
         }
     }
@@ -133,7 +133,7 @@ public class BanMenu extends BanPlayerMenu {
         lore.add( utils.chat( "&dBan &r" + banned + " &dfor Hacking" ) );
         meta.setLore( lore );
         meta.setDisplayName( utils.chat( "&4Speed" ) );
-        meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "speed" ) , PersistentDataType.STRING , "speed" );
+        meta.getPersistentDataContainer( ).set( new NamespacedKey( plugin , "speed" ) , PersistentDataType.STRING , "speed" );
         item.setItemMeta( meta );
         return item;
     }

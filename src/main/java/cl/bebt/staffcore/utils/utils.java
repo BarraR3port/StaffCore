@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import javax.annotation.Nullable;
+import javax.validation.constraints.NotNull;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 public class utils {
     
     private static final ArrayList < Player > players = new ArrayList <>( Bukkit.getServer( ).getOnlinePlayers( ).size( ) );
+    
     private static main plugin;
     
     public utils( main plugin ){
@@ -32,6 +35,115 @@ public class utils {
     
     public static void tell( Player player , String message ){
         player.sendMessage( utils.chat( message ) );
+    }
+    
+    /**
+     * @param path   The path
+     * @param type   Language = "lg" | Item = "item" | Alert = "alerts"
+     * @param prefix Server Prefix = "sv" | Staff Prefix = "staff"
+     *
+     * @return The string asked for.
+     */
+    public static String getString( String path , @Nullable String type , @Nullable String prefix ){
+        if ( type == null && prefix == null ) {
+            return plugin.getConfig( ).getString( path );
+        }
+        if ( type == null && prefix.equalsIgnoreCase( "sv" ) ) {
+            return plugin.getConfig().getString("server_prefix" ) + plugin.getConfig( ).getString( path );
+        } else if ( type == null && prefix.equalsIgnoreCase( "staff" ) ) {
+            return plugin.getConfig( ).getString( "staff_prefix" ) + plugin.getConfig( ).getString( path );
+        } else if ( type.equalsIgnoreCase( "lg" ) && prefix == null ) {
+            if ( plugin.getConfig( ).getString( "language" ).equalsIgnoreCase( "EN_NA" ) ) {
+                return plugin.en_na.getConfig( ).getString( path );
+            } else {
+                return plugin.es_cl.getConfig( ).getString( path );
+            }
+        }
+        if ( type.equalsIgnoreCase( "lg" ) && prefix != null ) { //Language
+            if ( plugin.getConfig( ).getString( "language" ).equalsIgnoreCase( "EN_NA" ) ) {
+                if ( prefix.equalsIgnoreCase( "sv" ) ) {
+                    return plugin.getConfig().getString("server_prefix" ) + plugin.en_na.getConfig( ).getString( path );
+                } else {
+                    return plugin.getConfig( ).getString( "staff_prefix" ) + plugin.en_na.getConfig( ).getString( path );
+                }
+            } else {
+                if ( prefix.equalsIgnoreCase( "sv" ) ) {
+                    return plugin.getConfig().getString("server_prefix" ) + plugin.es_cl.getConfig( ).getString( path );
+                } else {
+                    return plugin.getConfig( ).getString( "staff_prefix" ) + plugin.es_cl.getConfig( ).getString( path );
+                }
+            }
+        } else if ( type.equalsIgnoreCase( "item" ) && prefix == null ) {
+            return plugin.items.getConfig( ).getString( path );
+        } else if ( type.equalsIgnoreCase( "menu" ) && prefix == null ) {
+            return plugin.menus.getConfig( ).getString( path );
+        } else {
+            return "String Not Found";
+        }
+    }
+    
+    public static boolean getBoolean( String path , @Nullable String type ){
+        if ( type == null ) return plugin.getConfig( ).getBoolean( path );
+        if ( type.equalsIgnoreCase( "lg" ) ) { //Language
+            if ( plugin.getConfig( ).getString( "language" ).equalsIgnoreCase( "EN_NA" ) ) {
+                return plugin.en_na.getConfig( ).getBoolean( path );
+            } else {
+                return plugin.es_cl.getConfig( ).getBoolean( path );
+            }
+        } else if ( type.equalsIgnoreCase( "item" ) ) {
+            return plugin.items.getConfig( ).getBoolean( path );
+        } else {
+            return plugin.alerts.getConfig( ).getBoolean( path );
+        }
+    }
+    
+    /**
+     * @param path The String of the path
+     * @param type lg | item | alerts
+     *
+     * @return the int that was asked for
+     */
+    public static int getInt( String path , @Nullable String type ){
+        if ( type == null ) return plugin.getConfig( ).getInt( path );
+        if ( type.equalsIgnoreCase( "lg" ) ) { //Language
+            if ( plugin.getConfig( ).getString( "language" ).equalsIgnoreCase( "EN_NA" ) ) {
+                return plugin.en_na.getConfig( ).getInt( path );
+            } else {
+                return plugin.es_cl.getConfig( ).getInt( path );
+            }
+        } else if ( type.equalsIgnoreCase( "item" ) ) {
+            return plugin.items.getConfig( ).getInt( path );
+        } else {
+            return plugin.alerts.getConfig( ).getInt( path );
+        }
+    }
+    
+    /**
+     * @param path The String of the path
+     * @param type item | alerts | menu
+     *
+     * @return
+     */
+    public static List < String > getStringList( @NotNull String path , @NotNull String type ){
+        if ( type.equalsIgnoreCase( "item" ) ) {
+            return plugin.items.getConfig( ).getStringList( path );
+        } else if ( type.equalsIgnoreCase( "menu" ) ) {
+            return plugin.menus.getConfig( ).getStringList( path );
+        } else {
+            return plugin.alerts.getConfig( ).getStringList( path );
+        }
+    }
+    
+    public static void reloadConfigs( ){
+        plugin.reloadConfig( );
+        plugin.bans.reloadConfig( );
+        plugin.alts.reloadConfig( );
+        plugin.warns.reloadConfig( );
+        plugin.en_na.reloadConfig( );
+        plugin.es_cl.reloadConfig( );
+        plugin.items.reloadConfig( );
+        plugin.alerts.reloadConfig( );
+        plugin.menus.reloadConfig( );
     }
     
     public static void ccAll( ){
@@ -65,16 +177,17 @@ public class utils {
     }
     
     public static void PlaySound( Player p , String path ){
-        try{
+        try {
             if ( plugin.getConfig( ).getBoolean( "sounds" ) ) {
                 Sound sound = Sound.valueOf( plugin.getConfig( ).getString( "custom_sounds." + path ) );
                 p.playSound( p.getLocation( ) , sound , 1 , 1 );
             }
-        } catch ( IllegalArgumentException ignored ){ }
+        } catch ( IllegalArgumentException ignored ) {
+        }
     }
     
     public static void PlayParticle( Player p , String path ){
-        try{
+        try {
             if ( plugin.getConfig( ).getBoolean( "custom_particles." + path + ".enabled" ) ) {
                 Particle particle = Particle.valueOf( plugin.getConfig( ).getString( "custom_particles." + path + ".particle" ) );
                 int count = plugin.getConfig( ).getInt( "custom_particles." + path + ".count" );
@@ -86,7 +199,8 @@ public class utils {
                     p.getWorld( ).spawnParticle( particle , p.getLocation( ) , count , offSetX , offSetY , offSetZ );
                 }
             }
-        } catch ( IllegalArgumentException ignored ){ }
+        } catch ( IllegalArgumentException ignored ) {
+        }
     }
     
     public static String stringify( List < String > l , String Ip ){
@@ -156,18 +270,6 @@ public class utils {
         }
     }
     
-    public static String getString( String s ){
-        return plugin.getConfig( ).getString( s );
-    }
-    
-    public static Boolean getBoolean( String s ){
-        return plugin.getConfig( ).getBoolean( s );
-    }
-    
-    public static int getInt( String s ){
-        return plugin.getConfig( ).getInt( s );
-    }
-    
     public static Player randomPlayer( Player p ){
         int count = 0;
         while (count < 10) {
@@ -196,8 +298,7 @@ public class utils {
             for ( String key : inventorySection.getKeys( false ) ) {
                 current++;
             }
-        } catch ( NullPointerException ignored ) {
-        }
+        } catch ( NullPointerException ignored ) { }
         return current;
     }
     
@@ -212,8 +313,7 @@ public class utils {
                     if ( main.plugin.warns.getConfig( ).getString( "warns." + i + ".name" ).equalsIgnoreCase( warned ) ) {
                         warnings++;
                     }
-                } catch ( NullPointerException ignored ) {
-                }
+                } catch ( NullPointerException ignored ) { }
             }
             return warnings;
         }
@@ -230,8 +330,7 @@ public class utils {
                     if ( main.plugin.reports.getConfig( ).getString( "reports." + i + ".name" ).equalsIgnoreCase( reported ) ) {
                         reports++;
                     }
-                } catch ( NullPointerException ignored ) {
-                }
+                } catch ( NullPointerException ignored ) { }
             }
             return reports;
         }
@@ -250,10 +349,12 @@ public class utils {
         if ( mysqlEnabled( ) ) {
             Users.addAll( SQLGetter.getPlayersNames( ) );
         } else {
-            ConfigurationSection inventorySection = plugin.alts.getConfig( ).getConfigurationSection( "alts" );
-            for ( String key : inventorySection.getKeys( false ) ) {
-                Users.add( key );
-            }
+            try {
+                ConfigurationSection inventorySection = plugin.alts.getConfig( ).getConfigurationSection( "alts" );
+                for ( String key : inventorySection.getKeys( false ) ) {
+                    Users.add( key );
+                }
+            } catch ( NullPointerException ignored ) { }
         }
         return Users;
     }
@@ -276,35 +377,60 @@ public class utils {
         return Users;
     }
     
-    public static Boolean isOlderVersion(){
-        String version = plugin.getServer().getBukkitVersion();
-        version = version.substring( 0,4 );
-        if ( version.endsWith( "." ) ) { version = version.substring( 0,version.length( ) - 1 ); }
-        version = version.replace( "-","" );
-        version = version.trim();
+    public static Boolean isOlderVersion( ){
+        String version = plugin.getServer( ).getBukkitVersion( );
+        version = version.substring( 0 , 4 );
+        if ( version.endsWith( "." ) ) {
+            version = version.substring( 0 , version.length( ) - 1 );
+        }
+        version = version.replace( "-" , "" );
+        version = version.trim( );
         
-        if ( version.equalsIgnoreCase( "1.16" ) ){
+        if ( version.equalsIgnoreCase( "1.16" ) ) {
             return false;
-        } else if ( version.equalsIgnoreCase( "1.15" ) ){
+        } else if ( version.equalsIgnoreCase( "1.15" ) ) {
             return false;
-        } else if ( version.equalsIgnoreCase( "1.14" ) ){
+        } else if ( version.equalsIgnoreCase( "1.14" ) ) {
             return false;
-        } else if ( version.equalsIgnoreCase( "1.13" ) ){
+        } else if ( version.equalsIgnoreCase( "1.13" ) ) {
             return true;
-        } else if ( version.equalsIgnoreCase( "1.12" ) ){
+        } else if ( version.equalsIgnoreCase( "1.12" ) ) {
             return true;
-        } else if ( version.equalsIgnoreCase( "1.11" ) ){
+        } else if ( version.equalsIgnoreCase( "1.11" ) ) {
             return true;
-        } else if ( version.equalsIgnoreCase( "1.10" ) ){
+        } else if ( version.equalsIgnoreCase( "1.10" ) ) {
             return true;
-        } else if ( version.equalsIgnoreCase( "1.9" ) ){
+        } else if ( version.equalsIgnoreCase( "1.9" ) ) {
             return true;
-        } else if ( version.equalsIgnoreCase( "1.8" ) ){
+        } else if ( version.equalsIgnoreCase( "1.8" ) ) {
             return true;
-        } else if ( version.equalsIgnoreCase( "1.7" ) ){
+        } else if ( version.equalsIgnoreCase( "1.7" ) ) {
             return true;
         } else {
             return true;
         }
     }
+    
+    public static void sendDiscordMsg( String title , ArrayList < String > msg , String type ){
+        if ( type.equalsIgnoreCase( "alerts" ) ) {
+            DiscordUtils.DiscordWebHooksAlerts( msg , title );
+        } else if ( type.equalsIgnoreCase( "debug" ) ) {
+            try {
+                DiscordUtils.DiscordWebHooksDebug( msg , title );
+            } catch ( IllegalArgumentException exception ) {
+                if ( getBoolean( "discord.type.alerts.enabled" , null ) ) {
+                    tell( Bukkit.getConsoleSender( ) , getString( "discord.could_not_connect" , "lg" , "staff" ) );
+                }
+            }
+        }
+    }
+    
+    public static String getBungeecordServerPrefix( ){
+        return plugin.getConfig().getString("bungeecord.server_prefix" );
+    }
+    
+    public static String getServer( ){
+        return plugin.getConfig().getString( "bungeecord.server" );
+    }
+    
 }

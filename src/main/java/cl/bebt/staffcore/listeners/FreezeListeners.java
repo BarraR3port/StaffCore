@@ -16,6 +16,7 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -29,7 +30,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.HashMap;
 
-public class FreezeListeners implements Listener{
+public class FreezeListeners implements Listener {
     
     private final main plugin;
     
@@ -37,45 +38,43 @@ public class FreezeListeners implements Listener{
         this.plugin = plugin;
     }
     
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public < chart > void onPlayerMove( PlayerMoveEvent e ){
         Player p = e.getPlayer( );
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
-        chart block = ( chart ) "⬛";
         if ( PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-            e.setCancelled( true );
-        }
-        if ( PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
+            chart block = ( chart ) "⬛";
             String white = "&f&l" + block;
             String yellow = "&6&l" + block;
             String red = "&4&l" + block;
             String black = "&0&l" + block;
-            p.sendMessage( utils.chat( white + white + white + white + white + white + white + white + white ) );
-            p.sendMessage( utils.chat( white + white + white + white + red + white + white + white + white ) );
-            p.sendMessage( utils.chat( white + white + white + red + yellow + red + white + white + white ) );
-            p.sendMessage( utils.chat( white + white + red + yellow + black + yellow + red + white + white ) );
-            p.sendMessage( utils.chat( white + white + red + yellow + black + yellow + red + white + white ) );
-            p.sendMessage( utils.chat( white + red + yellow + yellow + black + yellow + yellow + red + white ) );
-            p.sendMessage( utils.chat( white + red + yellow + yellow + yellow + yellow + yellow + red + white ) );
-            p.sendMessage( utils.chat( red + yellow + yellow + yellow + black + yellow + yellow + yellow + red ) );
-            p.sendMessage( utils.chat( red + red + red + red + red + red + red + red + red ) );
-            ComponentBuilder cb = new ComponentBuilder( utils.chat( plugin.getConfig( ).getString( "staff.freeze_message_description" ) ) );
-            TextComponent dis = new TextComponent( utils.chat( plugin.getConfig( ).getString( "staff.freeze_message" ) ) );
+            utils.tell( p , white + white + white + white + white + white + white + white + white );
+            utils.tell( p , white + white + white + white + red + white + white + white + white );
+            utils.tell( p , white + white + white + red + yellow + red + white + white + white );
+            utils.tell( p , white + white + red + yellow + black + yellow + red + white + white );
+            utils.tell( p , white + white + red + yellow + black + yellow + red + white + white );
+            utils.tell( p , white + red + yellow + yellow + black + yellow + yellow + red + white );
+            utils.tell( p , white + red + yellow + yellow + yellow + yellow + yellow + red + white );
+            utils.tell( p , red + yellow + yellow + yellow + black + yellow + yellow + yellow + red );
+            utils.tell( p , red + red + red + red + red + red + red + red + red );
+            ComponentBuilder cb = new ComponentBuilder( utils.chat( utils.getString( "freeze.freeze_message_description" , "lg" , null ) ) );
+            TextComponent dis = new TextComponent( utils.chat( utils.getString( "freeze.freeze_message" , "lg" , null ) ) );
             dis.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT , cb.create( ) ) );
-            dis.setClickEvent( new ClickEvent( ClickEvent.Action.OPEN_URL , "https://" + plugin.getConfig( ).getString( "staff.freeze_ds" ) ) );
+            dis.setClickEvent( new ClickEvent( ClickEvent.Action.OPEN_URL , "https://" + utils.getString( "freeze.freeze_ds" , "lg" , null ) ) );
             p.spigot( ).sendMessage( dis );
+            e.setCancelled( true );
         }
     }
     
     //                       Vanish and Freeze                              \\
     @SuppressWarnings("ConstantConditions")
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onInteract( PlayerInteractEvent e ){
         Player p = e.getPlayer( );
         Action a = e.getAction( );
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) ) {
-            if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ){
+            if ( !StaffCoreAPI.getTrollStatus( p.getName( ) ) ) {
                 try {
                     if ( e.getAction( ).equals( Action.RIGHT_CLICK_BLOCK ) ) {
                         switch (e.getClickedBlock( ).getType( )) {
@@ -220,23 +219,23 @@ public class FreezeListeners implements Listener{
                         SetVanish.setVanish( p , false );
                         p.getInventory( ).remove( SetStaffItems.vanishOn( ) );
                         p.getInventory( ).setItemInMainHand( SetStaffItems.vanishOff( ) );
-                        utils.tell( p , plugin.getConfig( ).getString( "staff.staff_prefix" ) + plugin.getConfig( ).getString( "staff.un_vanished" ) );
+                        utils.tell( p , utils.getString( "vanish.disabled" , "lg" , "staff" ) );
                         CountdownManager.setCountDown( p , 0.2D );
                     }
                     if ( SetStaffItems.vanishOff( ).equals( itemInMainHand ) ) {
                         SetVanish.setVanish( p , true );
                         p.getInventory( ).remove( SetStaffItems.vanishOff( ) );
                         p.getInventory( ).setItemInMainHand( SetStaffItems.vanishOn( ) );
-                        utils.tell( p , plugin.getConfig( ).getString( "staff.staff_prefix" ) + plugin.getConfig( ).getString( "staff.vanished" ) );
+                        utils.tell( p , utils.getString( "vanish.enabled" , "lg" , "staff" ) );
                         CountdownManager.setCountDown( p , 0.2D );
                     }
                     if ( SetStaffItems.randomTp( ).equals( itemInMainHand ) ) {
                         Player random = utils.randomPlayer( p );
                         if ( random != null ) {
                             p.teleport( random.getLocation( ) );
-                            utils.tell( p , plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&7Random Teleported to &a" + random.getName( ) );
+                            utils.tell( p , utils.getString( "tp.random" , "lg" , "staff" ).replace( "%player%" , random.getName( ) ) );
                         } else {
-                            utils.tell( p , plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&cNot enough players to teleport" );
+                            utils.tell( p , utils.getString( "tp.not_enough" , "lg" , "staff" ) );
                         }
                         CountdownManager.setCountDown( p , 0.2D );
                     }
@@ -244,7 +243,8 @@ public class FreezeListeners implements Listener{
             }
         }
     }
-    @EventHandler
+    
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onFoodLevelChange( FoodLevelChangeEvent e ){
         if ( e.getEntity( ) instanceof Player ) {
             Player p = ( Player ) e.getEntity( );
@@ -258,7 +258,7 @@ public class FreezeListeners implements Listener{
         }
     }
     
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void checkDamage( EntityDamageEvent event ){
         if ( event.getEntity( ) instanceof Player ) {
             Player p = ( Player ) event.getEntity( );
@@ -268,7 +268,7 @@ public class FreezeListeners implements Listener{
                         || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING )
                         || PlayerData.has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING )
                 ) {
-                    if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+                    if ( !StaffCoreAPI.getTrollStatus( p.getName( ) ) ) {
                         event.setCancelled( true );
                     }
                 }
@@ -276,7 +276,7 @@ public class FreezeListeners implements Listener{
         }
     }
     
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void PlayerRespawnEvent( PlayerRespawnEvent e ){
         Player p = e.getPlayer( );
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
@@ -287,12 +287,12 @@ public class FreezeListeners implements Listener{
     }
     
     @SuppressWarnings("ConstantConditions")
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBreakBlock( BlockBreakEvent e ){
         Player p = e.getPlayer( );
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-            if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+            if ( !StaffCoreAPI.getTrollStatus( p.getName( ) ) ) {
                 e.setCancelled( true );
             }
         }
@@ -324,14 +324,16 @@ public class FreezeListeners implements Listener{
             if ( p.getInventory( ).getItemInMainHand( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "invsee" ) , PersistentDataType.STRING ) ) {
                 e.setCancelled( true );
             }
-        } catch ( NullPointerException ignored ) { }
+        } catch ( NullPointerException ignored ) {
+        }
     }
-    @EventHandler
+    
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlaceBlock( BlockPlaceEvent e ){
         Player p = e.getPlayer( );
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-            if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+            if ( !StaffCoreAPI.getTrollStatus( p.getName( ) ) ) {
                 e.setCancelled( true );
             }
         }
@@ -346,7 +348,7 @@ public class FreezeListeners implements Listener{
         }
     }
     
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onHit( EntityDamageByEntityEvent e ){
         Entity mob = e.getDamager( );
         if ( mob instanceof Player ) {
@@ -354,33 +356,34 @@ public class FreezeListeners implements Listener{
                 Player p = ( Player ) e.getDamager( );
                 PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
                 if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-                    if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+                    if ( !StaffCoreAPI.getTrollStatus( p.getName( ) ) ) {
                         e.setCancelled( true );
                     }
                 }
-            } catch ( ClassCastException ignored ) { }
+            } catch ( ClassCastException ignored ) {
+            }
         }
     }
     
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onDamage( EntityDamageEvent e ){
         Entity p = e.getEntity( );
         if ( p instanceof Player ) {
             PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
             if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-                if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+                if ( !StaffCoreAPI.getTrollStatus( p.getName( ) ) ) {
                     e.setCancelled( true );
                 }
             }
         }
     }
     
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onDrop( PlayerDropItemEvent e ){
         Player p = e.getPlayer( );
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-            if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+            if ( !StaffCoreAPI.getTrollStatus( p.getName( ) ) ) {
                 e.setCancelled( true );
                 return;
             }
@@ -412,25 +415,25 @@ public class FreezeListeners implements Listener{
         }
     }
     
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onItemPickUp( EntityPickupItemEvent e ){
         Entity p = e.getEntity( );
         if ( p instanceof Player ) {
             PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
             if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-                if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+                if ( !StaffCoreAPI.getTrollStatus( p.getName( ) ) ) {
                     e.setCancelled( true );
                 }
             }
         }
     }
     
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityInteract( PlayerInteractEntityEvent e ){
         Player player = e.getPlayer( );
         PersistentDataContainer PlayerData = player.getPersistentDataContainer( );
         if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-            if ( !StaffCoreAPI.getTrolStatus( player.getName( ) ) ) {
+            if ( !StaffCoreAPI.getTrollStatus( player.getName( ) ) ) {
                 e.setCancelled( true );
             }
         }
@@ -446,10 +449,10 @@ public class FreezeListeners implements Listener{
                     
                 } else if ( !((pData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ))) ) {
                     if ( p.hasPermission( "staffcore.freeze.bypas" ) ) {
-                        player.sendMessage( utils.chat( plugin.getConfig( ).getString( "staff.staff_prefix" ) + p.getName( ) + plugin.getConfig( ).getString( "staff.freeze_bypass" ) ) );
+                        utils.tell( player , utils.getString( "freeze.freeze_bypass" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
                     } else {
                         FreezePlayer.FreezePlayer( p , player.getName( ) , true );
-                        p.sendMessage( utils.chat( plugin.getConfig( ).getString( "staff.freeze_message" ) ) );
+                        utils.tell( player , utils.getString( "freeze.freeze_message" , "lg" , "staff" ) );
                     }
                 }
             }
@@ -462,7 +465,7 @@ public class FreezeListeners implements Listener{
         }
     }
     
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityInteract( PlayerCommandPreprocessEvent e ){
         Player player = e.getPlayer( );
         PersistentDataContainer PlayerData = player.getPersistentDataContainer( );
@@ -473,20 +476,20 @@ public class FreezeListeners implements Listener{
         }
     }
     
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBowUse( EntityShootBowEvent e ){
         if ( e.getEntity( ) instanceof Player && e.getProjectile( ) instanceof Arrow ) {
             Player p = ( Player ) e.getEntity( );
             PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
             if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-                if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+                if ( !StaffCoreAPI.getTrollStatus( p.getName( ) ) ) {
                     e.setCancelled( true );
                 }
             }
         }
     }
     
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onTarget( EntityTargetEvent e ){
         if ( e.getTarget( ) instanceof Player ) {
             Player p = ( Player ) e.getTarget( );
@@ -498,73 +501,73 @@ public class FreezeListeners implements Listener{
         }
     }
     
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBucketEmpty( PlayerBucketEmptyEvent e ){
         Player p = e.getPlayer( );
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-            if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+            if ( !StaffCoreAPI.getTrollStatus( p.getName( ) ) ) {
                 e.setCancelled( true );
             }
         }
     }
     
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBucketFill( PlayerBucketFillEvent e ){
         Player p = e.getPlayer( );
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-            if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+            if ( !StaffCoreAPI.getTrollStatus( p.getName( ) ) ) {
                 e.setCancelled( true );
             }
         }
     }
     
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBed( PlayerBedEnterEvent e ){
         Player p = e.getPlayer( );
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-            if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+            if ( !StaffCoreAPI.getTrollStatus( p.getName( ) ) ) {
                 e.setCancelled( true );
             }
         }
     }
     
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onFish( PlayerFishEvent e ){
         Player p = e.getPlayer( );
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-            if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+            if ( !StaffCoreAPI.getTrollStatus( p.getName( ) ) ) {
                 e.setCancelled( true );
             }
         }
     }
     
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onConsume( PlayerItemConsumeEvent e ){
         Player p = e.getPlayer( );
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-            if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+            if ( !StaffCoreAPI.getTrollStatus( p.getName( ) ) ) {
                 e.setCancelled( true );
             }
         }
     }
     
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPickArrow( PlayerPickupArrowEvent e ){
         Player p = e.getPlayer( );
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
         if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-            if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+            if ( !StaffCoreAPI.getTrollStatus( p.getName( ) ) ) {
                 e.setCancelled( true );
             }
         }
     }
     
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onRecipeDiscoverEvent( PlayerRecipeDiscoverEvent e ){
         Player p = e.getPlayer( );
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
@@ -573,20 +576,20 @@ public class FreezeListeners implements Listener{
         }
     }
     
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onTrow( ProjectileLaunchEvent e ){
         if ( e.getEntity( ).getShooter( ) instanceof Player ) {
             Player p = ( Player ) e.getEntity( ).getShooter( );
             PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
             if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-                if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+                if ( !StaffCoreAPI.getTrollStatus( p.getName( ) ) ) {
                     e.setCancelled( true );
                 }
             }
         }
     }
     
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerInteract( PlayerInteractEvent e ){
         Player p = e.getPlayer( );
         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
@@ -597,12 +600,13 @@ public class FreezeListeners implements Listener{
             try {
                 if ( substring.equals( "EGG" ) ) {
                     if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-                        if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
+                        if ( !StaffCoreAPI.getTrollStatus( p.getName( ) ) ) {
                             e.setCancelled( true );
                         }
                     }
                 }
-            } catch ( StringIndexOutOfBoundsException ignored ) { }
+            } catch ( StringIndexOutOfBoundsException ignored ) {
+            }
         }
     }
 }

@@ -26,7 +26,7 @@ public class WarnMenu extends WarnPlayerMenu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( "&cWarn &4" + warned );
+        return utils.chat( utils.getString( "warns.menu.name" , "menu" , null ).replace( "%player%" , warned ) );
     }
     
     @Override
@@ -70,9 +70,9 @@ public class WarnMenu extends WarnPlayerMenu {
             p.closeInventory( );
             PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
             PlayerData.set( new NamespacedKey( main.plugin , "warnmsg" ) , PersistentDataType.STRING , warned );
-            utils.tell( p , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "staff.other_reason" ) );
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
-        
+            utils.tell( p , utils.getString( "bans.other_reason" , "lg" , "sv" ) );
+        } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
+            p.closeInventory( );
         }
     }
     

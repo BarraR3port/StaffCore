@@ -1,5 +1,6 @@
 package cl.bebt.staffcore.commands.Staff;
 
+import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.Bukkit;
@@ -7,8 +8,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.net.InetAddress;
 
 public class Ip implements CommandExecutor {
     
@@ -23,52 +22,34 @@ public class Ip implements CommandExecutor {
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {
-            if ( args.length == 0 ) {
-                utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&4&lWrong usage." );
-                utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&4&lUse ping <player>" );
-            } else if ( args.length == 1 ) {
+            if ( args.length == 1 ) {
                 if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
-                    Player p = Bukkit.getPlayer( args[0] );
-                    InetAddress address = p.getAddress( ).getAddress( );
-                    String ip = address.toString( );
-                    ip = ip.replace( "/" , "" );
-                    String message = plugin.getConfig( ).getString( "staff.ip_other" );
-                    message = message.replace( "%ip%" , ip );
-                    message = message.replace( "%target%" , args[0] );
-                    utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + message );
+                    String ip = StaffCoreAPI.getIp( Bukkit.getPlayer( args[0] ) );
+                    utils.tell( sender , utils.getString( "ip_other" , "lg" , "sv" ).replace( "%ip%" , ip ).replace( "%player%" , args[0] ) );
                 } else {
-                    utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "player_dont_exist" ) );
+                    utils.tell( sender , utils.getString( "p_dont_exist" , "lg" , "sv" ) );
                 }
+            } else {
+                utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "ip | ip <player>" ) );
             }
         } else if ( sender instanceof Player ) {
             if ( args.length == 0 ) {
                 Player p = ( Player ) sender;
                 if ( p.hasPermission( "staffcore.ip" ) ) {
-                    InetAddress address = p.getAddress( ).getAddress( );
-                    String ip = address.toString( );
-                    ip = ip.replace( "/" , "" );
-                    String message = plugin.getConfig( ).getString( "staff.ip" );
-                    message = message.replace( "%ip%" , ip );
-                    utils.tell( p , plugin.getConfig( ).getString( "staff.staff_prefix" ) + message );
+                    utils.tell( sender , utils.getString( "ip" , "lg" , "sv" ).replace( "%ip%" , StaffCoreAPI.getIp( p ) ) );
                 } else {
-                    utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) );
+                    utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
                 }
             } else if ( args.length == 1 ) {
-                if ( sender.hasPermission( "staffcore.ip" ) ) {
+                if ( sender.hasPermission( "staffcore.ip.others" ) ) {
                     if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
-                        Player player = Bukkit.getPlayer( args[0] );
-                        InetAddress address = player.getAddress( ).getAddress( );
-                        String ip = address.toString( );
-                        ip = ip.replace( "/" , "" );
-                        String message = plugin.getConfig( ).getString( "staff.ip_other" );
-                        message = message.replace( "%ip%" , ip );
-                        message = message.replace( "%target%" , args[0] );
-                        utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + message );
+                        String ip = StaffCoreAPI.getIp( Bukkit.getPlayer( args[0] ) );
+                        utils.tell( sender , utils.getString( "ip_other" , "lg" , "sv" ).replace( "%ip%" , ip ).replace( "%player%" , args[0] ) );
                     } else {
-                        utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "player_dont_exist" ) );
+                        utils.tell( sender , utils.getString( "p_dont_exist" , "lg" , "sv" ) );
                     }
                 } else {
-                    utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) );
+                    utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
                 }
             }
         }

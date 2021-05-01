@@ -1,5 +1,6 @@
 package cl.bebt.staffcore.utils;
 
+import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.MSGChanel.SendMsg;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
@@ -57,15 +58,15 @@ public class WarnPlayer {
                 main.plugin.warns.getConfig( ).set( "warns." + id + ".date" , format.format( now ) );
                 main.plugin.warns.getConfig( ).set( "warns." + id + ".expdate" , format.format( ExpDate ) );
                 main.plugin.warns.getConfig( ).set( "warns." + id + ".status" , "open" );
-                main.plugin.warns.getConfig( ).set( "current" , new PlayerMenuUtility( p ).currentWarns( ) );
+                main.plugin.warns.getConfig( ).set( "current" , StaffCoreAPI.getCurrentWarns( ) );
                 main.plugin.warns.saveConfig( );
             }
         }
-        SendMsg.sendWarnAlert( p.getName( ) , warned , reason , amount , time , format.format( ExpDate ) , format.format( now ) , main.plugin.getConfig( ).getString( "bungeecord.server" ) );
+        SendMsg.sendWarnAlert( p.getName( ) , warned , reason , amount , time , format.format( ExpDate ) , format.format( now ) , utils.getString( "bungeecord.server" , null , null ) );
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-            if ( utils.getBoolean( "alerts.warn" ) || people.hasPermission( "staffcore.staff" ) ) {
+            if ( utils.getBoolean( "alerts.warn" , null ) || people.hasPermission( "staffcore.staff" ) ) {
                 utils.PlaySound( people , "warn_alerts" );
-                for ( String key : main.plugin.getConfig( ).getStringList( "warns.alerts.warn_alerts" ) ) {
+                for ( String key : utils.getStringList( "warns.alerts.warn_alerts" , "alerts" ) ) {
                     key = key.replace( "%warner%" , p.getName( ) );
                     key = key.replace( "%warned%" , warned );
                     key = key.replace( "%reason%" , reason );
@@ -77,7 +78,7 @@ public class WarnPlayer {
                 }
             }
         }
-        if ( utils.currentPlayerWarns( warned ) >= utils.getInt( "warns.max_warns" ) ) {
+        if ( utils.currentPlayerWarns( warned ) >= utils.getInt( "warns.max_warns" , null ) ) {
             BanPlayer.BanCooldown( p , warned , reason + " (Max Warn Exeded)" , amount , time );
             WipeWarns( warned );
         }
@@ -114,11 +115,11 @@ public class WarnPlayer {
             plugin.warns.getConfig( ).set( "current" , utils.currentWarns( ) );
             plugin.warns.saveConfig( );
         }
-        SendMsg.sendWarnChangeAlert( Id , p.getName( ) , warner , warned , reason , exp , created , status , plugin.getConfig( ).getString( "bungeecord.server" ) );
+        SendMsg.sendWarnChangeAlert( Id , p.getName( ) , warner , warned , reason , exp , created , status , utils.getServer( ) );
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-            if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.warn" ) ) {
+            if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.warn" , null ) ) {
                 utils.PlaySound( people , "un_ban" );
-                for ( String key : main.plugin.getConfig( ).getStringList( "warns.alerts.warn_change" ) ) {
+                for ( String key : utils.getStringList( "warns.alerts.warn_change" , "alerts" ) ) {
                     key = key.replace( "%changed_by%" , player );
                     key = key.replace( "%warner%" , warner );
                     key = key.replace( "%warned%" , warned );

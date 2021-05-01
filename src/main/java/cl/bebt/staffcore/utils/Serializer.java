@@ -187,7 +187,7 @@ public class Serializer {
     
     public static String serialize( ItemStack item ){
         StringBuilder builder = new StringBuilder( );
-        builder.append( item.getType( ).toString( ) );
+        builder.append( item.getType( ) );
         if ( item.getDurability( ) != 0 ) builder.append( ":" + item.getDurability( ) );
         builder.append( " " + item.getAmount( ) );
         for ( Enchantment enchant : item.getEnchantments( ).keySet( ) )

@@ -23,27 +23,26 @@ public class VanishMysql implements CommandExecutor {
     
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        if ( !utils.isOlderVersion( ) ){
+        if ( !utils.isOlderVersion( ) ) {
             if ( !(sender instanceof Player) ) {
-                if ( args.length == 0 ) {
-                    sender.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&4Wrong usage" ) );
-                    sender.sendMessage( utils.chat( plugin.getConfig( ).getString( "server_prefix" ) + "&4&lUse: vanish <player>" ) );
-                } else if ( args.length == 1 ) {
+                if ( args.length == 1 ) {
                     if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
                         Player p = Bukkit.getPlayer( args[0] );
                         String is = SQLGetter.isTrue( p , "vanish" );
                         if ( is.equals( "true" ) ) {
                             SetVanish.setVanish( p , false );
-                            utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&cYou unvanished&r " + p.getDisplayName( ) );
-                            utils.tell( p , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "staff.un_vanished" ) );
+                            utils.tell( sender , utils.getString( "vanish.disabled_to" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
+                            utils.tell( p , utils.getString( "vanish.disabled" , "lg" , "staff" ) );
                         } else if ( is.equals( "false" ) ) {
                             SetVanish.setVanish( p , true );
-                            utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&aYou vanished&r " + p.getDisplayName( ) );
-                            utils.tell( p , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "staff.vanished" ) );
+                            utils.tell( sender , utils.getString( "vanish.enabled_to" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
+                            utils.tell( p , utils.getString( "vanish.enabled" , "lg" , "staff" ) );
                         }
                     } else {
-                        utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "player_dont_exist" ) );
+                        utils.tell( sender , utils.getString( "p_dont_exist" , "lg" , "sv" ) );
                     }
+                } else {
+                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "vanish | vanish <player>" ) );
                 }
             } else {
                 if ( sender.hasPermission( "staffcore.vanish" ) ) {
@@ -52,10 +51,10 @@ public class VanishMysql implements CommandExecutor {
                         String is = SQLGetter.isTrue( p , "vanish" );
                         if ( is.equals( "true" ) ) {
                             SetVanish.setVanish( p , false );
-                            utils.tell( p , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "staff.un_vanished" ) );
+                            utils.tell( p , utils.getString( "vanish.disabled" , "lg" , "staff" ) );
                         } else if ( is.equals( "false" ) ) {
                             SetVanish.setVanish( p , true );
-                            utils.tell( p , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "staff.vanished" ) );
+                            utils.tell( p , utils.getString( "vanish.enabled" , "lg" , "staff" ) );
                         }
                     } else if ( args.length == 1 ) {
                         if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
@@ -63,23 +62,25 @@ public class VanishMysql implements CommandExecutor {
                             String is = SQLGetter.isTrue( p , "vanish" );
                             if ( is.equals( "true" ) ) {
                                 SetVanish.setVanish( p , false );
-                                utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&cYou unvanished&r " + p.getDisplayName( ) );
-                                utils.tell( p , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "staff.un_vanished" ) );
+                                utils.tell( sender , utils.getString( "vanish.disabled_to" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
+                                utils.tell( p , utils.getString( "vanish.disabled" , "lg" , "staff" ) );
                             } else if ( is.equals( "false" ) ) {
                                 SetVanish.setVanish( p , true );
-                                utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + "&aYou vanished&r " + p.getDisplayName( ) );
-                                utils.tell( p , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "staff.vanished" ) );
+                                utils.tell( sender , utils.getString( "vanish.enabled_to" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
+                                utils.tell( p , utils.getString( "vanish.enabled" , "lg" , "staff" ) );
                             }
                         } else {
-                            utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "player_dont_exist" ) );
+                            utils.tell( sender , utils.getString( "p_dont_exist" , "lg" , "sv" ) );
                         }
+                    } else {
+                        utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "vanish | vanish <player>" ) );
                     }
                 } else {
-                    utils.tell( sender , plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( "no_permissions" ) );
+                    utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
                 }
             }
         } else {
-            utils.tell(sender,plugin.getConfig( ).getString( "server_prefix" )+"&cThis command can't be executed in older versions");
+            utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
         }
         return true;
     }

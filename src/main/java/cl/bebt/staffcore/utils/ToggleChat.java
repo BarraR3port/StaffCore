@@ -1,10 +1,6 @@
 package cl.bebt.staffcore.utils;
 
 import cl.bebt.staffcore.main;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
@@ -28,29 +24,23 @@ public class ToggleChat {
         data.remove( new NamespacedKey( main.plugin , "muted" ) );
         CountdownManager.removeMuteCountdown( muted );
         if ( p instanceof Player ) {
-            utils.tell( muted , main.plugin.getConfig( ).getString( "server_prefix" ) + "&7The player &c" + p.getName( ) + " &aUn Muted &7you" );
+            utils.tell( muted , utils.getString( "toggle_chat.un_mute_by_player" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
         } else {
-            utils.tell( muted , main.plugin.getConfig( ).getString( "server_prefix" ) + "&7The &cCONSOLE &aUn Muted &7you" );
+            utils.tell( muted , utils.getString( "toggle_chat.un_mute_by_console" , "lg" , "staff" ) );
         }
-        ComponentBuilder cb = new ComponentBuilder( utils.chat( "&7Click to teleport &a✓" ) );
-        TextComponent v = new TextComponent( utils.chat( "&a    &3The player &c" + muted.getName( ) + "&3 was &a Un Muted." ) );
-        v.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT , cb.create( ) ) );
-        v.setClickEvent( new ClickEvent( ClickEvent.Action.RUN_COMMAND , "/tp " + muted.getName( ) ) );
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-            if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.mute_player" ) ) {
+            if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.mute_player" , null ) ) {
                 utils.PlaySound( people , "staff_mute_alerts" );
-                people.sendMessage( " " );
-                utils.tell( people , "&b                 &6⚠ &5Mute Alerts &6⚠                                 " );
-                people.sendMessage( " " );
-                people.spigot( ).sendMessage( v );
-                people.sendMessage( " " );
-                if ( p instanceof Player ) {
-                    utils.tell( people , "&b                 &a► &aUn Muted by: &c" + p.getName( ) );
-                } else {
-                    
-                    utils.tell( people , "&b                 &a► &aUn Muted by: The &cCONSOLE" );
+                for ( String key : utils.getStringList( "chat.toggle" , "alerts" ) ) {
+                    if ( p instanceof Player ) {
+                        key = key.replace( "%staff%" , p.getName( ) );
+                    } else {
+                        key = key.replace( "%staff%" , "CONSOLE" );
+                    }
+                    key = key.replace( "%muted%" , muted.getName( ) );
+                    key = key.replace( "%status%" , "&aUn Muted" );
+                    utils.tell( people , key );
                 }
-                people.sendMessage( " " );
             }
         }
     }
@@ -61,29 +51,23 @@ public class ToggleChat {
             data.set( new NamespacedKey( main.plugin , "muted" ) , PersistentDataType.STRING , "muted" );
             if ( p instanceof Player ) {
                 Player jugador = ( Player ) p;
-                utils.tell( muted , main.plugin.getConfig( ).getString( "server_prefix" ) + "&7The player &c" + jugador.getName( ) + " &cMuted &7you" );
+                utils.tell( muted , utils.getString( "toggle_chat.mute_by_player" , "lg" , "sv" ).replace( "%player" , jugador.getName( ) ) );
             } else {
-                utils.tell( muted , main.plugin.getConfig( ).getString( "server_prefix" ) + "&7The Console &cMuted &7you" );
+                utils.tell( muted , utils.getString( "toggle_chat.mute_by_player" , "lg" , "sv" ).replace( "%player" , "CONSOLE" ) );
             }
-            ComponentBuilder cb = new ComponentBuilder( utils.chat( "&7Click to teleport &a✓" ) );
-            TextComponent v = new TextComponent( utils.chat( "&a    &3The player &2" + muted.getName( ) + "&3 was &cMuted." ) );
-            v.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT , cb.create( ) ) );
-            v.setClickEvent( new ClickEvent( ClickEvent.Action.RUN_COMMAND , "/tp " + muted.getName( ) ) );
             for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-                if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.mute_player" ) ) {
+                if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.mute_player" , null ) ) {
                     utils.PlaySound( people , "staff_mute_alerts" );
-                    people.sendMessage( " " );
-                    utils.tell( people , "&b                 &6⚠ &5Mute Alerts &6⚠                                 " );
-                    people.sendMessage( " " );
-                    people.spigot( ).sendMessage( v );
-                    people.sendMessage( " " );
-                    if ( p instanceof Player ) {
-                        utils.tell( people , "&b                 &a► &cMuted by: &c" + p.getName( ) );
-                    } else {
-                        
-                        utils.tell( people , "&b                 &a► &cMuted by: The &cCONSOLE" );
+                    for ( String key : utils.getStringList( "chat.toggle" , "alerts" ) ) {
+                        if ( p instanceof Player ) {
+                            key = key.replace( "%staff%" , p.getName( ) );
+                        } else {
+                            key = key.replace( "%staff%" , "CONSOLE" );
+                        }
+                        key = key.replace( "%muted%" , muted.getName( ) );
+                        key = key.replace( "%status%" , "&cMuted" );
+                        utils.tell( people , key );
                     }
-                    people.sendMessage( " " );
                 }
             }
         } else {
@@ -106,41 +90,22 @@ public class ToggleChat {
             CountdownManager.setMuteCountdown( p , amount * 86400 );
             sendMessage( ( Player ) sender , p , amount , "d" );
         } else {
-            utils.tell( sender , main.plugin.getConfig( ).getString( "server_prefix" ) + "&cWrong usage." );
-            utils.tell( sender , main.plugin.getConfig( ).getString( "server_prefix" ) + "&cExample /mute &a" + p.getName( ) + " &d10<s/m/h/d>" );
+            utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "mute " + p.getName( ) + " &d10<s/m/h/d>" ) );
         }
     }
     
     private static void sendMessage( Player p , Player muted , long amount , String quantity ){
-        ComponentBuilder cb = new ComponentBuilder( utils.chat( "&7Click to teleport &a✓" ) );
-        TextComponent v = new TextComponent( utils.chat( "&a    &3The player &2" + muted.getName( ) + "&3 was muted." ) );
-        v.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT , cb.create( ) ) );
-        v.setClickEvent( new ClickEvent( ClickEvent.Action.RUN_COMMAND , "/tp " + muted.getName( ) ) );
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-            if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.mute_player" ) ) {
-                if ( !muted.equals( people ) ) {
-                    utils.PlaySound( people , "staff_mute_alerts" );
-                    people.sendMessage( " " );
-                    utils.tell( people , "&b                 &6⚠ &5Mute Alerts &6⚠" );
-                    people.sendMessage( " " );
-                    people.spigot( ).sendMessage( v );
-                    people.sendMessage( " " );
-                    utils.tell( people , "&b                 &a► &bMuted by: &c" + p.getName( ) );
-                    people.sendMessage( " " );
-                    utils.tell( people , "&b                 &a► &bFor &a" + amount + quantity );
-                    people.sendMessage( " " );
+            if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.mute_player" , null ) || people.equals( muted ) ) {
+                utils.PlaySound( people , "staff_mute_alerts" );
+                for ( String key : utils.getStringList( "chat.temporal_mute" , "alerts" ) ) {
+                    key = key.replace( "%staff%" , p.getName( ) );
+                    key = key.replace( "%muted%" , muted.getName( ) );
+                    key = key.replace( "%amount%" , String.valueOf( amount ) );
+                    key = key.replace( "%quantity%" , quantity );
+                    utils.tell( people , key );
                 }
             }
         }
-        utils.PlaySound( muted , "mute_alerts" );
-        muted.sendMessage( " " );
-        utils.tell( muted , "&b                 &6⚠ &5Mute Alerts &6⚠                                 " );
-        muted.sendMessage( " " );
-        utils.tell( muted , "&a            &3You were &cMuted." );
-        muted.sendMessage( " " );
-        utils.tell( muted , "&b       &a► &bMuted by: &c" + p.getName( ) );
-        muted.sendMessage( " " );
-        utils.tell( muted , "&b       &a► &bFor &a" + amount + quantity );
-        muted.sendMessage( " " );
     }
 }

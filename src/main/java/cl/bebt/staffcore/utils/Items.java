@@ -6,7 +6,9 @@ import cl.bebt.staffcore.sql.SQLGetter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -24,7 +26,7 @@ public class Items {
         ItemStack head = utils.getPlayerHead( target.getName( ) );
         ItemMeta head_meta = head.getItemMeta( );
         head_meta.setDisplayName( utils.chat( "&a" + target.getName( ) + "'s &7Stats:" ) );
-        lore.add( utils.chat( "&a► &7Gamemode: &b" + target.getGameMode( ).toString( ) ) );
+        lore.add( utils.chat( "&a► &7Gamemode: &b" + target.getGameMode( ) ) );
         lore.add( utils.chat( "&a► &7Location: &d" + ( int ) target.getLocation( ).getX( ) + " &3" + ( int ) target.getLocation( ).getY( ) + " &d" + ( int ) target.getLocation( ).getZ( ) ) );
         lore.add( utils.chat( "&a► &a" + target.getName( ) + "'s &7ping: &a" + utils.getPing( target ) ) );
         if ( target.hasPermission( "staffcore.staff" ) ) {
@@ -41,11 +43,11 @@ public class Items {
             if ( !target.getPersistentDataContainer( ).has( new NamespacedKey( main.plugin , "vanished" ) , PersistentDataType.STRING ) ) {
                 lore.add( utils.chat( "&a► &7Vanished &cOff" ) );
             }
-            if ( StaffCoreAPI.getTrolStatus( target.getName( ) ) ) {
-                lore.add( utils.chat( "&a► &7Trol Mode: &aON" ) );
+            if ( StaffCoreAPI.getTrollStatus( target.getName( ) ) ) {
+                lore.add( utils.chat( "&a► &7Troll Mode: &aON" ) );
             }
-            if ( !StaffCoreAPI.getTrolStatus( target.getName( ) ) ) {
-                lore.add( utils.chat( "&a► &7Trol Mode: &cOFF" ) );
+            if ( !StaffCoreAPI.getTrollStatus( target.getName( ) ) ) {
+                lore.add( utils.chat( "&a► &7Troll Mode: &cOFF" ) );
             }
         }
         head_meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "head" ) , PersistentDataType.STRING , "head" );
@@ -126,14 +128,14 @@ public class Items {
         metaServer.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "server" ) , PersistentDataType.STRING , "server" );
         double tps = Math.round( utils.getTPS( ) * 100.0D ) / 100.0D;
         int mb = 1024 * 1024;
-        Runtime instance = Runtime.getRuntime();
+        Runtime instance = Runtime.getRuntime( );
         
         if ( tps > 20 ) {
             tps = 20D;
         }
         lore.add( utils.chat( "&a► &7Tps: &a" + tps ) );
         lore.add( utils.chat( "&a► &7Online players: &a" + Bukkit.getOnlinePlayers( ).size( ) + "/" + Bukkit.getMaxPlayers( ) ) );
-        lore.add( utils.chat( "&a► &7Ram in use: &a" + (instance.totalMemory( ) - instance.freeMemory( ) ) / mb ) + "/" + instance.maxMemory() / mb );
+        lore.add( utils.chat( "&a► &7Ram in use: &a" + (instance.totalMemory( ) - instance.freeMemory( )) / mb ) + "/" + instance.maxMemory( ) / mb );
         lore.add( utils.chat( "&5PUNISHMENTS STATUS:" ) );
         if ( utils.mysqlEnabled( ) ) {
             lore.add( utils.chat( "&a► &7Current Bans: &a" + SQLGetter.getCurrents( "bans" ) ) );
@@ -149,11 +151,11 @@ public class Items {
         return server;
     }
     
-    public static ItemStack PlayerStatus( Player p ){
+    public static ItemStack PlayerStats( Player p ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack playerHead = utils.getPlayerHead( p.getName( ) );
         ItemMeta metaPlayerHead = playerHead.getItemMeta( );
-        metaPlayerHead.setDisplayName( utils.chat( "&5" + p.getName( ).toUpperCase( ) + " STATUS:" ) );
+        metaPlayerHead.setDisplayName( utils.chat( "&5" + p.getName( ).toUpperCase( ) + "'S STATS:" ) );
         metaPlayerHead.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "player" ) , PersistentDataType.STRING , "players" );
         if ( p.getPersistentDataContainer( ).has( new NamespacedKey( main.plugin , "staff" ) , PersistentDataType.STRING ) ) {
             lore.add( utils.chat( "&a► &7Staff Mode &aOn" ) );
@@ -173,17 +175,60 @@ public class Items {
         if ( !p.getPersistentDataContainer( ).has( new NamespacedKey( main.plugin , "vanished" ) , PersistentDataType.STRING ) ) {
             lore.add( utils.chat( "&a► &7Vanished &cOff" ) );
         }
-        if ( StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
-            lore.add( utils.chat( "&a► &7Trol Mode: &aON" ) );
+        if ( StaffCoreAPI.getTrollStatus( p.getName( ) ) ) {
+            lore.add( utils.chat( "&a► &7Troll Mode: &aON" ) );
         }
-        if ( !StaffCoreAPI.getTrolStatus( p.getName( ) ) ) {
-            lore.add( utils.chat( "&a► &7Trol Mode: &cOFF" ) );
+        if ( !StaffCoreAPI.getTrollStatus( p.getName( ) ) ) {
+            lore.add( utils.chat( "&a► &7Troll Mode: &cOFF" ) );
         }
-        lore.add( utils.chat( "&a► &7Gamemode: &b" + p.getGameMode( ).toString( ) ) );
+        lore.add( utils.chat( "&a► &7Gamemode: &b" + p.getGameMode( ) ) );
         lore.add( utils.chat( "&a► &7Ping: &a" + utils.getPing( p ) ) );
         lore.add( utils.chat( "&a► &7Location: &d" + ( int ) p.getLocation( ).getX( ) + " &3" + ( int ) p.getLocation( ).getY( ) + " &d" + ( int ) p.getLocation( ).getZ( ) ) );
         metaPlayerHead.setLore( lore );
         playerHead.setItemMeta( metaPlayerHead );
         return playerHead;
+    }
+    
+    public static ItemStack FakeJoinOrLeave( boolean enabled ){
+        ArrayList < String > lore = new ArrayList <>( );
+        ItemStack item;
+        if ( enabled ) {
+            item = new ItemStack( Material.LIME_DYE );
+        } else {
+            item = new ItemStack( Material.GRAY_DYE );
+        }
+        ItemMeta itemMeta = item.getItemMeta( );
+        for ( String key : utils.getStringList( "fake_join_leave_msg.lore" , "item" ) ) {
+            lore.add( utils.chat( key ) );
+        }
+        if ( enabled ) {
+            itemMeta.setDisplayName( utils.chat( "&8Fake Join/Leave msg &aOn " ) );
+            itemMeta.addEnchant( Enchantment.DAMAGE_ALL , 1 , true );
+            itemMeta.addItemFlags( ItemFlag.HIDE_ENCHANTS );
+            lore.add( utils.chat( "&7Click to: &cDisable" ) );
+        } else {
+            itemMeta.setDisplayName( utils.chat( "&8Fake Join/Leave msg &cOff" ) );
+            lore.add( utils.chat( "&7Click to: &aEnable" ) );
+        }
+        itemMeta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "FakeJoinOrLeave" ) , PersistentDataType.STRING , "FakeJoinOrLeave" );
+        itemMeta.setLore( lore );
+        item.setItemMeta( itemMeta );
+        return item;
+    }
+    
+    public static ItemStack ComingSoon( ){
+        ArrayList < String > lore = new ArrayList <>( );
+        ItemStack item = new ItemStack( Material.getMaterial( utils.getString( "menu_items.coming_soon.material", "item", null ) ) );
+        ItemMeta itemMeta = item.getItemMeta();
+        itemMeta.setDisplayName( utils.chat( utils.getString( "menu_items.coming_soon.name", "item", null ) ) );
+        for ( String key : utils.getStringList( "menu_items.coming_soon.lore" , "item" ) ) {
+            lore.add( utils.chat( key ) );
+        }
+        itemMeta.addEnchant( Enchantment.DAMAGE_ALL , 1 , true );
+        itemMeta.addItemFlags( ItemFlag.HIDE_ENCHANTS );
+        itemMeta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "ComingSoon" ) , PersistentDataType.STRING , "ComingSoon" );
+        itemMeta.setLore( lore );
+        item.setItemMeta( itemMeta );
+        return item;
     }
 }

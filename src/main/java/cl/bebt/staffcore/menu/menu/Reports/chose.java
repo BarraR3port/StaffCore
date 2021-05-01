@@ -1,12 +1,12 @@
 package cl.bebt.staffcore.menu.menu.Reports;
 
+import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.MSGChanel.SendMsg;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.sql.SQLGetter;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -32,7 +32,7 @@ public class chose extends ReportMenu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( "&cDelete or Close the report?" );
+        return utils.chat( utils.getString( "reports.chose.name" , "menu" , null ) );
     }
     
     @Override
@@ -57,10 +57,9 @@ public class chose extends ReportMenu {
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "panel" ) , PersistentDataType.STRING ) ) {
             e.setCancelled( true );
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
+        } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
-                p.closeInventory( );
                 new ReportManager( main.getPlayerMenuUtility( p ) , main.plugin ).open( p );
             }
         }
@@ -86,14 +85,14 @@ public class chose extends ReportMenu {
             reported = plugin.reports.getConfig( ).getString( "reports." + id + ".name" );
             plugin.reports.getConfig( ).set( "reports." + id + ".status" , "close" );
             plugin.reports.saveConfig( );
-            plugin.reports.getConfig( ).set( "count" , playerMenuUtility.current( ) );
+            plugin.reports.getConfig( ).set( "count" , StaffCoreAPI.getCurrentReports( ) );
             plugin.reports.saveConfig( );
         }
-        SendMsg.sendReportChangeAlert( id , p.getName( ) , reporter , reported , reason , date , status , plugin.getConfig( ).getString( "bungeecord.server" ) );
+        SendMsg.sendReportChangeAlert( id , p.getName( ) , reporter , reported , reason , date , status , utils.getServer( ) );
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
             if ( people.hasPermission( "staffcore.staff" ) ) {
                 utils.PlaySound( p , "close_report" );
-                for ( String key : main.plugin.getConfig( ).getStringList( "report.report_change" ) ) {
+                for ( String key : utils.getStringList( "report.report_change" , "alerts" ) ) {
                     key = key.replace( "%changed_by%" , p.getName( ) );
                     key = key.replace( "%reporter%" , reporter );
                     key = key.replace( "%reported%" , reported );
@@ -127,14 +126,14 @@ public class chose extends ReportMenu {
             reported = plugin.reports.getConfig( ).getString( "reports." + id + ".name" );
             plugin.reports.getConfig( ).set( "reports." + id + ".status" , status );
             plugin.reports.saveConfig( );
-            plugin.reports.getConfig( ).set( "count" , playerMenuUtility.current( ) );
+            plugin.reports.getConfig( ).set( "count" , StaffCoreAPI.getCurrentReports( ) );
             plugin.reports.saveConfig( );
         }
-        SendMsg.sendReportChangeAlert( id , p.getName( ) , reporter , reported , reason , date , status , plugin.getConfig( ).getString( "bungeecord.server" ) );
+        SendMsg.sendReportChangeAlert( id , p.getName( ) , reporter , reported , reason , date , status , utils.getServer( ) );
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
             if ( people.hasPermission( "staffcore.staff" ) ) {
                 utils.PlaySound( p , "open_report" );
-                for ( String key : main.plugin.getConfig( ).getStringList( "report.report_change" ) ) {
+                for ( String key : utils.getStringList( "report.report_change" , "alerts" ) ) {
                     key = key.replace( "%changed_by%" , p.getName( ) );
                     key = key.replace( "%reporter%" , reporter );
                     key = key.replace( "%reported%" , reported );
@@ -168,14 +167,14 @@ public class chose extends ReportMenu {
             reported = plugin.reports.getConfig( ).getString( "reports." + id + ".name" );
             plugin.reports.getConfig( ).set( "reports." + id , null );
             plugin.reports.saveConfig( );
-            plugin.reports.getConfig( ).set( "current" , playerMenuUtility.current( ) );
+            plugin.reports.getConfig( ).set( "current" , StaffCoreAPI.getCurrentReports( ) );
             plugin.reports.saveConfig( );
         }
-        SendMsg.sendReportChangeAlert( id , p.getName( ) , reporter , reported , reason , date , status , plugin.getConfig( ).getString( "bungeecord.server" ) );
+        SendMsg.sendReportChangeAlert( id , p.getName( ) , reporter , reported , reason , date , status , utils.getServer( ) );
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
             if ( people.hasPermission( "staffcore.staff" ) ) {
                 utils.PlaySound( p , "delete_report" );
-                for ( String key : main.plugin.getConfig( ).getStringList( "report.report_change" ) ) {
+                for ( String key : utils.getStringList( "report.report_change" , "alerts" ) ) {
                     key = key.replace( "%changed_by%" , p.getName( ) );
                     key = key.replace( "%reporter%" , reporter );
                     key = key.replace( "%reported%" , reported );
@@ -264,7 +263,7 @@ public class chose extends ReportMenu {
         }
         inventory.setItem( 20 , delete );
         inventory.setItem( 21 , super.redPanel( ) );
-        inventory.setItem( 22 , makeItem( Material.BARRIER , ChatColor.DARK_RED + "Close" ) );
+        inventory.setItem( 22 , close( ) );
         inventory.setItem( 23 , super.redPanel( ) );
         if ( utils.mysqlEnabled( ) ) {
             if ( SQLGetter.get( "reports" , id , "Status" ).equals( "open" ) ) {

@@ -3,17 +3,18 @@ package cl.bebt.staffcore;
 import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.MSGChanel.PluginMessage;
 import cl.bebt.staffcore.commands.Staff.*;
-import cl.bebt.staffcore.commands.Staff.Mysql.*;
+import cl.bebt.staffcore.commands.Staff.Mysql.FreezeMysql;
+import cl.bebt.staffcore.commands.Staff.Mysql.StaffMysql;
+import cl.bebt.staffcore.commands.Staff.Mysql.ToggleStaffChatMysql;
+import cl.bebt.staffcore.commands.Staff.Mysql.VanishMysql;
 import cl.bebt.staffcore.commands.Suicide;
 import cl.bebt.staffcore.commands.Time.Day;
 import cl.bebt.staffcore.commands.Time.Night;
 import cl.bebt.staffcore.commands.Time.Weather;
-import cl.bebt.staffcore.commands.WarningsCommand;
 import cl.bebt.staffcore.commands.staffcore;
-import cl.bebt.staffcore.configs.AltsStorage;
-import cl.bebt.staffcore.configs.BanConfig;
-import cl.bebt.staffcore.configs.ReportConfig;
-import cl.bebt.staffcore.configs.WarnConfig;
+import cl.bebt.staffcore.configs.*;
+import cl.bebt.staffcore.configs.Lenguajes.EN_NA;
+import cl.bebt.staffcore.configs.Lenguajes.ES_CL;
 import cl.bebt.staffcore.listeners.*;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.menu.listeners.MenuListener;
@@ -62,9 +63,27 @@ public final class main extends JavaPlugin {
     
     public SQLGetter data;
     
+    public EN_NA en_na;
+    
+    public ES_CL es_cl;
+    
+    public ItemsConfig items;
+    
+    public AlertsConfig alerts;
+    
+    public MenusConfig menus;
+    
     public Boolean chatMuted = false;
     
     ConsoleCommandSender c = Bukkit.getConsoleSender( );
+    
+    public static PlayerMenuUtility getPlayerMenuUtility( Player p ){
+        if ( playerMenuUtilityMap.containsKey( p ) )
+            return playerMenuUtilityMap.get( p );
+        PlayerMenuUtility playerMenuUtility = new PlayerMenuUtility( p );
+        playerMenuUtilityMap.put( p , playerMenuUtility );
+        return playerMenuUtility;
+    }
     
     public void onEnable( ){
         plugin = this;
@@ -73,12 +92,12 @@ public final class main extends JavaPlugin {
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&c     Hey, there is a new version out!" ) );
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&b         Staff-Core " + version ) );
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------" ) );
-                if (utils.getBoolean( "disable_outdated_plugin" ) ){
+                if ( utils.getBoolean( "disable_outdated_plugin" , null ) ) {
                     c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&lDISABLING STAFF-CORE. USE THE LATEST VERSION " ) );
                     c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&lYou can disable this option (disable_outdated_plugin) in the config file." ) );
                     c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&lBut I recommend to use the latest version. " ) );
                     c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------" ) );
-                    plugin.getPluginLoader().disablePlugin( this );
+                    plugin.getPluginLoader( ).disablePlugin( this );
                 }
             }
         } );
@@ -121,10 +140,11 @@ public final class main extends JavaPlugin {
         new Warn( plugin );
         new WarningsCommand( plugin );
         new HelpOp( plugin );
-        new TrolMode( plugin );
+        new TrollMode( plugin );
+        new Fly( plugin );
         Bukkit.getPluginManager( ).registerEvents( new onPlayerJoin( plugin ) , plugin );
         Bukkit.getPluginManager( ).registerEvents( new onChat( ) , plugin );
-        if ( !utils.isOlderVersion() ) {
+        if ( !utils.isOlderVersion( ) ) {
             c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------" ) );
             c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&a    Plugin &5" + getName( ) + "&a&l ACTIVATED" ) );
             c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------" ) );
@@ -141,7 +161,7 @@ public final class main extends JavaPlugin {
                     try {
                         if ( players.getOpenInventory( ).getTopInventory( ).getItem( 31 ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "server" ) , PersistentDataType.STRING ) ) {
                             players.getOpenInventory( ).getTopInventory( ).setItem( 31 , Items.ServerStatus( ) );
-                            players.getOpenInventory( ).getTopInventory( ).setItem( 13 , Items.PlayerStatus( players ) );
+                            players.getOpenInventory( ).getTopInventory( ).setItem( 13 , Items.PlayerStats( players ) );
                         }
                         if ( CountdownManager.checkMuteCountdown( players ) ) {
                             long remaining = CountdownManager.getMuteCountDown( players );
@@ -162,9 +182,10 @@ public final class main extends JavaPlugin {
         if ( getConfig( ).getBoolean( "mysql.enabled" ) ) {
             try {
                 Mysql.connect( );
-                SQLGetter.createTables();
+                SQLGetter.createTables( );
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "             &a&lMysql: &aTRUE" ) );
-                SQLGetter.addToggledPlayersToList();
+                SQLGetter.addToggledPlayersToList( );
+                onEnableToDiscord( true );
             } catch ( SQLException e ) {
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "             &a&lMysql: &cFALSE" ) );
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&a      Disabling Staff-Core &6" + getDescription( ).getVersion( ) ) );
@@ -173,6 +194,7 @@ public final class main extends JavaPlugin {
                 return;
             }
         } else {
+            onEnableToDiscord( false );
             c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "             &a&lMysql: &cFALSE" ) );
         }
         c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------" ) );
@@ -182,15 +204,13 @@ public final class main extends JavaPlugin {
         getServer( ).getMessenger( ).registerOutgoingPluginChannel( plugin , "sc:stafflist" );
         getServer( ).getMessenger( ).registerIncomingPluginChannel( plugin , "BungeeCord" , new PluginMessage( ) );
         getServer( ).getMessenger( ).registerOutgoingPluginChannel( plugin , "BungeeCord" );
-        if ( Mysql.isConnected( )) {
+        if ( Mysql.isConnected( ) ) {
             new VanishMysql( plugin );
             new FreezeMysql( plugin );
             new ToggleStaffChatMysql( plugin );
-            new FlyMysql( plugin );
             new StaffMysql( plugin );
         } else {
             new Vanish( plugin );
-            new Fly( plugin );
             new Freeze( plugin );
             new ToggleStaffChat( plugin );
             new Staff( plugin );
@@ -203,9 +223,10 @@ public final class main extends JavaPlugin {
         c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------" ) );
         c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&a         Staff-Core: &5" + plugin.getDescription( ).getVersion( ) ) );
         c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------" ) );
+        onDisableToDiscord( );
         if ( getConfig( ).getBoolean( "mysql.enabled" ) ) {
             Mysql.disconnect( );
-            c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&cDisconnected from the database!" ) );
+            c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&c      Disconnected from the database!" ) );
             c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------" ) );
         }
     }
@@ -215,19 +236,37 @@ public final class main extends JavaPlugin {
         reloadConfig( );
         this.data = new SQLGetter( this );
         this.reports = new ReportConfig( this );
-        this.reports.reloadConfig();
+        this.reports.reloadConfig( );
         this.bans = new BanConfig( plugin );
         this.bans.reloadConfig( );
         this.alts = new AltsStorage( plugin );
         this.alts.reloadConfig( );
         this.warns = new WarnConfig( plugin );
         this.warns.reloadConfig( );
+        this.en_na = new EN_NA( plugin );
+        this.en_na.reloadConfig( );
+        this.es_cl = new ES_CL( plugin );
+        this.es_cl.reloadConfig( );
+        this.items = new ItemsConfig( plugin );
+        this.items.reloadConfig( );
+        this.alerts = new AlertsConfig( plugin );
+        this.alerts.reloadConfig( );
+        this.menus = new MenusConfig( plugin );
+        this.menus.reloadConfig( );
     }
-    public static PlayerMenuUtility getPlayerMenuUtility( Player p ){
-        if ( playerMenuUtilityMap.containsKey( p ) )
-            return playerMenuUtilityMap.get( p );
-        PlayerMenuUtility playerMenuUtility = new PlayerMenuUtility( p );
-        playerMenuUtilityMap.put( p , playerMenuUtility );
-        return playerMenuUtility;
+    
+    protected void onEnableToDiscord( boolean mysql ) {
+        ArrayList < String > dc = new ArrayList <>( );
+        dc.add( "**Server Enabled:** " + utils.getString( "bungeecord.server",null, null ) );
+        dc.add( "**MySql Enabled:** " + mysql );
+        dc.add( "**StaffCore Version:** " + plugin.getDescription( ).getVersion( ) );
+        utils.sendDiscordMsg( "⚠ Server Loaded ⚠" , dc , "debug" );
+    }
+    protected void onDisableToDiscord( ) {
+        ArrayList < String > dc = new ArrayList <>( );
+        dc.add( "**Server Disabled:** " + utils.getString( "bungeecord.server",null, null ) );
+        dc.add( "**StaffCore Version:** " + plugin.getDescription( ).getVersion( ) );
+        utils.sendDiscordMsg( "⚠ Server UnLoaded ⚠" , dc , "debug" );
+    
     }
 }

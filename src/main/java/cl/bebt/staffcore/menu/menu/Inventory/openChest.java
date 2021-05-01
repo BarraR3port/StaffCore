@@ -20,7 +20,7 @@ public class openChest extends Menu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( "&8Chest" );
+        return utils.chat( utils.getString( "inventory.open_chest.name" , "menu" , null ) );
     }
     
     @Override

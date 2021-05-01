@@ -20,12 +20,11 @@ public class Warn implements TabExecutor {
         plugin.getCommand( "warn" ).setExecutor( this );
     }
     
-    
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        if ( !utils.isOlderVersion( ) ){
+        if ( !utils.isOlderVersion( ) ) {
             if ( !(sender instanceof Player) ) {
-                utils.tell( sender, "&cThis command can only be executed by players." );
+                utils.tell( sender , "&cThis command can only be executed by players." );
             } else {
                 if ( args.length == 1 ) {
                     Player p = ( Player ) sender;
@@ -33,18 +32,18 @@ public class Warn implements TabExecutor {
                         if ( utils.isRegistered( args[0] ) ) {
                             new WarnPlayer( p , args[0] , plugin );
                         } else {
-                            utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&cThe player &a" + args[0] + " &cis not registered." );
+                            utils.tell( sender , utils.getString( "never_seen" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
                         }
                     } else {
-                        utils.tell( sender , utils.getString( "server_prefix" ) + utils.getString( "no_permissions" ) );
+                        utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
                     }
                     
                 } else {
-                    utils.tell( sender , utils.getString( "staff.staff_prefix" ) + "&cWrong use, use /warn <player>" );
+                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "warn <player>" ) );
                 }
             }
         } else {
-            utils.tell(sender,plugin.getConfig( ).getString( "server_prefix" )+"&cThis command can't be executed in older versions");
+            utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
         }
         return false;
     }
@@ -58,7 +57,7 @@ public class Warn implements TabExecutor {
                 Players.remove( sender.getName( ) );
                 version.addAll( Players );
             } else {
-                utils.tell( sender , plugin.getConfig( ).getString( "staff.staff_prefix" ) + "&cNo players saved!" );
+                utils.tell( sender , utils.getString( "no_players_saved" , "lg" , "staff" ) );
             }
         }
         return version;
