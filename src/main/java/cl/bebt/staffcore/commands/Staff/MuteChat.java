@@ -37,7 +37,7 @@ public class MuteChat implements TabExecutor {
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {
-            if ( (args.length == 1) || (args.length == 2) && utils.isOlderVersion( ) ) {
+            if ( (args.length == 1 || args.length == 2) && utils.isOlderVersion( ) ) {
                 utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
                 return true;
             }
@@ -81,7 +81,7 @@ public class MuteChat implements TabExecutor {
         } else {
             Player p = ( Player ) sender;
             if ( p.hasPermission( "staffcore.mute" ) ) {
-                if ( (args.length == 1) || (args.length == 2) && utils.isOlderVersion( ) ) {
+                if ( (args.length == 1 || args.length == 2) && utils.isOlderVersion( ) ) {
                     utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
                     return true;
                 }

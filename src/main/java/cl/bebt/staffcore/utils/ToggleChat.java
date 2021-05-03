@@ -51,9 +51,9 @@ public class ToggleChat {
             data.set( new NamespacedKey( main.plugin , "muted" ) , PersistentDataType.STRING , "muted" );
             if ( p instanceof Player ) {
                 Player jugador = ( Player ) p;
-                utils.tell( muted , utils.getString( "toggle_chat.mute_by_player" , "lg" , "sv" ).replace( "%player" , jugador.getName( ) ) );
+                utils.tell( muted , utils.getString( "toggle_chat.mute_by_player" , "lg" , "sv" ).replace( "%player%" , jugador.getName( ) ) );
             } else {
-                utils.tell( muted , utils.getString( "toggle_chat.mute_by_player" , "lg" , "sv" ).replace( "%player" , "CONSOLE" ) );
+                utils.tell( muted , utils.getString( "toggle_chat.mute_by_player" , "lg" , "sv" ).replace( "%player%" , "CONSOLE" ) );
             }
             for ( Player people : Bukkit.getOnlinePlayers( ) ) {
                 if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.mute_player" , null ) ) {

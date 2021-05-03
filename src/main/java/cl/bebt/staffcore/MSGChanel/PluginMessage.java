@@ -256,7 +256,7 @@ public class PluginMessage implements PluginMessageListener {
                     key = key.replace( "%banned%" , target );
                     key = key.replace( "%reason%" , reason );
                     key = key.replace( "%create_date%" , date );
-                    key = key.replace( "%%xp_date%" , ExpDate );
+                    key = key.replace( "%xp_date%" , ExpDate );
                     key = key.replace( "%id%" , String.valueOf( id ) );
                     key = key.replace( "%ban_status%" , status );
                     utils.tell( people , key );
@@ -323,7 +323,7 @@ public class PluginMessage implements PluginMessageListener {
                     key = key.replace( "%warned%" , target );
                     key = key.replace( "%reason%" , reason );
                     key = key.replace( "%create_date%" , date );
-                    key = key.replace( "%%xp_date%" , ExpDate );
+                    key = key.replace( "%xp_date%" , ExpDate );
                     key = key.replace( "%id%" , String.valueOf( id ) );
                     key = key.replace( "%warn_status%" , status );
                     utils.tell( people , key );
