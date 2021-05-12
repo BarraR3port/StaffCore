@@ -58,13 +58,13 @@ public class ClearChat extends PaginatedMenu {
             } else {
                 page--;
                 p.closeInventory( );
-                open( p );
+                open( );
             }
         } else if ( e.getCurrentItem( ).equals( next( ) ) ) {
             if ( index + 1 <= players.size( ) ) {
                 page++;
                 p.closeInventory( );
-                open( p );
+                open( );
             } else {
                 utils.tell( p , utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
             }

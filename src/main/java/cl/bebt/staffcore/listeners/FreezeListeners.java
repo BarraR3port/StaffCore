@@ -28,6 +28,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FreezeListeners implements Listener {
@@ -107,7 +108,7 @@ public class FreezeListeners implements Listener {
                                     } catch ( NullPointerException ignored ) {
                                     }
                                 }
-                                new openChest( main.getPlayerMenuUtility( p ) , chest_slots , size ).open( p );
+                                new openChest( main.getPlayerMenuUtility( p ) , chest_slots , size ).open( );
                             }
                             case CHEST_MINECART: {
                                 e.setCancelled( true );
@@ -123,7 +124,7 @@ public class FreezeListeners implements Listener {
                                     } catch ( NullPointerException ignored ) {
                                     }
                                 }
-                                new openChest( main.getPlayerMenuUtility( p ) , chest_slots , size ).open( p );
+                                new openChest( main.getPlayerMenuUtility( p ) , chest_slots , size ).open( );
                             }
                             case ENDER_CHEST: {
                                 e.setCancelled( true );
@@ -194,8 +195,7 @@ public class FreezeListeners implements Listener {
                             break;
                         }
                     }
-                } catch ( NullPointerException | NoClassDefFoundError ignored ) {
-                }
+                } catch ( NullPointerException | NoClassDefFoundError ignored ) { }
             }
         }
         if ( e.getHand( ) == EquipmentSlot.OFF_HAND ) return;
@@ -211,7 +211,7 @@ public class FreezeListeners implements Listener {
                     return;
                 }
                 if ( SetStaffItems.reportManager( ).equals( itemInMainHand ) ) {
-                    new ReportManager( main.getPlayerMenuUtility( p ) , plugin ).open( p );
+                    new ReportManager( main.getPlayerMenuUtility( p ) , plugin ).open( );
                     return;
                 }
                 if ( CountdownManager.checkCountdown( p ) ) {
@@ -283,7 +283,6 @@ public class FreezeListeners implements Listener {
         if ( PlayerData.has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) ) {
             SetStaffItems.On( p );
         }
-        
     }
     
     @SuppressWarnings("ConstantConditions")
@@ -324,8 +323,7 @@ public class FreezeListeners implements Listener {
             if ( p.getInventory( ).getItemInMainHand( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "invsee" ) , PersistentDataType.STRING ) ) {
                 e.setCancelled( true );
             }
-        } catch ( NullPointerException ignored ) {
-        }
+        } catch ( NullPointerException ignored ) { }
     }
     
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -473,6 +471,12 @@ public class FreezeListeners implements Listener {
             if ( !player.hasPermission( "staffcore.unfreeze.himself" ) ) {
                 e.setCancelled( true );
             }
+        }
+        if ( utils.getBoolean( "discord.type.debug.enabled_debugs.commands" ) ){
+            ArrayList < String > dc = new ArrayList <>( );
+            dc.add( "**Player:** " + player.getName( ) );
+            dc.add( "**Command:** " + e.getMessage( ) );
+            utils.sendDiscordDebugMsg( player ,"⚠ Commands ⚠" , dc );
         }
     }
     

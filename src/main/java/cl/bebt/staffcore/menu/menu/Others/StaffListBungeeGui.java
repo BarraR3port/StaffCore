@@ -67,13 +67,13 @@ public class StaffListBungeeGui extends PaginatedMenu {
             } else {
                 page--;
                 p.closeInventory( );
-                open( p );
+                open( );
             }
         } else if ( e.getCurrentItem( ).equals( next( ) ) ) {
             if ( index + 1 <= players.size( ) ) {
                 page++;
                 p.closeInventory( );
-                open( p );
+                open( );
             } else {
                 utils.tell( p , utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
             }
@@ -102,7 +102,7 @@ public class StaffListBungeeGui extends PaginatedMenu {
                     String gm = main.playersServerGamemodesMap.get( players.get( index ) );
                     ArrayList < String > lore = new ArrayList <>( );
                     meta.setDisplayName( utils.chat( "&a" + players.get( index ) ) );
-                    if ( utils.getBoolean( "mysql.enabled" , null ) ) {
+                    if ( utils.getBoolean( "mysql.enabled") ) {
                         if ( SQLGetter.isTrue( players.get( index ) , "staff" ).equals( "true" ) ) {
                             lore.add( utils.chat( "&7Staff Mode: &aTrue" ) );
                         } else {

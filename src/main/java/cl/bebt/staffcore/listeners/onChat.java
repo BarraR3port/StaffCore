@@ -14,6 +14,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class onChat implements Listener {
@@ -28,7 +29,7 @@ public class onChat implements Listener {
                 e.setMessage( utils.chat( e.getMessage( ) ) );
             }
             if ( persistent.has( new NamespacedKey( main.plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-                if ( utils.getBoolean( "freeze.cancel_chat_while_frozen" , null ) ) {
+                if ( utils.getBoolean( "freeze.cancel_chat_while_frozen") ) {
                     utils.tell( p , utils.getString( "freeze.talk_while_frozen" , "lg" , "staff" ) );
                     e.setCancelled( true );
                 }
@@ -88,6 +89,10 @@ public class onChat implements Listener {
                 utils.tell( p , utils.getString( "toggle_chat.chat_muted" , "lg" , "sv" ) );
             }
         }
-        
+        if ( utils.getBoolean( "discord.type.debug.enabled_debugs.commands" ) ){
+            ArrayList < String > dc = new ArrayList <>( );
+            dc.add( "**Player:** " + p.getName( ) + ": " + e.getMessage( ) );
+            utils.sendDiscordDebugMsg( p, "⚠ Chat ⚠" , dc );
+        }
     }
 }

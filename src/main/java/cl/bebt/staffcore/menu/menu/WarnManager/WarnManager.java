@@ -40,7 +40,7 @@ public class WarnManager extends PaginatedMenu {
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "name" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
             String warned = e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).get( new NamespacedKey( plugin , "name" ) , PersistentDataType.STRING );
-            new Warnings( main.getPlayerMenuUtility( p ) , plugin , p , warned ).open( p );
+            new Warnings( main.getPlayerMenuUtility( p ) , plugin , p , warned ).open( );
         } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
@@ -52,13 +52,13 @@ public class WarnManager extends PaginatedMenu {
             } else {
                 page--;
                 p.closeInventory( );
-                open( p );
+                open( );
             }
         } else if ( e.getCurrentItem( ).equals( next( ) ) ) {
             if ( index + 1 <= warnedPlayers.size( ) ) {
                 page++;
                 p.closeInventory( );
-                open( p );
+                open( );
             } else {
                 utils.tell( p , utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
             }

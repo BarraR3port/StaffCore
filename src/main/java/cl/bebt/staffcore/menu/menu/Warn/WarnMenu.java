@@ -40,31 +40,31 @@ public class WarnMenu extends WarnPlayerMenu {
         Player p = ( Player ) e.getWhoClicked( );
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "hacking" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new WarnTimeChose( playerMenuUtility , plugin , p , warned , "Hacking" ).open( p );
+            new WarnTimeChose( playerMenuUtility , plugin , p , warned , "Hacking" ).open( );
         }
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "killaura" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new WarnTimeChose( playerMenuUtility , plugin , p , warned , "KillAura" ).open( p );
+            new WarnTimeChose( playerMenuUtility , plugin , p , warned , "KillAura" ).open( );
         }
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new WarnTimeChose( playerMenuUtility , plugin , p , warned , "Flying" ).open( p );
+            new WarnTimeChose( playerMenuUtility , plugin , p , warned , "Flying" ).open( );
         }
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "speed" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new WarnTimeChose( playerMenuUtility , plugin , p , warned , "Speed" ).open( p );
+            new WarnTimeChose( playerMenuUtility , plugin , p , warned , "Speed" ).open( );
         }
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "griefing" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new WarnTimeChose( playerMenuUtility , plugin , p , warned , "Griefing" ).open( p );
+            new WarnTimeChose( playerMenuUtility , plugin , p , warned , "Griefing" ).open( );
         }
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "spamming" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new WarnTimeChose( playerMenuUtility , plugin , p , warned , "Spamming" ).open( p );
+            new WarnTimeChose( playerMenuUtility , plugin , p , warned , "Spamming" ).open( );
         }
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "bhop" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new WarnTimeChose( playerMenuUtility , plugin , p , warned , "BunnyHop" ).open( p );
+            new WarnTimeChose( playerMenuUtility , plugin , p , warned , "BunnyHop" ).open( );
         }
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "other" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );

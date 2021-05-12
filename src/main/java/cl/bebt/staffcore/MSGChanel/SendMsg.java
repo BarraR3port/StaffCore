@@ -15,7 +15,7 @@ public class SendMsg {
     private static final main plugin = main.plugin;
     
     public static void sendReportAlert( int id , String sender , String target , String reason , String date , String server ){
-        if ( utils.getBoolean( "bungeecord.enabled" , null ) ) {
+        if ( utils.getBoolean( "bungeecord.enabled") ) {
             Collection < Player > networkPlayers = ( Collection < Player > ) Bukkit.getServer( ).getOnlinePlayers( );
             if ( networkPlayers == null || networkPlayers.isEmpty( ) )
                 return;
@@ -35,11 +35,11 @@ public class SendMsg {
         dc.add( "**Reason:** " + reason );
         dc.add( "**Report Id:** " + id );
         dc.add( "**Server:** " + server );
-        utils.sendDiscordMsg( "⚠ Report Alert ⚠" , dc , "alerts" );
+        utils.sendDiscordAlertMsg( "⚠ Report Alert ⚠" , dc );
     }
     
     public static void sendReportChangeAlert( int id , String changer , String sender , String target , String reason , String date , String status , String server ){
-        if ( utils.getBoolean( "bungeecord.enabled" , null ) ) {
+        if ( utils.getBoolean( "bungeecord.enabled") ) {
             Collection < Player > networkPlayers = ( Collection < Player > ) Bukkit.getServer( ).getOnlinePlayers( );
             if ( networkPlayers == null || networkPlayers.isEmpty( ) )
                 return;
@@ -62,11 +62,11 @@ public class SendMsg {
         dc.add( "**Changed to:** " + status );
         dc.add( "**Report Id:** " + id );
         dc.add( "**Server:** " + server );
-        utils.sendDiscordMsg( "⚠ Report Change Alert ⚠" , dc , "alerts" );
+        utils.sendDiscordAlertMsg( "⚠ Report Change Alert ⚠" , dc );
     }
     
     public static void sendBanAlert( String sender , String target , String reason , Boolean permanent , Boolean Ip , Long amount , String time , String ExpDate , String date , String server ){
-        if ( utils.getBoolean( "bungeecord.enabled" , null ) ) {
+        if ( utils.getBoolean( "bungeecord.enabled") ) {
             Collection < Player > networkPlayers = ( Collection < Player > ) Bukkit.getServer( ).getOnlinePlayers( );
             if ( networkPlayers == null || networkPlayers.isEmpty( ) )
                 return;
@@ -92,11 +92,11 @@ public class SendMsg {
         dc.add( "**Period:** " + amount + time );
         dc.add( "**Exp Date:** " + ExpDate );
         dc.add( "**Server:** " + server );
-        utils.sendDiscordMsg( "⚠ Ban Alert ⚠" , dc , "alerts" );
+        utils.sendDiscordAlertMsg( "⚠ Ban Alert ⚠" , dc );
     }
     
     public static void sendBanChangeAlert( int id , String changer , String sender , String target , String reason , String ExpDate , String date , String status , String server ){
-        if ( utils.getBoolean( "bungeecord.enabled" , null ) ) {
+        if ( utils.getBoolean( "bungeecord.enabled") ) {
             Collection < Player > networkPlayers = ( Collection < Player > ) Bukkit.getServer( ).getOnlinePlayers( );
             if ( networkPlayers == null || networkPlayers.isEmpty( ) )
                 return;
@@ -121,11 +121,11 @@ public class SendMsg {
         dc.add( "**Status:** " + status );
         dc.add( "**Ban Id:** " + id );
         dc.add( "**Server:** " + server );
-        utils.sendDiscordMsg( "⚠Ban Change Alert ⚠" , dc , "alerts" );
+        utils.sendDiscordAlertMsg( "⚠Ban Change Alert ⚠" , dc );
     }
     
     public static void sendWarnAlert( String sender , String target , String reason , Long amount , String time , String ExpDate , String date , String server ){
-        if ( utils.getBoolean( "bungeecord.enabled" , null ) ) {
+        if ( utils.getBoolean( "bungeecord.enabled") ) {
             Collection < Player > networkPlayers = ( Collection < Player > ) Bukkit.getServer( ).getOnlinePlayers( );
             if ( networkPlayers == null || networkPlayers.isEmpty( ) )
                 return;
@@ -148,11 +148,11 @@ public class SendMsg {
         dc.add( "**Period:** " + amount + time );
         dc.add( "**Exp Date:** " + ExpDate );
         dc.add( "**Server:** " + server );
-        utils.sendDiscordMsg( "⚠ Warn Alert ⚠" , dc , "alerts" );
+        utils.sendDiscordAlertMsg( "⚠ Warn Alert ⚠" , dc );
     }
     
     public static void sendWarnChangeAlert( int id , String changer , String sender , String target , String reason , String ExpDate , String date , String status , String server ){
-        if ( utils.getBoolean( "bungeecord.enabled" , null ) ) {
+        if ( utils.getBoolean( "bungeecord.enabled") ) {
             Collection < Player > networkPlayers = ( Collection < Player > ) Bukkit.getServer( ).getOnlinePlayers( );
             if ( networkPlayers == null || networkPlayers.isEmpty( ) )
                 return;
@@ -177,11 +177,11 @@ public class SendMsg {
         dc.add( "**Status:** " + status );
         dc.add( "**Id:** " + id );
         dc.add( "**Server:** " + server );
-        utils.sendDiscordMsg( "⚠ Warn Change Alert ⚠" , dc , "alerts" );
+        utils.sendDiscordAlertMsg( "⚠ Warn Change Alert ⚠" , dc );
     }
     
     public static void sendFreezeAlert( String sender , String target , Boolean bool , String server ){
-        if ( utils.getBoolean( "bungeecord.enabled" , null ) ) {
+        if ( utils.getBoolean( "bungeecord.enabled") ) {
             Collection < Player > networkPlayers = ( Collection < Player > ) Bukkit.getServer( ).getOnlinePlayers( );
             if ( networkPlayers == null || networkPlayers.isEmpty( ) )
                 return;
@@ -198,11 +198,11 @@ public class SendMsg {
         dc.add( "**Frozen:** " + target );
         dc.add( "**Set to:** " + bool );
         dc.add( "**Server:** " + server );
-        utils.sendDiscordMsg( "⚠ Freeze Alert ⚠" , dc , "alerts" );
+        utils.sendDiscordAlertMsg( "⚠ Freeze Alert ⚠" , dc );
     }
     
     public static void sendWipeAlert( String sender , String target , int bans , int reports , int warns , String server ){
-        if ( utils.getBoolean( "bungeecord.enabled" , null ) ) {
+        if ( utils.getBoolean( "bungeecord.enabled") ) {
             Collection < Player > networkPlayers = ( Collection < Player > ) Bukkit.getServer( ).getOnlinePlayers( );
             if ( networkPlayers == null || networkPlayers.isEmpty( ) )
                 return;
@@ -223,11 +223,11 @@ public class SendMsg {
         dc.add( "**Reports Wiped:** " + reports );
         dc.add( "**Warns Wiped:** " + warns );
         dc.add( "**Server:** " + server );
-        utils.sendDiscordMsg( "⚠ Wipe Alert ⚠" , dc , "alerts" );
+        utils.sendDiscordAlertMsg( "⚠ Wipe Alert ⚠" , dc );
     }
     
     public static void sendStaffChatMSG( String sender , String msg , String server ){
-        if ( utils.getBoolean( "bungeecord.enabled" , null ) ) {
+        if ( utils.getBoolean( "bungeecord.enabled") ) {
             Collection < Player > networkPlayers = ( Collection < Player > ) Bukkit.getServer( ).getOnlinePlayers( );
             if ( networkPlayers == null || networkPlayers.isEmpty( ) )
                 return;
@@ -240,11 +240,11 @@ public class SendMsg {
         }
         ArrayList < String > dc = new ArrayList <>( );
         dc.add( "**[SC][" + server + "]**" + sender + ": " + msg );
-        utils.sendDiscordMsg( "⚠ Staff Chat ⚠" , dc , "alerts" );
+        utils.sendDiscordAlertMsg( "⚠ Staff Chat ⚠" , dc );
     }
     
     public static void sendStaffListRequest( String sender , String server ){
-        if ( utils.getBoolean( "bungeecord.enabled" , null ) ) {
+        if ( utils.getBoolean( "bungeecord.enabled") ) {
             Collection < Player > networkPlayers = ( Collection < Player > ) Bukkit.getServer( ).getOnlinePlayers( );
             if ( networkPlayers == null || networkPlayers.isEmpty( ) )
                 return;
@@ -257,7 +257,7 @@ public class SendMsg {
     }
     
     public static void sendSLPlayersData( String sender , String server ){
-        if ( utils.getBoolean( "bungeecord.enabled" , null ) ) {
+        if ( utils.getBoolean( "bungeecord.enabled") ) {
             ArrayList < String > players = new ArrayList <>( );
             HashMap < String, String > player_server = new HashMap <>( );
             HashMap < String, String > ping = new HashMap <>( );
@@ -290,7 +290,7 @@ public class SendMsg {
     }
     
     public static void connectPlayerToServer( String player , String server ){
-        if ( utils.getBoolean( "bungeecord.enabled" , null ) ) {
+        if ( utils.getBoolean( "bungeecord.enabled") ) {
             Collection < Player > networkPlayers = ( Collection < Player > ) Bukkit.getServer( ).getOnlinePlayers( );
             if ( networkPlayers == null || networkPlayers.isEmpty( ) )
                 return;
@@ -302,11 +302,11 @@ public class SendMsg {
         }
         ArrayList < String > dc = new ArrayList <>( );
         dc.add( "**The player:** " + player + " has connected to " + server );
-        utils.sendDiscordMsg( "⚠ Player Changed Server ⚠" , dc , "alerts" );
+        utils.sendDiscordAlertMsg( "⚠ Player Changed Server ⚠" , dc );
     }
     
     public static void helpOp( String player , String reason , String server ){
-        if ( utils.getBoolean( "bungeecord.enabled" , null ) ) {
+        if ( utils.getBoolean( "bungeecord.enabled") ) {
             Collection < Player > networkPlayers = ( Collection < Player > ) Bukkit.getServer( ).getOnlinePlayers( );
             if ( networkPlayers == null || networkPlayers.isEmpty( ) )
                 return;
@@ -321,6 +321,6 @@ public class SendMsg {
         dc.add( "**Player:** " + player );
         dc.add( "**Reason:** " + reason );
         dc.add( "**Server:** " + server );
-        utils.sendDiscordMsg( "⚠ HelpOp Alert ⚠" , dc , "alerts" );
+        utils.sendDiscordAlertMsg( "⚠ HelpOp Alert ⚠" , dc );
     }
 }

@@ -62,7 +62,7 @@ public class EditBan extends ReportMenu {
         } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
-                new BanManager( main.getPlayerMenuUtility( p ) , plugin ).open( p );
+                new BanManager( main.getPlayerMenuUtility( p ) , plugin ).open( );
             }
         }
     }

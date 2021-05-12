@@ -57,14 +57,14 @@ public class WarnTimeChose extends Menu {
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "specific" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new WarnAmount( main.getPlayerMenuUtility( p ) , plugin , p , warned , reason ).open( p );
+            new WarnAmount( main.getPlayerMenuUtility( p ) , plugin , p , warned , reason ).open( );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "panel" ) , PersistentDataType.STRING ) ) {
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
-                new WarnMenu( playerMenuUtility , plugin , warned ).open( p );
+                new WarnMenu( playerMenuUtility , plugin , warned ).open( );
                 e.setCancelled( true );
             }
         }
@@ -98,7 +98,7 @@ public class WarnTimeChose extends Menu {
         lore.clear( );
         lore.add( utils.chat( "&cCurrents warns: &6" + currentWarns ) );
         
-        if ( currentWarns < utils.getInt( "warns.max_warns" , null ) && utils.getBoolean( "warns.ban_on_exceeded" , null ) ) {
+        if ( currentWarns < utils.getInt( "warns.max_warns" , null ) && utils.getBoolean( "warns.ban_on_exceeded" ) ) {
             lore.add( utils.chat( "&cWarns left: &6" + (utils.getInt( "warns.max_warns" , null ) - currentWarns) ) );
         }
         

@@ -92,7 +92,7 @@ public final class main extends JavaPlugin {
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&c     Hey, there is a new version out!" ) );
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&b         Staff-Core " + version ) );
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------" ) );
-                if ( utils.getBoolean( "disable_outdated_plugin" , null ) ) {
+                if ( utils.getBoolean( "disable_outdated_plugin") ) {
                     c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&lDISABLING STAFF-CORE. USE THE LATEST VERSION " ) );
                     c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&lYou can disable this option (disable_outdated_plugin) in the config file." ) );
                     c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&lBut I recommend to use the latest version. " ) );
@@ -185,8 +185,8 @@ public final class main extends JavaPlugin {
                 SQLGetter.createTables( );
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "             &a&lMysql: &aTRUE" ) );
                 SQLGetter.addToggledPlayersToList( );
-                onEnableToDiscord( true );
             } catch ( SQLException e ) {
+                e.printStackTrace();
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "             &a&lMysql: &cFALSE" ) );
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&a      Disabling Staff-Core &6" + getDescription( ).getVersion( ) ) );
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------" ) );
@@ -194,7 +194,6 @@ public final class main extends JavaPlugin {
                 return;
             }
         } else {
-            onEnableToDiscord( false );
             c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "             &a&lMysql: &cFALSE" ) );
         }
         c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------" ) );
@@ -223,7 +222,6 @@ public final class main extends JavaPlugin {
         c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------" ) );
         c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&a         Staff-Core: &5" + plugin.getDescription( ).getVersion( ) ) );
         c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------" ) );
-        onDisableToDiscord( );
         if ( getConfig( ).getBoolean( "mysql.enabled" ) ) {
             Mysql.disconnect( );
             c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&c      Disconnected from the database!" ) );
@@ -255,18 +253,4 @@ public final class main extends JavaPlugin {
         this.menus.reloadConfig( );
     }
     
-    protected void onEnableToDiscord( boolean mysql ) {
-        ArrayList < String > dc = new ArrayList <>( );
-        dc.add( "**Server Enabled:** " + utils.getString( "bungeecord.server",null, null ) );
-        dc.add( "**MySql Enabled:** " + mysql );
-        dc.add( "**StaffCore Version:** " + plugin.getDescription( ).getVersion( ) );
-        utils.sendDiscordMsg( "⚠ Server Loaded ⚠" , dc , "debug" );
-    }
-    protected void onDisableToDiscord( ) {
-        ArrayList < String > dc = new ArrayList <>( );
-        dc.add( "**Server Disabled:** " + utils.getString( "bungeecord.server",null, null ) );
-        dc.add( "**StaffCore Version:** " + plugin.getDescription( ).getVersion( ) );
-        utils.sendDiscordMsg( "⚠ Server UnLoaded ⚠" , dc , "debug" );
-    
-    }
 }

@@ -27,10 +27,10 @@ public class WarningsCommand implements TabExecutor {
                 Player p = ( Player ) sender;
                 if ( sender.hasPermission( "staffcore.warnings" ) ) {
                     if ( args.length == 0 ) {
-                        new Warnings( new PlayerMenuUtility( p ) , plugin , p , p.getName( ) ).open( p );
+                        new Warnings( new PlayerMenuUtility( p ) , plugin , p , p.getName( ) ).open( );
                     } else if ( args.length == 1 ) {
                         try {
-                            new Warnings( new PlayerMenuUtility( p ) , plugin , p , args[0] ).open( p );
+                            new Warnings( new PlayerMenuUtility( p ) , plugin , p , args[0] ).open( );
                         } catch ( NullPointerException ignored ) {
                             utils.tell( sender , utils.getString( "offline" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
                         }

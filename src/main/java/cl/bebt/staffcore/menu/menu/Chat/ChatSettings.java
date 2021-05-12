@@ -38,7 +38,7 @@ public class ChatSettings extends MenuC {
         Player p = ( Player ) e.getWhoClicked( );
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "head" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new ClearChat( main.getPlayerMenuUtility( p ) , plugin ).open( p );
+            new ClearChat( main.getPlayerMenuUtility( p ) , plugin ).open( );
             p.updateInventory( );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "panel" ) , PersistentDataType.STRING ) ) {

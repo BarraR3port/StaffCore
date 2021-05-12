@@ -35,7 +35,7 @@ public class Mysql {
         String username = utils.getString( "mysql.username" , null , null );
         String password = utils.getString( "mysql.password" , null , null );
         if ( !isConnected( ) ) {
-            connection = DriverManager.getConnection( "jdbc:mysql://" + host + ":" + port + "/" + database + "?useSSL=false" , username , password );
+            connection = DriverManager.getConnection( "jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=TRUE&useSSL=FALSE" , username , password );
         }
     }
 }

@@ -40,7 +40,7 @@ public class MuteChatManager extends MenuC {
         Player p = ( Player ) e.getWhoClicked( );
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "Head" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new MutePlayer( main.getPlayerMenuUtility( p ) , plugin ).open( p );
+            new MutePlayer( main.getPlayerMenuUtility( p ) , plugin ).open( );
             p.updateInventory( );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "panel" ) , PersistentDataType.STRING ) ) {

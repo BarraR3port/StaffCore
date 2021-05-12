@@ -67,7 +67,7 @@ public class ChoseWarn extends ReportMenu {
         } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
-                new Warnings( main.getPlayerMenuUtility( p ) , plugin , p , warned ).open( p );
+                new Warnings( main.getPlayerMenuUtility( p ) , plugin , p , warned ).open( );
             }
         }
     }

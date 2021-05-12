@@ -35,7 +35,7 @@ public class Ban implements TabExecutor {
                         utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "ban <player> <time> <-ip> <reason>" ) );
                     } else if ( args.length == 1 ) {
                         if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
-                            new BanMenu( main.getPlayerMenuUtility( p ) , plugin , p , args[0] ).open( p );
+                            new BanMenu( main.getPlayerMenuUtility( p ) , plugin , p , args[0] ).open( );
                             return true;
                         } else {
                             try {
@@ -43,13 +43,13 @@ public class Ban implements TabExecutor {
                                     String IP = null;
                                     List < String > ips = utils.makeList( SQLGetter.getAlts( args[0] ) );
                                     IP = ips.subList( ips.size( ) - 1 , ips.size( ) ).toString( );
-                                    new BanMenu( main.getPlayerMenuUtility( p ) , plugin , p , args[0] ).open( p );
+                                    new BanMenu( main.getPlayerMenuUtility( p ) , plugin , p , args[0] ).open( );
                                     return true;
                                 } else {
                                     String IP = null;
                                     List < ? extends String > ips = plugin.alts.getConfig( ).getStringList( "alts." + args[0] );
                                     IP = ips.subList( ips.size( ) - 1 , ips.size( ) ).toString( );
-                                    new BanMenu( main.getPlayerMenuUtility( p ) , plugin , p , args[0] ).open( p );
+                                    new BanMenu( main.getPlayerMenuUtility( p ) , plugin , p , args[0] ).open( );
                                     return true;
                                 }
                             } catch ( NullPointerException | IndexOutOfBoundsException ignored ) {

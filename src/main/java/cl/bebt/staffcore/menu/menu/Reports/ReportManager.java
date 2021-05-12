@@ -40,11 +40,11 @@ public class ReportManager extends Menu {
         Player p = ( Player ) e.getWhoClicked( );
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "openReports" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new openReportsMenu( main.getPlayerMenuUtility( p ) , plugin ).open( p );
+            new openReportsMenu( main.getPlayerMenuUtility( p ) , plugin ).open( );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "closeReports" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new closedReportsMenu( main.getPlayerMenuUtility( p ) , plugin ).open( p );
+            new closedReportsMenu( main.getPlayerMenuUtility( p ) , plugin ).open( );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "panel" ) , PersistentDataType.STRING ) ) {
             e.setCancelled( true );

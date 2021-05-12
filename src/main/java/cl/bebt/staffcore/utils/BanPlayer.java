@@ -50,7 +50,7 @@ public class BanPlayer {
         }
         SendMsg.sendBanChangeAlert( Id , p.getName( ) , baner , banned , reason , exp , created , status , utils.getString( "bungeecord.server" , null , null ) );
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-            if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.ban" , null ) ) {
+            if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.ban" ) ) {
                 utils.PlaySound( people , "un_ban" );
                 for ( String key : utils.getStringList( "ban.change" , "alerts" ) ) {
                     key = key.replace( "%changed_by%" , player );
@@ -170,7 +170,7 @@ public class BanPlayer {
             }
             SendMsg.sendBanAlert( p.getName( ) , banned , reason , permanent , Ip , amount , time , format.format( ExpDate ) , format.format( now ) , utils.getString( "bungeecord.server" , null , null ) );
             for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-                if ( utils.getBoolean( "alerts.ban" , null ) || people.hasPermission( "staffcore.staff" ) ) {
+                if ( utils.getBoolean( "alerts.ban" ) || people.hasPermission( "staffcore.staff" ) ) {
                     utils.PlaySound( people , "ban_alerts" );
                     for ( String key : utils.getStringList( "ban.alerts" , "alerts" ) ) {
                         key = key.replace( "%baner%" , p.getName( ) );

@@ -46,22 +46,22 @@ public class ChoseBanType extends Menu {
         Player p = ( Player ) e.getWhoClicked( );
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "tempban" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new AmountBanned( main.getPlayerMenuUtility( p ) , plugin , p , banned , reason ).open( p );
+            new AmountBanned( main.getPlayerMenuUtility( p ) , plugin , p , banned , reason ).open( );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "permban" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
             BanPlayer.BanPlayer( p , banned , reason );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "ban-normal" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
             p.getPersistentDataContainer( ).set( new NamespacedKey( plugin , "ban-ip" ) , PersistentDataType.STRING , "ban-ip" );
-            new ChoseBanType( playerMenuUtility , plugin , player , banned , reason ).open( p );
+            new ChoseBanType( playerMenuUtility , plugin , player , banned , reason ).open( );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "ban-ip" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
             p.getPersistentDataContainer( ).remove( new NamespacedKey( plugin , "ban-ip" ) );
-            new ChoseBanType( playerMenuUtility , plugin , player , banned , reason ).open( p );
+            new ChoseBanType( playerMenuUtility , plugin , player , banned , reason ).open( );
         } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
-                new BanMenu( playerMenuUtility , main.plugin , player , banned ).open( p );
+                new BanMenu( playerMenuUtility , main.plugin , player , banned ).open( );
             }
         }
     }

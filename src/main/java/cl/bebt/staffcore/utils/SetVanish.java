@@ -51,13 +51,14 @@ public class SetVanish {
             p.setFoodLevel( 20 );
             p.setHealth( 20 );
             p.setSaturation( 5f );
+            p.setCollidable( false );
             if ( p.getInventory( ).contains( SetStaffItems.vanishOff( ) ) ) {
                 p.getInventory( ).remove( SetStaffItems.vanishOff( ) );
                 p.getInventory( ).addItem( SetStaffItems.vanishOn( ) );
             }
             if ( PlayerData.has( new NamespacedKey( plugin , "FakeJoinOrLeave" ) , PersistentDataType.STRING ) ) {
                 for ( Player players : Bukkit.getOnlinePlayers( ) ) {
-                    if ( utils.getBoolean( "alerts.fake_join_leave_msg" , null ) ) {
+                    if ( utils.getBoolean( "alerts.fake_join_leave_msg" ) ) {
                         utils.tell( players , utils.getString( "fake_join_leave_msg.leave_msg" , "lg" , null ).replace( "%player%" , p.getName( ) ) );
                     }
                 }
@@ -75,8 +76,9 @@ public class SetVanish {
             }
             p.setHealth( 20 );
             p.setSaturation( 5f );
+            p.setCollidable( true );
             PlayerData.remove( new NamespacedKey( plugin , "vanished" ) );
-            if ( utils.getBoolean( "alerts.fake_join_leave_msg" , null ) ) {
+            if ( utils.getBoolean( "alerts.fake_join_leave_msg" ) ) {
                 if ( PlayerData.has( new NamespacedKey( plugin , "FakeJoinOrLeave" ) , PersistentDataType.STRING ) ) {
                     for ( Player players : Bukkit.getOnlinePlayers( ) ) {
                         utils.tell( players , utils.getString( "fake_join_leave_msg.join_msg" , "lg" , null ).replace( "%player%" , p.getName( ) ) );

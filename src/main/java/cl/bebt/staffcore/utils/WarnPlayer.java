@@ -21,7 +21,7 @@ public class WarnPlayer {
     
     public WarnPlayer( Player p , String warned , main plugin ){
         WarnPlayer.plugin = plugin;
-        new WarnMenu( new PlayerMenuUtility( p ) , plugin , warned ).open( p );
+        new WarnMenu( new PlayerMenuUtility( p ) , plugin , warned ).open( );
     }
     
     
@@ -64,7 +64,7 @@ public class WarnPlayer {
         }
         SendMsg.sendWarnAlert( p.getName( ) , warned , reason , amount , time , format.format( ExpDate ) , format.format( now ) , utils.getString( "bungeecord.server" , null , null ) );
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-            if ( utils.getBoolean( "alerts.warn" , null ) || people.hasPermission( "staffcore.staff" ) ) {
+            if ( utils.getBoolean( "alerts.warn" ) || people.hasPermission( "staffcore.staff" ) ) {
                 utils.PlaySound( people , "warn_alerts" );
                 for ( String key : utils.getStringList( "warns.alerts.warn_alerts" , "alerts" ) ) {
                     key = key.replace( "%warner%" , p.getName( ) );
@@ -117,7 +117,7 @@ public class WarnPlayer {
         }
         SendMsg.sendWarnChangeAlert( Id , p.getName( ) , warner , warned , reason , exp , created , status , utils.getServer( ) );
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-            if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.warn" , null ) ) {
+            if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.warn" ) ) {
                 utils.PlaySound( people , "un_ban" );
                 for ( String key : utils.getStringList( "warns.alerts.warn_change" , "alerts" ) ) {
                     key = key.replace( "%changed_by%" , player );

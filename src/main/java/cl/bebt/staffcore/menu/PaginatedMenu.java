@@ -1,8 +1,5 @@
 package cl.bebt.staffcore.menu;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
 public abstract class PaginatedMenu extends Menu {
     protected int page = 0;
     
@@ -15,9 +12,9 @@ public abstract class PaginatedMenu extends Menu {
     }
     
     public void addMenuBorder( ){
-        this.inventory.setItem( 48 , makeItem( Material.DARK_OAK_BUTTON , ChatColor.GREEN + "Back" ) );
+        this.inventory.setItem( 48 , back( ) );
         this.inventory.setItem( 49 , close( ) );
-        this.inventory.setItem( 50 , makeItem( Material.DARK_OAK_BUTTON , ChatColor.GREEN + "Next" ) );
+        this.inventory.setItem( 50 , next( ) );
         int i;
         for ( i = 0; i < 10; i++ ) {
             if ( this.inventory.getItem( i ) == null )

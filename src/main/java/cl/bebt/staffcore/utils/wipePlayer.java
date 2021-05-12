@@ -101,7 +101,7 @@ public class wipePlayer {
                 plugin.alts.saveConfig( );
             }
             for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-                if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.wipe_players" , null ) ) {
+                if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.wipe_players" ) ) {
                     for ( String key : utils.getStringList( "wipe.wipe_msg" , "alerts" ) ) {
                         key = key.replace( "%wiper%" , sender.getName( ) );
                         key = key.replace( "%wiped%" , p );

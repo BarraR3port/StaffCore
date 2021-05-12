@@ -3,6 +3,7 @@ package cl.bebt.staffcore.utils;
 import club.minnced.discord.webhook.WebhookClient;
 import club.minnced.discord.webhook.send.WebhookEmbed;
 import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
+import org.bukkit.entity.Player;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -52,9 +53,9 @@ public class DiscordUtils {
         webhookClient.close( );
     }
     
-    public static void DiscordWebHooksDebug( ArrayList < String > msg , String title ){
+    public static void DiscordWebHooksDebug( Player p, ArrayList < String > msg , String title ){
         WebhookClient webhookClient = WebhookClient.withUrl( DebugChannel );
-        WebhookEmbedBuilder webhookEmbedBuilder = new WebhookEmbedBuilder( ).setAuthor( new WebhookEmbed.EmbedAuthor( DebugName , DebugNameImage , DebugNameUrl ) );
+        WebhookEmbedBuilder webhookEmbedBuilder = new WebhookEmbedBuilder( ).setAuthor( new WebhookEmbed.EmbedAuthor( DebugName , "https://crafatar.com/avatars/" + p.getUniqueId( ) , DebugNameUrl ) );
         webhookEmbedBuilder.setTitle( new WebhookEmbed.EmbedTitle( title , null ) ).setColor( DebugColor );
         StringBuilder string = new StringBuilder( );
         for ( String s : msg ) {
@@ -64,28 +65,6 @@ public class DiscordUtils {
         webhookEmbedBuilder.setTimestamp( Instant.ofEpochMilli( new Date( ).getTime( ) ) );
         webhookClient.send( webhookEmbedBuilder.build( ) );
         webhookClient.close( );
-    }
-    
-    public static boolean AlertsWorking( ){
-        try {
-            WebhookClient webhookClient = WebhookClient.withUrl( DebugChannel );
-            WebhookEmbedBuilder webhookEmbedBuilder = new WebhookEmbedBuilder( ).setAuthor( new WebhookEmbed.EmbedAuthor( DebugName , DebugNameImage , DebugNameUrl ) );
-            webhookClient.close( );
-            return true;
-        } catch ( IllegalArgumentException | NullPointerException ignored ) {
-            return false;
-        }
-    }
-    
-    public static boolean DebugWorking( ){
-        try {
-            WebhookClient webhookClient = WebhookClient.withUrl( DebugChannel );
-            WebhookEmbedBuilder webhookEmbedBuilder = new WebhookEmbedBuilder( ).setAuthor( new WebhookEmbed.EmbedAuthor( DebugName , DebugNameImage , DebugNameUrl ) );
-            webhookClient.close( );
-            return true;
-        } catch ( IllegalArgumentException | NullPointerException ignored ) {
-            return false;
-        }
     }
     
     protected static String date( ){

@@ -43,11 +43,11 @@ public class WarnAmount extends PaginatedMenu {
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "amount" ) , PersistentDataType.LONG ) ) {
             p.closeInventory( );
             long yep = e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).get( new NamespacedKey( plugin , "amount" ) , PersistentDataType.LONG );
-            new WarnQuantity( playerMenuUtility , plugin , warned , reason , yep ).open( p );
+            new WarnQuantity( playerMenuUtility , plugin , warned , reason , yep ).open( );
         } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
-                new WarnTimeChose( playerMenuUtility , main.plugin , p , warned , reason ).open( p );
+                new WarnTimeChose( playerMenuUtility , main.plugin , p , warned , reason ).open( );
             }
         } else if ( e.getCurrentItem( ).equals( back( ) ) ) {
             if ( page == 0 ) {
@@ -55,13 +55,13 @@ public class WarnAmount extends PaginatedMenu {
             } else {
                 page--;
                 p.closeInventory( );
-                open( p );
+                open( );
             }
         } else if ( e.getCurrentItem( ).equals( next( ) ) ) {
             if ( index + 1 <= amount ) {
                 page++;
                 p.closeInventory( );
-                open( p );
+                open( );
             } else {
                 utils.tell( p , utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
             }

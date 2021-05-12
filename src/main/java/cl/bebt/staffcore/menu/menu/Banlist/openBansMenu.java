@@ -64,14 +64,14 @@ public class openBansMenu extends PaginatedMenu {
             String jugador = e.getCurrentItem( ).getItemMeta( ).getDisplayName( );
             if ( e.getClick( ).isLeftClick( ) ) {
                 int i = e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).get( new NamespacedKey( plugin , "open-id" ) , PersistentDataType.INTEGER );
-                new EditBan( main.getPlayerMenuUtility( p ) , main.plugin , jugador , i ).open( p );
+                new EditBan( main.getPlayerMenuUtility( p ) , main.plugin , jugador , i ).open( );
             } else if ( e.getClick( ).isRightClick( ) ) {
                 TpPlayers.tpToPlayer( p , jugador );
             }
         } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
-                new BanManager( main.getPlayerMenuUtility( p ) , plugin ).open( p );
+                new BanManager( main.getPlayerMenuUtility( p ) , plugin ).open( );
             }
         } else if ( e.getCurrentItem( ).equals( back( ) ) ) {
             if ( page == 0 ) {
@@ -79,13 +79,13 @@ public class openBansMenu extends PaginatedMenu {
             } else {
                 page--;
                 p.closeInventory( );
-                open( p );
+                open( );
             }
         } else if ( e.getCurrentItem( ).equals( next( ) ) ) {
             if ( index + 1 <= bans.size( ) ) {
                 page++;
                 p.closeInventory( );
-                open( p );
+                open( );
             } else {
                 utils.tell( p , utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
             }

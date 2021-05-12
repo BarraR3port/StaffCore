@@ -36,11 +36,11 @@ public class BanManager extends Menu {
         Player p = ( Player ) e.getWhoClicked( );
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "openBans" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new openBansMenu( main.getPlayerMenuUtility( p ) , this.plugin ).open( p );
+            new openBansMenu( main.getPlayerMenuUtility( p ) , this.plugin ).open( );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "closeBans" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new closedBansMenu( main.getPlayerMenuUtility( p ) , this.plugin ).open( p );
+            new closedBansMenu( main.getPlayerMenuUtility( p ) , this.plugin ).open( );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "panel" ) , PersistentDataType.STRING ) ) {
             e.setCancelled( true );

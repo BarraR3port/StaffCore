@@ -58,7 +58,7 @@ public class staffcore implements TabExecutor {
                 utils.tell( sender , "          &aVersion: &d" + plugin.getDescription( ).getVersion( ) );
                 utils.tell( sender , "          &aAuthor: &dBarrar3port" );
                 utils.tell( sender , "          &aMysql: &d" + utils.mysqlEnabled( ) );
-                utils.tell( sender , "          &aBungeeCord: &d" + utils.getBoolean( "bungeecord.enabled" , null ) );
+                utils.tell( sender , "          &aBungeeCord: &d" + utils.getBoolean( "bungeecord.enabled") );
                 utils.tell( sender , "          &aServer Version: &d" + utils.getServerVersion( ) );
                 utils.tell( sender , "          &aTPS: &d" + ( int ) utils.getTPS( ) );
                 utils.tell( sender , " " );
@@ -141,7 +141,7 @@ public class staffcore implements TabExecutor {
                 utils.tell( sender , "          &aVersion: &d" + plugin.getDescription( ).getVersion( ) );
                 utils.tell( sender , "          &aAuthor: &d" + plugin.getDescription( ).getAuthors( ) );
                 utils.tell( sender , "          &aMysql: &d" + utils.mysqlEnabled( ) );
-                utils.tell( sender , "          &aBungeeCord: &d" + utils.getBoolean( "bungeecord.enabled" , null ) );
+                utils.tell( sender , "          &aBungeeCord: &d" + utils.getBoolean( "bungeecord.enabled") );
                 utils.tell( sender , "          &aServer Version: &d" + utils.getServerVersion( ) );
                 utils.tell( sender , "          &aTPS: &d" + ( int ) utils.getTPS( ) );
                 utils.tell( sender , " " );

@@ -37,7 +37,7 @@ public class MutePlayer extends PaginatedMenu {
             p.closeInventory( );
             Player jugador = p.getServer( ).getPlayer( e.getCurrentItem( ).getItemMeta( ).getDisplayName( ) );
             p.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "muted_player" ) , PersistentDataType.STRING , jugador.getName( ) );
-            (new Amount( main.getPlayerMenuUtility( p ) , this.plugin , p )).open( p );
+            (new Amount( main.getPlayerMenuUtility( p ) , this.plugin , p )).open( );
         } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
         } else if ( e.getCurrentItem( ).equals( back( ) ) ) {
@@ -46,13 +46,13 @@ public class MutePlayer extends PaginatedMenu {
             } else {
                 page--;
                 p.closeInventory( );
-                open( p );
+                open( );
             }
         } else if ( e.getCurrentItem( ).equals( next( ) ) ) {
             if ( index + 1 <= players.size( ) ) {
                 page++;
                 p.closeInventory( );
-                open( p );
+                open( );
             } else {
                 utils.tell( p , utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
             }

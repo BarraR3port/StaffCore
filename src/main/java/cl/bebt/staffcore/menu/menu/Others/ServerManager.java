@@ -49,13 +49,13 @@ public class ServerManager extends MenuC {
         }
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "bans" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new BanManager( main.getPlayerMenuUtility( p ) , plugin ).open( p );
+            new BanManager( main.getPlayerMenuUtility( p ) , plugin ).open( );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "panel" ) , PersistentDataType.STRING ) ) {
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "reports" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new ReportManager( main.getPlayerMenuUtility( p ) , plugin ).open( p );
+            new ReportManager( main.getPlayerMenuUtility( p ) , plugin ).open( );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "chat" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
@@ -63,7 +63,7 @@ public class ServerManager extends MenuC {
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "warn" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new WarnManager( main.getPlayerMenuUtility( p ) , plugin ).open( p );
+            new WarnManager( main.getPlayerMenuUtility( p ) , plugin ).open( );
             e.setCancelled( true );
         }
     }

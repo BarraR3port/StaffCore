@@ -44,11 +44,11 @@ public class AmountBanned extends PaginatedMenu {
             p.closeInventory( );
             int yep = e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).get( new NamespacedKey( plugin , "amount" ) , PersistentDataType.INTEGER );
             player.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "amount" ) , PersistentDataType.INTEGER , yep );
-            new QuantityBanned( playerMenuUtility , plugin , player , banned , reason ).open( p );
+            new QuantityBanned( playerMenuUtility , plugin , player , banned , reason ).open( );
         } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
-                new ChoseBanType( playerMenuUtility , plugin , player , banned , reason ).open( p );
+                new ChoseBanType( playerMenuUtility , plugin , player , banned , reason ).open( );
             }
         } else if ( e.getCurrentItem( ).equals( back( ) ) ) {
             if ( page == 0 ) {
@@ -56,13 +56,13 @@ public class AmountBanned extends PaginatedMenu {
             } else {
                 page--;
                 p.closeInventory( );
-                open( p );
+                open( );
             }
         } else if ( e.getCurrentItem( ).equals( next( ) ) ) {
             if ( index + 1 <= amount ) {
                 page++;
                 p.closeInventory( );
-                open( p );
+                open( );
             } else {
                 utils.tell( p , utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
             }

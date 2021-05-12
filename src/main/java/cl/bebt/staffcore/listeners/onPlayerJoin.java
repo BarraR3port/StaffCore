@@ -21,6 +21,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -108,10 +109,7 @@ public class onPlayerJoin implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     void onPlayerJoinEvent( PlayerJoinEvent e ){
         Player p = e.getPlayer( );
-        if ( p.hasPermission( "staffcore.vanish" ) ) {
-            SetVanish.setVanish( p , true );
-        }
-        if ( utils.currentPlayerWarns( p.getName( ) ) != 0 && utils.getBoolean( "warns.notify" , null ) ) {
+        if ( utils.currentPlayerWarns( p.getName( ) ) != 0 && utils.getBoolean( "warns.notify") ) {
             ComponentBuilder cb = new ComponentBuilder( utils.chat( utils.getString( "warns.join_msg" , "lg" , null ) ) );
             TextComponent dis = new TextComponent( utils.chat( utils.getString( "warns.notify" , "lg" , "staff" ).replace( "%amount%" , String.valueOf( utils.currentPlayerWarns( p.getName( ) ) ) ) ) );
             dis.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT , cb.create( ) ) );
@@ -222,7 +220,12 @@ public class onPlayerJoin implements Listener {
                     }
                 }
             }
-        } catch ( NoSuchMethodError ignored ) {
+        } catch ( NoSuchMethodError ignored ) { }
+        if ( utils.getBoolean( "discord.type.debug.enabled_debugs.commands" ) ){
+            ArrayList < String > dc = new ArrayList <>( );
+            dc.add( "**Player:** " + p.getName( ) );
+            dc.add( "**Reason:** " + e.getJoinMessage( ) );
+            utils.sendDiscordDebugMsg( e.getPlayer( ), "⚠ Player Join ⚠" , dc );
         }
     }
     

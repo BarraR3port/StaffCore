@@ -34,7 +34,7 @@ public class ReportPlayer {
             }
         }
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-            if ( people.hasPermission( "staffcore.staff" ) || !people.equals( p ) || utils.getBoolean( "alerts.report" , null ) ) {
+            if ( people.hasPermission( "staffcore.staff" ) || !people.equals( p ) || utils.getBoolean( "alerts.report" ) ) {
                 utils.PlaySound( people , "reports_alerts" );
                 for ( String key : utils.getStringList( "report.report_alerts" , "alerts" ) ) {
                     key = key.replace( "%reporter%" , p.getName( ) );

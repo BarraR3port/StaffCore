@@ -21,7 +21,7 @@ public class ReportList implements CommandExecutor {
             if ( sender instanceof Player ) {
                 if ( sender.hasPermission( "staffcore.reportlist" ) ) {
                     Player p = ( Player ) sender;
-                    new ReportManager( main.getPlayerMenuUtility( p ) , main.plugin ).open( p );
+                    new ReportManager( main.getPlayerMenuUtility( p ) , main.plugin ).open( );
                 } else {
                     utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
                 }

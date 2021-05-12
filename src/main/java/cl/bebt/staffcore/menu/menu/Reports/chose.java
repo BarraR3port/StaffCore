@@ -60,7 +60,7 @@ public class chose extends ReportMenu {
         } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
-                new ReportManager( main.getPlayerMenuUtility( p ) , main.plugin ).open( p );
+                new ReportManager( main.getPlayerMenuUtility( p ) , main.plugin ).open( );
             }
         }
     }

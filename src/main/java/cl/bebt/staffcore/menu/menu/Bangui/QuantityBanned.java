@@ -68,7 +68,7 @@ public class QuantityBanned extends Menu {
         } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
-                new AmountBanned( playerMenuUtility , plugin , player , banned , reason ).open( p );
+                new AmountBanned( playerMenuUtility , plugin , player , banned , reason ).open( );
             }
         }
     }

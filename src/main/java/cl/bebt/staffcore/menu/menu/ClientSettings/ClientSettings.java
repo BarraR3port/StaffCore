@@ -186,7 +186,7 @@ public class ClientSettings extends MenuC {
         }
         this.inventory.setItem( 21 , redPanel( ) );
         this.inventory.setItem( 23 , redPanel( ) );
-        if ( utils.getBoolean( "alerts.fake_join_leave_msg", null ) ){
+        if ( utils.getBoolean( "alerts.fake_join_leave_msg" ) ){
             if ( p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "FakeJoinOrLeave" ) , PersistentDataType.STRING ) ) {
                 this.inventory.setItem( 24 , Items.FakeJoinOrLeave( true ) );
             } else {

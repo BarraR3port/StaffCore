@@ -61,14 +61,14 @@ public class openReportsMenu extends PaginatedMenu {
             String jugador = e.getCurrentItem( ).getItemMeta( ).getDisplayName( );
             if ( e.getClick( ).isLeftClick( ) ) {
                 int id = e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).get( new NamespacedKey( plugin , "open-id" ) , PersistentDataType.INTEGER );
-                new chose( main.getPlayerMenuUtility( p ) , plugin , jugador , id ).open( p );
+                new chose( main.getPlayerMenuUtility( p ) , plugin , jugador , id ).open( );
             } else if ( e.getClick( ).isRightClick( ) ) {
                 TpPlayers.tpToPlayer( p , jugador );
             }
         } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
-                new ReportManager( main.getPlayerMenuUtility( p ) , plugin ).open( p );
+                new ReportManager( main.getPlayerMenuUtility( p ) , plugin ).open( );
             }
         } else if ( e.getCurrentItem( ).equals( back( ) ) ) {
             if ( page == 0 ) {
@@ -76,13 +76,13 @@ public class openReportsMenu extends PaginatedMenu {
             } else {
                 page--;
                 p.closeInventory( );
-                open( p );
+                open( );
             }
         } else if ( e.getCurrentItem( ).equals( next( ) ) ) {
             if ( index + 1 <= reports.size( ) ) {
                 page++;
                 p.closeInventory( );
-                open( p );
+                open( );
             } else {
                 utils.tell( p , utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
             }
@@ -116,8 +116,7 @@ public class openReportsMenu extends PaginatedMenu {
                         reports.put( num , id );
                     }
                 }
-            } catch ( NullPointerException ignored ) {
-            }
+            } catch ( NullPointerException ignored ) { }
         }
         if ( reports != null && !reports.isEmpty( ) ) {
             for ( int i = 1; i <= getMaxItemsPerPage( ); i++ ) {

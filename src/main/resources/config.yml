@@ -3,7 +3,7 @@
 #   | (___ \_| `| |-'  ,--.    _| |_    _| |_      ______    / .'   \_|   .--.    _ .--.   .---.          #
 #    _.____`.   | |   `'_\ :  '-| |-'  '-| |-'    |______|   | |        / .'`\ \ [ `/'`\] / /__\\         #
 #   | \____) |  | |,  // | |,   | |      | |                 \ `.___.'\ | \__. |  | |     | \__.,         #
-#   \______.'   \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.4   #
+#   \______.'   \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.4.1 #
 #                                                                                                         #
 #                                                                               By BarraR3port : [CONFIG] #
 #                                                                                                         #
@@ -48,23 +48,28 @@ language: "EN_NA" # Currently there is English (EN_NA) and Spanish (ES_CL)
 discord:
   type:
     alerts:
-      enabled: true
+      enabled: false
       name: "[STAFF CORE]"
       name_image_url: "https://www.spigotmc.org/data/resource_icons/82/82324.jpg?1599952786" # You can put null
       name_web_url: "https://github.com/BarraR3port" # You can put null if you don't want to use one
-      webhook_url: "THE DISCORD WEBHOOK URL"
+      webhook_url: "THE DISCORD WEBHOOK URL" # Here you put the DiscordWebHook Link
       custom_image: true
       custom_image_url: "https://www.spigotmc.org/data/resource_icons/82/82324.jpg?1599952786"
       color: 0xF456F4 # https://www.htmlcsscolor.com/
     debug:
-      enabled: true
+      enabled: false
       name: "[STAFF CORE]"
       name_image_url: "https://www.spigotmc.org/data/resource_icons/82/82324.jpg?1599952786" # You can put null
       name_web_url: "https://github.com/BarraR3port" # You can put null if you don't want to use one
-      webhook_url: "THE DISCORD WEBHOOK URL"
+      webhook_url: "THE DISCORD WEBHOOK URL" # Here you put the DiscordWebHook Link
       custom_image: true
       custom_image_url: "https://www.spigotmc.org/data/resource_icons/82/82324.jpg?1599952786"
       color: 0xFF0000 # https://www.htmlcsscolor.com/
+      enabled_debugs:
+        commands: true
+        player_join: true
+        player_leave: true
+        chat: true
 
 # ------------> STAFF <--------------
 staff:

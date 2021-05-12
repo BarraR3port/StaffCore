@@ -27,7 +27,7 @@ public class BanMenu extends BanPlayerMenu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( utils.getString( "ban_menu.name" , "menu" , null ).replace( "%player%" , banned ) );
+        return utils.chat( utils.getString( "ban_menu.name" , "menu", null).replace( "%player%" , banned ) );
     }
     
     @Override
@@ -40,31 +40,31 @@ public class BanMenu extends BanPlayerMenu {
         Player p = ( Player ) e.getWhoClicked( );
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "hacking" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , banned , "Hacking" ).open( p );
+            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , banned , "Hacking" ).open( );
         }
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "killaura" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , banned , "Killaura" ).open( p );
+            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , banned , "Killaura" ).open( );
         }
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , banned , "Flying" ).open( p );
+            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , banned , "Flying" ).open( );
         }
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "speed" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , banned , "Speed" ).open( p );
+            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , banned , "Speed" ).open( );
         }
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "griefing" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , banned , "Griefing" ).open( p );
+            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , banned , "Griefing" ).open( );
         }
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "spamming" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , banned , "Spamming" ).open( p );
+            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , banned , "Spamming" ).open( );
         }
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "bhop" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , banned , "BunnyHop" ).open( p );
+            new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , banned , "BunnyHop" ).open( );
         }
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "other" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );

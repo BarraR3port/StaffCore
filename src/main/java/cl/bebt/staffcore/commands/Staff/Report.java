@@ -24,7 +24,7 @@ public class Report implements TabExecutor {
                 if ( sender.hasPermission( "staffcore.report" ) ) {
                     if ( args.length == 1 ) {
                         Player p = ( Player ) sender;
-                        new ReportMenu( main.getPlayerMenuUtility( p ) , main.plugin , args[0] ).open( p );
+                        new ReportMenu( main.getPlayerMenuUtility( p ) , main.plugin , args[0] ).open( );
                     } else {
                         utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "report <player>" ) );
                     }

@@ -82,6 +82,10 @@ public class utils {
         }
     }
     
+    public static boolean getBoolean( String path ){
+        return plugin.getConfig( ).getBoolean( path );
+    }
+    /*
     public static boolean getBoolean( String path , @Nullable String type ){
         if ( type == null ) return plugin.getConfig( ).getBoolean( path );
         if ( type.equalsIgnoreCase( "lg" ) ) { //Language
@@ -96,6 +100,7 @@ public class utils {
             return plugin.alerts.getConfig( ).getBoolean( path );
         }
     }
+     */
     
     /**
      * @param path The String of the path
@@ -411,16 +416,21 @@ public class utils {
         }
     }
     
-    public static void sendDiscordMsg( String title , ArrayList < String > msg , String type ){
-        if ( type.equalsIgnoreCase( "alerts" ) ) {
-            DiscordUtils.DiscordWebHooksAlerts( msg , title );
-        } else if ( type.equalsIgnoreCase( "debug" ) ) {
+    public static void sendDiscordAlertMsg( String title , ArrayList < String > msg ){
             try {
-                DiscordUtils.DiscordWebHooksDebug( msg , title );
+                DiscordUtils.DiscordWebHooksAlerts( msg , title );
             } catch ( IllegalArgumentException exception ) {
-                if ( getBoolean( "discord.type.alerts.enabled" , null ) ) {
+                if ( getBoolean( "discord.type.alerts.enabled") ) {
                     tell( Bukkit.getConsoleSender( ) , getString( "discord.could_not_connect" , "lg" , "staff" ) );
                 }
+            }
+    }
+    public static void sendDiscordDebugMsg( Player p, String title , ArrayList < String > msg ){
+        try {
+            DiscordUtils.DiscordWebHooksDebug( p , msg , title );
+        } catch ( IllegalArgumentException exception ) {
+            if ( getBoolean( "discord.type.debug.enabled") ) {
+                tell( Bukkit.getConsoleSender( ) , getString( "discord.could_not_connect" , "lg" , "staff" ) );
             }
         }
     }

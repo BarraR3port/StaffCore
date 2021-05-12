@@ -54,7 +54,7 @@ public class Warnings extends Menu {
             if ( item.getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( main.plugin , "id" ) , PersistentDataType.INTEGER ) ) {
                 int id = item.getItemMeta( ).getPersistentDataContainer( ).get( new NamespacedKey( main.plugin , "id" ) , PersistentDataType.INTEGER );
                 p.closeInventory( );
-                new ChoseWarn( playerMenuUtility , plugin , p , warned , id ).open( p );
+                new ChoseWarn( playerMenuUtility , plugin , p , warned , id ).open( );
             }
         }
         

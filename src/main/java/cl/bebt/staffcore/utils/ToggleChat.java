@@ -29,7 +29,7 @@ public class ToggleChat {
             utils.tell( muted , utils.getString( "toggle_chat.un_mute_by_console" , "lg" , "staff" ) );
         }
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-            if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.mute_player" , null ) ) {
+            if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.mute_player") ) {
                 utils.PlaySound( people , "staff_mute_alerts" );
                 for ( String key : utils.getStringList( "chat.toggle" , "alerts" ) ) {
                     if ( p instanceof Player ) {
@@ -56,7 +56,7 @@ public class ToggleChat {
                 utils.tell( muted , utils.getString( "toggle_chat.mute_by_player" , "lg" , "sv" ).replace( "%player%" , "CONSOLE" ) );
             }
             for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-                if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.mute_player" , null ) ) {
+                if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.mute_player") ) {
                     utils.PlaySound( people , "staff_mute_alerts" );
                     for ( String key : utils.getStringList( "chat.toggle" , "alerts" ) ) {
                         if ( p instanceof Player ) {
@@ -96,7 +96,7 @@ public class ToggleChat {
     
     private static void sendMessage( Player p , Player muted , long amount , String quantity ){
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-            if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.mute_player" , null ) || people.equals( muted ) ) {
+            if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.mute_player") || people.equals( muted ) ) {
                 utils.PlaySound( people , "staff_mute_alerts" );
                 for ( String key : utils.getStringList( "chat.temporal_mute" , "alerts" ) ) {
                     key = key.replace( "%staff%" , p.getName( ) );

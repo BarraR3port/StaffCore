@@ -61,14 +61,14 @@ public class closedReportsMenu extends PaginatedMenu {
             String jugador = e.getCurrentItem( ).getItemMeta( ).getDisplayName( );
             if ( e.getClick( ).isLeftClick( ) ) {
                 int id = e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).get( new NamespacedKey( plugin , "close-id" ) , PersistentDataType.INTEGER );
-                new chose( main.getPlayerMenuUtility( p ) , main.plugin , jugador , id ).open( p );
+                new chose( main.getPlayerMenuUtility( p ) , main.plugin , jugador , id ).open( );
             } else if ( e.getClick( ).isRightClick( ) ) {
                 TpPlayers.tpToPlayer( p , jugador );
             }
         } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
-                new ReportManager( main.getPlayerMenuUtility( p ) , main.plugin ).open( p );
+                new ReportManager( main.getPlayerMenuUtility( p ) , main.plugin ).open( );
             }
         } else if ( e.getCurrentItem( ).equals( back( ) ) ) {
             if ( page == 0 ) {
@@ -76,13 +76,13 @@ public class closedReportsMenu extends PaginatedMenu {
             } else {
                 page--;
                 p.closeInventory( );
-                open( p );
+                open( );
             }
         } else if ( e.getCurrentItem( ).equals( next( ) ) ) {
             if ( index + 1 <= reports.size( ) ) {
                 page++;
                 p.closeInventory( );
-                open( p );
+                open( );
             } else {
                 utils.tell( p , utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
             }
