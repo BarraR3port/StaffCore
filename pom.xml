@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cl.bebt.staffcore</groupId>
-    <artifactId>StaffCore</artifactId>
+    <artifactId>staffcore</artifactId>
     <version>4.4.1</version>
     <packaging>jar</packaging>
 
@@ -20,7 +20,7 @@
         <repository>
             <id>github</id>
             <name>GitHub BarraR3port Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/BarraR3port/StaffCore</url>
+            <url>https://maven.pkg.github.com/BarraR3port/staffcore</url>
         </repository>
     </distributionManagement>
 
