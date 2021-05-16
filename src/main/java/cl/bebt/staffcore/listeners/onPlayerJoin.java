@@ -163,7 +163,7 @@ public class onPlayerJoin implements Listener {
                     }
                 }
                 if ( !p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ) {
-                    SetFly.SetFly( p , true );
+                    SetFly.SetFly( p , false );
                 } else {
                     p.setAllowFlight( true );
                     p.setFlying( true );

@@ -21,7 +21,7 @@ public class SetVanish {
             if ( utils.mysqlEnabled( ) ) {
                 for ( Player player : Bukkit.getServer( ).getOnlinePlayers( ) ) {
                     if ( !player.hasPermission( "staffcore.vanish.see" ) && !player.hasPermission( "staffcore.vanish" ) ) {
-                        if ( player.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) || SQLGetter.isTrue( player , "vanish" ).equals( "true" ) || SQLGetter.isTrue( player , "staff" ).equals( "true" ) ) {
+                        if ( player.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || player.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) || SQLGetter.isTrue( player , "vanish" ).equals( "true" ) || SQLGetter.isTrue( player , "staff" ).equals( "true" ) ) {
                             p.showPlayer( plugin , player );
                         } else {
                             player.hidePlayer( plugin , p );
@@ -34,7 +34,7 @@ public class SetVanish {
             } else {
                 for ( Player player : Bukkit.getOnlinePlayers( ) ) {
                     if ( !player.hasPermission( "staffcore.vanish.see" ) && !player.hasPermission( "staffcore.vanish" ) ) {
-                        if ( player.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || PlayerData.has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) ) {
+                        if ( player.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || player.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) ) {
                             p.showPlayer( plugin , player );
                         } else {
                             player.hidePlayer( plugin , p );
