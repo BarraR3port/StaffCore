@@ -1,5 +1,5 @@
 # Staff-Core
-Spigot overview: https://www.spigotmc.org/resources/staff-core.82324/
+
 <p align="center">
     <a href="https://www.spigotmc.org/resources/staff-core.82324/">
         <img alt="spigot" src="https://img.shields.io/badge/spigot-BarraR3port-darkred?style=for-the-badge"/>
@@ -14,6 +14,8 @@ Spigot overview: https://www.spigotmc.org/resources/staff-core.82324/
         <img src="https://img.shields.io/discord/750807727613280316?logo=discord&style=for-the-badge&color=darkred"/>
     </a>
 </p>
+
+Spigot overview: https://www.spigotmc.org/resources/staff-core.82324/
 
 Implement the API:
 Maven:
