@@ -81,7 +81,7 @@ public class ReportMenu extends ReportPlayerMenu {
             PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
             PlayerData.set( new NamespacedKey( main.plugin , "reportmsg" ) , PersistentDataType.STRING , reported );
             
-            utils.tell( p , utils.getString( "bans.other_reason","lg","sv" ) );
+            utils.tell( p , utils.getString( "bans.other_reason" , "lg" , "sv" ) );
         } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
         }

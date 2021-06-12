@@ -94,7 +94,8 @@ public class SetVanish {
                     for ( String players : StaffCoreAPI.getVanishedPlayers( ) ) {
                         try {
                             p.hidePlayer( plugin , Bukkit.getPlayer( players ) );
-                        } catch ( NullPointerException ignored ) { }
+                        } catch ( IllegalArgumentException ignored ) {
+                        }
                     }
                 }
             }

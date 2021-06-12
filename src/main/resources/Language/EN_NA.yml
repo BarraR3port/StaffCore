@@ -3,7 +3,7 @@
 #   | (___ \_| `| |-'  ,--.    _| |_    _| |_      ______    / .'   \_|   .--.    _ .--.   .---.          #
 #    _.____`.   | |   `'_\ :  '-| |-'  '-| |-'    |______|   | |        / .'`\ \ [ `/'`\] / /__\\         #
 #   | \____) |  | |,  // | |,   | |      | |                 \ `.___.'\ | \__. |  | |     | \__.,         #
-#   \______.'   \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.4.2 #
+#   \______.'   \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.4.3 #
 #                                                                                                         #
 #                                                                    Translated by BarraR3port    [EN_NA] #
 
@@ -192,3 +192,13 @@ warns:
 # ------------> WIPE <----------
 wipe:
   account_wiped: "&cYour account is being wiped"
+
+# ------------> WEB <----------
+web:
+  link_success: "&aYou Successfully linked your Server with the web!"
+  unlink_success: "&aYou Successfully Un linked your Server with the web!"
+  error_already_registered: "&0[&cERROR&0]&7 You have already registered another server"
+  error_already_registered_by_other: "&0[&cERROR&0]&7 This server is already registered by another Player"
+  error_incorrect_username: "&0[&cERROR&0]&7 This Username is not registered"
+  error_incorrect_password: "&0[&cERROR&0]&7 Incorrect Password"
+  error_catch: "&0[&cERROR&0]&7 An Unknown Error has occurred, maybe your database is not configured well"

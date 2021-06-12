@@ -26,12 +26,12 @@ public class StaffList implements CommandExecutor {
                 if ( args.length == 0 ) {
                     Player p = ( Player ) sender;
                     if ( p.hasPermission( "staffcore.stafflist" ) ) {
-                        if ( utils.getBoolean( "bungeecord.enabled") ) {
+                        if ( utils.getBoolean( "bungeecord.enabled" ) ) {
                             main.staffMembers.clear( );
                             main.playersServerMap.clear( );
                             main.playersServerPingMap.clear( );
                             main.playersServerGamemodesMap.clear( );
-                            SendMsg.sendStaffListRequest( p.getName( ) , utils.getString( "bungeecord.server" , null , null ) );
+                            SendMsg.sendStaffListRequest( p.getName( ) , utils.getString( "bungeecord.server" ) );
                         } else {
                             new StaffListGui( new PlayerMenuUtility( p ) , plugin ).open( );
                         }

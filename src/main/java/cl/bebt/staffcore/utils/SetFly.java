@@ -19,7 +19,7 @@ public class SetFly {
                 p.setFlying( true );
             }
         } else {
-            if ( !(p.getGameMode( ) == GameMode.CREATIVE || p.getGameMode( ) == GameMode.SPECTATOR || PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING )) ) {
+            if ( !(p.getGameMode( ) == GameMode.CREATIVE) || !(p.getGameMode( ) == GameMode.SPECTATOR) || !PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) ) {
                 p.setAllowFlight( false );
                 p.setFlying( false );
                 if ( plugin.getConfig( ).getBoolean( "staff.fly_invincible" ) ) {

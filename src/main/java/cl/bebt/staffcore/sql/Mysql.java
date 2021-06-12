@@ -29,11 +29,11 @@ public class Mysql {
     }
     
     public static void connect( ) throws SQLException{
-        String host = utils.getString( "mysql.host" , null , null );
-        String port = utils.getString( "mysql.port" , null , null );
-        String database = utils.getString( "mysql.database" , null , null );
-        String username = utils.getString( "mysql.username" , null , null );
-        String password = utils.getString( "mysql.password" , null , null );
+        String host = utils.getString( "mysql.host" );
+        String port = utils.getString( "mysql.port" );
+        String database = utils.getString( "mysql.database" );
+        String username = utils.getString( "mysql.username" );
+        String password = utils.getString( "mysql.password" );
         if ( !isConnected( ) ) {
             connection = DriverManager.getConnection( "jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=TRUE&useSSL=FALSE" , username , password );
         }

@@ -30,26 +30,46 @@ public class staffcore implements TabExecutor {
     
     public List < String > onTabComplete( CommandSender sender , Command command , String alias , String[] args ){
         if ( args.length == 1 ) {
-            List < String > version = new ArrayList <>( );
+            List < String > placeholders = new ArrayList <>( );
             if ( !utils.isOlderVersion( ) ) {
-                version.add( "vanished" );
-                version.add( "staff" );
-                version.add( "changelanguage" );
+                placeholders.add( "vanished" );
+                placeholders.add( "staff" );
+                placeholders.add( "changelanguage" );
             }
-            version.add( "version" );
-            version.add( "reload" );
-            return version;
-        } else if (args.length == 2){
-            List < String > version = new ArrayList <>( );
-            version.add( "EN_NA" );
-            version.add( "ES_CL" );
-            return version;
-        }
+            placeholders.add( "version" );
+            placeholders.add( "reload" );
+            /* #TODO FINISH THE WEB
+            placeholders.add( "link" );
+            placeholders.add( "unlink" );*/
+            return placeholders;
+        } else if ( args.length == 2 ) {
+            List < String > placeholders = new ArrayList <>( );
+            if ( args[0].equalsIgnoreCase( "changelanguage" ) ) {
+                placeholders.add( "EN_NA" );
+                placeholders.add( "ES_CL" );
+            }/* else if ( args[0].equalsIgnoreCase( "link" ) ) {
+                placeholders.add( utils.getServer( ) );
+            } else if ( args[0].equalsIgnoreCase( "unlink" ) ) {
+                placeholders.add( utils.getServer( ) );
+            }*/
+            return placeholders;
+        }/* else if ( args.length == 3 ) {
+            List < String > placeholders = new ArrayList <>( );
+            if ( args[0].equalsIgnoreCase( "link" ) ) {
+                placeholders.add( sender.getName( ) );
+            } else if ( args[0].equalsIgnoreCase( "unlink" ) ) {
+                placeholders.add( sender.getName( ) );
+            }
+            return placeholders;
+        } else if ( args.length == 4 ) {
+            List < String > placeholders = new ArrayList <>( );
+            placeholders.add( "password" );
+            return placeholders;
+        }*/
         return null;
     }
     
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        
         if ( !(sender instanceof Player) ) {
             if ( args.length == 0 ) {
                 utils.tell( sender , " " );
@@ -58,7 +78,7 @@ public class staffcore implements TabExecutor {
                 utils.tell( sender , "          &aVersion: &d" + plugin.getDescription( ).getVersion( ) );
                 utils.tell( sender , "          &aAuthor: &dBarrar3port" );
                 utils.tell( sender , "          &aMysql: &d" + utils.mysqlEnabled( ) );
-                utils.tell( sender , "          &aBungeeCord: &d" + utils.getBoolean( "bungeecord.enabled") );
+                utils.tell( sender , "          &aBungeeCord: &d" + utils.getBoolean( "bungeecord.enabled" ) );
                 utils.tell( sender , "          &aServer Version: &d" + utils.getServerVersion( ) );
                 utils.tell( sender , "          &aTPS: &d" + ( int ) utils.getTPS( ) );
                 utils.tell( sender , " " );
@@ -114,24 +134,24 @@ public class staffcore implements TabExecutor {
                         utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
                     }
                 } else {
-                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "staffcore <version/vanished/staff/reload/changelanguage>" ) );
+                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "staffcore <version/vanished/staff/reload/changelanguage/link>" ) );
                 }
-            } else if ( args.length == 2){
+            } else if ( args.length == 2 ) {
                 if ( args[0].equalsIgnoreCase( "changelanguage" ) ) {
-                    if ( args[0].equalsIgnoreCase( "EN_NA" ) ){
-                        plugin.getConfig().set( "language","EN_NA" );
-                        utils.tell( sender, utils.getString( "language_changed","lg","sv" ).replace( "%language%", "EN_NA" ) );
-                    } else if ( args[0].equalsIgnoreCase( "ES_CL" ) ){
-                        plugin.getConfig().set( "language","ES_CL" );
-                        utils.tell( sender, utils.getString( "language_changed","lg","sv" ).replace( "%language%", "ES_CL" ) );
+                    if ( args[1].equalsIgnoreCase( "EN_NA" ) ) {
+                        plugin.getConfig( ).set( "language" , "EN_NA" );
+                        utils.tell( sender , utils.getString( "language_changed" , "lg" , "sv" ).replace( "%language%" , "EN_NA" ) );
+                    } else if ( args[1].equalsIgnoreCase( "ES_CL" ) ) {
+                        plugin.getConfig( ).set( "language" , "ES_CL" );
+                        utils.tell( sender , utils.getString( "language_changed" , "lg" , "sv" ).replace( "%language%" , "ES_CL" ) );
                     } else {
-                        utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "staffcore <version/vanished/staff/reload/changelanguage>" ) );
+                        utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "staffcore <version/vanished/staff/reload/changelanguage/link>" ) );
                     }
                 } else {
-                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "staffcore <version/vanished/staff/reload/changelanguage>" ) );
+                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "staffcore <version/vanished/staff/reload/changelanguage/link>" ) );
                 }
             } else {
-                utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "staffcore <version/vanished/staff/reload/changelanguage>" ) );
+                utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "staffcore <version/vanished/staff/reload/changelanguage/link>" ) );
             }
         } else {
             if ( sender.hasPermission( "staffcore.staff" ) ) {
@@ -142,7 +162,7 @@ public class staffcore implements TabExecutor {
                     utils.tell( sender , "          &aVersion: &d" + plugin.getDescription( ).getVersion( ) );
                     utils.tell( sender , "          &aAuthor: &d" + plugin.getDescription( ).getAuthors( ) );
                     utils.tell( sender , "          &aMysql: &d" + utils.mysqlEnabled( ) );
-                    utils.tell( sender , "          &aBungeeCord: &d" + utils.getBoolean( "bungeecord.enabled") );
+                    utils.tell( sender , "          &aBungeeCord: &d" + utils.getBoolean( "bungeecord.enabled" ) );
                     utils.tell( sender , "          &aServer Version: &d" + utils.getServerVersion( ) );
                     utils.tell( sender , "          &aTPS: &d" + ( int ) utils.getTPS( ) );
                     utils.tell( sender , " " );
@@ -214,24 +234,42 @@ public class staffcore implements TabExecutor {
                             utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
                         }
                     } else if ( !args[0].equalsIgnoreCase( "version" ) && !args[0].equalsIgnoreCase( "vanished" ) && !args[0].equalsIgnoreCase( "staff" ) ) {
-                        utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "staffcore <version/vanished/staff/reload/changelanguage>" ) );
+                        utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "staffcore <version/vanished/staff/reload/changelanguage/link>" ) );
                     }
-                } else if ( args.length == 2 ){
+                } else if ( args.length == 2 ) {
                     if ( args[0].equalsIgnoreCase( "changelanguage" ) ) {
-                        if ( args[1].equalsIgnoreCase( "EN_NA" ) ){
-                            plugin.getConfig().set( "language","EN_NA" );
-                            utils.tell( sender, utils.getString( "language_changed","lg","sv" ).replace( "%language%", "EN_NA" ) );
-                        } else if ( args[1].equalsIgnoreCase( "ES_CL" ) ){
-                            plugin.getConfig().set( "language","ES_CL" );
-                            utils.tell( sender, utils.getString( "language_changed","lg","sv" ).replace( "%language%", "ES_CL" ) );
+                        if ( args[1].equalsIgnoreCase( "EN_NA" ) ) {
+                            plugin.getConfig( ).set( "language" , "EN_NA" );
+                            utils.tell( sender , utils.getString( "language_changed" , "lg" , "sv" ).replace( "%language%" , "EN_NA" ) );
+                        } else if ( args[1].equalsIgnoreCase( "ES_CL" ) ) {
+                            plugin.getConfig( ).set( "language" , "ES_CL" );
+                            utils.tell( sender , utils.getString( "language_changed" , "lg" , "sv" ).replace( "%language%" , "ES_CL" ) );
                         } else {
-                            utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "staffcore <version/vanished/staff/reload/changelanguage>" ) );
+                            utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "staffcore <version/vanished/staff/reload/changelanguage/link>" ) );
                         }
                     } else {
-                        utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "staffcore <version/vanished/staff/reload/changelanguage>" ) );
+                        utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "staffcore <version/vanished/staff/reload/changelanguage/link>" ) );
                     }
-                } else {
-                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "staffcore <version/vanished/staff/reload/changelanguage>" ) );
+                }/* else if ( args.length == 4 ) {
+                    if ( args[0].equalsIgnoreCase( "link" ) ) {
+                        if ( sender.hasPermission( "staffcore.linkweb" ) ) {
+                            Player p = ( Player ) sender;
+                            utils.linkWeb( p , args[1] , args[2] , args[3] );
+                        } else {
+                            utils.tell( sender , utils.getString( "no_permission" , "lg" , "sv" ) );
+                        }
+                    } else if ( args[0].equalsIgnoreCase( "unlink" ) ) {
+                        if ( sender.hasPermission( "staffcore.linkweb" ) ) {
+                            Player p = ( Player ) sender;
+                            utils.unlinkWeb( p , args[1] , args[2] , args[3] );
+                        } else {
+                            utils.tell( sender , utils.getString( "no_permission" , "lg" , "sv" ) );
+                        }
+                    } else {
+                        utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "staffcore <version/vanished/staff/reload/changelanguage/link>" ) );
+                    }
+                } */else {
+                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "staffcore <version/vanished/staff/reload/changelanguage/link>" ) );
                 }
             } else {
                 utils.tell( sender , utils.getString( "no_permission" , "lg" , "sv" ) );

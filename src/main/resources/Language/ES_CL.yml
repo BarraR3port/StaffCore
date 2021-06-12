@@ -3,7 +3,7 @@
 #   | (___ \_| `| |-'  ,--.    _| |_    _| |_      ______    / .'   \_|   .--.    _ .--.   .---.          #
 #    _.____`.   | |   `'_\ :  '-| |-'  '-| |-'    |______|   | |        / .'`\ \ [ `/'`\] / /__\\         #
 #   | \____) |  | |,  // | |,   | |      | |                 \ `.___.'\ | \__. |  | |     | \__.,         #
-#   \______.'   \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.4.2 #
+#   \______.'   \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.4.3 #
 #                                                                                                         #
 #                                                                     Translated by BarraR3port : [ES_CL] #
 
@@ -179,9 +179,9 @@ troll:
 # ------------> VANISH <----------
 vanish:
   enabled: "&7Vanish &aActivado"
-  enabled_to: "&7Vanished &aActivado &7a &9%player%"
+  enabled_to: "&7Vanish &aActivado &7a &9%player%"
   disabled: "&7Vanish &cDesactivado"
-  disabled_to: "&7Vanished &cDesactivado &7a &9%player%"
+  disabled_to: "&7Vanish &cDesactivado &7a &9%player%"
 
 # -----------> WARNS <----------
 warns:
@@ -192,3 +192,13 @@ warns:
 # ------------> WIPE <----------
 wipe:
   account_wiped: "&cTu cuenta ha sido limpiada"
+
+# ------------> WEB <----------
+web:
+  link_success: "&aHaz vinculado exitosamente el servidor con la web"
+  unlink_success: "&aHaz desvinculado exitosamente el servidor con la web"
+  error_already_registered: "&0[&cERROR&0]&7 Ya tienes registrado otro servidor"
+  error_already_registered_by_other: "&0[&cERROR&0]&7 Este servidor ya está registrado por otro jugador"
+  error_incorrect_username: "&0[&cERROR&0]&7 Este usuario no está registrado"
+  error_incorrect_password: "&0[&cERROR&0]&7 Contraseña incorrecta"
+  error_catch: "&0[&cERROR&0]&7 Ah ocurrido un error desconocido, revisa que tu database esté bien configurada"

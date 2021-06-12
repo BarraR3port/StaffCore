@@ -107,7 +107,7 @@ public abstract class Menu implements InventoryHolder {
         Bukkit.getScheduler( ).scheduleSyncDelayedTask( main.plugin , ( ) -> {
             this.setMenuItems( );
             playerMenuUtility.getOwner( ).openInventory( inventory );
-            }, 1L );
+        } , 1L );
         
     }
     

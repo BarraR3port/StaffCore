@@ -19,7 +19,6 @@ public class Suicide implements CommandExecutor {
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( sender instanceof Player ) {
-            
             Player p = ( Player ) sender;
             if ( p.hasPermission( "staffcore.suicide" ) ) {
                 p.setHealth( 0 );

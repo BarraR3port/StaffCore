@@ -45,7 +45,7 @@ public class TpPlayers {
                     if ( !bol1 ) {
                         utils.tell( from , utils.getString( "tp.player_to_player" , "lg" , "sv" ).replace( "%target%" , player2 ) );
                     }
-                    if ( utils.getBoolean( "alerts.tp_to_them") ) {
+                    if ( utils.getBoolean( "alerts.tp_to_them" ) ) {
                         utils.tell( target , utils.getString( "tp.tp_to_them" , "lg" , "sv" ).replace( "%sender%" , player1 ) );
                     }
                 } else {
@@ -74,7 +74,7 @@ public class TpPlayers {
                     for ( Player players : Bukkit.getServer( ).getOnlinePlayers( ) ) {
                         if ( !players.equals( target ) ) {
                             players.teleport( target );
-                            if ( utils.getBoolean( "alerts.tp_all_msg") ) {
+                            if ( utils.getBoolean( "alerts.tp_all_msg" ) ) {
                                 utils.tell( players , utils.getString( "tp.player_to_player" , "lg" , "sv" ).replace( "%target%" , player ) );
                             }
                         }
@@ -123,7 +123,7 @@ public class TpPlayers {
                     .replace( "%y%" , String.valueOf( round( y ) ) )
                     .replace( "%z%" , String.valueOf( round( z ) ) )
                     .replace( "%target%" , target.getName( ) ) );
-            if ( !bol && utils.getBoolean( "alerts.tp_to_them") ) {
+            if ( !bol && utils.getBoolean( "alerts.tp_to_them" ) ) {
                 utils.tell( target , utils.getString( "tp.to_cords" , "lg" , "sv" )
                         .replace( "%x%" , String.valueOf( round( x ) ) )
                         .replace( "%y%" , String.valueOf( round( y ) ) )

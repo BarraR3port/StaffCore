@@ -132,7 +132,7 @@ public class ChoseBanType extends Menu {
             lore.add( utils.chat( key ) );
         }
         meta.setLore( lore );
-        meta.setDisplayName( utils.chat( utils.getString( "quantity.temp.name" , "item" , null ).replace( "%type%" , "Ban" ) ) );
+        meta.setDisplayName( utils.chat( utils.getString( "quantity.perm.name" , "item" , null ).replace( "%type%" , "Ban" ) ) );
         meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "permban" ) , PersistentDataType.STRING , "permban" );
         item.setItemMeta( meta );
         return item;

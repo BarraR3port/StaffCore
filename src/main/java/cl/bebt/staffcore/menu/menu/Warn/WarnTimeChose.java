@@ -52,7 +52,7 @@ public class WarnTimeChose extends Menu {
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "default" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
             long amount = utils.getInt( "warns.expire_after" , null );
-            String time = utils.getString( "warns.expire_after_quantity" , null , null );
+            String time = utils.getString( "warns.expire_after_quantity" );
             WarnPlayer.createWarn( p , warned , reason , amount , time );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "specific" ) , PersistentDataType.STRING ) ) {
@@ -87,7 +87,7 @@ public class WarnTimeChose extends Menu {
         int currentWarns = utils.currentPlayerWarns( warned );
         lore.add( utils.chat( "&5Click to Warn " + warned ) );
         lore.add( utils.chat( "for the the default time." ) );
-        lore.add( utils.chat( "&a(&c" + utils.getString( "warns.expire_after" , null , null ) + utils.getString( "warns.expire_after_quantity" , null , null ) + "&a)" ) );
+        lore.add( utils.chat( "&a(&c" + utils.getString( "warns.expire_after" ) + utils.getString( "warns.expire_after_quantity" ) + "&a)" ) );
         
         or_meta.setLore( lore );
         lore.clear( );

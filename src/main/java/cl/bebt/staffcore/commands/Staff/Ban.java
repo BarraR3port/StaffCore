@@ -2,10 +2,8 @@ package cl.bebt.staffcore.commands.Staff;
 
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.menu.Bangui.BanMenu;
-import cl.bebt.staffcore.sql.SQLGetter;
 import cl.bebt.staffcore.utils.BanPlayer;
 import cl.bebt.staffcore.utils.utils;
-import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -34,28 +32,10 @@ public class Ban implements TabExecutor {
                     if ( args.length == 0 ) {
                         utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "ban <player> <time> <-ip> <reason>" ) );
                     } else if ( args.length == 1 ) {
-                        if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
+                        if ( utils.getUsers( ).contains( args[0] ) ) {
                             new BanMenu( main.getPlayerMenuUtility( p ) , plugin , p , args[0] ).open( );
-                            return true;
                         } else {
-                            try {
-                                if ( utils.mysqlEnabled( ) ) {
-                                    String IP = null;
-                                    List < String > ips = utils.makeList( SQLGetter.getAlts( args[0] ) );
-                                    IP = ips.subList( ips.size( ) - 1 , ips.size( ) ).toString( );
-                                    new BanMenu( main.getPlayerMenuUtility( p ) , plugin , p , args[0] ).open( );
-                                    return true;
-                                } else {
-                                    String IP = null;
-                                    List < ? extends String > ips = plugin.alts.getConfig( ).getStringList( "alts." + args[0] );
-                                    IP = ips.subList( ips.size( ) - 1 , ips.size( ) ).toString( );
-                                    new BanMenu( main.getPlayerMenuUtility( p ) , plugin , p , args[0] ).open( );
-                                    return true;
-                                }
-                            } catch ( NullPointerException | IndexOutOfBoundsException ignored ) {
-                                utils.tell( p , utils.getString( "never_seen" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
-                                ignored.printStackTrace( );
-                            }
+                            utils.tell( p , utils.getString( "never_seen" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
                         }
                     } else {
                         if ( isNormal( args[1] ) ) {

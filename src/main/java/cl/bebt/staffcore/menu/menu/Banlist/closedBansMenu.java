@@ -56,7 +56,8 @@ public class closedBansMenu extends PaginatedMenu {
                     num++;
                     bans.put( num , id );
                 }
-            } catch ( NullPointerException ignored ) { }
+            } catch ( NullPointerException ignored ) {
+            }
         }
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "closed" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
@@ -65,7 +66,7 @@ public class closedBansMenu extends PaginatedMenu {
                 int i = e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).get( new NamespacedKey( this.plugin , "closed-id" ) , PersistentDataType.INTEGER );
                 new EditBan( main.getPlayerMenuUtility( p ) , main.plugin , jugador , i ).open( );
             } else if ( e.getClick( ).isRightClick( ) ) {
-                TpPlayers.tpToPlayer( p,jugador );
+                TpPlayers.tpToPlayer( p , jugador );
             }
         } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
             if ( e.getClick( ).isLeftClick( ) ) {
@@ -101,28 +102,30 @@ public class closedBansMenu extends PaginatedMenu {
     }
     
     public void setMenuItems( ){
-        try {
-            addMenuBorder( );
-            HashMap < Integer, Integer > bans = new HashMap <>( );
-            int num = 0;
-            for ( int id = 0; id <= count( ); ) {
-                id++;
-                try {
-                    if ( utils.mysqlEnabled( ) ) {
-                        if ( SQLGetter.getBanStatus( id ).equals( "closed" ) ) {
-                            num++;
-                            bans.put( num , id );
-                        }
-                        continue;
-                    }
-                    if ( this.plugin.bans.getConfig( ).getString( "bans." + id + ".status" ).equals( "closed" ) ) {
+        
+        addMenuBorder( );
+        HashMap < Integer, Integer > bans = new HashMap <>( );
+        int num = 0;
+        for ( int id = 0; id <= count( ); ) {
+            id++;
+            try {
+                if ( utils.mysqlEnabled( ) ) {
+                    if ( SQLGetter.getBanStatus( id ).equals( "closed" ) ) {
                         num++;
                         bans.put( num , id );
                     }
-                } catch ( NullPointerException ignored ) { }
+                    continue;
+                }
+                if ( this.plugin.bans.getConfig( ).getString( "bans." + id + ".status" ).equals( "closed" ) ) {
+                    num++;
+                    bans.put( num , id );
+                }
+            } catch ( NullPointerException ignored ) {
             }
-            if ( bans != null && !bans.isEmpty( ) )
-                for ( int i = 1; i <= getMaxItemsPerPage( ); i++ ) {
+        }
+        if ( bans != null && !bans.isEmpty( ) )
+            for ( int i = 1; i <= getMaxItemsPerPage( ); i++ ) {
+                try {
                     this.index = getMaxItemsPerPage( ) * this.page + i;
                     if ( this.index > bans.size( ) )
                         break;
@@ -199,7 +202,9 @@ public class closedBansMenu extends PaginatedMenu {
                             this.inventory.addItem( p_head );
                         }
                     }
+                } catch ( ParseException parseException ) {
+                    parseException.printStackTrace( );
                 }
-        } catch ( ParseException ignored ) { }
+            }
     }
 }

@@ -140,7 +140,7 @@ public class PluginMessage implements PluginMessageListener {
         if ( utils.getServer( ).equalsIgnoreCase( server ) )
             return;
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-            if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.report") ) {
+            if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.report" ) ) {
                 utils.PlaySound( people , "reports_alerts" );
                 for ( String key : utils.getStringList( "report.report_alerts" , "alerts" ) ) {
                     key = key.replace( "%reporter%" , sender + utils.getBungeecordServerPrefix( ).replace( "%server%" , server ) );
@@ -158,7 +158,7 @@ public class PluginMessage implements PluginMessageListener {
         if ( utils.getServer( ).equalsIgnoreCase( server ) )
             return;
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-            if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.report") ) {
+            if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.report" ) ) {
                 if ( status.equals( "closed" ) ) {
                     utils.PlaySound( people , "close_report" );
                 } else if ( status.equals( "open" ) ) {
@@ -184,7 +184,7 @@ public class PluginMessage implements PluginMessageListener {
         if ( utils.getServer( ).equalsIgnoreCase( server ) )
             return;
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-            if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.ban") ) {
+            if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.ban" ) ) {
                 utils.PlaySound( people , "ban_alerts" );
                 for ( String key : utils.getStringList( "ban.ban_alerts" , "alerts" ) ) {
                     key = key.replace( "%baner%" , sender + utils.getBungeecordServerPrefix( ).replace( "%server%" , server ) );
@@ -210,7 +210,8 @@ public class PluginMessage implements PluginMessageListener {
         }
         try {
             SetStaffItems.Off( Bukkit.getPlayer( target ) );
-        } catch ( NullPointerException ignored ) { }
+        } catch ( NullPointerException ignored ) {
+        }
         if ( Bukkit.getPlayer( target ) instanceof Player ) {
             String ban_msg = "\n";
             for ( String key : utils.getStringList( "ban.ban_msg" , "alerts" ) ) {
@@ -244,7 +245,7 @@ public class PluginMessage implements PluginMessageListener {
         if ( utils.getServer( ).equalsIgnoreCase( server ) )
             return;
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-            if ( utils.getBoolean( "alerts.ban") || people.hasPermission( "staffcore.staff" ) ) {
+            if ( utils.getBoolean( "alerts.ban" ) || people.hasPermission( "staffcore.staff" ) ) {
                 if ( status.equals( "closed" ) ) {
                     utils.PlaySound( people , "close_ban" );
                 } else if ( status.equals( "unbanned" ) ) {
@@ -269,7 +270,7 @@ public class PluginMessage implements PluginMessageListener {
         if ( utils.getServer( ).equalsIgnoreCase( server ) )
             return;
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-            if ( utils.getBoolean( "alerts.warn") || people.hasPermission( "staffcore.staff" ) ) {
+            if ( utils.getBoolean( "alerts.warn" ) || people.hasPermission( "staffcore.staff" ) ) {
                 utils.PlaySound( people , "warn_alerts" );
                 for ( String key : utils.getStringList( "warns.alerts.warn_alerts" , "alerts" ) ) {
                     key = key.replace( "%warner%" , sender + utils.getBungeecordServerPrefix( ).replace( "%server%" , server ) );
@@ -285,7 +286,8 @@ public class PluginMessage implements PluginMessageListener {
         }
         try {
             SetStaffItems.Off( Bukkit.getPlayer( target ) );
-        } catch ( NullPointerException ignored ) { }
+        } catch ( NullPointerException ignored ) {
+        }
         if ( Bukkit.getPlayer( target ) instanceof Player && utils.currentPlayerWarns( target ) >= utils.getInt( "warns.max_warns" , null ) ) {
             String ban_msg = "\n";
             for ( String msg : utils.getStringList( "ban.ban_msg" , "alerts" ) ) {
@@ -311,7 +313,7 @@ public class PluginMessage implements PluginMessageListener {
         if ( utils.getServer( ).equalsIgnoreCase( server ) )
             return;
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-            if ( utils.getBoolean( "alerts.warns") || people.hasPermission( "staffcore.staff" ) ) {
+            if ( utils.getBoolean( "alerts.warns" ) || people.hasPermission( "staffcore.staff" ) ) {
                 if ( status.equalsIgnoreCase( "closed" ) ) {
                     utils.PlaySound( people , "close_ban" );
                 } else if ( status.equalsIgnoreCase( "unbanned" ) ) {
@@ -342,7 +344,7 @@ public class PluginMessage implements PluginMessageListener {
             status = utils.getString( "freeze.unfreeze" , "lg" , null );
         }
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-            if ( people.hasPermission( "staffcore.freeze" ) || utils.getBoolean( "alerts.freeze") )
+            if ( people.hasPermission( "staffcore.freeze" ) || utils.getBoolean( "alerts.freeze" ) )
                 for ( String key : utils.getStringList( "freeze.freeze_alerts" , "alerts" ) ) {
                     key = key.replace( "%frozen%" , target );
                     key = key.replace( "%freezer%" , sender + utils.getBungeecordServerPrefix( ).replace( "%server%" , server ) );
@@ -356,7 +358,7 @@ public class PluginMessage implements PluginMessageListener {
         if ( utils.getServer( ).equalsIgnoreCase( server ) )
             return;
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-            if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.wipe_players") )
+            if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.wipe_players" ) )
                 for ( String key : utils.getStringList( "wipe.wipe_msg" , "alerts" ) ) {
                     key = key.replace( "%wiper%" , sender + utils.getBungeecordServerPrefix( ).replace( "%server%" , server ) );
                     key = key.replace( "%wiped%" , target );
@@ -368,7 +370,8 @@ public class PluginMessage implements PluginMessageListener {
         }
         try {
             wipePlayer.WipeOnBan( this.plugin , target );
-        } catch ( NullPointerException ignored ) { }
+        } catch ( NullPointerException ignored ) {
+        }
         Bukkit.getServer( ).getScheduler( ).scheduleSyncRepeatingTask( plugin , ( ) -> {
             try {
                 utils.tell( Bukkit.getPlayer( target ) , "&cYour account is Wiping" );
@@ -379,7 +382,8 @@ public class PluginMessage implements PluginMessageListener {
                     ban_msg = ban_msg + msg + "\n";
                 }
                 Bukkit.getPlayer( target ).kickPlayer( utils.chat( ban_msg ) );
-            } catch ( NullPointerException ignored ) { }
+            } catch ( NullPointerException ignored ) {
+            }
         } , 6L , 10L );
     }
     
@@ -403,7 +407,7 @@ public class PluginMessage implements PluginMessageListener {
         main.playersServerGamemodesMap.putAll( utils.makeHashMap( staffMembersGamemode ) );
         this.serverCount++;
         if ( this.serverCount >= count ) {
-            if ( server.equalsIgnoreCase( utils.getString( "bungeecord.server" , null , null ) ) ) {
+            if ( server.equalsIgnoreCase( utils.getString( "bungeecord.server" ) ) ) {
                 Player player = Bukkit.getPlayer( sender );
                 new StaffListBungeeGui( new PlayerMenuUtility( player ) , this.plugin , player ).open( );
             }
@@ -412,7 +416,7 @@ public class PluginMessage implements PluginMessageListener {
     }
     
     public void HelpOp( String sender , String reason , String server ){
-        if ( !server.equals( utils.getString( "bungeecord.server" , null , null ) ) ) {
+        if ( !server.equals( utils.getString( "bungeecord.server" ) ) ) {
             for ( Player people : Bukkit.getOnlinePlayers( ) ) {
                 if ( people.hasPermission( "staffcore.helpop" ) ) {
                     String message = utils.getString( "helpop.bungee" , "lg" , null );

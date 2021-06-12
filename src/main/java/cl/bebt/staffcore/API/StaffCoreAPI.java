@@ -116,7 +116,7 @@ public class StaffCoreAPI {
     public static boolean getTrollStatus( String player ){
         try {
             return Bukkit.getPlayer( player ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "troll" ) , PersistentDataType.STRING );
-        }catch ( NullPointerException error ){
+        } catch ( NullPointerException error ) {
             return false;
         }
     }
@@ -187,7 +187,8 @@ public class StaffCoreAPI {
                     if ( !bannedPlayers.contains( name ) )
                         bannedPlayers.add( name );
                 }
-            } catch ( NullPointerException ignored ) { }
+            } catch ( NullPointerException ignored ) {
+            }
         }
         return bannedPlayers;
     }
@@ -303,7 +304,7 @@ public class StaffCoreAPI {
     }
     
     public static void warnPlayer( Player player , String warned , String reason ){
-        WarnPlayer.createWarn( player , warned , reason , utils.getInt( "warns.expire_after" , null ) , utils.getString( "warns.expire_after_quantity" , null , null ) );
+        WarnPlayer.createWarn( player , warned , reason , utils.getInt( "warns.expire_after" , null ) , utils.getString( "warns.expire_after_quantity" ) );
     }
     
     public static void muteGlobalChat( ){
@@ -379,7 +380,8 @@ public class StaffCoreAPI {
                 ConfigurationSection inventorySection = main.plugin.warns.getConfig( ).getConfigurationSection( "warns" );
                 for ( String key : inventorySection.getKeys( false ) )
                     current++;
-            } catch ( NullPointerException ignored ) { }
+            } catch ( NullPointerException ignored ) {
+            }
             return current;
         }
     }
@@ -393,7 +395,8 @@ public class StaffCoreAPI {
                 ConfigurationSection inventorySection = main.plugin.reports.getConfig( ).getConfigurationSection( "reports" );
                 for ( String key : inventorySection.getKeys( false ) )
                     current++;
-            } catch ( NullPointerException ignored ) { }
+            } catch ( NullPointerException ignored ) {
+            }
             return current;
         }
     }

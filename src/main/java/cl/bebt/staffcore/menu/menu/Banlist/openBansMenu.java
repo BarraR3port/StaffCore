@@ -99,29 +99,30 @@ public class openBansMenu extends PaginatedMenu {
     }
     
     public void setMenuItems( ){
-        try {
-            addMenuBorder( );
-            HashMap < Integer, Integer > bans = new HashMap <>( );
-            int num = 0;
-            for ( int id = 0; id <= count( ); ) {
-                id++;
-                try {
-                    if ( utils.mysqlEnabled( ) ) {
-                        if ( SQLGetter.getBanStatus( id ).equals( "open" ) ) {
-                            num++;
-                            bans.put( num , id );
-                        }
-                        continue;
+        addMenuBorder( );
+        HashMap < Integer, Integer > bans = new HashMap <>( );
+        int num = 0;
+        for ( int id = 0; id <= count( ); ) {
+            id++;
+            try {
+                if ( utils.mysqlEnabled( ) ) {
+                    if ( SQLGetter.getBanStatus( id ).equals( "open" ) ) {
+                        num++;
+                        bans.put( num , id );
                     }
+                } else {
                     if ( plugin.bans.getConfig( ).getString( "bans." + id + ".status" ).equals( "open" ) ) {
                         num++;
                         bans.put( num , id );
                     }
-                } catch ( NullPointerException ignored ) {
                 }
+            } catch ( NullPointerException ignored ) {
+                ignored.printStackTrace( );
             }
-            if ( bans != null && !bans.isEmpty( ) )
-                for ( int i = 1; i <= getMaxItemsPerPage( ); i++ ) {
+        }
+        if ( bans != null && !bans.isEmpty( ) )
+            for ( int i = 1; i <= getMaxItemsPerPage( ); i++ ) {
+                try {
                     index = getMaxItemsPerPage( ) * page + i;
                     if ( index > bans.size( ) )
                         break;
@@ -217,8 +218,9 @@ public class openBansMenu extends PaginatedMenu {
                             inventory.addItem( p_head );
                         }
                     }
+                } catch ( ParseException parseException ) {
+                    parseException.printStackTrace( );
                 }
-        } catch ( ParseException parseException ) {
-        }
+            }
     }
 }

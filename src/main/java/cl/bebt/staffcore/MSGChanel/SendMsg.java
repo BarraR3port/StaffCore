@@ -15,7 +15,7 @@ public class SendMsg {
     private static final main plugin = main.plugin;
     
     public static void sendReportAlert( int id , String sender , String target , String reason , String date , String server ){
-        if ( utils.getBoolean( "bungeecord.enabled") ) {
+        if ( utils.getBoolean( "bungeecord.enabled" ) ) {
             Collection < Player > networkPlayers = ( Collection < Player > ) Bukkit.getServer( ).getOnlinePlayers( );
             if ( networkPlayers == null || networkPlayers.isEmpty( ) )
                 return;
@@ -39,7 +39,7 @@ public class SendMsg {
     }
     
     public static void sendReportChangeAlert( int id , String changer , String sender , String target , String reason , String date , String status , String server ){
-        if ( utils.getBoolean( "bungeecord.enabled") ) {
+        if ( utils.getBoolean( "bungeecord.enabled" ) ) {
             Collection < Player > networkPlayers = ( Collection < Player > ) Bukkit.getServer( ).getOnlinePlayers( );
             if ( networkPlayers == null || networkPlayers.isEmpty( ) )
                 return;
@@ -66,7 +66,7 @@ public class SendMsg {
     }
     
     public static void sendBanAlert( String sender , String target , String reason , Boolean permanent , Boolean Ip , Long amount , String time , String ExpDate , String date , String server ){
-        if ( utils.getBoolean( "bungeecord.enabled") ) {
+        if ( utils.getBoolean( "bungeecord.enabled" ) ) {
             Collection < Player > networkPlayers = ( Collection < Player > ) Bukkit.getServer( ).getOnlinePlayers( );
             if ( networkPlayers == null || networkPlayers.isEmpty( ) )
                 return;
@@ -96,7 +96,7 @@ public class SendMsg {
     }
     
     public static void sendBanChangeAlert( int id , String changer , String sender , String target , String reason , String ExpDate , String date , String status , String server ){
-        if ( utils.getBoolean( "bungeecord.enabled") ) {
+        if ( utils.getBoolean( "bungeecord.enabled" ) ) {
             Collection < Player > networkPlayers = ( Collection < Player > ) Bukkit.getServer( ).getOnlinePlayers( );
             if ( networkPlayers == null || networkPlayers.isEmpty( ) )
                 return;
@@ -125,7 +125,7 @@ public class SendMsg {
     }
     
     public static void sendWarnAlert( String sender , String target , String reason , Long amount , String time , String ExpDate , String date , String server ){
-        if ( utils.getBoolean( "bungeecord.enabled") ) {
+        if ( utils.getBoolean( "bungeecord.enabled" ) ) {
             Collection < Player > networkPlayers = ( Collection < Player > ) Bukkit.getServer( ).getOnlinePlayers( );
             if ( networkPlayers == null || networkPlayers.isEmpty( ) )
                 return;
@@ -152,7 +152,7 @@ public class SendMsg {
     }
     
     public static void sendWarnChangeAlert( int id , String changer , String sender , String target , String reason , String ExpDate , String date , String status , String server ){
-        if ( utils.getBoolean( "bungeecord.enabled") ) {
+        if ( utils.getBoolean( "bungeecord.enabled" ) ) {
             Collection < Player > networkPlayers = ( Collection < Player > ) Bukkit.getServer( ).getOnlinePlayers( );
             if ( networkPlayers == null || networkPlayers.isEmpty( ) )
                 return;
@@ -181,7 +181,7 @@ public class SendMsg {
     }
     
     public static void sendFreezeAlert( String sender , String target , Boolean bool , String server ){
-        if ( utils.getBoolean( "bungeecord.enabled") ) {
+        if ( utils.getBoolean( "bungeecord.enabled" ) ) {
             Collection < Player > networkPlayers = ( Collection < Player > ) Bukkit.getServer( ).getOnlinePlayers( );
             if ( networkPlayers == null || networkPlayers.isEmpty( ) )
                 return;
@@ -202,7 +202,7 @@ public class SendMsg {
     }
     
     public static void sendWipeAlert( String sender , String target , int bans , int reports , int warns , String server ){
-        if ( utils.getBoolean( "bungeecord.enabled") ) {
+        if ( utils.getBoolean( "bungeecord.enabled" ) ) {
             Collection < Player > networkPlayers = ( Collection < Player > ) Bukkit.getServer( ).getOnlinePlayers( );
             if ( networkPlayers == null || networkPlayers.isEmpty( ) )
                 return;
@@ -227,7 +227,7 @@ public class SendMsg {
     }
     
     public static void sendStaffChatMSG( String sender , String msg , String server ){
-        if ( utils.getBoolean( "bungeecord.enabled") ) {
+        if ( utils.getBoolean( "bungeecord.enabled" ) ) {
             Collection < Player > networkPlayers = ( Collection < Player > ) Bukkit.getServer( ).getOnlinePlayers( );
             if ( networkPlayers == null || networkPlayers.isEmpty( ) )
                 return;
@@ -244,7 +244,7 @@ public class SendMsg {
     }
     
     public static void sendStaffListRequest( String sender , String server ){
-        if ( utils.getBoolean( "bungeecord.enabled") ) {
+        if ( utils.getBoolean( "bungeecord.enabled" ) ) {
             Collection < Player > networkPlayers = ( Collection < Player > ) Bukkit.getServer( ).getOnlinePlayers( );
             if ( networkPlayers == null || networkPlayers.isEmpty( ) )
                 return;
@@ -257,7 +257,7 @@ public class SendMsg {
     }
     
     public static void sendSLPlayersData( String sender , String server ){
-        if ( utils.getBoolean( "bungeecord.enabled") ) {
+        if ( utils.getBoolean( "bungeecord.enabled" ) ) {
             ArrayList < String > players = new ArrayList <>( );
             HashMap < String, String > player_server = new HashMap <>( );
             HashMap < String, String > ping = new HashMap <>( );
@@ -265,7 +265,7 @@ public class SendMsg {
             for ( Player player : Bukkit.getServer( ).getOnlinePlayers( ) ) {
                 if ( player.hasPermission( "staffcore.staff" ) ) {
                     players.add( player.getName( ) );
-                    player_server.put( player.getName( ) , utils.getString( "bungeecord.server" , null , null ) );
+                    player_server.put( player.getName( ) , utils.getString( "bungeecord.server" ) );
                     ping.put( player.getName( ) , String.valueOf( utils.getPing( player ) ) );
                     gamemodes.put( player.getName( ) , player.getGameMode( ).toString( ) );
                 }
@@ -290,7 +290,7 @@ public class SendMsg {
     }
     
     public static void connectPlayerToServer( String player , String server ){
-        if ( utils.getBoolean( "bungeecord.enabled") ) {
+        if ( utils.getBoolean( "bungeecord.enabled" ) ) {
             Collection < Player > networkPlayers = ( Collection < Player > ) Bukkit.getServer( ).getOnlinePlayers( );
             if ( networkPlayers == null || networkPlayers.isEmpty( ) )
                 return;
@@ -306,7 +306,7 @@ public class SendMsg {
     }
     
     public static void helpOp( String player , String reason , String server ){
-        if ( utils.getBoolean( "bungeecord.enabled") ) {
+        if ( utils.getBoolean( "bungeecord.enabled" ) ) {
             Collection < Player > networkPlayers = ( Collection < Player > ) Bukkit.getServer( ).getOnlinePlayers( );
             if ( networkPlayers == null || networkPlayers.isEmpty( ) )
                 return;

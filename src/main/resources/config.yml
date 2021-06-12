@@ -3,7 +3,7 @@
 #   | (___ \_| `| |-'  ,--.    _| |_    _| |_      ______    / .'   \_|   .--.    _ .--.   .---.          #
 #    _.____`.   | |   `'_\ :  '-| |-'  '-| |-'    |______|   | |        / .'`\ \ [ `/'`\] / /__\\         #
 #   | \____) |  | |,  // | |,   | |      | |                 \ `.___.'\ | \__. |  | |     | \__.,         #
-#   \______.'   \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.4.2 #
+#   \______.'   \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.4.3 #
 #                                                                                                         #
 #                                                                               By BarraR3port : [CONFIG] #
 #                                                                                                         #
@@ -30,12 +30,17 @@ bungeecord:
   server_prefix: " &7[&a%server%&7] "
 
 # ------------> STAFF-CORE <---------
-clean_messages: "&4&lCleaned all the msg!"
-no_online_players: "&cNo players &aOnline&c!"
-disable_outdated_plugin: false # ON ENABLE IF THE PLUGIN IS OUTDATED, IT WILL AUTOMATIC BE DISABLED.
+# Global Staff Core configurations
+disable_outdated_plugin: true # ON ENABLE IF THE PLUGIN IS OUTDATED, IT WILL AUTOMATIC BE DISABLED.
 server_prefix: "&8[&a&lSTAFF CORE&r&8]&r "
 staff_prefix: "&8[&3&lSTAFF&r&8]&r "
 language: "EN_NA" # Currently there is English (EN_NA) and Spanish (ES_CL)
+
+# ------------> STAFF-CORE-WEB <---------
+# Here you need to fill some data that will be used in case you link the server with
+# the StaffCoreWeb
+server_address: "play.staffcore.net" # Here goes your server Address
+server_name: "StaffCore" # Here you put the Network Name or Server Name
 
 # ------------> DISCORD <--------------
 # If you have a discord and you want to implement webhooks with StaffCore, change it to true.

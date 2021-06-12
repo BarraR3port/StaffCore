@@ -20,7 +20,7 @@ public class HelpOp implements CommandExecutor {
         if ( sender instanceof Player ) {
             if ( sender.hasPermission( "staffcore.helpop" ) ) {
                 if ( args.length >= 1 ) {
-                    Player player = (Player) sender;
+                    Player player = ( Player ) sender;
                     StringBuilder reason = new StringBuilder( );
                     for ( String arg : args ) {
                         reason.append( arg ).append( " " );
@@ -34,7 +34,7 @@ public class HelpOp implements CommandExecutor {
                         }
                     }
                     utils.tell( sender , utils.getString( "helpop.tousers" , "lg" , null ) );
-                    SendMsg.helpOp( sender.getName( ) , String.valueOf( reason ) , utils.getString( "bungeecord.server" , null , null ) );
+                    SendMsg.helpOp( sender.getName( ) , String.valueOf( reason ) , utils.getString( "bungeecord.server" ) );
                 } else {
                     utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "sv" ).replace( "%command%" , "helpop <reason>" ) );
                 }

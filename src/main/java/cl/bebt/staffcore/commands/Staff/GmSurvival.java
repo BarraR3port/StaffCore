@@ -44,7 +44,8 @@ public class GmSurvival implements CommandExecutor {
                                     p.setAllowFlight( true );
                                     p.setFlying( true );
                                 }
-                            } catch ( NoSuchMethodError ignored ) { }
+                            } catch ( NoSuchMethodError ignored ) {
+                            }
                         }
                         utils.tell( sender , utils.getString( "survival.enabled_to" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
                     } else {
@@ -79,7 +80,8 @@ public class GmSurvival implements CommandExecutor {
                                 p.setAllowFlight( true );
                                 p.setFlying( true );
                             }
-                        } catch ( NoSuchMethodError ignored ) { }
+                        } catch ( NoSuchMethodError ignored ) {
+                        }
                     }
                     utils.tell( sender , utils.getString( "survival.enabled" , "lg" , "sv" ) );
                 } else {
@@ -110,7 +112,8 @@ public class GmSurvival implements CommandExecutor {
                                     p.setAllowFlight( true );
                                     p.setFlying( true );
                                 }
-                            } catch ( NoSuchMethodError ignored ) { }
+                            } catch ( NoSuchMethodError ignored ) {
+                            }
                         }
                         if ( !(sender == p) ) {
                             utils.tell( sender , utils.getString( "survival.enabled_to" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );

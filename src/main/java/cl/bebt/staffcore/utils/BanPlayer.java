@@ -48,7 +48,7 @@ public class BanPlayer {
             main.plugin.bans.getConfig( ).set( "current" , currentBans( ) );
             main.plugin.bans.saveConfig( );
         }
-        SendMsg.sendBanChangeAlert( Id , p.getName( ) , baner , banned , reason , exp , created , status , utils.getString( "bungeecord.server" , null , null ) );
+        SendMsg.sendBanChangeAlert( Id , p.getName( ) , baner , banned , reason , exp , created , status , utils.getString( "bungeecord.server" ) );
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
             if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.ban" ) ) {
                 utils.PlaySound( people , "un_ban" );
@@ -168,7 +168,7 @@ public class BanPlayer {
             if ( p.getPersistentDataContainer( ).has( new NamespacedKey( main.plugin , "ban-ip" ) , PersistentDataType.STRING ) ) {
                 Ip = true;
             }
-            SendMsg.sendBanAlert( p.getName( ) , banned , reason , permanent , Ip , amount , time , format.format( ExpDate ) , format.format( now ) , utils.getString( "bungeecord.server" , null , null ) );
+            SendMsg.sendBanAlert( p.getName( ) , banned , reason , permanent , Ip , amount , time , format.format( ExpDate ) , format.format( now ) , utils.getString( "bungeecord.server" ) );
             for ( Player people : Bukkit.getOnlinePlayers( ) ) {
                 if ( utils.getBoolean( "alerts.ban" ) || people.hasPermission( "staffcore.staff" ) ) {
                     utils.PlaySound( people , "ban_alerts" );

@@ -62,7 +62,7 @@ public class WarnPlayer {
                 main.plugin.warns.saveConfig( );
             }
         }
-        SendMsg.sendWarnAlert( p.getName( ) , warned , reason , amount , time , format.format( ExpDate ) , format.format( now ) , utils.getString( "bungeecord.server" , null , null ) );
+        SendMsg.sendWarnAlert( p.getName( ) , warned , reason , amount , time , format.format( ExpDate ) , format.format( now ) , utils.getString( "bungeecord.server" ) );
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
             if ( utils.getBoolean( "alerts.warn" ) || people.hasPermission( "staffcore.staff" ) ) {
                 utils.PlaySound( people , "warn_alerts" );

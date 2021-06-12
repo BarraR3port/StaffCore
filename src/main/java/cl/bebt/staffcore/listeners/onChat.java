@@ -29,7 +29,7 @@ public class onChat implements Listener {
                 e.setMessage( utils.chat( e.getMessage( ) ) );
             }
             if ( persistent.has( new NamespacedKey( main.plugin , "frozen" ) , PersistentDataType.STRING ) ) {
-                if ( utils.getBoolean( "freeze.cancel_chat_while_frozen") ) {
+                if ( utils.getBoolean( "freeze.cancel_chat_while_frozen" ) ) {
                     utils.tell( p , utils.getString( "freeze.talk_while_frozen" , "lg" , "staff" ) );
                     e.setCancelled( true );
                 }
@@ -45,7 +45,7 @@ public class onChat implements Listener {
                         utils.tell( people , message );
                     }
                 }
-                SendMsg.sendStaffChatMSG( p.getName( ) , msg , utils.getString( "bungeecord.server" , null , null ) );
+                SendMsg.sendStaffChatMSG( p.getName( ) , msg , utils.getString( "bungeecord.server" ) );
             }
             if ( !CountdownManager.checkMuteCountdown( p ) ) {
                 e.setCancelled( true );
@@ -81,7 +81,7 @@ public class onChat implements Listener {
                             .replace( "%sender%" , p.getName( ) ) );
                 }
             }
-            SendMsg.sendStaffChatMSG( p.getName( ) , msg , utils.getString( "bungeecord.server" , null , null ) );
+            SendMsg.sendStaffChatMSG( p.getName( ) , msg , utils.getString( "bungeecord.server" ) );
         } else if ( main.plugin.chatMuted ) {
             if ( !p.hasPermission( "staffcore.togglechat.bypass" ) ) {
                 e.setCancelled( true );
@@ -89,10 +89,10 @@ public class onChat implements Listener {
                 utils.tell( p , utils.getString( "toggle_chat.chat_muted" , "lg" , "sv" ) );
             }
         }
-        if ( utils.getBoolean( "discord.type.debug.enabled_debugs.commands" ) ){
+        if ( utils.getBoolean( "discord.type.debug.enabled_debugs.commands" ) ) {
             ArrayList < String > dc = new ArrayList <>( );
             dc.add( "**Player:** " + p.getName( ) + ": " + e.getMessage( ) );
-            utils.sendDiscordDebugMsg( p, "⚠ Chat ⚠" , dc );
+            utils.sendDiscordDebugMsg( p , "⚠ Chat ⚠" , dc );
         }
     }
 }

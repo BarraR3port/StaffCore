@@ -92,7 +92,7 @@ public final class main extends JavaPlugin {
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&c     Hey, there is a new version out!" ) );
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&b         Staff-Core " + version ) );
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------" ) );
-                if ( utils.getBoolean( "disable_outdated_plugin") ) {
+                if ( utils.getBoolean( "disable_outdated_plugin" ) ) {
                     c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&lDISABLING STAFF-CORE. USE THE LATEST VERSION " ) );
                     c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&lYou can disable this option (disable_outdated_plugin) in the config file." ) );
                     c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&lBut I recommend to use the latest version. " ) );
@@ -110,6 +110,7 @@ public final class main extends JavaPlugin {
         new SetVanish( );
         new ToggleChat( );
         new CountdownManager( );
+        new Http( plugin );
         new Ip( plugin );
         new Teleport( plugin );
         new TpAll( plugin );
@@ -170,7 +171,8 @@ public final class main extends JavaPlugin {
                                 utils.tell( players , getConfig( ).getString( "server_prefix" ) + "&aYou were UnMuted!" );
                             }
                         }
-                    } catch ( NullPointerException | ArrayIndexOutOfBoundsException ignored ) { }
+                    } catch ( NullPointerException | ArrayIndexOutOfBoundsException ignored ) {
+                    }
                 }
             } , 10L , 10L );
         } else {
@@ -186,7 +188,7 @@ public final class main extends JavaPlugin {
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "             &a&lMysql: &aTRUE" ) );
                 SQLGetter.addToggledPlayersToList( );
             } catch ( SQLException e ) {
-                e.printStackTrace();
+                e.printStackTrace( );
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "             &a&lMysql: &cFALSE" ) );
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&a      Disabling Staff-Core &6" + getDescription( ).getVersion( ) ) );
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------" ) );

@@ -10,6 +10,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Arrow;
@@ -195,7 +196,8 @@ public class FreezeListeners implements Listener {
                             break;
                         }
                     }
-                } catch ( NullPointerException | NoClassDefFoundError ignored ) { }
+                } catch ( NullPointerException | NoClassDefFoundError ignored ) {
+                }
             }
         }
         if ( e.getHand( ) == EquipmentSlot.OFF_HAND ) return;
@@ -203,41 +205,47 @@ public class FreezeListeners implements Listener {
             if ( a == Action.RIGHT_CLICK_AIR || a == Action.RIGHT_CLICK_BLOCK || a == Action.LEFT_CLICK_AIR || a == Action.LEFT_CLICK_BLOCK && PlayerData.has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) ) {
                 ItemStack itemInMainHand = p.getInventory( ).getItemInMainHand( );
                 if ( SetStaffItems.staffOff( ).equals( itemInMainHand ) ) {
-                    SetStaffItems.Off( p );
+                    Bukkit.getScheduler( ).scheduleSyncDelayedTask( plugin , ( ) -> SetStaffItems.Off( p ) , 1L );
                     return;
                 }
                 if ( SetStaffItems.serverManager( ).equals( itemInMainHand ) ) {
-                    new ServerManager( main.getPlayerMenuUtility( p ) , plugin ).open( p );
+                    Bukkit.getScheduler( ).scheduleSyncDelayedTask( plugin , ( ) -> new ServerManager( main.getPlayerMenuUtility( p ) , plugin ).open( p ) , 1L );
                     return;
                 }
                 if ( SetStaffItems.reportManager( ).equals( itemInMainHand ) ) {
-                    new ReportManager( main.getPlayerMenuUtility( p ) , plugin ).open( );
+                    Bukkit.getScheduler( ).scheduleSyncDelayedTask( plugin , ( ) -> new ReportManager( main.getPlayerMenuUtility( p ) , plugin ).open( ) , 1L );
                     return;
                 }
                 if ( CountdownManager.checkCountdown( p ) ) {
                     if ( SetStaffItems.vanishOn( ).equals( itemInMainHand ) ) {
-                        SetVanish.setVanish( p , false );
-                        p.getInventory( ).remove( SetStaffItems.vanishOn( ) );
-                        p.getInventory( ).setItemInMainHand( SetStaffItems.vanishOff( ) );
-                        utils.tell( p , utils.getString( "vanish.disabled" , "lg" , "staff" ) );
-                        CountdownManager.setCountDown( p , 0.2D );
+                        Bukkit.getScheduler( ).scheduleSyncDelayedTask( plugin , ( ) -> {
+                            SetVanish.setVanish( p , false );
+                            p.getInventory( ).remove( SetStaffItems.vanishOn( ) );
+                            p.getInventory( ).setItemInMainHand( SetStaffItems.vanishOff( ) );
+                            utils.tell( p , utils.getString( "vanish.disabled" , "lg" , "staff" ) );
+                            CountdownManager.setCountDown( p , 0.2D );
+                        } , 1L );
                     }
                     if ( SetStaffItems.vanishOff( ).equals( itemInMainHand ) ) {
-                        SetVanish.setVanish( p , true );
-                        p.getInventory( ).remove( SetStaffItems.vanishOff( ) );
-                        p.getInventory( ).setItemInMainHand( SetStaffItems.vanishOn( ) );
-                        utils.tell( p , utils.getString( "vanish.enabled" , "lg" , "staff" ) );
-                        CountdownManager.setCountDown( p , 0.2D );
+                        Bukkit.getScheduler( ).scheduleSyncDelayedTask( plugin , ( ) -> {
+                            SetVanish.setVanish( p , true );
+                            p.getInventory( ).remove( SetStaffItems.vanishOff( ) );
+                            p.getInventory( ).setItemInMainHand( SetStaffItems.vanishOn( ) );
+                            utils.tell( p , utils.getString( "vanish.enabled" , "lg" , "staff" ) );
+                            CountdownManager.setCountDown( p , 0.2D );
+                        } , 1L );
                     }
                     if ( SetStaffItems.randomTp( ).equals( itemInMainHand ) ) {
-                        Player random = utils.randomPlayer( p );
-                        if ( random != null ) {
-                            p.teleport( random.getLocation( ) );
-                            utils.tell( p , utils.getString( "tp.random" , "lg" , "staff" ).replace( "%player%" , random.getName( ) ) );
-                        } else {
-                            utils.tell( p , utils.getString( "tp.not_enough" , "lg" , "staff" ) );
-                        }
-                        CountdownManager.setCountDown( p , 0.2D );
+                        Bukkit.getScheduler( ).scheduleSyncDelayedTask( plugin , ( ) -> {
+                            Player random = utils.randomPlayer( p );
+                            if ( random != null ) {
+                                p.teleport( random.getLocation( ) );
+                                utils.tell( p , utils.getString( "tp.random" , "lg" , "staff" ).replace( "%player%" , random.getName( ) ) );
+                            } else {
+                                utils.tell( p , utils.getString( "tp.not_enough" , "lg" , "staff" ) );
+                            }
+                            CountdownManager.setCountDown( p , 0.2D );
+                        } , 1L );
                     }
                 }
             }
@@ -323,7 +331,8 @@ public class FreezeListeners implements Listener {
             if ( p.getInventory( ).getItemInMainHand( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "invsee" ) , PersistentDataType.STRING ) ) {
                 e.setCancelled( true );
             }
-        } catch ( NullPointerException ignored ) { }
+        } catch ( NullPointerException ignored ) {
+        }
     }
     
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -472,11 +481,11 @@ public class FreezeListeners implements Listener {
                 e.setCancelled( true );
             }
         }
-        if ( utils.getBoolean( "discord.type.debug.enabled_debugs.commands" ) ){
+        if ( utils.getBoolean( "discord.type.debug.enabled_debugs.commands" ) ) {
             ArrayList < String > dc = new ArrayList <>( );
             dc.add( "**Player:** " + player.getName( ) );
             dc.add( "**Command:** " + e.getMessage( ) );
-            utils.sendDiscordDebugMsg( player ,"⚠ Commands ⚠" , dc );
+            utils.sendDiscordDebugMsg( player , "⚠ Commands ⚠" , dc );
         }
     }
     

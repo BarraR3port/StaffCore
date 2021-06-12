@@ -87,10 +87,10 @@ public class MuteChat implements TabExecutor {
                 }
                 if ( args.length == 0 ) {
                     if ( !plugin.chatMuted ) {
-                        Bukkit.broadcastMessage( utils.chat( utils.getString( "toggle_chat.mute_chat" , "lg" , "staff" ).replace( "%player%",p.getName( ) ) ) );
+                        Bukkit.broadcastMessage( utils.chat( utils.getString( "toggle_chat.mute_chat" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) ) );
                         ToggleChat.Mute( true );
                     } else {
-                        Bukkit.broadcastMessage( utils.chat( utils.getString( "toggle_chat.un_mute_chat" , "lg" , "staff" ).replace( "%player%",p.getName( ) ) ) );
+                        Bukkit.broadcastMessage( utils.chat( utils.getString( "toggle_chat.un_mute_chat" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) ) );
                         ToggleChat.Mute( false );
                     }
                 } else if ( args.length == 1 ) {

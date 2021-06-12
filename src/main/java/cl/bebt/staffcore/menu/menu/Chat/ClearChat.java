@@ -44,8 +44,8 @@ public class ClearChat extends PaginatedMenu {
             if ( p.equals( jugador ) ) {
                 utils.tell( p , utils.getString( "clear_chat.own" , "lg" , "staff" ) );
             } else {
-                utils.tell( p , utils.getString( "clear_chat.player" , "lg" , "staff" ).replace( "%player%",jugador.getName( ) ) );
-                utils.tell( jugador , utils.getString( "clear_chat.global" , "lg" , "sv" ).replace( "%player%",p.getName( ) ) );
+                utils.tell( p , utils.getString( "clear_chat.player" , "lg" , "staff" ).replace( "%player%" , jugador.getName( ) ) );
+                utils.tell( jugador , utils.getString( "clear_chat.global" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
             }
         } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );

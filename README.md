@@ -25,9 +25,9 @@ Option 1:
 	<dependency>
 	  <groupId>cl.bebt.staffcore</groupId>
 	  <artifactId>staffcore</artifactId>
-	  <version>4.4.2</version>
+	  <version>4.4.3</version>
 	</dependency>
-	
+
 Option 2:
 
 Step 1.
@@ -38,13 +38,14 @@ Step 1.
 		    <url>https://jitpack.io</url>
 		</repository>
 	</repositories>
-  
+
 Step 2. Add the dependency
 
 	<dependency>
 	    <groupId>com.github.BarraR3port</groupId>
 	    <artifactId>staffcore</artifactId>
-	    <version>4.4.2</version>
+	    <version>4.4.3</version>
 	</dependency>
-[![version](https://img.shields.io/badge/version-4.4.2-witegreen)](https://img.shields.io/badge/version-4.4.1-darkred)
+
+[![version](https://img.shields.io/badge/version-4.4.3-witegreen)](https://img.shields.io/badge/version-4.4.3-darkred)
 [![](https://jitpack.io/v/BarraR3port/Staff-Core.svg)](https://jitpack.io/#BarraR3port/Staff-Core)

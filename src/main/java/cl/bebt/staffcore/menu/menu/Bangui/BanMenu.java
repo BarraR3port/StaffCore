@@ -27,7 +27,7 @@ public class BanMenu extends BanPlayerMenu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( utils.getString( "ban_menu.name" , "menu", null).replace( "%player%" , banned ) );
+        return utils.chat( utils.getString( "ban_menu.name" , "menu" , null ).replace( "%player%" , banned ) );
     }
     
     @Override

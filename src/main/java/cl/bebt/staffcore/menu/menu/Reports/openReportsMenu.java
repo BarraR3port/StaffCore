@@ -116,7 +116,8 @@ public class openReportsMenu extends PaginatedMenu {
                         reports.put( num , id );
                     }
                 }
-            } catch ( NullPointerException ignored ) { }
+            } catch ( NullPointerException ignored ) {
+            }
         }
         if ( reports != null && !reports.isEmpty( ) ) {
             for ( int i = 1; i <= getMaxItemsPerPage( ); i++ ) {

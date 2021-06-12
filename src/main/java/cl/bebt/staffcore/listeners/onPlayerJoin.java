@@ -109,7 +109,7 @@ public class onPlayerJoin implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     void onPlayerJoinEvent( PlayerJoinEvent e ){
         Player p = e.getPlayer( );
-        if ( utils.currentPlayerWarns( p.getName( ) ) != 0 && utils.getBoolean( "warns.notify") ) {
+        if ( utils.currentPlayerWarns( p.getName( ) ) != 0 && utils.getBoolean( "warns.notify" ) ) {
             ComponentBuilder cb = new ComponentBuilder( utils.chat( utils.getString( "warns.join_msg" , "lg" , null ) ) );
             TextComponent dis = new TextComponent( utils.chat( utils.getString( "warns.notify" , "lg" , "staff" ).replace( "%amount%" , String.valueOf( utils.currentPlayerWarns( p.getName( ) ) ) ) ) );
             dis.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT , cb.create( ) ) );
@@ -220,12 +220,13 @@ public class onPlayerJoin implements Listener {
                     }
                 }
             }
-        } catch ( NoSuchMethodError ignored ) { }
-        if ( utils.getBoolean( "discord.type.debug.enabled_debugs.commands" ) ){
+        } catch ( NoSuchMethodError ignored ) {
+        }
+        if ( utils.getBoolean( "discord.type.debug.enabled_debugs.commands" ) ) {
             ArrayList < String > dc = new ArrayList <>( );
             dc.add( "**Player:** " + p.getName( ) );
             dc.add( "**Reason:** " + e.getJoinMessage( ) );
-            utils.sendDiscordDebugMsg( e.getPlayer( ), "⚠ Player Join ⚠" , dc );
+            utils.sendDiscordDebugMsg( e.getPlayer( ) , "⚠ Player Join ⚠" , dc );
         }
     }
     

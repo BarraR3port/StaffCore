@@ -327,22 +327,26 @@ public class SQLGetter {
             PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "DELETE FROM sc_frozen WHERE sc_frozen.Name = ?" );
             statement.setString( 1 , player );
             statement.executeUpdate( );
-        } catch ( SQLException ignored ) { }
+        } catch ( SQLException ignored ) {
+        }
         try {
             PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "DELETE FROM sc_staff WHERE sc_staff.Name = ?" );
             statement.setString( 1 , player );
             statement.executeUpdate( );
-        } catch ( SQLException ignored ) { }
+        } catch ( SQLException ignored ) {
+        }
         try {
             PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "DELETE FROM sc_staffchat WHERE sc_staffchat.Name = ?" );
             statement.setString( 1 , player );
             statement.executeUpdate( );
-        } catch ( SQLException ignored ) { }
+        } catch ( SQLException ignored ) {
+        }
         try {
             PreparedStatement statement = Mysql.getConnection( ).prepareStatement( "DELETE FROM sc_vanish WHERE sc_vanish.Name = ?" );
             statement.setString( 1 , player );
             statement.executeUpdate( );
-        } catch ( SQLException ignored ) { }
+        } catch ( SQLException ignored ) {
+        }
         
     }
     

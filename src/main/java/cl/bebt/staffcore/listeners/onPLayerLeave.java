@@ -37,11 +37,11 @@ public class onPLayerLeave implements Listener {
             utils.PlaySound( viewer , "endersee_close" );
             main.enderSee.remove( p );
         }
-        if ( utils.getBoolean( "discord.type.debug.enabled_debugs.commands" ) ){
+        if ( utils.getBoolean( "discord.type.debug.enabled_debugs.commands" ) ) {
             ArrayList < String > dc = new ArrayList <>( );
             dc.add( "**Player:** " + p.getName( ) );
             dc.add( "**Reason:** " + e.getQuitMessage( ) );
-            utils.sendDiscordDebugMsg( e.getPlayer( ) ,"⚠ Player Leave ⚠" , dc );
+            utils.sendDiscordDebugMsg( e.getPlayer( ) , "⚠ Player Leave ⚠" , dc );
         }
     }
     

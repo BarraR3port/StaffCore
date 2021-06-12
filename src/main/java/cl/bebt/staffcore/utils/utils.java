@@ -8,6 +8,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.json.JSONObject;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
@@ -30,11 +31,11 @@ public class utils {
     }
     
     public static void tell( CommandSender sender , String message ){
-        sender.sendMessage( utils.chat( message ) );
+        sender.sendMessage( chat( message ) );
     }
     
     public static void tell( Player player , String message ){
-        player.sendMessage( utils.chat( message ) );
+        player.sendMessage( chat( message ) );
     }
     
     /**
@@ -49,7 +50,7 @@ public class utils {
             return plugin.getConfig( ).getString( path );
         }
         if ( type == null && prefix.equalsIgnoreCase( "sv" ) ) {
-            return plugin.getConfig().getString("server_prefix" ) + plugin.getConfig( ).getString( path );
+            return plugin.getConfig( ).getString( "server_prefix" ) + plugin.getConfig( ).getString( path );
         } else if ( type == null && prefix.equalsIgnoreCase( "staff" ) ) {
             return plugin.getConfig( ).getString( "staff_prefix" ) + plugin.getConfig( ).getString( path );
         } else if ( type.equalsIgnoreCase( "lg" ) && prefix == null ) {
@@ -62,13 +63,13 @@ public class utils {
         if ( type.equalsIgnoreCase( "lg" ) && prefix != null ) { //Language
             if ( plugin.getConfig( ).getString( "language" ).equalsIgnoreCase( "EN_NA" ) ) {
                 if ( prefix.equalsIgnoreCase( "sv" ) ) {
-                    return plugin.getConfig().getString("server_prefix" ) + plugin.en_na.getConfig( ).getString( path );
+                    return plugin.getConfig( ).getString( "server_prefix" ) + plugin.en_na.getConfig( ).getString( path );
                 } else {
                     return plugin.getConfig( ).getString( "staff_prefix" ) + plugin.en_na.getConfig( ).getString( path );
                 }
             } else {
                 if ( prefix.equalsIgnoreCase( "sv" ) ) {
-                    return plugin.getConfig().getString("server_prefix" ) + plugin.es_cl.getConfig( ).getString( path );
+                    return plugin.getConfig( ).getString( "server_prefix" ) + plugin.es_cl.getConfig( ).getString( path );
                 } else {
                     return plugin.getConfig( ).getString( "staff_prefix" ) + plugin.es_cl.getConfig( ).getString( path );
                 }
@@ -80,6 +81,10 @@ public class utils {
         } else {
             return "String Not Found";
         }
+    }
+    
+    public static String getString( String path ){
+        return plugin.getConfig( ).getString( path );
     }
     
     public static boolean getBoolean( String path ){
@@ -249,7 +254,7 @@ public class utils {
     }
     
     public static boolean isRegistered( String p ){
-        if ( utils.mysqlEnabled( ) ) {
+        if ( mysqlEnabled( ) ) {
             return SQLGetter.getPlayersNames( ).contains( p );
         } else {
             return Objects.requireNonNull( plugin.alts.getConfig( ).getConfigurationSection( "alts" ) ).contains( p );
@@ -303,7 +308,8 @@ public class utils {
             for ( String key : inventorySection.getKeys( false ) ) {
                 current++;
             }
-        } catch ( NullPointerException ignored ) { }
+        } catch ( NullPointerException ignored ) {
+        }
         return current;
     }
     
@@ -318,7 +324,8 @@ public class utils {
                     if ( main.plugin.warns.getConfig( ).getString( "warns." + i + ".name" ).equalsIgnoreCase( warned ) ) {
                         warnings++;
                     }
-                } catch ( NullPointerException ignored ) { }
+                } catch ( NullPointerException ignored ) {
+                }
             }
             return warnings;
         }
@@ -335,7 +342,8 @@ public class utils {
                     if ( main.plugin.reports.getConfig( ).getString( "reports." + i + ".name" ).equalsIgnoreCase( reported ) ) {
                         reports++;
                     }
-                } catch ( NullPointerException ignored ) { }
+                } catch ( NullPointerException ignored ) {
+                }
             }
             return reports;
         }
@@ -356,10 +364,9 @@ public class utils {
         } else {
             try {
                 ConfigurationSection inventorySection = plugin.alts.getConfig( ).getConfigurationSection( "alts" );
-                for ( String key : inventorySection.getKeys( false ) ) {
-                    Users.add( key );
-                }
-            } catch ( NullPointerException ignored ) { }
+                Users.addAll( inventorySection.getKeys( false ) );
+            } catch ( NullPointerException ignored ) {
+            }
         }
         return Users;
     }
@@ -377,7 +384,8 @@ public class utils {
                         Users.add( name );
                     }
                 }
-            } catch ( NullPointerException ignored ) { }
+            } catch ( NullPointerException ignored ) {
+            }
         }
         return Users;
     }
@@ -417,30 +425,81 @@ public class utils {
     }
     
     public static void sendDiscordAlertMsg( String title , ArrayList < String > msg ){
-            try {
-                DiscordUtils.DiscordWebHooksAlerts( msg , title );
-            } catch ( IllegalArgumentException exception ) {
-                if ( getBoolean( "discord.type.alerts.enabled") ) {
-                    tell( Bukkit.getConsoleSender( ) , getString( "discord.could_not_connect" , "lg" , "staff" ) );
-                }
+        try {
+            DiscordUtils.DiscordWebHooksAlerts( msg , title );
+        } catch ( IllegalArgumentException exception ) {
+            if ( getBoolean( "discord.type.alerts.enabled" ) ) {
+                tell( Bukkit.getConsoleSender( ) , getString( "discord.could_not_connect" , "lg" , "staff" ) );
             }
+        }
     }
-    public static void sendDiscordDebugMsg( Player p, String title , ArrayList < String > msg ){
+    
+    public static void sendDiscordDebugMsg( Player p , String title , ArrayList < String > msg ){
         try {
             DiscordUtils.DiscordWebHooksDebug( p , msg , title );
         } catch ( IllegalArgumentException exception ) {
-            if ( getBoolean( "discord.type.debug.enabled") ) {
+            if ( getBoolean( "discord.type.debug.enabled" ) ) {
                 tell( Bukkit.getConsoleSender( ) , getString( "discord.could_not_connect" , "lg" , "staff" ) );
             }
         }
     }
     
     public static String getBungeecordServerPrefix( ){
-        return plugin.getConfig().getString("bungeecord.server_prefix" );
+        return plugin.getConfig( ).getString( "bungeecord.server_prefix" );
     }
     
     public static String getServer( ){
-        return plugin.getConfig().getString( "bungeecord.server" );
+        return plugin.getConfig( ).getString( "server_name" );
+    }
+    
+    public static void linkWeb( Player p , String server , String webPlayerName , String webPassword ){
+        JSONObject jsonMessage = new JSONObject( );
+        String playerName = Base64.getEncoder( ).withoutPadding( ).encodeToString( webPlayerName.getBytes( ) );
+        String serverAddress = Base64.getEncoder( ).withoutPadding( ).encodeToString( getString( "server_address" ).getBytes( ) );
+        String host = Base64.getEncoder( ).withoutPadding( ).encodeToString( getString( "mysql.host" ).getBytes( ) );
+        String port = Base64.getEncoder( ).withoutPadding( ).encodeToString( getString( "mysql.port" ).getBytes( ) );
+        String user = Base64.getEncoder( ).withoutPadding( ).encodeToString( getString( "mysql.username" ).getBytes( ) );
+        String password = Base64.getEncoder( ).withoutPadding( ).encodeToString( getString( "mysql.password" ).getBytes( ) );
+        String database = Base64.getEncoder( ).withoutPadding( ).encodeToString( getString( "mysql.database" ).getBytes( ) );
+        String serverEncoded = Base64.getEncoder( ).withoutPadding( ).encodeToString( server.getBytes( ) );
+        String webPasswordEncoded = Base64.getEncoder( ).withoutPadding( ).encodeToString( webPassword.getBytes( ) );
+        String type = Base64.getEncoder( ).withoutPadding( ).encodeToString( "link".getBytes( ) );
+        
+        
+        jsonMessage.put( "type" , type );
+        jsonMessage.put( "address" , serverAddress );
+        jsonMessage.put( "owner" , playerName );
+        jsonMessage.put( "server" , serverEncoded );
+        jsonMessage.put( "webPasswordEncoded" , webPasswordEncoded );
+        jsonMessage.put( "host" , host );
+        jsonMessage.put( "port" , port );
+        jsonMessage.put( "username" , user );
+        jsonMessage.put( "password" , password );
+        jsonMessage.put( "db" , database );
+        String convertedString1 = Base64.getEncoder( ).withoutPadding( ).encodeToString( jsonMessage.toString( ).getBytes( ) );
+        String convertedString2 = Base64.getEncoder( ).withoutPadding( ).encodeToString( convertedString1.getBytes( ) );
+        String convertedString3 = Base64.getEncoder( ).withoutPadding( ).encodeToString( convertedString2.getBytes( ) );
+        
+        Http.get( "http://staffcore.glitch.me/api/" + convertedString3 , p );
+    }
+    
+    public static void unlinkWeb( Player p , String server , String webPlayerName , String webPassword ){
+        JSONObject jsonMessage = new JSONObject( );
+        String playerName = Base64.getEncoder( ).withoutPadding( ).encodeToString( webPlayerName.getBytes( ) );
+        String serverEncoded = Base64.getEncoder( ).withoutPadding( ).encodeToString( server.getBytes( ) );
+        String webPasswordEncoded = Base64.getEncoder( ).withoutPadding( ).encodeToString( webPassword.getBytes( ) );
+        String type = Base64.getEncoder( ).withoutPadding( ).encodeToString( "unlink".getBytes( ) );
+        
+        
+        jsonMessage.put( "type" , type );
+        jsonMessage.put( "owner" , playerName );
+        jsonMessage.put( "server" , serverEncoded );
+        jsonMessage.put( "webPasswordEncoded" , webPasswordEncoded );
+        String convertedString1 = Base64.getEncoder( ).withoutPadding( ).encodeToString( jsonMessage.toString( ).getBytes( ) );
+        String convertedString2 = Base64.getEncoder( ).withoutPadding( ).encodeToString( convertedString1.getBytes( ) );
+        String convertedString3 = Base64.getEncoder( ).withoutPadding( ).encodeToString( convertedString2.getBytes( ) );
+        
+        Http.get( "http://localhost:82/api/" + convertedString3 , p );
     }
     
 }

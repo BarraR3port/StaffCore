@@ -1,5 +1,5 @@
 name: StaffCore
-version: 4.4.2
+version: 4.4.3
 main: cl.bebt.staffcore.main
 author: BarraR3port
 prefix: StaffCore
@@ -100,6 +100,8 @@ commands:
     description: Ask for help to the Staff Members
   troll:
     description: Toggles the trollmode
+  createweb:
+    description: Creates The StaffCore Web
 permissions:
   staffcore.*:
     description: Give's all StaffCore Permissions.

@@ -102,7 +102,7 @@ public class StaffListBungeeGui extends PaginatedMenu {
                     String gm = main.playersServerGamemodesMap.get( players.get( index ) );
                     ArrayList < String > lore = new ArrayList <>( );
                     meta.setDisplayName( utils.chat( "&a" + players.get( index ) ) );
-                    if ( utils.getBoolean( "mysql.enabled") ) {
+                    if ( utils.getBoolean( "mysql.enabled" ) ) {
                         if ( SQLGetter.isTrue( players.get( index ) , "staff" ).equals( "true" ) ) {
                             lore.add( utils.chat( "&7Staff Mode: &aTrue" ) );
                         } else {
@@ -118,7 +118,7 @@ public class StaffListBungeeGui extends PaginatedMenu {
                         } else {
                             lore.add( utils.chat( "&7Staff Chat: &cFalse" ) );
                         }
-                        if ( GameMode.valueOf( gm ).equals( GameMode.CREATIVE ) || p.getPersistentDataContainer().has( new NamespacedKey( plugin,"flying" ), PersistentDataType.STRING ) ) {
+                        if ( GameMode.valueOf( gm ).equals( GameMode.CREATIVE ) || p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ) {
                             lore.add( utils.chat( "&7Flying: &aTrue" ) );
                         } else {
                             lore.add( utils.chat( "&7Flying: &cFalse" ) );

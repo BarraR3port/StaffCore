@@ -218,9 +218,9 @@ public class Items {
     
     public static ItemStack ComingSoon( ){
         ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.getMaterial( utils.getString( "menu_items.coming_soon.material", "item", null ) ) );
-        ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName( utils.chat( utils.getString( "menu_items.coming_soon.name", "item", null ) ) );
+        ItemStack item = new ItemStack( Material.getMaterial( utils.getString( "menu_items.coming_soon.material" , "item" , null ) ) );
+        ItemMeta itemMeta = item.getItemMeta( );
+        itemMeta.setDisplayName( utils.chat( utils.getString( "menu_items.coming_soon.name" , "item" , null ) ) );
         for ( String key : utils.getStringList( "menu_items.coming_soon.lore" , "item" ) ) {
             lore.add( utils.chat( key ) );
         }
