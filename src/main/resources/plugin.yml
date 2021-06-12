@@ -100,8 +100,6 @@ commands:
     description: Ask for help to the Staff Members
   troll:
     description: Toggles the trollmode
-  createweb:
-    description: Creates The StaffCore Web
 permissions:
   staffcore.*:
     description: Give's all StaffCore Permissions.
