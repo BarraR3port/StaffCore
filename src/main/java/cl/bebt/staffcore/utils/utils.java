@@ -398,8 +398,9 @@ public class utils {
         }
         version = version.replace( "-" , "" );
         version = version.trim( );
-        
-        if ( version.equalsIgnoreCase( "1.16" ) ) {
+        if ( version.equalsIgnoreCase( "1.17" ) ) {
+            return false;
+        } else if ( version.equalsIgnoreCase( "1.16" ) ) {
             return false;
         } else if ( version.equalsIgnoreCase( "1.15" ) ) {
             return false;

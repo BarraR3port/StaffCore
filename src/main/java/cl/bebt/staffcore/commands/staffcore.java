@@ -38,22 +38,21 @@ public class staffcore implements TabExecutor {
             }
             placeholders.add( "version" );
             placeholders.add( "reload" );
-            /* #TODO FINISH THE WEB
             placeholders.add( "link" );
-            placeholders.add( "unlink" );*/
+            placeholders.add( "unlink" );
             return placeholders;
         } else if ( args.length == 2 ) {
             List < String > placeholders = new ArrayList <>( );
             if ( args[0].equalsIgnoreCase( "changelanguage" ) ) {
                 placeholders.add( "EN_NA" );
                 placeholders.add( "ES_CL" );
-            }/* else if ( args[0].equalsIgnoreCase( "link" ) ) {
+            } else if ( args[0].equalsIgnoreCase( "link" ) ) {
                 placeholders.add( utils.getServer( ) );
             } else if ( args[0].equalsIgnoreCase( "unlink" ) ) {
                 placeholders.add( utils.getServer( ) );
-            }*/
+            }
             return placeholders;
-        }/* else if ( args.length == 3 ) {
+        } else if ( args.length == 3 ) {
             List < String > placeholders = new ArrayList <>( );
             if ( args[0].equalsIgnoreCase( "link" ) ) {
                 placeholders.add( sender.getName( ) );
@@ -65,7 +64,7 @@ public class staffcore implements TabExecutor {
             List < String > placeholders = new ArrayList <>( );
             placeholders.add( "password" );
             return placeholders;
-        }*/
+        }
         return null;
     }
     
@@ -250,7 +249,7 @@ public class staffcore implements TabExecutor {
                     } else {
                         utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "staffcore <version/vanished/staff/reload/changelanguage/link>" ) );
                     }
-                }/* else if ( args.length == 4 ) {
+                } else if ( args.length == 4 ) {
                     if ( args[0].equalsIgnoreCase( "link" ) ) {
                         if ( sender.hasPermission( "staffcore.linkweb" ) ) {
                             Player p = ( Player ) sender;
@@ -268,7 +267,7 @@ public class staffcore implements TabExecutor {
                     } else {
                         utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "staffcore <version/vanished/staff/reload/changelanguage/link>" ) );
                     }
-                } */else {
+                } else {
                     utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "staffcore <version/vanished/staff/reload/changelanguage/link>" ) );
                 }
             } else {
