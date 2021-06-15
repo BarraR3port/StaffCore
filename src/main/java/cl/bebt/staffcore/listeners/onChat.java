@@ -38,7 +38,7 @@ public class onChat implements Listener {
                 e.setCancelled( true );
                 String msg = e.getMessage( );
                 for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-                    if ( people.getPersistentDataContainer( ).has( new NamespacedKey( main.plugin , "staff" ) , PersistentDataType.STRING ) || people.hasPermission( "staff.staffchat" ) ) {
+                    if ( people.getPersistentDataContainer( ).has( new NamespacedKey( main.plugin , "staff" ) , PersistentDataType.STRING ) || people.hasPermission( "staff.sc" ) ) {
                         String message = utils.getString( "staff_chat.prefix" , "lg" , null );
                         message = message.replace( "%sender%" , p.getName( ) );
                         message = message.replace( "%msg%" , msg );
@@ -75,7 +75,7 @@ public class onChat implements Listener {
             e.setCancelled( true );
             String msg = e.getMessage( );
             for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-                if ( people.hasPermission( "staff.staffchat" ) ) {
+                if ( people.hasPermission( "staff.sc" ) ) {
                     utils.tell( people , utils.getString( "staff_chat.prefix" , "lg" , null )
                             .replace( "%msg%" , msg )
                             .replace( "%sender%" , p.getName( ) ) );

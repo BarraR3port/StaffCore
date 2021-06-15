@@ -28,7 +28,7 @@ public class StaffChat implements CommandExecutor {
                 if ( args.length > 0 ) {
                     SendMsg.sendStaffChatMSG( "CONSOLE" , String.join( " " , args ) , utils.getServer( ) );
                     for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-                        if ( people.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) || people.hasPermission( "staff.staffchat" ) ) {
+                        if ( people.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) || people.hasPermission( "staff.sc" ) ) {
                             utils.tell( people , utils.getString( "staff_chat.prefix" , "lg" , null ).replace( "%sender%" , "CONSOLE" ).replace( "%msg%" , String.join( " " , args ) ) );
                         }
                     }
@@ -41,7 +41,7 @@ public class StaffChat implements CommandExecutor {
                     if ( p.hasPermission( "staffcore.sc" ) ) {
                         SendMsg.sendStaffChatMSG( p.getName( ) , String.join( " " , args ) , utils.getServer( ) );
                         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-                            if ( people.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) || people.hasPermission( "staff.staffchat" ) ) {
+                            if ( people.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) || people.hasPermission( "staff.sc" ) ) {
                                 utils.tell( people , utils.getString( "staff_chat.prefix" , "lg" , null ).replace( "%sender%" , p.getName( ) ).replace( "%msg%" , String.join( " " , args ) ) );
                             }
                         }

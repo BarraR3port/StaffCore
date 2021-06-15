@@ -455,7 +455,7 @@ public class FreezeListeners implements Listener {
                     FreezePlayer.FreezePlayer( p , player.getName( ) , false );
                     
                 } else if ( !((pData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ))) ) {
-                    if ( p.hasPermission( "staffcore.freeze.bypas" ) ) {
+                    if ( p.hasPermission( "staffcore.freeze.bypass" ) ) {
                         utils.tell( player , utils.getString( "freeze.freeze_bypass" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
                     } else {
                         FreezePlayer.FreezePlayer( p , player.getName( ) , true );

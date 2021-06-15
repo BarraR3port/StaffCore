@@ -1,10 +1,11 @@
 <component name="ProjectRunConfigurationManager">
-    <configuration default="false" name="DebugMode" type="JarApplication">
-        <option name="JAR_PATH" value="$USER_HOME$/OneDrive/Escritorio/server Test/paper-1.16.5-593.jar"/>
-        <option name="WORKING_DIRECTORY" value="C:\Users\bruno\OneDrive\Escritorio\server Test\"/>
-        <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true"/>
-        <option name="ALTERNATIVE_JRE_PATH" value="1.8"/>
-        <module name="Staff Core"/>
-        <method v="2"/>
-    </configuration>
+  <configuration default="false" name="DebugMode" type="JarApplication">
+    <option name="JAR_PATH" value="$USER_HOME$/Desktop/server Test/purpurclip-1.16.5-1141.jar" />
+    <option name="VM_PARAMETERS" value="-Xms1024M -Xmx6000M" />
+    <option name="WORKING_DIRECTORY" value="C:\Users\barra\Desktop\server Test\" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <option name="ALTERNATIVE_JRE_PATH" value="openjdk-16" />
+    <module name="Staff Core" />
+    <method v="2" />
+  </configuration>
 </component>
