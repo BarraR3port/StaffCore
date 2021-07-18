@@ -3,8 +3,8 @@ package cl.bebt.staffcore.menu.menu.Reports;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.Menu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
-import cl.bebt.staffcore.menu.menu.Others.ServerManager;
-import cl.bebt.staffcore.sql.SQLGetter;
+import cl.bebt.staffcore.menu.menu.Staff.ServerManager;
+import cl.bebt.staffcore.sql.Queries.ReportsQuery;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -60,18 +60,7 @@ public class ReportManager extends Menu {
     private int Closed( ){
         int close = 0;
         if ( utils.mysqlEnabled( ) ) {
-            int count = SQLGetter.getCurrents( "reports" ) + plugin.data.getReportId( );
-            for ( int id = 0; id <= count; ) {
-                plugin.reports.reloadConfig( );
-                id++;
-                try {
-                    if ( SQLGetter.get( "reports" , id , "Status" ).equals( "close" ) ) {
-                        close++;
-                    }
-                } catch ( NullPointerException ignored ) {
-                }
-            }
-            return close;
+            return ReportsQuery.getClosedReports( ).size( );
         } else {
             int count = plugin.reports.getConfig( ).getInt( "current" ) + plugin.reports.getConfig( ).getInt( "count" );
             for ( int id = 0; id <= count; ) {
@@ -91,18 +80,7 @@ public class ReportManager extends Menu {
     private int Opens( ){
         int opens = 0;
         if ( utils.mysqlEnabled( ) ) {
-            int count = SQLGetter.getCurrents( "reports" ) + plugin.data.getReportId( );
-            for ( int id = 0; id <= count + 1; ) {
-                plugin.reports.reloadConfig( );
-                id++;
-                try {
-                    if ( SQLGetter.get( "reports" , id , "Status" ).equals( "open" ) ) {
-                        opens++;
-                    }
-                } catch ( NullPointerException ignored ) {
-                }
-            }
-            return opens;
+            return ReportsQuery.getOpenReports( ).size( );
         } else {
             int count = plugin.reports.getConfig( ).getInt( "current" ) + plugin.reports.getConfig( ).getInt( "count" );
             for ( int id = 0; id <= count + 1; ) {

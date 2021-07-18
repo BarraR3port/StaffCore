@@ -53,9 +53,9 @@ public abstract class Menu implements InventoryHolder {
     }
     
     protected ItemStack next( ){
-        ItemStack next = new ItemStack( Material.getMaterial( utils.getString( "menu_items.next.material" , "item" , null ) ) );
+        ItemStack next = utils.getDecorationHead( "next" );
         ItemMeta next_meta = next.getItemMeta( );
-        next_meta.setDisplayName( utils.chat( utils.getString( "menu_items.back.name" , "item" , null ) ) );
+        next_meta.setDisplayName( utils.chat( utils.getString( "menu_items.next.name" , "item" , null ) ) );
         ArrayList < String > lore = new ArrayList <>( );
         for ( String key : utils.getStringList( "menu_items.next.lore" , "item" ) ) {
             lore.add( utils.chat( key ) );
@@ -67,7 +67,7 @@ public abstract class Menu implements InventoryHolder {
     }
     
     protected ItemStack back( ){
-        ItemStack back = new ItemStack( Material.getMaterial( utils.getString( "menu_items.back.material" , "item" , null ) ) );
+        ItemStack back = utils.getDecorationHead( "previous" );
         ItemMeta back_meta = back.getItemMeta( );
         back_meta.setDisplayName( utils.chat( utils.getString( "menu_items.back.name" , "item" , null ) ) );
         ArrayList < String > lore = new ArrayList <>( );
@@ -104,10 +104,9 @@ public abstract class Menu implements InventoryHolder {
     
     public void open( ){
         inventory = Bukkit.createInventory( this , getSlots( ) , getMenuName( ) );
-        Bukkit.getScheduler( ).scheduleSyncDelayedTask( main.plugin , ( ) -> {
-            this.setMenuItems( );
-            playerMenuUtility.getOwner( ).openInventory( inventory );
-        } , 1L );
+        this.setMenuItems( );
+        playerMenuUtility.getOwner( ).openInventory( inventory );
+        
         
     }
     

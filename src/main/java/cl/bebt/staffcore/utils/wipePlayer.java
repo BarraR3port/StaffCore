@@ -2,7 +2,10 @@ package cl.bebt.staffcore.utils;
 
 import cl.bebt.staffcore.MSGChanel.SendMsg;
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.sql.SQLGetter;
+import cl.bebt.staffcore.sql.Queries.AltsQuery;
+import cl.bebt.staffcore.sql.Queries.BansQuery;
+import cl.bebt.staffcore.sql.Queries.ReportsQuery;
+import cl.bebt.staffcore.sql.Queries.WarnsQuery;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
@@ -27,29 +30,21 @@ public class wipePlayer {
         if ( utils.isRegistered( p ) ) {
             if ( utils.mysqlEnabled( ) ) {
                 if ( plugin.getConfig( ).getBoolean( "wipe.bans" ) ) {
-                    List < Integer > ids = SQLGetter.getPlayersIds( p , "bans" , "BanId" );
-                    for ( int i : ids ) {
-                        SQLGetter.deleteBans( i );
-                    }
-                    bans = ids.size( );
+                    bans = BansQuery.wipePlayerBans( p );
                 }
                 if ( plugin.getConfig( ).getBoolean( "wipe.reports" ) ) {
-                    List < Integer > ids = SQLGetter.getPlayersIds( p , "reports" , "ReportId" );
-                    for ( int i : ids ) {
-                        SQLGetter.deleteReport( i );
-                    }
-                    reports = ids.size( );
+                    reports = ReportsQuery.wipePlayerReports( p );
                 }
                 try {
                     SetStaffItems.Off( Bukkit.getPlayer( p ) );
                 } catch ( NullPointerException | NoSuchMethodError ignored ) {
                 }
-                SQLGetter.wipe( p );
+                AltsQuery.wipe( p );
                 try {
                     PersistentDataContainer( p , plugin );
                 } catch ( NoSuchMethodError ignored ) {
                 }
-                SQLGetter.deleteAlts( p );
+                AltsQuery.deleteAlts( p );
             } else {
                 if ( plugin.getConfig( ).getBoolean( "wipe.bans" ) ) {
                     HashMap < Integer, Integer > ids = Ids( "bans" , p );
@@ -105,7 +100,7 @@ public class wipePlayer {
                     for ( String key : utils.getStringList( "wipe.wipe_msg" , "alerts" ) ) {
                         key = key.replace( "%wiper%" , sender.getName( ) );
                         key = key.replace( "%wiped%" , p );
-                        key = key.replace( "%bans%" , String.valueOf( bans ) );
+                        key = key.replace( "%Bans%" , String.valueOf( bans ) );
                         key = key.replace( "%warns%" , String.valueOf( warns ) );
                         key = key.replace( "%reports%" , String.valueOf( reports ) );
                         utils.tell( people , key );
@@ -120,14 +115,14 @@ public class wipePlayer {
         if ( utils.isRegistered( p ) ) {
             if ( utils.mysqlEnabled( ) ) {
                 if ( plugin.getConfig( ).getBoolean( "wipe.reports" ) ) {
-                    List < Integer > ids = SQLGetter.getPlayersIds( p , "reports" , "ReportId" );
+                    List < Integer > ids = ReportsQuery.getPlayersIds( p );
                     for ( int i : ids ) {
-                        SQLGetter.deleteReport( i );
+                        ReportsQuery.deleteReport( i );
                     }
                 }
-                SQLGetter.wipe( p );
-                SQLGetter.deleteAlts( p );
-                SQLGetter.deleteWarns( p );
+                AltsQuery.wipe( p );
+                AltsQuery.deleteAlts( p );
+                WarnsQuery.deleteWarns( p );
             } else {
                 if ( plugin.getConfig( ).getBoolean( "wipe.reports" ) ) {
                     HashMap < Integer, Integer > ids = Ids( "report" , p );
@@ -221,7 +216,6 @@ public class wipePlayer {
                 plugin.warns.reloadConfig( );
                 ConfigurationSection inventorySection = plugin.warns.getConfig( ).getConfigurationSection( "warns" );
                 for ( String key : inventorySection.getKeys( false ) ) {
-                    Bukkit.broadcastMessage( key );
                     int id = Integer.parseInt( key );
                     String name = plugin.warns.getConfig( ).getString( "warns." + id + ".name" );
                     if ( p.equalsIgnoreCase( name ) ) {
@@ -238,9 +232,9 @@ public class wipePlayer {
     public static int count( String type ){
         if ( utils.mysqlEnabled( ) ) {
             if ( type.equalsIgnoreCase( "report" ) ) {
-                return SQLGetter.getCurrents( "reports" ) + plugin.data.getBanId( );
+                return ReportsQuery.getCurrentReports( );
             } else {
-                return SQLGetter.getCurrents( "bans" ) + plugin.data.getBanId( );
+                return BansQuery.getCurrentBans( );
             }
         } else {
             ConfigurationSection inventorySection;

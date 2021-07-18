@@ -2,7 +2,7 @@ package cl.bebt.staffcore.MSGChanel;
 
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
-import cl.bebt.staffcore.menu.menu.Others.StaffListBungeeGui;
+import cl.bebt.staffcore.menu.menu.Staff.StaffListBungeeGui;
 import cl.bebt.staffcore.utils.SetStaffItems;
 import cl.bebt.staffcore.utils.utils;
 import cl.bebt.staffcore.utils.wipePlayer;
@@ -21,8 +21,7 @@ public class PluginMessage implements PluginMessageListener {
     private int serverCount = 1;
     
     public void onPluginMessageReceived( String channel , Player p , byte[] msg ){
-        if ( !this.plugin.getConfig( ).getBoolean( "bungeecord.enabled" ) )
-            return;
+        if ( !this.plugin.getConfig( ).getBoolean( "bungeecord.enabled" ) ) return;
         if ( channel.equals( "sc:alerts" ) ) {
             ByteArrayDataInput in = ByteStreams.newDataInput( msg );
             String subChannel = in.readUTF( );
@@ -137,8 +136,7 @@ public class PluginMessage implements PluginMessageListener {
     }
     
     public void ReportAlert( int id , String sender , String target , String reason , String date , String server ){
-        if ( utils.getServer( ).equalsIgnoreCase( server ) )
-            return;
+        if ( utils.getServer( ).equalsIgnoreCase( server ) ) return;
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
             if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.report" ) ) {
                 utils.PlaySound( people , "reports_alerts" );
@@ -362,7 +360,7 @@ public class PluginMessage implements PluginMessageListener {
                 for ( String key : utils.getStringList( "wipe.wipe_msg" , "alerts" ) ) {
                     key = key.replace( "%wiper%" , sender + utils.getBungeecordServerPrefix( ).replace( "%server%" , server ) );
                     key = key.replace( "%wiped%" , target );
-                    key = key.replace( "%bans%" , String.valueOf( bans ) );
+                    key = key.replace( "%Bans%" , String.valueOf( bans ) );
                     key = key.replace( "%reports%" , String.valueOf( reports ) );
                     key = key.replace( "%warns%" , String.valueOf( warns ) );
                     utils.tell( people , key );
@@ -388,8 +386,7 @@ public class PluginMessage implements PluginMessageListener {
     }
     
     public void StaffChatMSG( String sender , String msg , String server ){
-        if ( utils.getServer( ).equalsIgnoreCase( server ) )
-            return;
+        if ( utils.getServer( ).equalsIgnoreCase( server ) ) return;
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
             if ( people.hasPermission( "staffcore.sc" ) ) {
                 String message = utils.getString( "staff_chat.prefix" , "lg" , null );

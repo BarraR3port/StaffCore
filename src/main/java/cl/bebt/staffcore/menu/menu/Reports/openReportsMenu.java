@@ -3,7 +3,7 @@ package cl.bebt.staffcore.menu.menu.Reports;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PaginatedMenu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
-import cl.bebt.staffcore.sql.SQLGetter;
+import cl.bebt.staffcore.sql.Queries.ReportsQuery;
 import cl.bebt.staffcore.utils.TpPlayers;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.NamespacedKey;
@@ -12,6 +12,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,21 +40,23 @@ public class openReportsMenu extends PaginatedMenu {
         Player p = ( Player ) e.getWhoClicked( );
         HashMap < Integer, Integer > reports = new HashMap <>( );
         int num = 0;
-        for ( int id = 0; id <= count( ); ) {
-            id++;
-            try {
-                if ( utils.mysqlEnabled( ) ) {
-                    if ( SQLGetter.getReportStatus( id ).equals( "open" ) ) {
+        if ( utils.mysqlEnabled( ) ) {
+            ArrayList < Integer > closedReports = ReportsQuery.getClosedReports( );
+            for ( Integer closedReport : closedReports ) {
+                num++;
+                reports.put( num , closedReport );
+            }
+        } else {
+            for ( int id = 0; id <= utils.count( "reports" ); ) {
+                id++;
+                try {
+                    if ( plugin.reports.getConfig( ).getString( "reports." + id + ".status" ).equals( "open" ) ) {
                         num++;
                         reports.put( num , id );
                     }
-                } else {
-                    if ( plugin.reports.getConfig( ).get( "reports." + id + ".status" ).equals( "open" ) ) {
-                        num++;
-                        reports.put( num , id );
-                    }
+                    
+                } catch ( NullPointerException ignored ) {
                 }
-            } catch ( NullPointerException ignored ) {
             }
         }
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "open" ) , PersistentDataType.STRING ) ) {
@@ -61,7 +64,7 @@ public class openReportsMenu extends PaginatedMenu {
             String jugador = e.getCurrentItem( ).getItemMeta( ).getDisplayName( );
             if ( e.getClick( ).isLeftClick( ) ) {
                 int id = e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).get( new NamespacedKey( plugin , "open-id" ) , PersistentDataType.INTEGER );
-                new chose( main.getPlayerMenuUtility( p ) , plugin , jugador , id ).open( );
+                new EditReport( main.getPlayerMenuUtility( p ) , plugin , jugador , id ).open( );
             } else if ( e.getClick( ).isRightClick( ) ) {
                 TpPlayers.tpToPlayer( p , jugador );
             }
@@ -89,34 +92,30 @@ public class openReportsMenu extends PaginatedMenu {
         }
     }
     
-    private int count( ){
-        if ( utils.mysqlEnabled( ) ) {
-            return SQLGetter.getCurrents( "reports" ) + plugin.data.getReportId( );
-        } else {
-            return plugin.reports.getConfig( ).getInt( "current" ) + plugin.reports.getConfig( ).getInt( "count" );
-        }
-    }
-    
     @Override
     public void setMenuItems( ){
         addMenuBorder( );
         HashMap < Integer, Integer > reports = new HashMap <>( );
         int num = 0;
-        for ( int id = 0; id <= count( ); ) {
-            id++;
-            try {
-                if ( utils.mysqlEnabled( ) ) {
-                    if ( SQLGetter.getReportStatus( id ).equals( "open" ) ) {
+        JSONObject json = new JSONObject( );
+        if ( utils.mysqlEnabled( ) ) {
+            ArrayList < Integer > closedReports = ReportsQuery.getOpenReports( );
+            for ( Integer closedReport : closedReports ) {
+                num++;
+                reports.put( num , closedReport );
+            }
+            json = ReportsQuery.getOpenReportInfo( );
+        } else {
+            for ( int id = 0; id <= utils.count( "reports" ); ) {
+                id++;
+                try {
+                    if ( plugin.reports.getConfig( ).getString( "reports." + id + ".status" ).equals( "open" ) ) {
                         num++;
                         reports.put( num , id );
                     }
-                } else {
-                    if ( plugin.reports.getConfig( ).get( "reports." + id + ".status" ).equals( "open" ) ) {
-                        num++;
-                        reports.put( num , id );
-                    }
+                    
+                } catch ( NullPointerException ignored ) {
                 }
-            } catch ( NullPointerException ignored ) {
             }
         }
         if ( reports != null && !reports.isEmpty( ) ) {
@@ -126,16 +125,20 @@ public class openReportsMenu extends PaginatedMenu {
                 if ( reports.get( index ) != null ) {
                     //////////////////////////////
                     if ( utils.mysqlEnabled( ) ) {
-                        ItemStack p_head = utils.getPlayerHead( SQLGetter.get( "reports" , reports.get( index ) , "name" ) );
+                        String rawReportInfo = json.get( String.valueOf( reports.get( index ) ) ).toString( )
+                                .replace( "[" , "" )
+                                .replace( "]" , "" );
+                        JSONObject reportInfo = new JSONObject( rawReportInfo );
+                        ItemStack p_head = utils.getPlayerHead( reportInfo.getString( "Name" ) );
                         ItemMeta meta = p_head.getItemMeta( );
                         ArrayList < String > lore = new ArrayList <>( );
-                        meta.setDisplayName( SQLGetter.get( "reports" , reports.get( index ) , "name" ) );
-                        lore.add( utils.chat( "&7Reported by: " + SQLGetter.get( "reports" , reports.get( index ) , "Reporter" ) ) );
-                        lore.add( utils.chat( "&7Reason: &b" + SQLGetter.get( "reports" , reports.get( index ) , "Reason" ) ) );
-                        lore.add( utils.chat( "&7Date: &c" + SQLGetter.get( "reports" , reports.get( index ) , "Date" ) ) );
-                        lore.add( utils.chat( "&7Status: &a" + SQLGetter.get( "reports" , reports.get( index ) , "Status" ) ) );
+                        meta.setDisplayName( reportInfo.getString( "Name" ) );
+                        lore.add( utils.chat( "&7Reported by: " + reportInfo.getString( "Reporter" ) ) );
+                        lore.add( utils.chat( "&7Reason: &b" + reportInfo.getString( "Reason" ) ) );
+                        lore.add( utils.chat( "&7Date: &c" + reportInfo.getString( "Date" ) ) );
+                        lore.add( utils.chat( "&7Status: &a" + reportInfo.getString( "Status" ) ) );
                         lore.add( utils.chat( "&7Report ID:&a " + reports.get( index ) ) );
-                        lore.add( utils.chat( "&aLeft click delete or close" ) );
+                        lore.add( utils.chat( "&aLeft click delete or open" ) );
                         lore.add( utils.chat( "&aRight click to tp" ) );
                         meta.setLore( lore );
                         meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "open-id" ) , PersistentDataType.INTEGER , reports.get( index ) );

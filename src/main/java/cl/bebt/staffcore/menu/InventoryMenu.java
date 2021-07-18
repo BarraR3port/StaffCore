@@ -1,5 +1,6 @@
 package cl.bebt.staffcore.menu;
 
+import cl.bebt.staffcore.main;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -32,9 +33,11 @@ public abstract class InventoryMenu implements InventoryHolder {
     public abstract void setMenuItemsPlayer( Player p );
     
     public void open( Player p ){
-        inventory = Bukkit.createInventory( this , getSlots( ) , getMenuName( ) );
-        this.setMenuItemsPlayer( p );
-        playerMenuUtility.getOwner( ).openInventory( inventory );
+        Bukkit.getScheduler( ).runTask( main.plugin , ( ) -> {
+            inventory = Bukkit.createInventory( this , getSlots( ) , getMenuName( ) );
+            this.setMenuItemsPlayer( p );
+            playerMenuUtility.getOwner( ).openInventory( inventory );
+        } );
         
     }
     

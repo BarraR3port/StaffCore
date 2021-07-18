@@ -3,7 +3,8 @@ package cl.bebt.staffcore.menu.menu.WarnManager;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PaginatedMenu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
-import cl.bebt.staffcore.menu.menu.Others.ServerManager;
+import cl.bebt.staffcore.menu.menu.Staff.ServerManager;
+import cl.bebt.staffcore.sql.Queries.ServerQuery;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -13,6 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class WarnManager extends PaginatedMenu {
     
@@ -80,8 +82,16 @@ public class WarnManager extends PaginatedMenu {
                     ItemStack p_head = utils.getPlayerHead( warnedPlayers.get( index ) );
                     ItemMeta meta = p_head.getItemMeta( );
                     meta.setDisplayName( utils.chat( "&5" + warnedPlayers.get( index ) ) );
-                    lore.add( utils.chat( "&aTotal Warnings: &c" + utils.currentPlayerWarns( warnedPlayers.get( index ) ) ) );
-                    lore.add( utils.chat( "&aTotal Reports: &c" + utils.currentPlayerReports( warnedPlayers.get( index ) ) ) );
+                    if ( utils.mysqlEnabled( ) ) {
+                        HashMap < String, Integer > serverStatus = ServerQuery.getPlayerStatus( warnedPlayers.get( index ) );
+                        lore.add( utils.chat( "&a► &7Current Bans: &a" + serverStatus.get( "currentBans" ) ) );
+                        lore.add( utils.chat( "&a► &7Current Reports: &a" + serverStatus.get( "currentReports" ) ) );
+                        lore.add( utils.chat( "&a► &7Current Warns: &a" + serverStatus.get( "currentWarns" ) ) );
+                        
+                    } else {
+                        lore.add( utils.chat( "&aTotal Warnings: &c" + utils.currentPlayerWarns( warnedPlayers.get( index ) ) ) );
+                        lore.add( utils.chat( "&aTotal Reports: &c" + utils.currentPlayerReports( warnedPlayers.get( index ) ) ) );
+                    }
                     lore.add( " " );
                     lore.add( utils.chat( "&7Click to see &c" + warnedPlayers.get( index ) + "'s &7warns." ) );
                     meta.setLore( lore );

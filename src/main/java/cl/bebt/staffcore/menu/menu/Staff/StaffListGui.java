@@ -1,4 +1,4 @@
-package cl.bebt.staffcore.menu.menu.Others;
+package cl.bebt.staffcore.menu.menu.Staff;
 
 import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.main;

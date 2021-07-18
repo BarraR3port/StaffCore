@@ -2,7 +2,7 @@ package cl.bebt.staffcore.API;
 
 import cl.bebt.staffcore.commands.Staff.CheckAlts;
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.sql.SQLGetter;
+import cl.bebt.staffcore.sql.Queries.*;
 import cl.bebt.staffcore.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -29,7 +29,7 @@ public class StaffCoreAPI {
     
     public static String getIP( String player ){
         if ( utils.mysqlEnabled( ) )
-            return SQLGetter.getIp( player );
+            return AltsQuery.getIp( player );
         try {
             return Bukkit.getPlayer( player ).getAddress( ).getAddress( ).toString( );
         } catch ( NullPointerException error ) {
@@ -71,7 +71,7 @@ public class StaffCoreAPI {
     
     public static boolean getFrozenStatus( String player ){
         if ( mysqlEnabled( ) )
-            return SQLGetter.isTrue( player , "frozen" ).equalsIgnoreCase( "true" );
+            return FreezeQuery.isFrozen( player ).equalsIgnoreCase( "true" );
         try {
             return Bukkit.getPlayer( player ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING );
         } catch ( NullPointerException error ) {
@@ -81,7 +81,7 @@ public class StaffCoreAPI {
     
     public static boolean getVanishedStatus( String player ){
         if ( mysqlEnabled( ) )
-            return SQLGetter.isTrue( player , "vanish" ).equalsIgnoreCase( "true" );
+            return VanishQuery.isVanished( player ).equalsIgnoreCase( "true" );
         try {
             return Bukkit.getPlayer( player ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING );
         } catch ( NullPointerException error ) {
@@ -91,7 +91,7 @@ public class StaffCoreAPI {
     
     public static boolean getStaffStatus( String player ){
         if ( mysqlEnabled( ) )
-            return SQLGetter.isTrue( player , "staff" ).equalsIgnoreCase( "true" );
+            return StaffQuery.isStaff( player ).equalsIgnoreCase( "true" );
         try {
             return Bukkit.getPlayer( player ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING );
         } catch ( NullPointerException error ) {
@@ -101,7 +101,7 @@ public class StaffCoreAPI {
     
     public static boolean getStaffChatStatus( String player ){
         if ( mysqlEnabled( ) )
-            return SQLGetter.isTrue( player , "staffchat" ).equalsIgnoreCase( "true" );
+            return StaffChatQuery.isStaffChat( player ).equalsIgnoreCase( "true" );
         try {
             return Bukkit.getPlayer( player ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staffchat" ) , PersistentDataType.STRING );
         } catch ( NullPointerException error ) {
@@ -123,7 +123,7 @@ public class StaffCoreAPI {
     
     public static boolean isBanned( String player ){
         if ( mysqlEnabled( ) )
-            return SQLGetter.getBannedPlayers( ).contains( player );
+            return BansQuery.getBannedPlayers( ).contains( player );
         List < String > bannedPlayers = new ArrayList <>( );
         ConfigurationSection bans = plugin.bans.getConfig( ).getConfigurationSection( "bans" );
         for ( String s : bans.getKeys( false ) )
@@ -133,7 +133,7 @@ public class StaffCoreAPI {
     
     public static boolean isWarned( String player ){
         if ( mysqlEnabled( ) )
-            return SQLGetter.getWarnedPlayers( ).contains( player );
+            return WarnsQuery.getWarnedPlayers( ).contains( player );
         List < String > warnedPlayers = new ArrayList <>( );
         ConfigurationSection warns = plugin.warns.getConfig( ).getConfigurationSection( "warns" );
         for ( String s : warns.getKeys( false ) )
@@ -160,9 +160,9 @@ public class StaffCoreAPI {
     public static void setStaffChatStatus( Player target , boolean status ){
         if ( mysqlEnabled( ) ) {
             if ( status ) {
-                SQLGetter.set( target.getName( ) , "staffchat" , "true" );
+                StaffChatQuery.enable( target.getName( ) );
             } else {
-                SQLGetter.set( target.getName( ) , "staffchat" , "false" );
+                StaffChatQuery.disable( target.getName( ) );
             }
         } else if ( status ) {
             target.getPersistentDataContainer( ).set( new NamespacedKey( plugin , "staffchat" ) , PersistentDataType.STRING , "staffchat" );
@@ -172,13 +172,13 @@ public class StaffCoreAPI {
     }
     
     public static void setFlyingStatus( Player target , boolean status ){
-        SetFly.SetFly( target , status );
+        new SetFly( target , status );
     }
     
     public static ArrayList < String > getBannedPlayers( ){
         ArrayList < String > bannedPlayers = new ArrayList <>( );
         if ( utils.mysqlEnabled( ) ) {
-            bannedPlayers.addAll( SQLGetter.getBannedPlayers( ) );
+            bannedPlayers.addAll( BansQuery.getBannedPlayers( ) );
         } else {
             try {
                 ConfigurationSection inventorySection = plugin.bans.getConfig( ).getConfigurationSection( "bans" );
@@ -196,7 +196,7 @@ public class StaffCoreAPI {
     public static ArrayList < String > getReportedPlayers( ){
         ArrayList < String > reportedPlayers = new ArrayList <>( );
         if ( utils.mysqlEnabled( ) ) {
-            reportedPlayers.addAll( SQLGetter.getReportedPlayers( ) );
+            reportedPlayers.addAll( ReportsQuery.getReportedPlayers( ) );
         } else {
             ConfigurationSection inventorySection = plugin.reports.getConfig( ).getConfigurationSection( "reports" );
             for ( String key : inventorySection.getKeys( false ) ) {
@@ -223,24 +223,10 @@ public class StaffCoreAPI {
     
     public static Boolean isStillBanned( int Id ){
         if ( utils.mysqlEnabled( ) )
-            try {
-                Date now = new Date( );
-                Date exp_date = (new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" )).parse( SQLGetter.getBanned( Id , "ExpDate" ) );
-                if ( now.after( exp_date ) ) {
-                    SQLGetter.setBan( Id , "closed" );
-                    return false;
-                }
-                if ( !SQLGetter.BansTableExists( ) ) {
-                    SQLGetter.createBansTable( );
-                    return false;
-                }
-                return Boolean.TRUE;
-            } catch ( ParseException | NullPointerException ignored ) {
-                return false;
-            }
+            return BansQuery.isStillBanned( Id );
         try {
             Date now = new Date( );
-            Date exp_date = (new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" )).parse( plugin.bans.getConfig( ).getString( "bans." + Id + ".expdate" ) );
+            Date exp_date = new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" ).parse( plugin.bans.getConfig( ).getString( "bans." + Id + ".expdate" ) );
             if ( now.after( exp_date ) ) {
                 plugin.bans.getConfig( ).set( "bans." + Id + ".status" , "closed" );
                 plugin.bans.saveConfig( );
@@ -249,6 +235,7 @@ public class StaffCoreAPI {
             }
             return true;
         } catch ( ParseException | NullPointerException ignored ) {
+            ignored.printStackTrace( );
             plugin.bans.getConfig( ).set( "bans." + Id + ".status" , "closed" );
             plugin.bans.saveConfig( );
             plugin.bans.reloadConfig( );
@@ -257,25 +244,12 @@ public class StaffCoreAPI {
     }
     
     public static Boolean isStillWarned( int Id ){
-        if ( utils.mysqlEnabled( ) )
-            try {
-                Date now = new Date( );
-                Date exp_date = (new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" )).parse( SQLGetter.getWarned( Id , "ExpDate" ) );
-                if ( now.after( exp_date ) ) {
-                    SQLGetter.setWarn( Id , "closed" );
-                    return false;
-                }
-                if ( !SQLGetter.WarnsTableExists( ) ) {
-                    SQLGetter.createWarnsTable( );
-                    return false;
-                }
-                return true;
-            } catch ( ParseException | NullPointerException ignored ) {
-                return false;
-            }
+        if ( utils.mysqlEnabled( ) ) {
+            return WarnsQuery.isStillWarned( Id );
+        }
         try {
             Date now = new Date( );
-            Date exp_date = (new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" )).parse( plugin.warns.getConfig( ).getString( "warns." + Id + ".expdate" ) );
+            Date exp_date = new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" ).parse( plugin.warns.getConfig( ).getString( "warns." + Id + ".expdate" ) );
             if ( now.after( exp_date ) ) {
                 plugin.warns.getConfig( ).set( "warns." + Id + ".status" , "closed" );
                 plugin.warns.saveConfig( );
@@ -325,7 +299,7 @@ public class StaffCoreAPI {
     
     public static List < String > getVanishedPlayers( ){
         if ( mysqlEnabled( ) ) {
-            return SQLGetter.getVanishedPlayers( );
+            return VanishQuery.getVanishedPlayers( );
         } else {
             List < String > vanishedPlayer = new ArrayList <>( );
             for ( Player p : Bukkit.getOnlinePlayers( ) ) {
@@ -339,7 +313,7 @@ public class StaffCoreAPI {
     
     public static List < String > getStaffPlayers( ){
         if ( mysqlEnabled( ) ) {
-            return SQLGetter.getStaffPlayers( );
+            return StaffQuery.getStaffPlayers( );
         } else {
             List < String > staffPlayer = new ArrayList <>( );
             for ( Player p : Bukkit.getOnlinePlayers( ) ) {
@@ -364,16 +338,12 @@ public class StaffCoreAPI {
     }
     
     public static int getCurrentBans( ){
-        if ( mysqlEnabled( ) ) {
-            return SQLGetter.getCurrents( "bans" );
-        } else {
-            return BanPlayer.currentBans( );
-        }
+        return BanPlayer.currentBans( );
     }
     
     public static int getCurrentWarns( ){
         if ( mysqlEnabled( ) ) {
-            return SQLGetter.getCurrents( "warns" );
+            return WarnsQuery.getCurrentWarns( );
         } else {
             int current = 0;
             try {
@@ -388,7 +358,7 @@ public class StaffCoreAPI {
     
     public static int getCurrentReports( ){
         if ( mysqlEnabled( ) ) {
-            return SQLGetter.getCurrents( "reports" );
+            return ReportsQuery.getCurrentReports( );
         } else {
             int current = 0;
             try {

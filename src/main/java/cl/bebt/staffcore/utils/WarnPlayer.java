@@ -5,10 +5,11 @@ import cl.bebt.staffcore.MSGChanel.SendMsg;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.menu.menu.Warn.WarnMenu;
-import cl.bebt.staffcore.sql.SQLGetter;
+import cl.bebt.staffcore.sql.Queries.WarnsQuery;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -26,7 +27,7 @@ public class WarnPlayer {
     
     
     public static void createWarn( Player p , String warned , String reason , long amount , String time ){
-        int id = id( );
+        int id = (main.plugin.warns.getConfig( ).getInt( "count" ) + 1);
         Date now = new Date( );
         Calendar cal = Calendar.getInstance( );
         cal.setTime( now );
@@ -48,7 +49,7 @@ public class WarnPlayer {
         SimpleDateFormat format = new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" );
         
         if ( utils.mysqlEnabled( ) ) {
-            main.plugin.data.createWarn( warned , p.getName( ) , reason , format.format( now ) , format.format( ExpDate ) , "open" );
+            WarnsQuery.createWarn( warned , p.getName( ) , reason , format.format( now ) , format.format( ExpDate ) , "open" );
         } else {
             if ( main.plugin.warns.getConfig( ).contains( "count" ) ) {
                 main.plugin.warns.getConfig( ).set( "count" , id );
@@ -84,26 +85,120 @@ public class WarnPlayer {
         }
     }
     
-    public static void unWarn( Player p , main plugin , int Id ){
-        String player = "";
-        if ( p instanceof Player ) {
-            player = p.getName( );
-        } else {
-            player = "CONSOLE";
-        }
+    public static void CloseWarn( Player p , Integer Id ){
         String reason = null;
         String created = null;
         String exp = null;
         String warner = null;
         String warned = null;
-        String status = "un warned";
+        String status = "closed";
+        
         if ( utils.mysqlEnabled( ) ) {
-            reason = SQLGetter.getWarned( Id , "Reason" );
-            created = SQLGetter.getWarned( Id , "Date" );
-            exp = SQLGetter.getWarned( Id , "ExpDate" );
-            warner = SQLGetter.getWarned( Id , "Warner" );
-            warned = SQLGetter.getWarned( Id , "Name" );
-            SQLGetter.deleteWarn( Id );
+            JSONObject json = WarnsQuery.getWarnsInfo( Id );
+            if ( !json.getBoolean( "error" ) ) {
+                reason = json.getString( "Reason" );
+                created = json.getString( "Date" );
+                exp = json.getString( "ExpDate" );
+                warner = json.getString( "Warner" );
+                warned = json.getString( "Name" );
+                WarnsQuery.closeWarn( Id );
+            }
+        } else {
+            plugin.warns.reloadConfig( );
+            reason = plugin.warns.getConfig( ).getString( "warns." + Id + ".reason" );
+            created = plugin.warns.getConfig( ).getString( "warns." + Id + ".date" );
+            exp = plugin.warns.getConfig( ).getString( "warns." + Id + ".expdate" );
+            warner = plugin.warns.getConfig( ).getString( "warns." + Id + ".warned_by" );
+            warned = plugin.warns.getConfig( ).getString( "warns." + Id + ".name" );
+            plugin.warns.getConfig( ).set( "warns." + Id + ".status" , "closed" );
+            plugin.warns.getConfig( ).set( "count" , StaffCoreAPI.getCurrentWarns( ) );
+            plugin.warns.saveConfig( );
+        }
+        SendMsg.sendWarnChangeAlert( Id , p.getName( ) , warner , warned , reason , exp , created , status , utils.getServer( ) );
+        for ( Player people : Bukkit.getOnlinePlayers( ) ) {
+            if ( people.hasPermission( "staffcore.staff" ) ) {
+                utils.PlaySound( p , "close_ban" );
+                for ( String key : utils.getStringList( "warns.alerts.warn_change" , "alerts" ) ) {
+                    key = key.replace( "%changed_by%" , p.getName( ) );
+                    key = key.replace( "%warner%" , warner );
+                    key = key.replace( "%warned%" , warned );
+                    key = key.replace( "%id%" , String.valueOf( Id ) );
+                    key = key.replace( "%reason%" , reason );
+                    key = key.replace( "%create_date%" , created );
+                    key = key.replace( "%exp_date%" , exp );
+                    key = key.replace( "%warn_status%" , "CLOSED" );
+                    utils.tell( people , key );
+                }
+            }
+        }
+    }
+    
+    public static void OpenWarn( Player p , Integer Id ){
+        String reason = null;
+        String created = null;
+        String exp = null;
+        String warner = null;
+        String warned = null;
+        String status = "open";
+        
+        if ( utils.mysqlEnabled( ) ) {
+            JSONObject json = WarnsQuery.getWarnsInfo( Id );
+            if ( !json.getBoolean( "error" ) ) {
+                reason = json.getString( "Reason" );
+                created = json.getString( "Date" );
+                exp = json.getString( "ExpDate" );
+                warner = json.getString( "Warner" );
+                warned = json.getString( "Name" );
+                WarnsQuery.openWarn( Id );
+            }
+        } else {
+            plugin.warns.reloadConfig( );
+            reason = plugin.warns.getConfig( ).getString( "warns." + Id + ".reason" );
+            created = plugin.warns.getConfig( ).getString( "warns." + Id + ".date" );
+            exp = plugin.warns.getConfig( ).getString( "warns." + Id + ".expdate" );
+            warner = plugin.warns.getConfig( ).getString( "warns." + Id + ".warned_by" );
+            warned = plugin.warns.getConfig( ).getString( "warns." + Id + ".name" );
+            plugin.warns.getConfig( ).set( "warns." + Id + ".status" , "open" );
+            plugin.warns.getConfig( ).set( "count" , StaffCoreAPI.getCurrentWarns( ) );
+            plugin.warns.saveConfig( );
+        }
+        SendMsg.sendWarnChangeAlert( Id , p.getName( ) , warner , warned , reason , exp , created , status , utils.getServer( ) );
+        for ( Player people : Bukkit.getOnlinePlayers( ) ) {
+            if ( people.hasPermission( "staffcore.staff" ) ) {
+                utils.PlaySound( p , "close_ban" );
+                for ( String key : utils.getStringList( "warns.alerts.warn_change" , "alerts" ) ) {
+                    key = key.replace( "%changed_by%" , p.getName( ) );
+                    key = key.replace( "%warner%" , warner );
+                    key = key.replace( "%warned%" , warned );
+                    key = key.replace( "%id%" , String.valueOf( Id ) );
+                    key = key.replace( "%reason%" , reason );
+                    key = key.replace( "%create_date%" , created );
+                    key = key.replace( "%exp_date%" , exp );
+                    key = key.replace( "%warn_status%" , "OPEN" );
+                    utils.tell( people , key );
+                }
+            }
+        }
+    }
+    
+    public static void DeleteWarn( Player p , Integer Id ){
+        String reason = null;
+        String created = null;
+        String exp = null;
+        String warner = null;
+        String warned = null;
+        String status = "deleted";
+        
+        if ( utils.mysqlEnabled( ) ) {
+            JSONObject json = WarnsQuery.getWarnsInfo( Id );
+            if ( !json.getBoolean( "error" ) ) {
+                reason = json.getString( "Reason" );
+                created = json.getString( "Date" );
+                exp = json.getString( "ExpDate" );
+                warner = json.getString( "Warner" );
+                warned = json.getString( "Name" );
+                WarnsQuery.deleteWarn( Id );
+            }
         } else {
             plugin.warns.reloadConfig( );
             reason = plugin.warns.getConfig( ).getString( "warns." + Id + ".reason" );
@@ -112,35 +207,25 @@ public class WarnPlayer {
             warner = plugin.warns.getConfig( ).getString( "warns." + Id + ".warned_by" );
             warned = plugin.warns.getConfig( ).getString( "warns." + Id + ".name" );
             plugin.warns.getConfig( ).set( "warns." + Id , null );
-            plugin.warns.getConfig( ).set( "current" , utils.currentWarns( ) );
+            plugin.warns.getConfig( ).set( "count" , StaffCoreAPI.getCurrentWarns( ) );
             plugin.warns.saveConfig( );
         }
         SendMsg.sendWarnChangeAlert( Id , p.getName( ) , warner , warned , reason , exp , created , status , utils.getServer( ) );
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-            if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.warn" ) ) {
-                utils.PlaySound( people , "un_ban" );
+            if ( people.hasPermission( "staffcore.staff" ) ) {
+                utils.PlaySound( p , "close_ban" );
                 for ( String key : utils.getStringList( "warns.alerts.warn_change" , "alerts" ) ) {
-                    key = key.replace( "%changed_by%" , player );
+                    key = key.replace( "%changed_by%" , p.getName( ) );
                     key = key.replace( "%warner%" , warner );
                     key = key.replace( "%warned%" , warned );
                     key = key.replace( "%id%" , String.valueOf( Id ) );
                     key = key.replace( "%reason%" , reason );
                     key = key.replace( "%create_date%" , created );
                     key = key.replace( "%exp_date%" , exp );
-                    key = key.replace( "%warn_status%" , "UN WARNED" );
+                    key = key.replace( "%warn_status%" , "DELETED" );
                     utils.tell( people , key );
                 }
             }
-        }
-    }
-    
-    public static int id( ){
-        if ( utils.mysqlEnabled( ) ) {
-            return SQLGetter.getWarnId( );
-        } else {
-            int id = main.plugin.warns.getConfig( ).getInt( "count" );
-            id++;
-            return id;
         }
     }
     

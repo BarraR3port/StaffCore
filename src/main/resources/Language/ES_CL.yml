@@ -3,7 +3,7 @@
 #   | (___ \_| `| |-'  ,--.    _| |_    _| |_      ______    / .'   \_|   .--.    _ .--.   .---.          #
 #    _.____`.   | |   `'_\ :  '-| |-'  '-| |-'    |______|   | |        / .'`\ \ [ `/'`\] / /__\\         #
 #   | \____) |  | |,  // | |,   | |      | |                 \ `.___.'\ | \__. |  | |     | \__.,         #
-#   \______.'   \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.4.3 #
+#   \______.'   \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.4.4 #
 #                                                                                                         #
 #                                                                     Translated by BarraR3port : [ES_CL] #
 
@@ -35,6 +35,8 @@ toggle_chat:
   chat_muted: "&7El chat está muteado, por lo tanto no puedes hablar"
   chat_not_muted: "&7El chat no está muteado"
   time_remaining: "&cTiempo restante: &c%days%d:%hours%h:%minutes%mn:%seconds%s"
+  global_mute_by_player: "&7El jugador &9%player% &7Ha Muteado el chat!"
+  global_un_mute_by_player: "&7El jugador &9%player% &7Ha Desmuteado el chat!"
 
 # ------------> COMMON STUFF <----------
 wrong_usage: "&cUsaste mal el comando, usa &7/%command%"
@@ -121,7 +123,7 @@ menu:
 
 # ------------> PING <-----------
 ping_other: "&7El ping de &9%player% &7es: &9%ping%"
-ping: "&7Tu ping es: %9%ping%"
+ping: "&7Tu ping es: &9%ping%"
 
 # ------------> STAFF <----------
 staff:
@@ -141,7 +143,7 @@ staff_chat:
 # ------------> TELEPORT <-----------
 tp:
   player_to_player: "&7Has sido tepeado a &9%target%"
-  to_me: "&7El jugador &9%sender% &7se ha tepeado a ti"
+  tp_to_them: "&7El jugador &9%sender% &7se ha tepeado a ti"
   to_yourself: "&7Te has tepeado a ti mismo"
   to_him: "&7Tepeaste a &9%target% &7a si mismo"
   tp_other: "&7El jugador &9%player% &7se ha tepeado a &9%target%"
@@ -202,3 +204,4 @@ web:
   error_incorrect_username: "&0[&cERROR&0]&7 Este usuario no está registrado"
   error_incorrect_password: "&0[&cERROR&0]&7 Contraseña incorrecta"
   error_catch: "&0[&cERROR&0]&7 Ah ocurrido un error desconocido, revisa que tu database esté bien configurada"
+  web: "&aPuedes ver y editar tu Network en este link: %link%"

@@ -5,7 +5,7 @@ import cl.bebt.staffcore.MSGChanel.SendMsg;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.menu.menu.Reports.ReportMenu;
-import cl.bebt.staffcore.sql.SQLGetter;
+import cl.bebt.staffcore.sql.Queries.BansQuery;
 import cl.bebt.staffcore.utils.BanPlayer;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.Bukkit;
@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -73,14 +74,16 @@ public class EditBan extends ReportMenu {
         String exp = null;
         String baner = null;
         String banned = null;
-        String status = "closed";
         if ( utils.mysqlEnabled( ) ) {
-            reason = SQLGetter.getBanned( this.Id , "Reason" );
-            created = SQLGetter.getBanned( this.Id , "Date" );
-            exp = SQLGetter.getBanned( this.Id , "ExpDate" );
-            baner = SQLGetter.getBanned( this.Id , "Baner" );
-            banned = SQLGetter.getBanned( this.Id , "Name" );
-            SQLGetter.setBan( this.Id , "closed" );
+            JSONObject json = BansQuery.getBanInfo( this.Id );
+            if ( !json.getBoolean( "error" ) ) {
+                reason = json.getString( "Reason" );
+                created = json.getString( "Date" );
+                exp = json.getString( "ExpDate" );
+                baner = json.getString( "Banner" );
+                banned = json.getString( "Name" );
+                BansQuery.closeBan( this.Id );
+            }
         } else {
             this.plugin.bans.reloadConfig( );
             reason = this.plugin.bans.getConfig( ).getString( "bans." + this.Id + ".reason" );
@@ -92,7 +95,7 @@ public class EditBan extends ReportMenu {
             this.plugin.bans.getConfig( ).set( "count" , StaffCoreAPI.getCurrentBans( ) );
             this.plugin.bans.saveConfig( );
         }
-        SendMsg.sendBanChangeAlert( this.Id , p.getName( ) , baner , banned , reason , exp , created , status , utils.getServer( ) );
+        SendMsg.sendBanChangeAlert( this.Id , p.getName( ) , baner , banned , reason , exp , created , "closed" , utils.getServer( ) );
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
             if ( people.hasPermission( "staffcore.staff" ) ) {
                 utils.PlaySound( p , "close_ban" );
@@ -104,7 +107,7 @@ public class EditBan extends ReportMenu {
                     key = key.replace( "%reason%" , reason );
                     key = key.replace( "%create_date%" , created );
                     key = key.replace( "%exp_date%" , exp );
-                    key = key.replace( "%ban_status%" , "CLOSED" );
+                    key = key.replace( "%ban_status%" , "Closed" );
                     utils.tell( people , key );
                 }
             }
@@ -159,13 +162,13 @@ public class EditBan extends ReportMenu {
                 this.inventory.setItem( i , bluePanel( ) );
         }
         if ( utils.mysqlEnabled( ) ) {
-            if ( SQLGetter.getBanned( this.Id , "Status" ).equals( "open" ) ) {
+            if ( BansQuery.isStillBanned( this.Id ) ) {
                 this.inventory.setItem( 20 , delete );
                 this.inventory.setItem( 21 , redPanel( ) );
                 this.inventory.setItem( 22 , close( ) );
                 this.inventory.setItem( 23 , redPanel( ) );
                 this.inventory.setItem( 24 , closeBan );
-            } else if ( SQLGetter.getBanned( this.Id , "Status" ).equals( "closed" ) ) {
+            } else {
                 this.inventory.setItem( 20 , redPanel( ) );
                 this.inventory.setItem( 21 , delete );
                 this.inventory.setItem( 22 , redPanel( ) );
@@ -178,7 +181,7 @@ public class EditBan extends ReportMenu {
             this.inventory.setItem( 22 , close( ) );
             this.inventory.setItem( 23 , redPanel( ) );
             this.inventory.setItem( 24 , closeBan );
-        } else if ( this.plugin.bans.getConfig( ).get( "bans." + this.Id + ".status" ).equals( "closed" ) ) {
+        } else {
             this.inventory.setItem( 20 , redPanel( ) );
             this.inventory.setItem( 21 , delete );
             this.inventory.setItem( 22 , redPanel( ) );

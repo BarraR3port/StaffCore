@@ -1,7 +1,7 @@
 package cl.bebt.staffcore.utils;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.sql.SQLGetter;
+import cl.bebt.staffcore.sql.Queries.StaffQuery;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -43,8 +43,10 @@ public class SetStaffItems {
         p.setInvulnerable( true );
         PlayerData.set( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING , "staff" );
         if ( utils.mysqlEnabled( ) ) {
-            SQLGetter.set( p.getName( ) , "staff" , "true" );
+            StaffQuery.enable( p.getName( ) );
         }
+        p.setAllowFlight( true );
+        p.setFlying( true );
     }
     
     public static void Off( Player p ){
@@ -70,12 +72,12 @@ public class SetStaffItems {
         if ( p.getGameMode( ).equals( GameMode.SURVIVAL ) || p.getGameMode( ).equals( GameMode.ADVENTURE ) ) {
             p.setAllowFlight( false );
             p.setFlying( false );
-            p.setInvulnerable( false );
         }
+        p.setInvulnerable( false );
         SetVanish.setVanish( p , false );
         PlayerData.remove( new NamespacedKey( plugin , "staff" ) );
         if ( utils.mysqlEnabled( ) ) {
-            SQLGetter.set( p.getName( ) , "staff" , "false" );
+            StaffQuery.disable( p.getName( ) );
         }
     }
     

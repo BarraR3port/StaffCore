@@ -98,7 +98,7 @@ public class invSee extends InventoryMenu {
                 //OpenInvSee.setItem( p , target , slot );
             }
             if ( item.getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( main.plugin , "head" ) , PersistentDataType.STRING ) ) {
-                e.setCancelled( true );
+                p.closeInventory( );
                 String target = item.getItemMeta( ).getPersistentDataContainer( ).get( new NamespacedKey( main.plugin , "name" ) , PersistentDataType.STRING );
                 TpPlayers.tpToPlayer( p , target );
             }

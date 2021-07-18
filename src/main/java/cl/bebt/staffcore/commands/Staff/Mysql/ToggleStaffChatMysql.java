@@ -1,7 +1,7 @@
 package cl.bebt.staffcore.commands.Staff.Mysql;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.sql.SQLGetter;
+import cl.bebt.staffcore.sql.Queries.StaffChatQuery;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -27,11 +27,11 @@ public class ToggleStaffChatMysql implements CommandExecutor, Listener {
             if ( args.length == 1 ) {
                 if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
                     Player p = Bukkit.getPlayer( args[0] );
-                    String is = SQLGetter.isTrue( p , "staffchat" );
+                    String is = StaffChatQuery.isStaffChat( p.getName( ) );
                     if ( is.equals( "true" ) ) {
                         utils.tell( sender , utils.getString( "staff_chat.disabled_to" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
                         utils.tell( p , utils.getString( "staff_chat.disabled" , "lg" , "staff" ) );
-                        SQLGetter.set( p.getName( ) , "staffchat" , "false" );
+                        StaffChatQuery.disable( p.getName( ) );
                         main.toggledStaffChat.remove( p.getName( ) );
                         if ( !utils.isOlderVersion( ) ) {
                             p.getPersistentDataContainer( ).remove( new NamespacedKey( plugin , "staffchat" ) );
@@ -39,7 +39,7 @@ public class ToggleStaffChatMysql implements CommandExecutor, Listener {
                     } else if ( is.equals( "false" ) ) {
                         utils.tell( sender , utils.getString( "staff_chat.enabled_to" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
                         utils.tell( p , utils.getString( "staff_chat.enabled" , "lg" , "staff" ) );
-                        SQLGetter.set( p.getName( ) , "staffchat" , "true" );
+                        StaffChatQuery.enable( p.getName( ) );
                         main.toggledStaffChat.add( p.getName( ) );
                         if ( !utils.isOlderVersion( ) ) {
                             p.getPersistentDataContainer( ).set( new NamespacedKey( plugin , "staffchat" ) , PersistentDataType.STRING , "staffchat" );
@@ -54,18 +54,18 @@ public class ToggleStaffChatMysql implements CommandExecutor, Listener {
         } else {
             if ( args.length == 0 ) {
                 Player p = ( Player ) sender;
-                String is = SQLGetter.isTrue( p , "staffchat" );
+                String is = StaffChatQuery.isStaffChat( p.getName( ) );
                 if ( p.hasPermission( "staffcore.tsc" ) ) {
                     if ( is.equals( "true" ) ) {
                         utils.tell( p , utils.getString( "staff_chat.disabled" , "lg" , "staff" ) );
-                        SQLGetter.set( p.getName( ) , "staffchat" , "false" );
+                        StaffChatQuery.disable( p.getName( ) );
                         main.toggledStaffChat.remove( p.getName( ) );
                         if ( !utils.isOlderVersion( ) ) {
                             p.getPersistentDataContainer( ).remove( new NamespacedKey( plugin , "staffchat" ) );
                         }
                     } else if ( is.equals( "false" ) ) {
                         utils.tell( p , "&8[&3&lSC&r&8]&r &aOn" );
-                        SQLGetter.set( p.getName( ) , "staffchat" , "true" );
+                        StaffChatQuery.enable( p.getName( ) );
                         main.toggledStaffChat.add( p.getName( ) );
                         if ( !utils.isOlderVersion( ) ) {
                             p.getPersistentDataContainer( ).set( new NamespacedKey( plugin , "staffchat" ) , PersistentDataType.STRING , "staffchat" );
@@ -78,11 +78,11 @@ public class ToggleStaffChatMysql implements CommandExecutor, Listener {
                 if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
                     if ( sender.hasPermission( "staffcore.tsc" ) ) {
                         Player p = Bukkit.getPlayer( args[0] );
-                        String is = SQLGetter.isTrue( p , "staffchat" );
+                        String is = StaffChatQuery.isStaffChat( p.getName( ) );
                         if ( is.equals( "true" ) ) {
                             utils.tell( sender , utils.getString( "staff_chat.disabled_to" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
                             utils.tell( p , utils.getString( "staff_chat.disabled" , "lg" , "staff" ) );
-                            SQLGetter.set( p.getName( ) , "staffchat" , "false" );
+                            StaffChatQuery.disable( p.getName( ) );
                             main.toggledStaffChat.remove( p.getName( ) );
                             if ( !utils.isOlderVersion( ) ) {
                                 p.getPersistentDataContainer( ).remove( new NamespacedKey( plugin , "staffchat" ) );
@@ -90,7 +90,7 @@ public class ToggleStaffChatMysql implements CommandExecutor, Listener {
                         } else if ( is.equals( "false" ) ) {
                             utils.tell( sender , utils.getString( "staff_chat.enabled_to" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
                             utils.tell( p , utils.getString( "staff_chat.enabled" , "lg" , "staff" ) );
-                            SQLGetter.set( p.getName( ) , "staffchat" , "true" );
+                            StaffChatQuery.enable( p.getName( ) );
                             main.toggledStaffChat.add( p.getName( ) );
                             if ( !utils.isOlderVersion( ) ) {
                                 p.getPersistentDataContainer( ).set( new NamespacedKey( plugin , "staffchat" ) , PersistentDataType.STRING , "staffchat" );

@@ -31,7 +31,6 @@ public class MenuListener implements Listener {
             menu.handleMenu( e );
         }
         if ( holder instanceof InventoryMenu ) {
-            
             if ( e.getSlotType( ) == InventoryType.SlotType.OUTSIDE ) return;
             InventoryMenu menu = ( InventoryMenu ) holder;
             menu.handleMenu( e );

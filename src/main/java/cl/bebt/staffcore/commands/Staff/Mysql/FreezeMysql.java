@@ -1,7 +1,7 @@
 package cl.bebt.staffcore.commands.Staff.Mysql;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.sql.SQLGetter;
+import cl.bebt.staffcore.sql.Queries.FreezeQuery;
 import cl.bebt.staffcore.utils.FreezePlayer;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.Bukkit;
@@ -26,7 +26,7 @@ public class FreezeMysql implements CommandExecutor {
             if ( !(sender instanceof Player) ) {
                 if ( args.length == 1 ) {
                     Player p = Bukkit.getPlayer( args[0] );
-                    String is = SQLGetter.isTrue( p , "frozen" );
+                    String is = FreezeQuery.isFrozen( p.getName( ) );
                     if ( p instanceof Player ) {
                         if ( is.equals( "true" ) ) {
                             FreezePlayer.FreezePlayer( p , "CONSOLE" , false );
@@ -43,7 +43,8 @@ public class FreezeMysql implements CommandExecutor {
                     if ( args.length == 1 ) {
                         if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
                             Player p = Bukkit.getPlayer( args[0] );
-                            String is = SQLGetter.isTrue( p , "frozen" );
+                            String is = FreezeQuery.isFrozen( p.getName( ) );
+                            ;
                             if ( p == player ) {
                                 if ( is.equals( "true" ) ) {
                                     if ( p.hasPermission( "staffcore.unfreeze.himself" ) ) {

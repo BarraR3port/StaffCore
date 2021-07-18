@@ -1,7 +1,7 @@
 package cl.bebt.staffcore.commands.Staff;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.sql.SQLGetter;
+import cl.bebt.staffcore.sql.Queries.VanishQuery;
 import cl.bebt.staffcore.utils.SetFly;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.Bukkit;
@@ -33,7 +33,7 @@ public class GmSurvival implements CommandExecutor {
                         p.setGameMode( GameMode.SURVIVAL );
                         p.setInvulnerable( false );
                         if ( plugin.getConfig( ).getBoolean( "mysql" ) ) {
-                            if ( SQLGetter.isTrue( p , "vanish" ).equalsIgnoreCase( "true" ) ) {
+                            if ( VanishQuery.isVanished( p.getName( ) ).equalsIgnoreCase( "true" ) ) {
                                 p.setAllowFlight( true );
                                 p.setFlying( true );
                             }
@@ -66,7 +66,7 @@ public class GmSurvival implements CommandExecutor {
                     p.setGameMode( GameMode.SURVIVAL );
                     p.setInvulnerable( false );
                     if ( plugin.getConfig( ).getBoolean( "mysql" ) ) {
-                        if ( SQLGetter.isTrue( p , "vanish" ).equalsIgnoreCase( "true" ) ) {
+                        if ( VanishQuery.isVanished( p.getName( ) ).equalsIgnoreCase( "true" ) ) {
                             p.setAllowFlight( true );
                             p.setFlying( true );
                         }
@@ -74,7 +74,7 @@ public class GmSurvival implements CommandExecutor {
                         try {
                             PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
                             if ( PlayerData.has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ) {
-                                SetFly.SetFly( p , true );
+                                new SetFly( p , true );
                             }
                             if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) ) {
                                 p.setAllowFlight( true );
@@ -98,7 +98,7 @@ public class GmSurvival implements CommandExecutor {
                         p.setGameMode( GameMode.SURVIVAL );
                         p.setInvulnerable( false );
                         if ( plugin.getConfig( ).getBoolean( "mysql" ) ) {
-                            if ( SQLGetter.isTrue( p , "vanish" ).equalsIgnoreCase( "true" ) ) {
+                            if ( VanishQuery.isVanished( p.getName( ) ).equalsIgnoreCase( "true" ) ) {
                                 p.setAllowFlight( true );
                                 p.setFlying( true );
                             }
@@ -106,7 +106,7 @@ public class GmSurvival implements CommandExecutor {
                             try {
                                 PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
                                 if ( PlayerData.has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ) {
-                                    SetFly.SetFly( p , true );
+                                    new SetFly( p , true );
                                 }
                                 if ( PlayerData.has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) ) {
                                     p.setAllowFlight( true );

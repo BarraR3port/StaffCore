@@ -3,7 +3,7 @@
 #   | (___ \_| `| |-'  ,--.    _| |_    _| |_      ______    / .'   \_|   .--.    _ .--.   .---.          #
 #    _.____`.   | |   `'_\ :  '-| |-'  '-| |-'    |______|   | |        / .'`\ \ [ `/'`\] / /__\\         #
 #   | \____) |  | |,  // | |,   | |      | |                 \ `.___.'\ | \__. |  | |     | \__.,         #
-#   \______.'   \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.4.3 #
+#   \______.'   \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.4.4 #
 #                                                                                                         #
 #                                                                                By BarraR3port : [ITEMS] #
 
@@ -37,27 +37,27 @@ quantity:
     item: "REDSTONE"
     lore:
       - "&cClick to &c%type% &9%player%"
+time:
   seconds:
     name: "&4SECONDS"
-    item: "MAGENTA_CONCRETE"
+    material: "MAGENTA_CONCRETE"
     lore:
-      - "&cClick to &a%type% &9%player% for %seconds%s"
+      - "&cClick to &a%punish% &9%player% for %time%s"
   minutes:
     name: "&4MINUTES"
-    item: "PURPLE_CONCRETE"
+    material: "PURPLE_CONCRETE"
     lore:
-      - "&cClick to &a%type% &9%player% for %minutes%m"
+      - "&cClick to &a%punish% &9%player% for %time%m"
   hours:
     name: "&4HOURS"
-    item: "BLUE_CONCRETE"
+    material: "BLUE_CONCRETE"
     lore:
-      - "&cClick to &a%type% &9%player% for %hours%h"
+      - "&cClick to &a%punish% &9%player% for %time%h"
   days:
     name: "&4DAYS"
-    item: "RED_CONCRETE"
+    material: "RED_CONCRETE"
     lore:
-      - "&cClick to &a%type% &9%player% for %days%d"
-
+      - "&cClick to &a%punish% &9%player% for %time%d"
 # ------------> MENU ITEMS <--------------
 menu_items:
   close:
@@ -72,7 +72,7 @@ menu_items:
     lore:
       - "&aClick to pass to the next page"
   back:
-    name: "&7Next"
+    name: "&7Back"
     material: "DARK_OAK_BUTTON"
     lore:
       - "&aClick to go back"
@@ -81,3 +81,66 @@ menu_items:
     material: "BEDROCK"
     lore:
       - "&7Feature Coming Soon"
+      -
+      # ------------> PUNISHMENT ITEMS <--------------
+punish_items:
+  hacking:
+    name: "&4Hacking"
+    material: "RED_DYE"
+    reason: "Hacking"
+    lore:
+      - "&d%punish% &9%player% &dfor Hacking"
+  killaura:
+    name: "&4KillAura"
+    material: "DIAMOND_SWORD"
+    reason: "KillAura"
+    lore:
+      - "&d%punish% &9%player% &dfor KillAura"
+  flying:
+    name: "&4Flying"
+    material: "FEATHER"
+    reason: "Flying"
+    lore:
+      - "&d%punish% &9%player% &dfor Flying"
+  speed:
+    name: "&4Speed"
+    material: "SUGAR"
+    reason: "Speed"
+    lore:
+      - "&d%punish% &9%player% &dfor Speed"
+  spamming:
+    name: "&4Spamming"
+    material: "PAPER"
+    reason: "Spamming"
+    lore:
+      - "&d%punish% &9%player% &dfor Spamming"
+  griefing:
+    name: "&4Griefing"
+    material: "TNT"
+    reason: "Griefing"
+    lore:
+      - "&d%punish% &9%player% &dfor Griefing"
+  bhop:
+    name: "&4BunnyHop"
+    material: "RABBIT_HIDE"
+    reason: "BunnyHop"
+    lore:
+      - "&d%punish% &9%player% &dfor BunnyHop"
+  other: # DO NOT DELETE OR CHANGE THIS ITEM, OR THE PLUGIN MAY GET BUGGED!
+    name: "&4Other reason"
+    material: "FLOWER_BANNER_PATTERN"
+    lore:
+      - "&d%punish% &9%player% &dfor other reason"
+edit:
+  open:
+    name: "&aOpen &4%punishment% &9Id: &a%id%"
+    lore:
+      - "&7Click to Open the %punishment%"
+  closed:
+    name: "&cOpen &4%punishment% &9Id: &a%id%"
+    lore:
+      - "&7Click to Close the %punishment%"
+  delete:
+    name: "&cDelete the %punishment% "
+    lore:
+      - "&7Click to Delete the %punishment%"

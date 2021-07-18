@@ -1,7 +1,7 @@
 package cl.bebt.staffcore.commands.Staff;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.sql.SQLGetter;
+import cl.bebt.staffcore.sql.Queries.AltsQuery;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -21,7 +21,7 @@ public class CheckAlts implements TabExecutor {
     
     public static List < String > ips( String p ){
         if ( utils.mysqlEnabled( ) ) {
-            return utils.makeList( SQLGetter.getAlts( p ) );
+            return utils.makeList( AltsQuery.getAlts( p ) );
         } else {
             return plugin.alts.getConfig( ).getStringList( "alts." + p );
         }
@@ -31,15 +31,15 @@ public class CheckAlts implements TabExecutor {
         List < String > alts = new ArrayList <>( );
         List < String > accounts = new ArrayList <>( );
         if ( utils.mysqlEnabled( ) ) {
-            List < String > ip = utils.makeList( SQLGetter.getAlts( player ) );
-            List < String > players = SQLGetter.getPlayersNames( );
+            List < String > ip = utils.makeList( AltsQuery.getAlts( player ) );
+            List < String > players = AltsQuery.getPlayersNames( );
             for ( String key : players ) {
                 if ( !player.equals( key ) ) {
                     alts.add( key );
                 }
             }
             for ( String alt : alts ) {
-                List < String > list2 = utils.makeList( SQLGetter.getAlts( alt ) );
+                List < String > list2 = utils.makeList( AltsQuery.getAlts( alt ) );
                 if ( ip.stream( ).anyMatch( list2::contains ) ) {
                     accounts.add( alt );
                 }

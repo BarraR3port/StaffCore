@@ -46,10 +46,8 @@ public class staffcore implements TabExecutor {
             if ( args[0].equalsIgnoreCase( "changelanguage" ) ) {
                 placeholders.add( "EN_NA" );
                 placeholders.add( "ES_CL" );
-            } else if ( args[0].equalsIgnoreCase( "link" ) ) {
-                placeholders.add( utils.getServer( ) );
-            } else if ( args[0].equalsIgnoreCase( "unlink" ) ) {
-                placeholders.add( utils.getServer( ) );
+            } else if ( args[0].equalsIgnoreCase( "link" ) || args[0].equalsIgnoreCase( "unlink" ) ) {
+                placeholders.add( utils.getWebServer( ) );
             }
             return placeholders;
         } else if ( args.length == 3 ) {
@@ -162,6 +160,7 @@ public class staffcore implements TabExecutor {
                     utils.tell( sender , "          &aAuthor: &d" + plugin.getDescription( ).getAuthors( ) );
                     utils.tell( sender , "          &aMysql: &d" + utils.mysqlEnabled( ) );
                     utils.tell( sender , "          &aBungeeCord: &d" + utils.getBoolean( "bungeecord.enabled" ) );
+                    utils.tell( sender , "          &aWeb Linked: &d" + utils.isWebServerLinked( ) );
                     utils.tell( sender , "          &aServer Version: &d" + utils.getServerVersion( ) );
                     utils.tell( sender , "          &aTPS: &d" + ( int ) utils.getTPS( ) );
                     utils.tell( sender , " " );
@@ -171,7 +170,7 @@ public class staffcore implements TabExecutor {
                         utils.tell( sender , "                 &bAuthor: &dBarraR3port" );
                         utils.tell( sender , " " );
                         utils.tell( sender , "                 &aStaff Core Version: &7" + plugin.getDescription( ).getVersion( ) );
-                        (new UpdateChecker( plugin , 82324 )).getLatestVersion( version -> {
+                        new UpdateChecker( plugin ).getLatestVersion( version -> {
                             if ( plugin.getDescription( ).getVersion( ).equalsIgnoreCase( version ) ) {
                                 utils.tell( sender , "&a                 You are using the latest version!" );
                             } else {

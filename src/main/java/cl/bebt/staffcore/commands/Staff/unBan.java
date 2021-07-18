@@ -2,7 +2,7 @@ package cl.bebt.staffcore.commands.Staff;
 
 import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.sql.SQLGetter;
+import cl.bebt.staffcore.sql.Queries.BansQuery;
 import cl.bebt.staffcore.utils.BanPlayer;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.command.Command;
@@ -76,19 +76,12 @@ public class unBan implements TabExecutor {
         return version;
     }
     
-    private int count( ){
-        if ( utils.mysqlEnabled( ) ) {
-            return SQLGetter.getCurrents( "bans" ) + this.plugin.data.getBanId( );
-        } else {
-            return this.plugin.bans.getConfig( ).getInt( "current" ) + this.plugin.bans.getConfig( ).getInt( "count" );
-        }
-    }
     
     private ArrayList < Integer > BanIds( String banned ){
         ArrayList < Integer > BanIDs = new ArrayList <>( );
         if ( utils.mysqlEnabled( ) )
-            return SQLGetter.getBanIds( banned );
-        for ( int i = 0; i < count( ); i++ ) {
+            return BansQuery.getBanIds( banned );
+        for ( int i = 0; i < BanPlayer.currentBans( ); i++ ) {
             try {
                 if ( this.plugin.bans.getConfig( ).getString( "bans." + i + ".name" ).equalsIgnoreCase( banned ) )
                     BanIDs.add( i );

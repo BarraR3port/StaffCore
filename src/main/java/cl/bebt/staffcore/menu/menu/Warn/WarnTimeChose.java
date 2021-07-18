@@ -143,11 +143,11 @@ public class WarnTimeChose extends Menu {
                 inventory.setItem( i , super.bluePanel( ) );
             }
         }
-        inventory.setItem( 20 , defaultTime );
+        inventory.setItem( 20 , specificTime );
         inventory.setItem( 21 , super.redPanel( ) );
         inventory.setItem( 22 , close( ) );
         inventory.setItem( 23 , super.redPanel( ) );
-        inventory.setItem( 24 , specificTime );
+        inventory.setItem( 24 , defaultTime );
         inventory.setItem( 13 , head );
     }
     

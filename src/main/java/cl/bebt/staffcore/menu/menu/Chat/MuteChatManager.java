@@ -49,13 +49,13 @@ public class MuteChatManager extends MenuC {
             p.closeInventory( );
             plugin.chatMuted = true;
             new MuteChatManager( main.getPlayerMenuUtility( p ) , plugin ).open( p );
-            Bukkit.broadcastMessage( utils.chat( utils.getString( "toggle_chat.mute_by_player" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) ) );
+            Bukkit.broadcastMessage( utils.chat( utils.getString( "toggle_chat.global_mute_by_player" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) ) );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "TChatOff" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
             plugin.chatMuted = false;
             new MuteChatManager( main.getPlayerMenuUtility( p ) , plugin ).open( p );
-            Bukkit.broadcastMessage( utils.chat( utils.getString( "toggle_chat.un_mute_by_player" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) ) );
+            Bukkit.broadcastMessage( utils.chat( utils.getString( "toggle_chat.global_un_mute_by_player" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) ) );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );

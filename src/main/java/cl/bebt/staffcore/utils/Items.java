@@ -2,7 +2,7 @@ package cl.bebt.staffcore.utils;
 
 import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.sql.SQLGetter;
+import cl.bebt.staffcore.sql.Queries.ServerQuery;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 
 public class Items {
     
@@ -129,7 +130,6 @@ public class Items {
         double tps = Math.round( utils.getTPS( ) * 100.0D ) / 100.0D;
         int mb = 1024 * 1024;
         Runtime instance = Runtime.getRuntime( );
-        
         if ( tps > 20 ) {
             tps = 20D;
         }
@@ -138,13 +138,15 @@ public class Items {
         lore.add( utils.chat( "&a► &7Ram in use: &a" + (instance.totalMemory( ) - instance.freeMemory( )) / mb ) + "/" + instance.maxMemory( ) / mb );
         lore.add( utils.chat( "&5PUNISHMENTS STATUS:" ) );
         if ( utils.mysqlEnabled( ) ) {
-            lore.add( utils.chat( "&a► &7Current Bans: &a" + SQLGetter.getCurrents( "bans" ) ) );
-            lore.add( utils.chat( "&a► &7Current Reports: &a" + SQLGetter.getCurrents( "reports" ) ) );
-            lore.add( utils.chat( "&a► &7Current Warns: &a" + SQLGetter.getCurrents( "warns" ) ) );
+            HashMap < String, Integer > serverStatus = ServerQuery.getServerStatus( );
+            lore.add( utils.chat( "&a► &7Current Bans: &a" + serverStatus.get( "currentBans" ) ) );
+            lore.add( utils.chat( "&a► &7Current Reports: &a" + serverStatus.get( "currentReports" ) ) );
+            lore.add( utils.chat( "&a► &7Current Warns: &a" + serverStatus.get( "currentWarns" ) ) );
+            
         } else {
-            lore.add( utils.chat( "&a► &7Current Bans: &a" + main.plugin.bans.getConfig( ).getInt( "current" ) ) );
-            lore.add( utils.chat( "&a► &7Current Reports: &a" + main.plugin.reports.getConfig( ).getInt( "current" ) ) );
-            lore.add( utils.chat( "&a► &7Current Warns: &a" + main.plugin.warns.getConfig( ).getInt( "current" ) ) );
+            lore.add( utils.chat( "&a► &7Current Bans: &a" + utils.count( "bans" ) ) );
+            lore.add( utils.chat( "&a► &7Current Report: &a" + utils.count( "reports" ) ) );
+            lore.add( utils.chat( "&a► &7Current Warns: &a" + utils.count( "warns" ) ) );
         }
         metaServer.setLore( lore );
         server.setItemMeta( metaServer );
@@ -217,6 +219,22 @@ public class Items {
     }
     
     public static ItemStack ComingSoon( ){
+        ArrayList < String > lore = new ArrayList <>( );
+        ItemStack item = new ItemStack( Material.getMaterial( utils.getString( "menu_items.coming_soon.material" , "item" , null ) ) );
+        ItemMeta itemMeta = item.getItemMeta( );
+        itemMeta.setDisplayName( utils.chat( utils.getString( "menu_items.coming_soon.name" , "item" , null ) ) );
+        for ( String key : utils.getStringList( "menu_items.coming_soon.lore" , "item" ) ) {
+            lore.add( utils.chat( key ) );
+        }
+        itemMeta.addEnchant( Enchantment.DAMAGE_ALL , 1 , true );
+        itemMeta.addItemFlags( ItemFlag.HIDE_ENCHANTS );
+        itemMeta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "ComingSoon" ) , PersistentDataType.STRING , "ComingSoon" );
+        itemMeta.setLore( lore );
+        item.setItemMeta( itemMeta );
+        return item;
+    }
+    
+    public static ItemStack WebServerStatus( ){
         ArrayList < String > lore = new ArrayList <>( );
         ItemStack item = new ItemStack( Material.getMaterial( utils.getString( "menu_items.coming_soon.material" , "item" , null ) ) );
         ItemMeta itemMeta = item.getItemMeta( );

@@ -64,10 +64,11 @@ public abstract class MenuC implements InventoryHolder {
         inventory = Bukkit.createInventory( this , getSlots( ) , getMenuName( ) );
         
         //grab all the items specified to be used for this menu and add to inventory
-        this.setMenuItemsPlayer( p );
-        //open the inventory for the player
-        playerMenuUtility.getOwner( ).openInventory( inventory );
-        
+        Bukkit.getScheduler( ).runTask( main.plugin , ( ) -> {
+            this.setMenuItemsPlayer( p );
+            //open the inventory for the player
+            playerMenuUtility.getOwner( ).openInventory( inventory );
+        } );
     }
     
     protected ItemStack next( ){

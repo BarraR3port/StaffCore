@@ -23,15 +23,38 @@ public class onChat implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onChatEvent( AsyncPlayerChatEvent e ){
         Player p = e.getPlayer( );
+        if ( !e.getMessage( ).isEmpty( ) ) {
+            e.setMessage( utils.chat( e.getMessage( ) ) );
+        }
+        if ( utils.getBoolean( "discord.type.debug.enabled_debugs.commands" ) ) {
+            ArrayList < String > dc = new ArrayList <>( );
+            dc.add( "**Player:** " + p.getName( ) + ": " + e.getMessage( ) );
+            utils.sendDiscordDebugMsg( p , "⚠ Chat ⚠" , dc );
+        }
         if ( !utils.isOlderVersion( ) ) {
             PersistentDataContainer persistent = p.getPersistentDataContainer( );
-            if ( !(e.getMessage( ).isEmpty( )) ) {
-                e.setMessage( utils.chat( e.getMessage( ) ) );
-            }
             if ( persistent.has( new NamespacedKey( main.plugin , "frozen" ) , PersistentDataType.STRING ) ) {
                 if ( utils.getBoolean( "freeze.cancel_chat_while_frozen" ) ) {
                     utils.tell( p , utils.getString( "freeze.talk_while_frozen" , "lg" , "staff" ) );
                     e.setCancelled( true );
+                }
+            }
+            if ( utils.getBoolean( "staff.staffchat.enable_use_custom" ) ) {
+                if ( e.getMessage( ).substring( 0 , 1 ).equals( utils.getString( "staff.staffchat.custom_character" ) ) ) {
+                    if ( p.hasPermission( "staff.sc" ) ) {
+                        e.setCancelled( true );
+                        String msg = e.getMessage( ).substring( 1 );
+                        for ( Player people : Bukkit.getOnlinePlayers( ) ) {
+                            if ( people.getPersistentDataContainer( ).has( new NamespacedKey( main.plugin , "staff" ) , PersistentDataType.STRING ) || people.hasPermission( "staff.sc" ) ) {
+                                String message = utils.getString( "staff_chat.prefix" , "lg" , null );
+                                message = message.replace( "%sender%" , p.getName( ) );
+                                message = message.replace( "%msg%" , msg );
+                                utils.tell( people , message );
+                            }
+                        }
+                        SendMsg.sendStaffChatMSG( p.getName( ) , msg , utils.getString( "bungeecord.server" ) );
+                        return;
+                    }
                 }
             }
             if ( persistent.has( new NamespacedKey( main.plugin , "staffchat" ) , PersistentDataType.STRING ) ) {
@@ -89,10 +112,6 @@ public class onChat implements Listener {
                 utils.tell( p , utils.getString( "toggle_chat.chat_muted" , "lg" , "sv" ) );
             }
         }
-        if ( utils.getBoolean( "discord.type.debug.enabled_debugs.commands" ) ) {
-            ArrayList < String > dc = new ArrayList <>( );
-            dc.add( "**Player:** " + p.getName( ) + ": " + e.getMessage( ) );
-            utils.sendDiscordDebugMsg( p , "⚠ Chat ⚠" , dc );
-        }
+        
     }
 }

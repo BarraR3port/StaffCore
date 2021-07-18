@@ -4,7 +4,7 @@ import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PaginatedMenu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
-import cl.bebt.staffcore.sql.SQLGetter;
+import cl.bebt.staffcore.sql.Queries.BansQuery;
 import cl.bebt.staffcore.utils.TpPlayers;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.Material;
@@ -14,6 +14,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -42,21 +43,23 @@ public class closedBansMenu extends PaginatedMenu {
         Player p = ( Player ) e.getWhoClicked( );
         HashMap < Integer, Integer > bans = new HashMap <>( );
         int num = 0;
-        for ( int id = 0; id <= count( ); ) {
-            id++;
-            try {
-                if ( utils.mysqlEnabled( ) ) {
-                    if ( SQLGetter.getBanStatus( id ).equals( "closed" ) ) {
+        if ( utils.mysqlEnabled( ) ) {
+            ArrayList < Integer > closedBans = BansQuery.getClosedBans( );
+            for ( Integer closedBan : closedBans ) {
+                num++;
+                bans.put( num , closedBan );
+            }
+        } else {
+            for ( int id = 0; id <= utils.count( "bans" ); ) {
+                id++;
+                try {
+                    if ( plugin.bans.getConfig( ).getString( "bans." + id + ".status" ).equals( "close" ) ) {
                         num++;
                         bans.put( num , id );
                     }
-                    continue;
+                    
+                } catch ( NullPointerException ignored ) {
                 }
-                if ( this.plugin.bans.getConfig( ).getString( "bans." + id + ".status" ).equals( "closed" ) ) {
-                    num++;
-                    bans.put( num , id );
-                }
-            } catch ( NullPointerException ignored ) {
             }
         }
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "closed" ) , PersistentDataType.STRING ) ) {
@@ -95,32 +98,29 @@ public class closedBansMenu extends PaginatedMenu {
         }
     }
     
-    private int count( ){
-        if ( utils.mysqlEnabled( ) )
-            return SQLGetter.getCurrents( "bans" ) + this.plugin.data.getBanId( );
-        return this.plugin.bans.getConfig( ).getInt( "current" ) + this.plugin.bans.getConfig( ).getInt( "count" );
-    }
-    
     public void setMenuItems( ){
-        
         addMenuBorder( );
         HashMap < Integer, Integer > bans = new HashMap <>( );
         int num = 0;
-        for ( int id = 0; id <= count( ); ) {
-            id++;
-            try {
-                if ( utils.mysqlEnabled( ) ) {
-                    if ( SQLGetter.getBanStatus( id ).equals( "closed" ) ) {
+        JSONObject json = new JSONObject( );
+        if ( utils.mysqlEnabled( ) ) {
+            ArrayList < Integer > closedBans = BansQuery.getClosedBans( );
+            for ( Integer closedBan : closedBans ) {
+                num++;
+                bans.put( num , closedBan );
+            }
+            json = BansQuery.getClosedBanInfo( );
+        } else {
+            for ( int id = 0; id <= utils.count( "bans" ); ) {
+                id++;
+                try {
+                    if ( plugin.bans.getConfig( ).getString( "bans." + id + ".status" ).equals( "closed" ) ) {
                         num++;
                         bans.put( num , id );
                     }
-                    continue;
+                    
+                } catch ( NullPointerException ignored ) {
                 }
-                if ( this.plugin.bans.getConfig( ).getString( "bans." + id + ".status" ).equals( "closed" ) ) {
-                    num++;
-                    bans.put( num , id );
-                }
-            } catch ( NullPointerException ignored ) {
             }
         }
         if ( bans != null && !bans.isEmpty( ) )
@@ -130,10 +130,14 @@ public class closedBansMenu extends PaginatedMenu {
                     if ( this.index > bans.size( ) )
                         break;
                     if ( bans.get( this.index ) != null ) {
-                        this.plugin.bans.reloadConfig( );
-                        if ( this.plugin.getConfig( ).getBoolean( "mysql.enabled" ) ) {
+                        if ( utils.mysqlEnabled( ) ) {
+                            String rawBanInfo = json.get( String.valueOf( bans.get( index ) ) ).toString( )
+                                    .replace( "[" , "" )
+                                    .replace( "]" , "" );
+                            
+                            JSONObject banInfo = new JSONObject( rawBanInfo );
+                            String exp = banInfo.getString( "ExpDate" );
                             Date now = new Date( );
-                            String exp = SQLGetter.getBanned( bans.get( this.index ) , "ExpDate" );
                             SimpleDateFormat format = new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" );
                             Date d2 = null;
                             d2 = format.parse( exp );
@@ -144,17 +148,15 @@ public class closedBansMenu extends PaginatedMenu {
                             Seconds -= TimeUnit.HOURS.toSeconds( Hours );
                             long Minutes = TimeUnit.SECONDS.toMinutes( Seconds );
                             Seconds -= TimeUnit.MINUTES.toSeconds( Minutes );
-                            ItemStack p_head = utils.getPlayerHead( SQLGetter.getBanned( bans.get( this.index ) , "Name" ) );
+                            ItemStack p_head = utils.getPlayerHead( banInfo.getString( "Name" ) );
                             ItemMeta meta = p_head.getItemMeta( );
                             ArrayList < String > lore = new ArrayList <>( );
-                            meta.setDisplayName( SQLGetter.getBanned( bans.get( this.index ) , "name" ) );
-                            lore.add( utils.chat( "&7Banned by: " + SQLGetter.getBanned( bans.get( this.index ) , "Baner" ) ) );
-                            lore.add( utils.chat( "&7Reason: &b" + SQLGetter.getBanned( bans.get( this.index ) , "Reason" ) ) );
-                            lore.add( utils.chat( "&7Created date: &c" + SQLGetter.getBanned( bans.get( this.index ) , "Date" ) ) );
-                            lore.add( utils.chat( "&7Expiry date: &c" + SQLGetter.getBanned( bans.get( this.index ) , "ExpDate" ) ) );
-                            if ( SQLGetter.getBanned( bans.get( this.index ) , "Status" ).equals( "closed" ) ) {
-                                lore.add( utils.chat( "&7Status: &cClosed" ) );
-                            } else if ( StaffCoreAPI.isStillBanned( bans.get( this.index ) ) ) {
+                            meta.setDisplayName( banInfo.getString( "Name" ) );
+                            lore.add( utils.chat( "&7Banned by: " + banInfo.getString( "Baner" ) ) );
+                            lore.add( utils.chat( "&7Reason: &b" + banInfo.getString( "Reason" ) ) );
+                            lore.add( utils.chat( "&7Created date: &c" + banInfo.getString( "Date" ) ) );
+                            lore.add( utils.chat( "&7Expiry date: &c" + banInfo.getString( "ExpDate" ) ) );
+                            if ( banInfo.getString( "Status" ).equalsIgnoreCase( "open" ) ) {
                                 lore.add( utils.chat( "&7Status: &aOpen" ) );
                                 if ( Days > 365L ) {
                                     lore.add( utils.chat( "&7Time left: &4PERMANENT" ) );
@@ -164,7 +166,7 @@ public class closedBansMenu extends PaginatedMenu {
                             } else {
                                 lore.add( utils.chat( "&7Status: &cClosed" ) );
                             }
-                            if ( SQLGetter.getBanned( bans.get( this.index ) , "IP_Banned" ).equals( "true" ) ) {
+                            if ( banInfo.getString( "IP_Banned" ).equalsIgnoreCase( "true" ) ) {
                                 lore.add( utils.chat( "&7Ip Banned: &aTrue" ) );
                             } else {
                                 lore.add( utils.chat( "&7Ip Banned: &cFalse" ) );
@@ -178,7 +180,19 @@ public class closedBansMenu extends PaginatedMenu {
                             p_head.setItemMeta( meta );
                             this.inventory.addItem( p_head );
                         } else {
-                            ItemStack p_head = utils.getPlayerHead( this.plugin.bans.getConfig( ).getString( "bans." + bans.get( this.index ) + ".name" ) );
+                            Date now = new Date( );
+                            String exp = plugin.bans.getConfig( ).getString( "bans." + bans.get( index ) + ".expdate" );
+                            SimpleDateFormat format = new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" );
+                            Date d2 = null;
+                            d2 = format.parse( exp );
+                            long remaining = (d2.getTime( ) - now.getTime( )) / 1000L;
+                            long Days = TimeUnit.SECONDS.toDays( remaining );
+                            long Seconds = remaining - TimeUnit.DAYS.toSeconds( Days );
+                            long Hours = TimeUnit.SECONDS.toHours( Seconds );
+                            Seconds -= TimeUnit.HOURS.toSeconds( Hours );
+                            long Minutes = TimeUnit.SECONDS.toMinutes( Seconds );
+                            Seconds -= TimeUnit.MINUTES.toSeconds( Minutes );
+                            ItemStack p_head = utils.getPlayerHead( plugin.bans.getConfig( ).getString( "bans." + bans.get( index ) + ".name" ) );
                             ItemMeta meta = p_head.getItemMeta( );
                             ArrayList < String > lore = new ArrayList <>( );
                             meta.setDisplayName( this.plugin.bans.getConfig( ).get( "bans." + bans.get( this.index ) + ".name" ).toString( ) );
@@ -187,7 +201,17 @@ public class closedBansMenu extends PaginatedMenu {
                             lore.add( utils.chat( "&7Created date: &a" + this.plugin.bans.getConfig( ).getString( "bans." + bans.get( this.index ) + ".date" ) ) );
                             lore.add( utils.chat( "&7Expiry date: &c" + this.plugin.bans.getConfig( ).getString( "bans." + bans.get( this.index ) + ".expdate" ) ) );
                             lore.add( utils.chat( "&7Status: &cClosed" ) );
-                            if ( this.plugin.bans.getConfig( ).getBoolean( "bans." + bans.get( this.index ) + ".IP-Banned" ) ) {
+                            if ( StaffCoreAPI.isStillBanned( bans.get( index ) ) ) {
+                                lore.add( utils.chat( "&7Status: &aOpen" ) );
+                                if ( Days > 365L ) {
+                                    lore.add( utils.chat( "&7Time left: &4PERMANENT" ) );
+                                } else {
+                                    lore.add( utils.chat( "&7Time left: &c" + Days + "d " + Hours + "h " + Minutes + "m " + Seconds + "s" ) );
+                                }
+                            } else {
+                                lore.add( utils.chat( "&7Status: &c" + plugin.bans.getConfig( ).getString( "bans." + bans.get( index ) + ".status" ) ) );
+                            }
+                            if ( plugin.bans.getConfig( ).getBoolean( "bans." + bans.get( index ) + ".IP-Banned" ) ) {
                                 lore.add( utils.chat( "&7Ip Banned: &aTrue" ) );
                             } else {
                                 lore.add( utils.chat( "&7Ip Banned: &cFalse" ) );
@@ -202,8 +226,7 @@ public class closedBansMenu extends PaginatedMenu {
                             this.inventory.addItem( p_head );
                         }
                     }
-                } catch ( ParseException parseException ) {
-                    parseException.printStackTrace( );
+                } catch ( ParseException ignored ) {
                 }
             }
     }

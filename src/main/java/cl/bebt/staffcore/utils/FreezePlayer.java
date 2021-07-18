@@ -2,7 +2,7 @@ package cl.bebt.staffcore.utils;
 
 import cl.bebt.staffcore.MSGChanel.SendMsg;
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.sql.SQLGetter;
+import cl.bebt.staffcore.sql.Queries.FreezeQuery;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -27,7 +27,7 @@ public class FreezePlayer {
             utils.PlayParticle( p , "unfreeze_player" );
             PlayerData.set( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING , "frozen" );
             if ( utils.mysqlEnabled( ) ) {
-                SQLGetter.set( p.getName( ) , "frozen" , "true" );
+                FreezeQuery.enable( p.getName( ) );
             }
             status = utils.getString( "freeze.freeze" , "lg" , null );
             try {
@@ -49,7 +49,7 @@ public class FreezePlayer {
             }
             PlayerData.remove( new NamespacedKey( plugin , "frozen" ) );
             if ( utils.mysqlEnabled( ) ) {
-                SQLGetter.set( p.getName( ) , "frozen" , "false" );
+                FreezeQuery.disable( p.getName( ) );
             }
             status = utils.getString( "freeze.unfreeze" , "lg" , null );
             

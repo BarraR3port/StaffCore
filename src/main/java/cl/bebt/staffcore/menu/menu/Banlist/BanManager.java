@@ -3,8 +3,8 @@ package cl.bebt.staffcore.menu.menu.Banlist;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.Menu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
-import cl.bebt.staffcore.menu.menu.Others.ServerManager;
-import cl.bebt.staffcore.sql.SQLGetter;
+import cl.bebt.staffcore.menu.menu.Staff.ServerManager;
+import cl.bebt.staffcore.sql.Queries.BansQuery;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -56,16 +56,7 @@ public class BanManager extends Menu {
     private int Closed( ){
         int close = 0;
         if ( utils.mysqlEnabled( ) ) {
-            int i = SQLGetter.getCurrents( "bans" ) + this.plugin.data.getBanId( );
-            for ( int j = 0; j <= i; ) {
-                j++;
-                try {
-                    if ( SQLGetter.getBanned( j , "Status" ).equals( "closed" ) )
-                        close++;
-                } catch ( NullPointerException ignored ) {
-                }
-            }
-            return close;
+            return BansQuery.getClosedBans( ).size( );
         }
         int count = this.plugin.bans.getConfig( ).getInt( "current" ) + this.plugin.bans.getConfig( ).getInt( "count" );
         for ( int id = 0; id <= count; ) {
@@ -83,16 +74,7 @@ public class BanManager extends Menu {
     private int Opens( ){
         int opens = 0;
         if ( utils.mysqlEnabled( ) ) {
-            int i = SQLGetter.getCurrents( "bans" ) + this.plugin.data.getBanId( );
-            for ( int j = 0; j <= i + 1; ) {
-                j++;
-                try {
-                    if ( SQLGetter.getBanned( j , "Status" ).equals( "open" ) )
-                        opens++;
-                } catch ( NullPointerException ignored ) {
-                }
-            }
-            return opens;
+            return BansQuery.getOpenBans( ).size( );
         }
         int count = this.plugin.bans.getConfig( ).getInt( "current" ) + this.plugin.bans.getConfig( ).getInt( "count" );
         for ( int id = 0; id <= count + 1; ) {

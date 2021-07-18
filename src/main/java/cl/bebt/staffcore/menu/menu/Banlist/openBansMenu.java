@@ -4,7 +4,7 @@ import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PaginatedMenu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
-import cl.bebt.staffcore.sql.SQLGetter;
+import cl.bebt.staffcore.sql.Queries.BansQuery;
 import cl.bebt.staffcore.utils.TpPlayers;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.NamespacedKey;
@@ -13,13 +13,13 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class openBansMenu extends PaginatedMenu {
@@ -42,21 +42,23 @@ public class openBansMenu extends PaginatedMenu {
         Player p = ( Player ) e.getWhoClicked( );
         HashMap < Integer, Integer > bans = new HashMap <>( );
         int num = 0;
-        for ( int id = 0; id <= count( ); ) {
-            id++;
-            try {
-                if ( utils.mysqlEnabled( ) ) {
-                    if ( SQLGetter.getBanStatus( id ).equals( "open" ) ) {
+        if ( utils.mysqlEnabled( ) ) {
+            ArrayList < Integer > openBans = BansQuery.getOpenBans( );
+            for ( Integer openBan : openBans ) {
+                num++;
+                bans.put( num , openBan );
+            }
+        } else {
+            for ( int id = 0; id <= utils.count( "bans" ); ) {
+                id++;
+                try {
+                    if ( plugin.bans.getConfig( ).getString( "bans." + id + ".status" ).equals( "open" ) ) {
                         num++;
                         bans.put( num , id );
                     }
-                    continue;
+                    
+                } catch ( NullPointerException ignored ) {
                 }
-                if ( Objects.equals( plugin.bans.getConfig( ).getString( "bans." + id + ".status" ) , "open" ) ) {
-                    num++;
-                    bans.put( num , id );
-                }
-            } catch ( NullPointerException ignored ) {
             }
         }
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "open" ) , PersistentDataType.STRING ) ) {
@@ -92,32 +94,29 @@ public class openBansMenu extends PaginatedMenu {
         }
     }
     
-    private int count( ){
-        if ( utils.mysqlEnabled( ) )
-            return SQLGetter.getCurrents( "bans" ) + plugin.data.getBanId( );
-        return plugin.bans.getConfig( ).getInt( "current" ) + plugin.bans.getConfig( ).getInt( "count" );
-    }
-    
     public void setMenuItems( ){
         addMenuBorder( );
         HashMap < Integer, Integer > bans = new HashMap <>( );
         int num = 0;
-        for ( int id = 0; id <= count( ); ) {
-            id++;
-            try {
-                if ( utils.mysqlEnabled( ) ) {
-                    if ( SQLGetter.getBanStatus( id ).equals( "open" ) ) {
-                        num++;
-                        bans.put( num , id );
-                    }
-                } else {
+        JSONObject json = new JSONObject( );
+        if ( utils.mysqlEnabled( ) ) {
+            ArrayList < Integer > openBans = BansQuery.getOpenBans( );
+            for ( Integer openBan : openBans ) {
+                num++;
+                bans.put( num , openBan );
+            }
+            json = BansQuery.getOpenBanInfo( );
+        } else {
+            for ( int id = 0; id <= utils.count( "bans" ); ) {
+                id++;
+                try {
                     if ( plugin.bans.getConfig( ).getString( "bans." + id + ".status" ).equals( "open" ) ) {
                         num++;
                         bans.put( num , id );
                     }
+                    
+                } catch ( NullPointerException ignored ) {
                 }
-            } catch ( NullPointerException ignored ) {
-                ignored.printStackTrace( );
             }
         }
         if ( bans != null && !bans.isEmpty( ) )
@@ -127,10 +126,13 @@ public class openBansMenu extends PaginatedMenu {
                     if ( index > bans.size( ) )
                         break;
                     if ( bans.get( index ) != null ) {
-                        plugin.bans.reloadConfig( );
                         if ( utils.mysqlEnabled( ) ) {
+                            String rawBanInfo = json.get( String.valueOf( bans.get( index ) ) ).toString( )
+                                    .replace( "[" , "" )
+                                    .replace( "]" , "" );
+                            JSONObject banInfo = new JSONObject( rawBanInfo );
+                            String exp = banInfo.getString( "ExpDate" );
                             Date now = new Date( );
-                            String exp = SQLGetter.getBanned( bans.get( index ) , "ExpDate" );
                             SimpleDateFormat format = new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" );
                             Date d2 = null;
                             d2 = format.parse( exp );
@@ -141,15 +143,15 @@ public class openBansMenu extends PaginatedMenu {
                             Seconds -= TimeUnit.HOURS.toSeconds( Hours );
                             long Minutes = TimeUnit.SECONDS.toMinutes( Seconds );
                             Seconds -= TimeUnit.MINUTES.toSeconds( Minutes );
-                            ItemStack p_head = utils.getPlayerHead( SQLGetter.getBanned( bans.get( index ) , "Name" ) );
+                            ItemStack p_head = utils.getPlayerHead( banInfo.getString( "Name" ) );
                             ItemMeta meta = p_head.getItemMeta( );
                             ArrayList < String > lore = new ArrayList <>( );
-                            meta.setDisplayName( SQLGetter.getBanned( bans.get( index ) , "name" ) );
-                            lore.add( utils.chat( "&7Banned by: " + SQLGetter.getBanned( bans.get( index ) , "Baner" ) ) );
-                            lore.add( utils.chat( "&7Reason: &b" + SQLGetter.getBanned( bans.get( index ) , "Reason" ) ) );
-                            lore.add( utils.chat( "&7Created date: &c" + SQLGetter.getBanned( bans.get( index ) , "Date" ) ) );
-                            lore.add( utils.chat( "&7Expiry date: &c" + SQLGetter.getBanned( bans.get( index ) , "ExpDate" ) ) );
-                            if ( StaffCoreAPI.isStillBanned( bans.get( index ) ) ) {
+                            meta.setDisplayName( banInfo.getString( "Name" ) );
+                            lore.add( utils.chat( "&7Banned by: " + banInfo.getString( "Baner" ) ) );
+                            lore.add( utils.chat( "&7Reason: &b" + banInfo.getString( "Reason" ) ) );
+                            lore.add( utils.chat( "&7Created date: &c" + banInfo.getString( "Date" ) ) );
+                            lore.add( utils.chat( "&7Expiry date: &c" + banInfo.getString( "ExpDate" ) ) );
+                            if ( banInfo.getString( "Status" ).equalsIgnoreCase( "open" ) ) {
                                 lore.add( utils.chat( "&7Status: &aOpen" ) );
                                 if ( Days > 365L ) {
                                     lore.add( utils.chat( "&7Time left: &4PERMANENT" ) );
@@ -159,7 +161,7 @@ public class openBansMenu extends PaginatedMenu {
                             } else {
                                 lore.add( utils.chat( "&7Status: &cClosed" ) );
                             }
-                            if ( SQLGetter.getBanned( bans.get( index ) , "IP_Banned" ).equals( "true" ) ) {
+                            if ( banInfo.getString( "IP_Banned" ).equalsIgnoreCase( "true" ) ) {
                                 lore.add( utils.chat( "&7Ip Banned: &aTrue" ) );
                             } else {
                                 lore.add( utils.chat( "&7Ip Banned: &cFalse" ) );

@@ -1,20 +1,27 @@
 package cl.bebt.staffcore.utils;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.sql.SQLGetter;
-import org.bukkit.*;
+import cl.bebt.staffcore.sql.Queries.*;
+import cl.bebt.staffcore.utils.UUID.UUIDGetter;
+import dev.dbassett.skullcreator.SkullCreator;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.json.JSONObject;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class utils {
     
@@ -36,6 +43,14 @@ public class utils {
     
     public static void tell( Player player , String message ){
         player.sendMessage( chat( message ) );
+    }
+    
+    public static void tellHover( Player p , String msg , String hover , String link ){
+        ComponentBuilder cb = new ComponentBuilder( chat( hover ) );
+        TextComponent dis = new TextComponent( chat( msg ) );
+        dis.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT , cb.create( ) ) );
+        dis.setClickEvent( new ClickEvent( ClickEvent.Action.OPEN_URL , link ) );
+        p.spigot( ).sendMessage( dis );
     }
     
     /**
@@ -173,17 +188,48 @@ public class utils {
     }
     
     public static ItemStack getPlayerHead( String p ){
-        boolean isNewVersion = Arrays.stream( Material.values( ) )
-                .map( Material::name ).collect( Collectors.toList( ) ).contains( "PLAYER_HEAD" );
-        Material type = Material.matchMaterial( isNewVersion ? "PLAYER_HEAD" : "SKULL_ITEM" );
-        ItemStack item = new ItemStack( type , 1 );
-        if ( !(isNewVersion) ) {
-            item.setDurability( ( short ) 3 );
+        String b64 = "";
+        if ( main.playerSkins.containsKey( p ) ) {
+            b64 = main.playerSkins.get( p );
+        } else {
+            b64 = Http.getHead( "https://staffcore.glitch.me/api/head/" + p , p );
         }
-        SkullMeta meta = ( SkullMeta ) item.getItemMeta( );
-        meta.setOwner( p );
-        item.setItemMeta( meta );
-        return item;
+        if ( b64.length( ) != 0 ) {
+            return SkullCreator.itemFromBase64( b64 );
+        } else {
+            if ( mysqlEnabled( ) ) {
+                return SkullCreator.itemFromUuid( UUIDGetter.getUUID( p ) );
+            } else {
+                return SkullCreator.itemFromName( p );
+            }
+        }
+    }
+    
+    public static HashMap < String, String > getSavedSkins( ){
+        if ( mysqlEnabled( ) ) {
+            return ServerQuery.getSavedSkins( );
+        } else {
+            //TODO CREATE AND UPDATE THE ALTS TO NON MYSQL SERVERS
+            return new HashMap <>( );
+        }
+    }
+    
+    public static ItemStack getDecorationHead( String type ){
+        switch (type) {
+            case "next":
+                return SkullCreator.itemFromBase64( "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTliZjMyOTJlMTI2YTEwNWI1NGViYTcxM2FhMWIxNTJkNTQxYTFkODkzODgyOWM1NjM2NGQxNzhlZDIyYmYifX19=" );
+            case "previous":
+                return SkullCreator.itemFromBase64( "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmQ2OWUwNmU1ZGFkZmQ4NGU1ZjNkMWMyMTA2M2YyNTUzYjJmYTk0NWVlMWQ0ZDcxNTJmZGM1NDI1YmMxMmE5In19fQ===" );
+            case "check":
+                return SkullCreator.itemFromBase64( "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTMwZjQ1MzdkMjE0ZDM4NjY2ZTYzMDRlOWM4NTFjZDZmN2U0MWEwZWI3YzI1MDQ5YzlkMjJjOGM1ZjY1NDVkZiJ9fX0==" );
+            case "delete":
+                return SkullCreator.itemFromBase64( "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWE2Nzg3YmEzMjU2NGU3YzJmM2EwY2U2NDQ5OGVjYmIyM2I4OTg0NWU1YTY2YjVjZWM3NzM2ZjcyOWVkMzcifX19=" );
+            case "cancel":
+                return SkullCreator.itemFromBase64( "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWQwYTE0MjA4NDRjZTIzN2E0NWQyZTdlNTQ0ZDEzNTg0MWU5ZjgyZDA5ZTIwMzI2N2NmODg5NmM4NTE1ZTM2MCJ9fX0==" );
+            default:
+                return SkullCreator.itemFromBase64( "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWE2Nzg3YmEzMjU2NGU3YzJmM2EwY2U2NDQ5OGVjYmIyM2I4OTg0NWU1YTY2YjVjZWM3NzM2ZjcyOWVkMzcifX19" );
+        }
+        
     }
     
     public static void PlaySound( Player p , String path ){
@@ -255,7 +301,7 @@ public class utils {
     
     public static boolean isRegistered( String p ){
         if ( mysqlEnabled( ) ) {
-            return SQLGetter.getPlayersNames( ).contains( p );
+            return AltsQuery.getPlayersNames( ).contains( p );
         } else {
             return Objects.requireNonNull( plugin.alts.getConfig( ).getConfigurationSection( "alts" ) ).contains( p );
         }
@@ -271,11 +317,13 @@ public class utils {
     
     public static int getPing( Player p ){
         try {
+            if ( getServerVersion( ).substring( 1 , 5 ).equalsIgnoreCase( "1_17" ) ) {
+                return p.getPing( );
+            }
             Object entityPlayer = p.getClass( ).getMethod( "getHandle" ).invoke( p );
-            int ping = ( int ) entityPlayer.getClass( ).getField( "ping" ).get( entityPlayer );
-            return ping;
+            return ( int ) entityPlayer.getClass( ).getField( "ping" ).get( entityPlayer );
+            
         } catch ( IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | NoSuchFieldException e ) {
-            e.printStackTrace( );
             return 0;
         }
     }
@@ -301,22 +349,11 @@ public class utils {
         return null;
     }
     
-    public static int currentWarns( ){
-        int current = 0;
-        try {
-            ConfigurationSection inventorySection = main.plugin.warns.getConfig( ).getConfigurationSection( "warns" );
-            for ( String key : inventorySection.getKeys( false ) ) {
-                current++;
-            }
-        } catch ( NullPointerException ignored ) {
-        }
-        return current;
-    }
     
     public static int currentPlayerWarns( String warned ){
         int warnings = 0;
         if ( mysqlEnabled( ) ) {
-            return SQLGetter.getCurrentWarns( warned );
+            return WarnsQuery.getPlayerWarns( warned ).size( );
         } else {
             main.plugin.warns.reloadConfig( );
             for ( int i = 1; i <= plugin.warns.getConfig( ).getInt( "count" ); i++ ) {
@@ -334,7 +371,7 @@ public class utils {
     public static int currentPlayerReports( String reported ){
         int reports = 0;
         if ( mysqlEnabled( ) ) {
-            return SQLGetter.getCurrentReports( reported );
+            return ReportsQuery.getCurrentReports( reported );
         } else {
             main.plugin.reports.reloadConfig( );
             for ( int i = 1; i <= plugin.reports.getConfig( ).getInt( "count" ); i++ ) {
@@ -360,7 +397,7 @@ public class utils {
     public static ArrayList < String > getUsers( ){
         ArrayList < String > Users = new ArrayList <>( );
         if ( mysqlEnabled( ) ) {
-            Users.addAll( SQLGetter.getPlayersNames( ) );
+            Users.addAll( AltsQuery.getPlayersNames( ) );
         } else {
             try {
                 ConfigurationSection inventorySection = plugin.alts.getConfig( ).getConfigurationSection( "alts" );
@@ -374,7 +411,7 @@ public class utils {
     public static ArrayList < String > getWarnedPlayers( ){
         ArrayList < String > Users = new ArrayList <>( );
         if ( mysqlEnabled( ) ) {
-            Users.addAll( SQLGetter.getWarnedPlayers( ) );
+            Users.addAll( WarnsQuery.getWarnedPlayers( ) );
         } else {
             ConfigurationSection inventorySection = plugin.warns.getConfig( ).getConfigurationSection( "warns" );
             try {
@@ -450,6 +487,10 @@ public class utils {
     }
     
     public static String getServer( ){
+        return plugin.getConfig( ).getString( "bungeecord.server" );
+    }
+    
+    public static String getWebServer( ){
         return plugin.getConfig( ).getString( "server_name" );
     }
     
@@ -481,7 +522,7 @@ public class utils {
         String convertedString2 = Base64.getEncoder( ).withoutPadding( ).encodeToString( convertedString1.getBytes( ) );
         String convertedString3 = Base64.getEncoder( ).withoutPadding( ).encodeToString( convertedString2.getBytes( ) );
         
-        Http.get( "http://staffcore.glitch.me/api/" + convertedString3 , p );
+        Http.getLatestVersion( "http://staffcore.glitch.me/api/" + convertedString3 , p , server );
     }
     
     public static void unlinkWeb( Player p , String server , String webPlayerName , String webPassword ){
@@ -491,7 +532,6 @@ public class utils {
         String webPasswordEncoded = Base64.getEncoder( ).withoutPadding( ).encodeToString( webPassword.getBytes( ) );
         String type = Base64.getEncoder( ).withoutPadding( ).encodeToString( "unlink".getBytes( ) );
         
-        
         jsonMessage.put( "type" , type );
         jsonMessage.put( "owner" , playerName );
         jsonMessage.put( "server" , serverEncoded );
@@ -500,7 +540,65 @@ public class utils {
         String convertedString2 = Base64.getEncoder( ).withoutPadding( ).encodeToString( convertedString1.getBytes( ) );
         String convertedString3 = Base64.getEncoder( ).withoutPadding( ).encodeToString( convertedString2.getBytes( ) );
         
-        Http.get( "http://localhost:82/api/" + convertedString3 , p );
+        Http.getLatestVersion( "http://staffcore.glitch.me/api/" + convertedString3 , p , server );
+    }
+    
+    public static Boolean isWebServerLinked( ){
+        String server = plugin.getConfig( ).getString( "server_name" );
+        JSONObject jsonMessage = new JSONObject( );
+        String serverEncoded = Base64.getEncoder( ).withoutPadding( ).encodeToString( server.getBytes( ) );
+        String type = Base64.getEncoder( ).withoutPadding( ).encodeToString( "islinked".getBytes( ) );
+        
+        jsonMessage.put( "type" , type );
+        jsonMessage.put( "server" , serverEncoded );
+        String convertedString1 = Base64.getEncoder( ).withoutPadding( ).encodeToString( jsonMessage.toString( ).getBytes( ) );
+        String convertedString2 = Base64.getEncoder( ).withoutPadding( ).encodeToString( convertedString1.getBytes( ) );
+        String convertedString3 = Base64.getEncoder( ).withoutPadding( ).encodeToString( convertedString2.getBytes( ) );
+        
+        return Http.getBoolean( "http://staffcore.glitch.me/api/" + convertedString3 , "is_Registered" );
+    }
+    
+    public static Integer count( String type ){
+        int count = 0;
+        switch (type) {
+            case "bans": {
+                try {
+                    if ( utils.mysqlEnabled( ) ) {
+                        return BansQuery.getCurrentBans( );
+                    } else {
+                        ConfigurationSection inventorySection = main.plugin.bans.getConfig( ).getConfigurationSection( "bans" );
+                        return inventorySection.getKeys( false ).size( );
+                    }
+                } catch ( NullPointerException ignored ) {
+                    return count;
+                }
+            }
+            case "reports": {
+                try {
+                    if ( utils.mysqlEnabled( ) ) {
+                        return ReportsQuery.getCurrentReports( );
+                    } else {
+                        ConfigurationSection inventorySection = main.plugin.reports.getConfig( ).getConfigurationSection( "reports" );
+                        return inventorySection.getKeys( false ).size( );
+                    }
+                } catch ( NullPointerException ignored ) {
+                    return count;
+                }
+            }
+            case "warns": {
+                try {
+                    if ( utils.mysqlEnabled( ) ) {
+                        return WarnsQuery.getCurrentWarns( );
+                    } else {
+                        ConfigurationSection inventorySection = main.plugin.warns.getConfig( ).getConfigurationSection( "warns" );
+                        return inventorySection.getKeys( false ).size( );
+                    }
+                } catch ( NullPointerException ignored ) {
+                    return count;
+                }
+            }
+        }
+        return count;
     }
     
 }

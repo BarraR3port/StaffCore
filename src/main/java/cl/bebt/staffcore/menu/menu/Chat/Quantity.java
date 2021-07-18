@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -120,83 +121,31 @@ public class Quantity extends PaginatedMenu {
                 inventory.setItem( i , super.bluePanel( ) );
             }
         }
-        inventory.setItem( 20 , seconds( ) );
-        inventory.setItem( 21 , minutes( ) );
         inventory.setItem( 22 , close( ) );
-        inventory.setItem( 23 , hours( ) );
-        inventory.setItem( 24 , days( ) );
-    }
-    
-    public ItemStack seconds( ){
-        long time = player.getPersistentDataContainer( ).get( new NamespacedKey( plugin , "amount" ) , PersistentDataType.INTEGER );
-        ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.getMaterial( utils.getString( "quantity.seconds.item" , "item" , null ) ) );
-        ItemMeta meta = item.getItemMeta( );
-        for ( String key : utils.getStringList( "quantity.seconds.lore" , "item" ) ) {
-            key = key.replace( "%player%" , muted.getName( ) );
-            key = key.replace( "%seconds%" , String.valueOf( time ) );
-            key = key.replace( "%type%" , "Muted" );
-            lore.add( utils.chat( key ) );
+        ConfigurationSection inventorySection = plugin.items.getConfig( ).getConfigurationSection( "time" );
+        for ( String key : inventorySection.getKeys( false ) ) {
+            long time = player.getPersistentDataContainer( ).get( new NamespacedKey( plugin , "amount" ) , PersistentDataType.INTEGER );
+            String name = utils.getString( "time." + key + ".name" , "item" , null );
+            String material = utils.getString( "time." + key + ".material" , "item" , null );
+            ArrayList < String > lore = new ArrayList <>( );
+            ItemStack item = new ItemStack( Material.valueOf( material ) );
+            ItemMeta meta = item.getItemMeta( );
+            for ( String key2 : utils.getStringList( "time." + key + ".lore" , "item" ) ) {
+                key2 = key2.replace( "%punish%" , "Mute" );
+                key = key.replace( "%time%" , String.valueOf( time ) );
+                key2 = key2.replace( "%player%" , muted.getName( ) );
+                lore.add( utils.chat( key2 ) );
+            }
+            meta.setLore( lore );
+            meta.setDisplayName( utils.chat( name ) );
+            meta.setLore( lore );
+            meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , key ) , PersistentDataType.STRING , key );
+            item.setItemMeta( meta );
+            inventory.addItem( item );
         }
-        meta.setLore( lore );
-        meta.setDisplayName( utils.chat( utils.getString( "quantity.seconds.name" , "item" , null ).replace( "%type%" , "Muted" ) ) );
-        meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "seconds" ) , PersistentDataType.STRING , "seconds" );
-        item.setItemMeta( meta );
-        return item;
-    }
-    
-    public ItemStack minutes( ){
-        long time = player.getPersistentDataContainer( ).get( new NamespacedKey( plugin , "amount" ) , PersistentDataType.INTEGER );
-        ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.getMaterial( utils.getString( "quantity.minutes.item" , "item" , null ) ) );
-        ItemMeta meta = item.getItemMeta( );
-        for ( String key : utils.getStringList( "quantity.minutes.lore" , "item" ) ) {
-            key = key.replace( "%player%" , muted.getName( ) );
-            key = key.replace( "%minutes%" , String.valueOf( time ) );
-            key = key.replace( "%type%" , "Muted" );
-            lore.add( utils.chat( key ) );
+        if ( inventory.getItem( 20 ) == null ) {
+            utils.tell( player , "&0[&5Warning&0] &7Try to delete the StaffCore/items.yml file and restart the server" );
         }
-        meta.setLore( lore );
-        meta.setDisplayName( utils.chat( utils.getString( "quantity.minutes.name" , "item" , null ).replace( "%type%" , "Muted" ) ) );
-        meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "minutes" ) , PersistentDataType.STRING , "minutes" );
-        item.setItemMeta( meta );
-        return item;
-    }
-    
-    public ItemStack hours( ){
-        long time = player.getPersistentDataContainer( ).get( new NamespacedKey( plugin , "amount" ) , PersistentDataType.INTEGER );
-        ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.getMaterial( utils.getString( "quantity.hours.item" , "item" , null ) ) );
-        ItemMeta meta = item.getItemMeta( );
-        for ( String key : utils.getStringList( "quantity.hours.lore" , "item" ) ) {
-            key = key.replace( "%player%" , muted.getName( ) );
-            key = key.replace( "%hours%" , String.valueOf( time ) );
-            key = key.replace( "%type%" , "Muted" );
-            lore.add( utils.chat( key ) );
-        }
-        meta.setLore( lore );
-        meta.setDisplayName( utils.chat( utils.getString( "quantity.hours.name" , "item" , null ).replace( "%type%" , "Muted" ) ) );
-        meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "hours" ) , PersistentDataType.STRING , "hours" );
-        item.setItemMeta( meta );
-        return item;
-    }
-    
-    public ItemStack days( ){
-        long time = player.getPersistentDataContainer( ).get( new NamespacedKey( plugin , "amount" ) , PersistentDataType.INTEGER );
-        ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.getMaterial( utils.getString( "quantity.days.item" , "item" , null ) ) );
-        ItemMeta meta = item.getItemMeta( );
-        for ( String key : utils.getStringList( "quantity.days.lore" , "item" ) ) {
-            key = key.replace( "%player%" , muted.getName( ) );
-            key = key.replace( "%days%" , String.valueOf( time ) );
-            key = key.replace( "%type%" , "Muted" );
-            lore.add( utils.chat( key ) );
-        }
-        meta.setLore( lore );
-        meta.setDisplayName( utils.chat( utils.getString( "quantity.days.name" , "item" , null ).replace( "%type%" , "Muted" ) ) );
-        meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "days" ) , PersistentDataType.STRING , "days" );
-        item.setItemMeta( meta );
-        return item;
     }
     
 }

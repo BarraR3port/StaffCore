@@ -134,7 +134,7 @@ public class SendMsg {
             out.writeUTF( sender );
             out.writeUTF( target );
             out.writeUTF( reason );
-            out.writeLong( amount.longValue( ) );
+            out.writeLong( amount );
             out.writeUTF( time );
             out.writeUTF( ExpDate );
             out.writeUTF( date );
@@ -189,7 +189,7 @@ public class SendMsg {
             out.writeUTF( "Freeze" );
             out.writeUTF( sender );
             out.writeUTF( target );
-            out.writeBoolean( bool.booleanValue( ) );
+            out.writeBoolean( bool );
             out.writeUTF( server );
             Bukkit.getServer( ).sendPluginMessage( plugin , "sc:alerts" , out.toByteArray( ) );
         }
@@ -198,7 +198,7 @@ public class SendMsg {
         dc.add( "**Frozen:** " + target );
         dc.add( "**Set to:** " + bool );
         dc.add( "**Server:** " + server );
-        utils.sendDiscordAlertMsg( "⚠ Freeze Alert ⚠" , dc );
+        utils.sendDiscordAlertMsg( "⚠ Freezeuery Alert ⚠" , dc );
     }
     
     public static void sendWipeAlert( String sender , String target , int bans , int reports , int warns , String server ){
@@ -221,7 +221,7 @@ public class SendMsg {
         dc.add( "**Wiped:** " + target );
         dc.add( "**Bans Wiped:** " + bans );
         dc.add( "**Reports Wiped:** " + reports );
-        dc.add( "**Warns Wiped:** " + warns );
+        dc.add( "**WarnsQuery Wiped:** " + warns );
         dc.add( "**Server:** " + server );
         utils.sendDiscordAlertMsg( "⚠ Wipe Alert ⚠" , dc );
     }

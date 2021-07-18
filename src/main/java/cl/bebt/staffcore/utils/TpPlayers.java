@@ -1,6 +1,5 @@
 package cl.bebt.staffcore.utils;
 
-import cl.bebt.staffcore.main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -10,7 +9,6 @@ import static java.lang.Math.round;
 
 public class TpPlayers {
     
-    private static final main plugin = main.plugin;
     
     public static void tpToPlayer( Player sender , String player ){
         if ( utils.isPlayer( player ) ) {
@@ -19,6 +17,9 @@ public class TpPlayers {
                 if ( !sender.equals( target ) ) {
                     sender.teleport( target.getLocation( ) );
                     utils.tell( sender , utils.getString( "tp.player_to_player" , "lg" , "sv" ).replace( "%target%" , target.getName( ) ) );
+                    if ( utils.getBoolean( "alerts.tp_to_them" ) ) {
+                        utils.tell( target , utils.getString( "tp.tp_to_them" , "lg" , "sv" ).replace( "%sender%" , player ) );
+                    }
                 } else {
                     utils.tell( sender , utils.getString( "tp.to_yourself" , "lg" , "sv" ) );
                 }

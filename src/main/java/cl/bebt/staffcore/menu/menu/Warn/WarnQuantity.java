@@ -7,6 +7,7 @@ import cl.bebt.staffcore.utils.WarnPlayer;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -82,6 +83,7 @@ public class WarnQuantity extends PaginatedMenu {
     
     @Override
     public void setMenuItems( ){
+        Player p = playerMenuUtility.getOwner( );
         for ( int i = 0; i < 10; i++ ) {
             if ( inventory.getItem( i ) == null ) {
                 inventory.setItem( i , super.bluePanel( ) );
@@ -108,59 +110,31 @@ public class WarnQuantity extends PaginatedMenu {
                 inventory.setItem( i , super.bluePanel( ) );
             }
         }
-        inventory.setItem( 20 , seconds( ) );
-        inventory.setItem( 21 , minutes( ) );
         inventory.setItem( 22 , close( ) );
-        inventory.setItem( 23 , hours( ) );
-        inventory.setItem( 24 , days( ) );
+        ConfigurationSection inventorySection = plugin.items.getConfig( ).getConfigurationSection( "time" );
+        for ( String key : inventorySection.getKeys( false ) ) {
+            String name = utils.getString( "time." + key + ".name" , "item" , null );
+            String material = utils.getString( "time." + key + ".material" , "item" , null );
+            ArrayList < String > lore = new ArrayList <>( );
+            ItemStack item = new ItemStack( Material.valueOf( material ) );
+            ItemMeta meta = item.getItemMeta( );
+            for ( String key2 : utils.getStringList( "time." + key + ".lore" , "item" ) ) {
+                key2 = key2.replace( "%punish%" , "Warn" );
+                key2 = key2.replace( "%time%" , String.valueOf( time ) );
+                key2 = key2.replace( "%player%" , warned );
+                lore.add( utils.chat( key2 ) );
+            }
+            meta.setLore( lore );
+            meta.setDisplayName( utils.chat( name ) );
+            meta.setLore( lore );
+            meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , key ) , PersistentDataType.STRING , key );
+            item.setItemMeta( meta );
+            inventory.addItem( item );
+        }
+        if ( inventory.getItem( 20 ) == null ) {
+            utils.tell( p , "&0[&5Warning&0] &7Try to delete the StaffCore/items.yml file and restart the server" );
+        }
     }
     
-    public ItemStack seconds( ){
-        ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.MAGENTA_CONCRETE );
-        ItemMeta meta = item.getItemMeta( );
-        lore.add( utils.chat( "&cMute &a" + warned + " &c for &a" + time + " &cSeconds." ) );
-        meta.setLore( lore );
-        meta.setDisplayName( utils.chat( "&4SECONDS" ) );
-        meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "seconds" ) , PersistentDataType.STRING , "seconds" );
-        item.setItemMeta( meta );
-        return item;
-    }
-    
-    public ItemStack minutes( ){
-        ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.PURPLE_CONCRETE );
-        ItemMeta meta = item.getItemMeta( );
-        lore.add( utils.chat( "&cMute &a" + warned + " &c for &a" + time + " &cMinutes." ) );
-        meta.setLore( lore );
-        meta.setDisplayName( utils.chat( "&4MINUTES" ) );
-        meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "minutes" ) , PersistentDataType.STRING , "minutes" );
-        item.setItemMeta( meta );
-        return item;
-    }
-    
-    public ItemStack hours( ){
-        ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.BLUE_CONCRETE );
-        ItemMeta meta = item.getItemMeta( );
-        lore.add( utils.chat( "&cMute &a" + warned + " &c for &a" + time + " &cHours." ) );
-        meta.setLore( lore );
-        meta.setDisplayName( utils.chat( "&4HOURS" ) );
-        meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "hours" ) , PersistentDataType.STRING , "hours" );
-        item.setItemMeta( meta );
-        return item;
-    }
-    
-    public ItemStack days( ){
-        ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.RED_CONCRETE );
-        ItemMeta meta = item.getItemMeta( );
-        lore.add( utils.chat( "&cMute &a" + warned + " &c for &a" + time + " &cDays." ) );
-        meta.setLore( lore );
-        meta.setDisplayName( utils.chat( "&4DAYS" ) );
-        meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "days" ) , PersistentDataType.STRING , "days" );
-        item.setItemMeta( meta );
-        return item;
-    }
     
 }

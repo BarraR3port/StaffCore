@@ -3,7 +3,7 @@
 #   | (___ \_| `| |-'  ,--.    _| |_    _| |_      ______    / .'   \_|   .--.    _ .--.   .---.          #
 #    _.____`.   | |   `'_\ :  '-| |-'  '-| |-'    |______|   | |        / .'`\ \ [ `/'`\] / /__\\         #
 #   | \____) |  | |,  // | |,   | |      | |                 \ `.___.'\ | \__. |  | |     | \__.,         #
-#   \______.'   \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.4.3 #
+#   \______.'   \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.4.4 #
 #                                                                                                         #
 #                                                                               By BarraR3port : [ALERTS] #
 
@@ -153,14 +153,14 @@ warns:
 
 # ------------> WIPE <----------
 wipe:
-  wipe_msg: # Placeholders: %wiper% | %wiped% | %bans% | %reports% | %warns%
+  wipe_msg: # Placeholders: %wiper% | %wiped% | %Bans% | %reports% | %warns%
     - " "
     - "                    &6⚠  &5Wipe Alerts &6⚠"
     - " "
     - "        &3The player &9%wiped% &3was &aWiped."
     - " "
     - "           &a► &aWiped by: &9%wiper%"
-    - "           &a► &aBans wiped: %bans%"
+    - "           &a► &aBans wiped: %Bans%"
     - "           &a► &aReports wiped: %reports%"
     - "           &a► &aWarns wiped: %warns%"
     - " "

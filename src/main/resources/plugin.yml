@@ -1,5 +1,5 @@
 name: StaffCore
-version: 4.4.3
+version: 4.4.4
 main: cl.bebt.staffcore.main
 author: BarraR3port
 prefix: StaffCore
@@ -9,13 +9,13 @@ commands:
   staffcore:
     description: Return all the Vanished, Flying and freeze players or the plugin version.
   clearchat:
-    description: Clear your or Others chat, also you can clean the cole server chat!
+    description: Clear your or Staff chat, also you can clean the cole server chat!
     aliases: [ cc ]
   fly:
     description: Allows you to fly
     aliases: [ volar ]
   freeze:
-    description: Freeze players
+    description: FreezeQuery players
     aliases: [ frozen ]
   gmc:
     description: Set your gamemode to creative
@@ -39,7 +39,7 @@ commands:
   tpall:
     description: Teleport all the player to a target
   vanish:
-    description: Vanish players
+    description: VanishQuery players
     aliases: [ v,invisible,hide ]
   day:
     description: Change the time to day
@@ -76,17 +76,23 @@ commands:
     aliases: [ enderothers ]
   mute:
     description: Mute players for a period of time
+    aliases: [ silence ]
+  mutechat:
+    description: Mute the global chat
     aliases: [ togglechat ]
   unmute:
     description: Un mute players
   ban:
     description: Open a Ban gui
-    aliases: [ ban-ip,punish ]
+    aliases: [ ban-ip, punish, sanction ]
+  bans:
+    description: Open a Gui with all the bans of a player
+    aliases: [ punishments, sanctions ]
   unban:
     description: Unban Players
     aliases: [ pardon ]
   alts:
-    description: Check the player Alts
+    description: Check the player AltsQuery
     aliases: [ checkalts ]
   wipe:
     description: Wipes players data

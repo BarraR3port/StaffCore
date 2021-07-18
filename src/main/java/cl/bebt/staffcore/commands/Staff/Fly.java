@@ -30,11 +30,11 @@ public class Fly implements CommandExecutor {
                         PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
                         if ( PlayerData.has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ) {
                             PlayerData.remove( new NamespacedKey( plugin , "flying" ) );
-                            SetFly.SetFly( p , false );
+                            new SetFly( p , false );
                             utils.tell( sender , utils.getString( "fly.disabled" , "lg" , "staff" ) );
                         } else if ( !(PlayerData.has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING )) ) {
                             PlayerData.set( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING , "flying" );
-                            SetFly.SetFly( p , true );
+                            new SetFly( p , true );
                             utils.tell( sender , utils.getString( "fly.enabled" , "lg" , "staff" ) );
                         }
                     } else {
@@ -50,11 +50,11 @@ public class Fly implements CommandExecutor {
                     if ( p.hasPermission( "staffcore.fly" ) ) {
                         if ( PlayerData.has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ) {
                             PlayerData.remove( new NamespacedKey( plugin , "flying" ) );
-                            SetFly.SetFly( p , false );
+                            new SetFly( p , false );
                             utils.tell( sender , utils.getString( "fly.disabled" , "lg" , "staff" ) );
                         } else if ( !(PlayerData.has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING )) ) {
                             PlayerData.set( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING , "flying" );
-                            SetFly.SetFly( p , true );
+                            new SetFly( p , true );
                             utils.tell( sender , utils.getString( "fly.enabled" , "lg" , "staff" ) );
                         }
                     } else {
@@ -67,12 +67,12 @@ public class Fly implements CommandExecutor {
                         if ( sender.hasPermission( "staffcore.fly" ) ) {
                             if ( PlayerData.has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ) {
                                 PlayerData.remove( new NamespacedKey( plugin , "flying" ) );
-                                SetFly.SetFly( p , false );
+                                new SetFly( p , false );
                                 utils.tell( sender , utils.getString( "fly.disabled_to" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
                                 utils.tell( p , utils.getString( "fly.disabled" , "lg" , "staff" ) );
                             } else if ( !(PlayerData.has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING )) ) {
                                 PlayerData.set( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING , "flying" );
-                                SetFly.SetFly( p , true );
+                                new SetFly( p , true );
                                 utils.tell( sender , utils.getString( "fly.enabled_to" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
                                 utils.tell( p , utils.getString( "fly.enabled" , "lg" , "staff" ) );
                             }

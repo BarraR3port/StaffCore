@@ -3,7 +3,7 @@
 #   | (___ \_| `| |-'  ,--.    _| |_    _| |_      ______    / .'   \_|   .--.    _ .--.   .---.          #
 #    _.____`.   | |   `'_\ :  '-| |-'  '-| |-'    |______|   | |        / .'`\ \ [ `/'`\] / /__\\         #
 #   | \____) |  | |,  // | |,   | |      | |                 \ `.___.'\ | \__. |  | |     | \__.,         #
-#   \______.'   \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.4.3 #
+#   \______.'   \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.4.4 #
 #                                                                                                         #
 #                                                                                By BarraR3port : [MENUS] #
 
@@ -24,6 +24,10 @@ banlist:
     name: "&cBan manager"
   edit_ban:
     name: "&cUn Ban or Close the ban?"
+bans:
+  others: "&9%player%'s &cWarnings"
+  owns: "&cYour Warnings"
+  name: "&cWarns"
 chat:
   amount_chat:
     name: "&cChose the amount:"
@@ -54,8 +58,8 @@ inventory:
   open_chest:
     name: "&7Chest"
 reports:
-  chose:
-    name: "&cSelect Delete or Close report"
+  edit:
+    name: "&cEdit the Report"
   closed:
     name: "&cClosed Reports"
   open:
@@ -71,8 +75,8 @@ warns:
     name: "&cWarn &9%player%"
   time:
     name: "&cChose the time"
-  chose:
-    name: "&cChose Un Warn or Delete Warn"
+  edit:
+    name: "&cEdit the Warn"
   warnings:
     others: "&9%player%'s &cWarnings"
     owns: "&cYour Warnings"

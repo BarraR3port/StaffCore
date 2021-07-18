@@ -1,11 +1,13 @@
-package cl.bebt.staffcore.menu.menu.Others;
+package cl.bebt.staffcore.menu.menu.Staff;
 
 import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.MSGChanel.SendMsg;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PaginatedMenu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
-import cl.bebt.staffcore.sql.SQLGetter;
+import cl.bebt.staffcore.sql.Queries.StaffChatQuery;
+import cl.bebt.staffcore.sql.Queries.StaffQuery;
+import cl.bebt.staffcore.sql.Queries.VanishQuery;
 import cl.bebt.staffcore.utils.TpPlayers;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.Bukkit;
@@ -103,17 +105,17 @@ public class StaffListBungeeGui extends PaginatedMenu {
                     ArrayList < String > lore = new ArrayList <>( );
                     meta.setDisplayName( utils.chat( "&a" + players.get( index ) ) );
                     if ( utils.getBoolean( "mysql.enabled" ) ) {
-                        if ( SQLGetter.isTrue( players.get( index ) , "staff" ).equals( "true" ) ) {
+                        if ( StaffQuery.isStaff( players.get( index ) ).equals( "true" ) ) {
                             lore.add( utils.chat( "&7Staff Mode: &aTrue" ) );
                         } else {
                             lore.add( utils.chat( "&7Staff Mode: &cFalse" ) );
                         }
-                        if ( SQLGetter.isTrue( players.get( index ) , "vanish" ).equals( "true" ) ) {
+                        if ( VanishQuery.isVanished( players.get( index ) ).equals( "true" ) ) {
                             lore.add( utils.chat( "&7Vanished: &aTrue" ) );
                         } else {
                             lore.add( utils.chat( "&7Vanished: &cFalse" ) );
                         }
-                        if ( SQLGetter.isTrue( players.get( index ) , "staffchat" ).equals( "true" ) ) {
+                        if ( StaffChatQuery.isStaffChat( players.get( index ) ).equals( "true" ) ) {
                             lore.add( utils.chat( "&7Staff Chat: &aTrue" ) );
                         } else {
                             lore.add( utils.chat( "&7Staff Chat: &cFalse" ) );

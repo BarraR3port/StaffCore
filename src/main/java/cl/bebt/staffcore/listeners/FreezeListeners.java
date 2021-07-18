@@ -2,9 +2,9 @@ package cl.bebt.staffcore.listeners;
 
 import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.main;
+import cl.bebt.staffcore.menu.*;
 import cl.bebt.staffcore.menu.menu.Inventory.openChest;
-import cl.bebt.staffcore.menu.menu.Others.ServerManager;
-import cl.bebt.staffcore.menu.menu.Reports.ReportManager;
+import cl.bebt.staffcore.menu.menu.Staff.ServerManager;
 import cl.bebt.staffcore.utils.*;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -25,6 +25,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -68,7 +69,7 @@ public class FreezeListeners implements Listener {
         }
     }
     
-    //                       Vanish and Freeze                              \\
+    //                       Vanishuery and Freezeuery                              \\
     @SuppressWarnings("ConstantConditions")
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onInteract( PlayerInteractEvent e ){
@@ -80,24 +81,18 @@ public class FreezeListeners implements Listener {
                 try {
                     if ( e.getAction( ).equals( Action.RIGHT_CLICK_BLOCK ) ) {
                         switch (e.getClickedBlock( ).getType( )) {
-                            case CRIMSON_DOOR: {
+                            case CRIMSON_DOOR:
                                 e.setCancelled( true );
-                            }
-                            case CRIMSON_TRAPDOOR: {
+                            case CRIMSON_TRAPDOOR:
                                 e.setCancelled( true );
-                            }
-                            case WARPED_DOOR: {
+                            case WARPED_DOOR:
                                 e.setCancelled( true );
-                            }
-                            case WARPED_FENCE_GATE: {
+                            case WARPED_FENCE_GATE:
                                 e.setCancelled( true );
-                            }
-                            case CRIMSON_FENCE_GATE: {
+                            case CRIMSON_FENCE_GATE:
                                 e.setCancelled( true );
-                            }
-                            case WARPED_TRAPDOOR: {
+                            case WARPED_TRAPDOOR:
                                 e.setCancelled( true );
-                            }
                             case CHEST: {
                                 e.setCancelled( true );
                                 HashMap < Integer, ItemStack > chest_slots = new HashMap <>( );
@@ -111,9 +106,8 @@ public class FreezeListeners implements Listener {
                                 }
                                 new openChest( main.getPlayerMenuUtility( p ) , chest_slots , size ).open( );
                             }
-                            case CHEST_MINECART: {
+                            case CHEST_MINECART:
                                 e.setCancelled( true );
-                            }
                             case TRAPPED_CHEST: {
                                 e.setCancelled( true );
                                 HashMap < Integer, ItemStack > chest_slots = new HashMap <>( );
@@ -127,73 +121,51 @@ public class FreezeListeners implements Listener {
                                 }
                                 new openChest( main.getPlayerMenuUtility( p ) , chest_slots , size ).open( );
                             }
-                            case ENDER_CHEST: {
+                            case ENDER_CHEST:
                                 e.setCancelled( true );
-                            }
-                            case DARK_OAK_DOOR: {
+                            case DARK_OAK_DOOR:
                                 e.setCancelled( true );
-                            }
-                            case OAK_DOOR: {
+                            case OAK_DOOR:
                                 e.setCancelled( true );
-                            }
-                            case ACACIA_DOOR: {
+                            case ACACIA_DOOR:
                                 e.setCancelled( true );
-                            }
-                            case BIRCH_DOOR: {
+                            case BIRCH_DOOR:
                                 e.setCancelled( true );
-                            }
-                            case IRON_DOOR: {
+                            case IRON_DOOR:
                                 e.setCancelled( true );
-                            }
-                            case JUNGLE_DOOR: {
+                            case JUNGLE_DOOR:
                                 e.setCancelled( true );
-                            }
-                            case SPRUCE_DOOR: {
+                            case SPRUCE_DOOR:
                                 e.setCancelled( true );
-                            }
-                            case ACACIA_TRAPDOOR: {
+                            case ACACIA_TRAPDOOR:
                                 e.setCancelled( true );
-                            }
-                            case BIRCH_TRAPDOOR: {
+                            case BIRCH_TRAPDOOR:
                                 e.setCancelled( true );
-                            }
-                            case DARK_OAK_TRAPDOOR: {
+                            case DARK_OAK_TRAPDOOR:
                                 e.setCancelled( true );
-                            }
-                            case IRON_TRAPDOOR: {
+                            case IRON_TRAPDOOR:
                                 e.setCancelled( true );
-                            }
-                            case JUNGLE_TRAPDOOR: {
+                            case JUNGLE_TRAPDOOR:
                                 e.setCancelled( true );
-                            }
-                            case OAK_TRAPDOOR: {
+                            case OAK_TRAPDOOR:
                                 e.setCancelled( true );
-                            }
-                            case SPRUCE_TRAPDOOR: {
+                            case SPRUCE_TRAPDOOR:
                                 e.setCancelled( true );
-                            }
-                            case ACACIA_FENCE_GATE: {
+                            case ACACIA_FENCE_GATE:
                                 e.setCancelled( true );
-                            }
-                            case BIRCH_FENCE_GATE: {
+                            case BIRCH_FENCE_GATE:
                                 e.setCancelled( true );
-                            }
-                            case JUNGLE_FENCE_GATE: {
+                            case JUNGLE_FENCE_GATE:
                                 e.setCancelled( true );
-                            }
-                            case OAK_FENCE_GATE: {
+                            case OAK_FENCE_GATE:
                                 e.setCancelled( true );
-                            }
-                            case SPRUCE_FENCE_GATE: {
+                            case SPRUCE_FENCE_GATE:
                                 e.setCancelled( true );
-                            }
-                            case DARK_OAK_FENCE_GATE: {
+                            case DARK_OAK_FENCE_GATE:
                                 e.setCancelled( true );
-                            }
-                            case LEVER: {
+                            case LEVER:
                                 e.setCancelled( true );
-                            }
-                            break;
+                                break;
                         }
                     }
                 } catch ( NullPointerException | NoClassDefFoundError ignored ) {
@@ -204,16 +176,24 @@ public class FreezeListeners implements Listener {
         if ( PlayerData.has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) ) {
             if ( a == Action.RIGHT_CLICK_AIR || a == Action.RIGHT_CLICK_BLOCK || a == Action.LEFT_CLICK_AIR || a == Action.LEFT_CLICK_BLOCK && PlayerData.has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) ) {
                 ItemStack itemInMainHand = p.getInventory( ).getItemInMainHand( );
+                InventoryHolder holder = p.getOpenInventory( ).getTopInventory( ).getHolder( );
+                if ( holder instanceof Menu ||
+                        holder instanceof MenuC ||
+                        holder instanceof InventoryMenu ||
+                        holder instanceof PaginatedMenu ||
+                        holder instanceof ReportPlayerMenu ||
+                        holder instanceof WarnPlayerMenu ||
+                        holder instanceof InvSeePlayerMenu ||
+                        holder instanceof BanPlayerMenu ) {
+                    return;
+                }
                 if ( SetStaffItems.staffOff( ).equals( itemInMainHand ) ) {
-                    Bukkit.getScheduler( ).scheduleSyncDelayedTask( plugin , ( ) -> SetStaffItems.Off( p ) , 1L );
+                    SetStaffItems.Off( p );
+                    utils.tell( p , utils.getString( "staff.disabled" , "lg" , "staff" ) );
                     return;
                 }
                 if ( SetStaffItems.serverManager( ).equals( itemInMainHand ) ) {
-                    Bukkit.getScheduler( ).scheduleSyncDelayedTask( plugin , ( ) -> new ServerManager( main.getPlayerMenuUtility( p ) , plugin ).open( p ) , 1L );
-                    return;
-                }
-                if ( SetStaffItems.reportManager( ).equals( itemInMainHand ) ) {
-                    Bukkit.getScheduler( ).scheduleSyncDelayedTask( plugin , ( ) -> new ReportManager( main.getPlayerMenuUtility( p ) , plugin ).open( ) , 1L );
+                    new ServerManager( main.getPlayerMenuUtility( p ) , plugin ).open( p );
                     return;
                 }
                 if ( CountdownManager.checkCountdown( p ) ) {
@@ -454,7 +434,7 @@ public class FreezeListeners implements Listener {
                 if ( pData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
                     FreezePlayer.FreezePlayer( p , player.getName( ) , false );
                     
-                } else if ( !((pData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ))) ) {
+                } else if ( !pData.has( new NamespacedKey( plugin , "frozen" ) , PersistentDataType.STRING ) ) {
                     if ( p.hasPermission( "staffcore.freeze.bypass" ) ) {
                         utils.tell( player , utils.getString( "freeze.freeze_bypass" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
                     } else {

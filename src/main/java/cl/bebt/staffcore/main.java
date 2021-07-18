@@ -19,6 +19,7 @@ import cl.bebt.staffcore.listeners.*;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.menu.listeners.MenuListener;
 import cl.bebt.staffcore.sql.Mysql;
+import cl.bebt.staffcore.sql.Queries.StaffQuery;
 import cl.bebt.staffcore.sql.SQLGetter;
 import cl.bebt.staffcore.utils.*;
 import org.bukkit.Bukkit;
@@ -49,6 +50,8 @@ public final class main extends JavaPlugin {
     
     public static HashMap < String, String > playersServerGamemodesMap = new HashMap <>( );
     
+    public static HashMap < String, String > playerSkins = new HashMap <>( );
+    
     public static HashMap < Player, Player > invSee = new HashMap <>( );
     
     public static HashMap < Player, Player > enderSee = new HashMap <>( );
@@ -75,6 +78,8 @@ public final class main extends JavaPlugin {
     
     public Boolean chatMuted = false;
     
+    public String latestVersion;
+    
     ConsoleCommandSender c = Bukkit.getConsoleSender( );
     
     public static PlayerMenuUtility getPlayerMenuUtility( Player p ){
@@ -87,7 +92,7 @@ public final class main extends JavaPlugin {
     
     public void onEnable( ){
         plugin = this;
-        new UpdateChecker( plugin , 82324 ).getLatestVersion( version -> {
+        new UpdateChecker( plugin ).getLatestVersion( version -> {
             if ( !getDescription( ).getVersion( ).equals( version ) ) {
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&c     Hey, there is a new version out!" ) );
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&b         Staff-Core " + version ) );
@@ -95,10 +100,20 @@ public final class main extends JavaPlugin {
                 if ( utils.getBoolean( "disable_outdated_plugin" ) ) {
                     c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&lDISABLING STAFF-CORE. USE THE LATEST VERSION " ) );
                     c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&lYou can disable this option (disable_outdated_plugin) in the config file." ) );
-                    c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&lBut I recommend to use the latest version. " ) );
+                    c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&lBut its recommend to use the latest version: &6" + version ) );
                     c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------" ) );
                     plugin.getPluginLoader( ).disablePlugin( this );
                 }
+                Bukkit.getServer( ).getScheduler( ).scheduleSyncRepeatingTask( this , ( ) -> {
+                    for ( Player p : Bukkit.getOnlinePlayers( ) ) {
+                        if ( p.hasPermission( "staffcore.staff" ) ) {
+                            utils.tellHover( p , getConfig( ).getString( "server_prefix" ) +
+                                            "&cYou are using an StaffCore older version" ,
+                                    "&aClick to download the version: " + latestVersion ,
+                                    "https://staffcore.glitch.me/download" );
+                        }
+                    }
+                } , 12000L , 20L );
             }
         } );
         loadConfigManager( );
@@ -127,6 +142,8 @@ public final class main extends JavaPlugin {
         new wipe( plugin );
         new unBan( plugin );
         new Ban( plugin );
+        new Bans( plugin );
+        new MutePlayer( plugin );
         new MuteChat( plugin );
         new unMute( plugin );
         new invSeeChest( plugin );
@@ -139,7 +156,7 @@ public final class main extends JavaPlugin {
         new ReportPlayer( plugin );
         new StaffList( plugin );
         new Warn( plugin );
-        new WarningsCommand( plugin );
+        new Warnings( plugin );
         new HelpOp( plugin );
         new TrollMode( plugin );
         new Fly( plugin );
@@ -157,7 +174,7 @@ public final class main extends JavaPlugin {
             Bukkit.getPluginManager( ).registerEvents( new InventoryListeners( plugin ) , plugin );
             Bukkit.getPluginManager( ).registerEvents( new onPLayerLeave( plugin ) , plugin );
             Bukkit.getServer( ).getScheduler( ).scheduleSyncRepeatingTask( this , new TPS( ) , 100L , 1L );
-            Bukkit.getServer( ).getScheduler( ).scheduleSyncRepeatingTask( this , ( ) -> {
+            Bukkit.getServer( ).getScheduler( ).scheduleAsyncRepeatingTask( this , ( ) -> {
                 for ( Player players : Bukkit.getOnlinePlayers( ) ) {
                     try {
                         if ( players.getOpenInventory( ).getTopInventory( ).getItem( 31 ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "server" ) , PersistentDataType.STRING ) ) {
@@ -171,10 +188,10 @@ public final class main extends JavaPlugin {
                                 utils.tell( players , getConfig( ).getString( "server_prefix" ) + "&aYou were UnMuted!" );
                             }
                         }
-                    } catch ( NullPointerException | ArrayIndexOutOfBoundsException ignored ) {
+                    } catch ( NullPointerException | ArrayIndexOutOfBoundsException | IllegalStateException ignored ) {
                     }
                 }
-            } , 10L , 10L );
+            } , 0L , 20L );
         } else {
             c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------------------" ) );
             c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&l              STAFF-CORE." ) );
@@ -186,9 +203,8 @@ public final class main extends JavaPlugin {
                 Mysql.connect( );
                 SQLGetter.createTables( );
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "             &a&lMysql: &aTRUE" ) );
-                SQLGetter.addToggledPlayersToList( );
+                StaffQuery.addToggledPlayersToList( );
             } catch ( SQLException e ) {
-                e.printStackTrace( );
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "             &a&lMysql: &cFALSE" ) );
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&a      Disabling Staff-Core &6" + getDescription( ).getVersion( ) ) );
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------" ) );
@@ -205,6 +221,7 @@ public final class main extends JavaPlugin {
         getServer( ).getMessenger( ).registerOutgoingPluginChannel( plugin , "sc:stafflist" );
         getServer( ).getMessenger( ).registerIncomingPluginChannel( plugin , "BungeeCord" , new PluginMessage( ) );
         getServer( ).getMessenger( ).registerOutgoingPluginChannel( plugin , "BungeeCord" );
+        Bukkit.getScheduler( ).runTaskAsynchronously( this , ( ) -> playerSkins = utils.getSavedSkins( ) );
         if ( Mysql.isConnected( ) ) {
             new VanishMysql( plugin );
             new FreezeMysql( plugin );
@@ -236,22 +253,31 @@ public final class main extends JavaPlugin {
         reloadConfig( );
         this.data = new SQLGetter( this );
         this.reports = new ReportConfig( this );
+        this.reports.saveDefaultConfig( );
         this.reports.reloadConfig( );
         this.bans = new BanConfig( plugin );
+        this.bans.saveDefaultConfig( );
         this.bans.reloadConfig( );
         this.alts = new AltsStorage( plugin );
+        this.alts.saveDefaultConfig( );
         this.alts.reloadConfig( );
         this.warns = new WarnConfig( plugin );
+        this.warns.saveDefaultConfig( );
         this.warns.reloadConfig( );
         this.en_na = new EN_NA( plugin );
+        this.en_na.saveDefaultConfig( );
         this.en_na.reloadConfig( );
         this.es_cl = new ES_CL( plugin );
+        this.es_cl.saveDefaultConfig( );
         this.es_cl.reloadConfig( );
         this.items = new ItemsConfig( plugin );
+        this.items.saveDefaultConfig( );
         this.items.reloadConfig( );
         this.alerts = new AlertsConfig( plugin );
+        this.alerts.saveDefaultConfig( );
         this.alerts.reloadConfig( );
         this.menus = new MenusConfig( plugin );
+        this.menus.saveDefaultConfig( );
         this.menus.reloadConfig( );
     }
     

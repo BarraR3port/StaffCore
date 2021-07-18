@@ -1,4 +1,4 @@
-package cl.bebt.staffcore.menu.menu.ClientSettings;
+package cl.bebt.staffcore.menu.menu.Staff;
 
 import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.main;
@@ -6,8 +6,7 @@ import cl.bebt.staffcore.menu.MenuC;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.menu.menu.Chat.ChatSettings;
 import cl.bebt.staffcore.menu.menu.Chat.MuteChatManager;
-import cl.bebt.staffcore.menu.menu.Others.ServerManager;
-import cl.bebt.staffcore.sql.SQLGetter;
+import cl.bebt.staffcore.sql.Queries.StaffChatQuery;
 import cl.bebt.staffcore.utils.Items;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.Material;
@@ -54,7 +53,7 @@ public class ClientSettings extends MenuC {
             p.closeInventory( );
             PlayerData.remove( new NamespacedKey( this.plugin , "staffchat" ) );
             if ( utils.mysqlEnabled( ) )
-                SQLGetter.set( p.getName( ) , "staffchat" , "false" );
+                StaffChatQuery.disable( p.getName( ) );
             utils.tell( p , "&8[&3&lSC&r&8]&r &cOff" );
             new ClientSettings( main.getPlayerMenuUtility( p ) , this.plugin ).open( p );
             p.updateInventory( );
@@ -63,7 +62,7 @@ public class ClientSettings extends MenuC {
             p.closeInventory( );
             PlayerData.set( new NamespacedKey( this.plugin , "staffchat" ) , PersistentDataType.STRING , "staffchat" );
             if ( utils.mysqlEnabled( ) )
-                SQLGetter.set( p.getName( ) , "staffchat" , "true" );
+                StaffChatQuery.enable( p.getName( ) );
             utils.tell( p , "&8[&3&lSC&r&8]&r &aOn" );
             new ClientSettings( main.getPlayerMenuUtility( p ) , this.plugin ).open( p );
             p.updateInventory( );
@@ -187,11 +186,7 @@ public class ClientSettings extends MenuC {
         this.inventory.setItem( 21 , redPanel( ) );
         this.inventory.setItem( 23 , redPanel( ) );
         if ( utils.getBoolean( "alerts.fake_join_leave_msg" ) ) {
-            if ( p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "FakeJoinOrLeave" ) , PersistentDataType.STRING ) ) {
-                this.inventory.setItem( 24 , Items.FakeJoinOrLeave( true ) );
-            } else {
-                this.inventory.setItem( 24 , Items.FakeJoinOrLeave( false ) );
-            }
+            this.inventory.setItem( 24 , Items.FakeJoinOrLeave( p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "FakeJoinOrLeave" ) , PersistentDataType.STRING ) ) );
         } else {
             this.inventory.setItem( 24 , Items.ComingSoon( ) );
         }

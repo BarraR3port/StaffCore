@@ -3,7 +3,7 @@
 #   | (___ \_| `| |-'  ,--.    _| |_    _| |_      ______    / .'   \_|   .--.    _ .--.   .---.          #
 #    _.____`.   | |   `'_\ :  '-| |-'  '-| |-'    |______|   | |        / .'`\ \ [ `/'`\] / /__\\         #
 #   | \____) |  | |,  // | |,   | |      | |                 \ `.___.'\ | \__. |  | |     | \__.,         #
-#   \______.'   \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.4.3 #
+#   \______.'   \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.4.4 #
 #                                                                                                         #
 #                                                                    Translated by BarraR3port    [EN_NA] #
 
@@ -35,6 +35,8 @@ toggle_chat:
   chat_muted: "&7The chat is muted, you can't talk"
   chat_not_muted: "&7The chat is not muted"
   time_remaining: "&cTime remaining: &c%days%d:%hours%h:%minutes%mn:%seconds%s"
+  global_mute_by_player: "&7The player &9%player% &7Muted the chat!"
+  global_un_mute_by_player: "&7The player &9%player% &7Un Muted the chat!"
 
 # ------------> COMMON STUFF <----------
 wrong_usage: "&cWrong usage, &7use /%command%"
@@ -121,7 +123,7 @@ menu:
 
 # ------------> PING <-----------
 ping_other: "&9%player%'s &7 ping is: %ping%"
-ping: "&7Your ping is: %ping%"
+ping: "&7Your ping is: &9%ping%"
 
 # ------------> STAFF <----------
 staff:
@@ -179,9 +181,9 @@ troll:
 # ------------> VANISH <----------
 vanish:
   enabled: "&7Vanish &aEnabled"
-  enabled_to: "&7Vanished &aEnabled&7to&9%player%"
+  enabled_to: "&7Vanished &aEnabled &7to &9%player%"
   disabled: "&7Vanish &cDisabled"
-  disabled_to: "&7Vanished &cDisabled&7to&9%player%"
+  disabled_to: "&7Vanished &cDisabled &7to &9%player%"
 
 # ------------> WARNS <----------
 warns:
@@ -202,3 +204,4 @@ web:
   error_incorrect_username: "&0[&cERROR&0]&7 This Username is not registered"
   error_incorrect_password: "&0[&cERROR&0]&7 Incorrect Password"
   error_catch: "&0[&cERROR&0]&7 An Unknown Error has occurred, maybe your database is not configured well"
+  web: "&aYou can see and edit your NetWork in this link: %link%"

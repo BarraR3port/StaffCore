@@ -20,32 +20,29 @@ public class Http {
         Http.plugin = plugin;
     }
     
-    public static void get( String urlParaVisitar , Player p ){
+    public static void getLatestVersion( String urlParaVisitar , Player p , String server ){
         Bukkit.getScheduler( ).runTaskAsynchronously( plugin , ( ) -> {
             try {
-                // Esto es lo que vamos a devolver
                 StringBuilder resultado = new StringBuilder( );
-                // Crear un objeto de tipo URL
                 URL url = new URL( urlParaVisitar );
-                
-                // Abrir la conexión e indicar que será de tipo GET
-                HttpURLConnection conexion = ( HttpURLConnection ) url.openConnection( );
-                conexion.setRequestMethod( "GET" );
-                // Búferes para leer
-                BufferedReader rd = new BufferedReader( new InputStreamReader( conexion.getInputStream( ) ) );
+                HttpURLConnection connexion = ( HttpURLConnection ) url.openConnection( );
+                connexion.setRequestMethod( "GET" );
+                BufferedReader rd = new BufferedReader( new InputStreamReader( connexion.getInputStream( ) ) );
                 String linea;
-                // Mientras el BufferedReader se pueda leer, agregar contenido a resultado
                 while ((linea = rd.readLine( )) != null) {
                     resultado.append( linea );
                 }
-                // Cerrar el BufferedReader
                 rd.close( );
-                // Regresar resultado, pero como cadena, no como StringBuilder
                 JSONObject array = new JSONObject( resultado.toString( ) );
                 if ( array.get( "type" ).toString( ).equalsIgnoreCase( "error" ) ) {
-                    utils.tell( p , utils.getString( "web." + array.get( "msg" ).toString( ) , "lg" , null ) );
+                    utils.tell( p , utils.getString( "web." + array.getString( "msg" ) , "lg" , null ) );
                 } else {
-                    utils.tell( p , utils.getString( "web." + array.get( "msg" ).toString( ) , "lg" , "staff" ) );
+                    utils.tell( p , utils.getString( "web." + array.getString( "msg" ) , "lg" , "staff" ) );
+                    if ( array.getString( "msg" ).equalsIgnoreCase( "error_already_registered_by_other" ) ) {
+                        utils.tell( p , utils.getString( "web.web" , "lg" , null ) );
+                        return;
+                    }
+                    plugin.getConfig( ).set( "server_name" , server );
                 }
             } catch ( IOException error ) {
                 error.printStackTrace( );
@@ -53,4 +50,74 @@ public class Http {
             }
         } );
     }
+    
+    public static String getLatestVersion( String urlParaVisitar , String str ){
+        String version = "";
+        try {
+            StringBuilder resultado = new StringBuilder( );
+            URL url = new URL( urlParaVisitar );
+            HttpURLConnection connexion = ( HttpURLConnection ) url.openConnection( );
+            connexion.setRequestMethod( "GET" );
+            BufferedReader rd = new BufferedReader( new InputStreamReader( connexion.getInputStream( ) ) );
+            String linea;
+            while ((linea = rd.readLine( )) != null) {
+                resultado.append( linea );
+            }
+            rd.close( );
+            JSONObject array = new JSONObject( resultado.toString( ) );
+            version = array.getString( str );
+        } catch ( IOException error ) {
+            error.printStackTrace( );
+            utils.tell( Bukkit.getConsoleSender( ) , "&cCould not get a connection with the server" );
+        }
+        return version;
+    }
+    
+    public static boolean getBoolean( String urlParaVisitar , String bool ){
+        boolean isRegistered = false;
+        try {
+            StringBuilder resultado = new StringBuilder( );
+            URL url = new URL( urlParaVisitar );
+            HttpURLConnection connexion = ( HttpURLConnection ) url.openConnection( );
+            connexion.setRequestMethod( "GET" );
+            BufferedReader rd = new BufferedReader( new InputStreamReader( connexion.getInputStream( ) ) );
+            String linea;
+            while ((linea = rd.readLine( )) != null) {
+                resultado.append( linea );
+            }
+            rd.close( );
+            JSONObject array = new JSONObject( resultado.toString( ) );
+            isRegistered = array.getBoolean( bool );
+        } catch ( IOException error ) {
+            error.printStackTrace( );
+            utils.tell( Bukkit.getConsoleSender( ) , "&cCould not get a connection with the server" );
+        }
+        return isRegistered;
+    }
+    
+    public static String getHead( String urlParaVisitar , String p ){
+        String head = "";
+        try {
+            StringBuilder resultado = new StringBuilder( );
+            URL url = new URL( urlParaVisitar );
+            HttpURLConnection connexion = ( HttpURLConnection ) url.openConnection( );
+            connexion.setRequestMethod( "GET" );
+            BufferedReader rd = new BufferedReader( new InputStreamReader( connexion.getInputStream( ) ) );
+            String linea;
+            while ((linea = rd.readLine( )) != null) {
+                resultado.append( linea );
+            }
+            rd.close( );
+            JSONObject array = new JSONObject( resultado.toString( ) );
+            if ( array.getString( "type" ).equals( "success" ) ) {
+                head = array.getString( "value" );
+                main.playerSkins.put( p , head );
+            }
+        } catch ( IOException error ) {
+            error.printStackTrace( );
+            utils.tell( Bukkit.getConsoleSender( ) , "&cCould not get a connection with the server" );
+        }
+        return head;
+    }
+    
 }

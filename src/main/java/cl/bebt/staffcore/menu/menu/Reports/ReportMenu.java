@@ -7,6 +7,7 @@ import cl.bebt.staffcore.utils.ReportPlayer;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -35,166 +36,56 @@ public class ReportMenu extends ReportPlayerMenu {
         return 54;
     }
     
-    private int id( ){
-        if ( utils.mysqlEnabled( ) ) {
-            return plugin.data.getReportId( );
-        } else {
-            int id = plugin.reports.getConfig( ).getInt( "count" );
-            id++;
-            return id;
-        }
-    }
     
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
-        if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "hacking" ) , PersistentDataType.STRING ) ) {
-            new ReportPlayer( p , "Hacking" , reported , id( ) );
-            p.closeInventory( );
-        }
-        if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "killaura" ) , PersistentDataType.STRING ) ) {
-            new ReportPlayer( p , "KillAura" , reported , id( ) );
-            p.closeInventory( );
-        }
-        if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ) {
-            new ReportPlayer( p , "Flying" , reported , id( ) );
-            p.closeInventory( );
-        }
-        if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "speed" ) , PersistentDataType.STRING ) ) {
-            new ReportPlayer( p , "Speed" , reported , id( ) );
-            p.closeInventory( );
-        }
-        if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "griefing" ) , PersistentDataType.STRING ) ) {
-            new ReportPlayer( p , "Griefing" , reported , id( ) );
-            p.closeInventory( );
-        }
-        if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "spamming" ) , PersistentDataType.STRING ) ) {
-            new ReportPlayer( p , "Spamming" , reported , id( ) );
-            p.closeInventory( );
-        }
-        if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "bhop" ) , PersistentDataType.STRING ) ) {
-            new ReportPlayer( p , "BunnyHop" , reported , id( ) );
-            p.closeInventory( );
-        }
+        ConfigurationSection inventorySection = plugin.items.getConfig( ).getConfigurationSection( "punish_items" );
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "other" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
             PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
             PlayerData.set( new NamespacedKey( main.plugin , "reportmsg" ) , PersistentDataType.STRING , reported );
-            
             utils.tell( p , utils.getString( "bans.other_reason" , "lg" , "sv" ) );
-        } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
+        } else {
+            for ( String key : inventorySection.getKeys( false ) ) {
+                String reason = utils.getString( "punish_items." + key + ".reason" , "item" , null );
+                if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , key ) , PersistentDataType.STRING ) ) {
+                    new ReportPlayer( p , reason , reported );
+                    p.closeInventory( );
+                }
+            }
+        }
+        if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
         }
-    }
-    
-    public ItemStack hacking( ){
-        ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.RED_DYE );
-        ItemMeta meta = item.getItemMeta( );
-        lore.add( utils.chat( "&dReport &r" + reported + " &dfor hacking" ) );
-        meta.setLore( lore );
-        meta.setDisplayName( utils.chat( "&4Hacking" ) );
-        meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "hacking" ) , PersistentDataType.STRING , "hacking" );
-        item.setItemMeta( meta );
-        return item;
-    }
-    
-    public ItemStack killaura( ){
-        ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.DIAMOND_SWORD );
-        ItemMeta meta = item.getItemMeta( );
-        lore.add( utils.chat( "&dReport &r" + reported + " &dfor KillAura" ) );
-        meta.setLore( lore );
-        meta.setDisplayName( utils.chat( "&4KillAura" ) );
-        meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "killaura" ) , PersistentDataType.STRING , "killaura" );
-        item.setItemMeta( meta );
-        return item;
-    }
-    
-    public ItemStack flying( ){
-        ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.FEATHER );
-        ItemMeta meta = item.getItemMeta( );
-        lore.add( utils.chat( "&dReport &r" + reported + " &dfor Flying" ) );
-        meta.setLore( lore );
-        meta.setDisplayName( utils.chat( "&4Flying" ) );
-        meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "flying" ) , PersistentDataType.STRING , "flying" );
-        item.setItemMeta( meta );
-        return item;
-    }
-    
-    public ItemStack speed( ){
-        ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.SUGAR );
-        ItemMeta meta = item.getItemMeta( );
-        lore.add( utils.chat( "&dReport &r" + reported + " &dfor Hacking" ) );
-        meta.setLore( lore );
-        meta.setDisplayName( utils.chat( "&4Speed" ) );
-        meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "speed" ) , PersistentDataType.STRING , "speed" );
-        item.setItemMeta( meta );
-        return item;
-    }
-    
-    public ItemStack spamming( ){
-        ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.PAPER );
-        ItemMeta meta = item.getItemMeta( );
-        lore.add( utils.chat( "&dReport &r" + reported + " &dfor Spamming" ) );
-        meta.setLore( lore );
-        meta.setDisplayName( utils.chat( "&4Spamming" ) );
-        meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "spamming" ) , PersistentDataType.STRING , "spamming" );
-        item.setItemMeta( meta );
-        return item;
-    }
-    
-    public ItemStack griefing( ){
-        ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.TNT );
-        ItemMeta meta = item.getItemMeta( );
-        lore.add( utils.chat( "&dReport &r" + reported + " &dfor Griefing" ) );
-        meta.setLore( lore );
-        meta.setDisplayName( utils.chat( "&4Griefing" ) );
-        meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "griefing" ) , PersistentDataType.STRING , "griefing" );
-        item.setItemMeta( meta );
-        return item;
-    }
-    
-    public ItemStack bhop( ){
-        ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.RABBIT_HIDE );
-        ItemMeta meta = item.getItemMeta( );
-        lore.add( utils.chat( "&dReport &r" + reported + " &dfor BunnyHop" ) );
-        meta.setLore( lore );
-        meta.setDisplayName( utils.chat( "&4BunnyHop" ) );
-        meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "bhop" ) , PersistentDataType.STRING , "bhop" );
-        item.setItemMeta( meta );
-        return item;
-    }
-    
-    public ItemStack other( ){
-        ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.FLOWER_BANNER_PATTERN );
-        ItemMeta meta = item.getItemMeta( );
-        lore.add( utils.chat( "&dReport &r" + reported + " &dfor other reason" ) );
-        lore.add( utils.chat( "&dType in chat the reason." ) );
-        assert meta != null;
-        meta.setLore( lore );
-        meta.setDisplayName( utils.chat( "&4Other reason" ) );
-        meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "other" ) , PersistentDataType.STRING , "other" );
-        item.setItemMeta( meta );
-        return item;
     }
     
     @Override
     public void setMenuItems( ){
         addMenuBorder( );
-        inventory.addItem( hacking( ) );
-        inventory.addItem( killaura( ) );
-        inventory.addItem( flying( ) );
-        inventory.addItem( speed( ) );
-        inventory.addItem( griefing( ) );
-        inventory.addItem( spamming( ) );
-        inventory.addItem( bhop( ) );
-        inventory.addItem( other( ) );
+        ConfigurationSection inventorySection = plugin.items.getConfig( ).getConfigurationSection( "punish_items" );
+        for ( String key : inventorySection.getKeys( false ) ) {
+            String name = utils.getString( "punish_items." + key + ".name" , "item" , null );
+            String material = utils.getString( "punish_items." + key + ".material" , "item" , null );
+            String reason = utils.getString( "punish_items." + key + ".reason" , "item" , null );
+            ArrayList < String > lore = new ArrayList <>( );
+            ItemStack item = new ItemStack( Material.valueOf( material ) );
+            ItemMeta meta = item.getItemMeta( );
+            for ( String key2 : utils.getStringList( "punish_items." + key + ".lore" , "item" ) ) {
+                key2 = key2.replace( "%punish%" , "Report" );
+                key2 = key2.replace( "%player%" , reported );
+                lore.add( utils.chat( key2 ) );
+            }
+            meta.setLore( lore );
+            meta.setDisplayName( utils.chat( name ) );
+            if ( key.equalsIgnoreCase( "other" ) ) {
+                meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , key ) , PersistentDataType.STRING , "other" );
+            } else {
+                meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , key ) , PersistentDataType.STRING , reason );
+            }
+            item.setItemMeta( meta );
+            inventory.addItem( item );
+            
+        }
     }
 }

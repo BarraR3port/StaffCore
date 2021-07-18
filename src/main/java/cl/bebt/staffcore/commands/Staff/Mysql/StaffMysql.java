@@ -1,7 +1,7 @@
 package cl.bebt.staffcore.commands.Staff.Mysql;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.sql.SQLGetter;
+import cl.bebt.staffcore.sql.Queries.StaffQuery;
 import cl.bebt.staffcore.utils.SetStaffItems;
 import cl.bebt.staffcore.utils.utils;
 import org.bukkit.Bukkit;
@@ -30,7 +30,7 @@ public class StaffMysql implements CommandExecutor {
                 if ( args.length == 1 ) {
                     if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
                         Player p = Bukkit.getPlayer( args[0] );
-                        String is = SQLGetter.isTrue( p , "staff" );
+                        String is = StaffQuery.isStaff( p.getName( ) );
                         if ( is.equals( "true" ) ) {
                             SetStaffItems.Off( p );
                             utils.tell( sender , utils.getString( "staff.disabled_to" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
@@ -45,7 +45,7 @@ public class StaffMysql implements CommandExecutor {
             } else {
                 if ( args.length == 0 ) {
                     Player p = ( Player ) sender;
-                    String is = SQLGetter.isTrue( p , "staff" );
+                    String is = StaffQuery.isStaff( p.getName( ) );
                     if ( p.hasPermission( "staffcore.staff" ) ) {
                         if ( is.equals( "true" ) ) {
                             SetStaffItems.Off( p );

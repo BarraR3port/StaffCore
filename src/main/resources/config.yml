@@ -3,7 +3,7 @@
 #   | (___ \_| `| |-'  ,--.    _| |_    _| |_      ______    / .'   \_|   .--.    _ .--.   .---.          #
 #    _.____`.   | |   `'_\ :  '-| |-'  '-| |-'    |______|   | |        / .'`\ \ [ `/'`\] / /__\\         #
 #   | \____) |  | |,  // | |,   | |      | |                 \ `.___.'\ | \__. |  | |     | \__.,         #
-#   \______.'   \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.4.3 #
+#   \______.'   \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.4.4 #
 #                                                                                                         #
 #                                                                               By BarraR3port : [CONFIG] #
 #                                                                                                         #
@@ -45,7 +45,7 @@ server_name: "StaffCore" # Here you put the Network Name or Server Name
 # ------------> DISCORD <--------------
 # If you have a discord and you want to implement webhooks with StaffCore, change it to true.
 # There are two different channels that StaffCore handles, the Alerts Channel & Debug Channel.
-# In the Alerts Channel, all the alerts will be sent to that channel, like bans, reports, etc.
+# In the Alerts Channel, all the alerts will be sent to that channel, like Bans, reports, etc.
 # In the Debug Channel, everything that happens in the plugin will be sent to that Channel, for exp:
 # If a player change his GameMode, or if a player kills another. (THIS IS STILL IN DEVELOPMENT, MORE STUFF SOON)
 # Now, How to implement this?, Easy, just Create a Channel > Edit Channel > Integrations > WebHooks > New WebHook >
@@ -79,6 +79,9 @@ discord:
 # ------------> STAFF <--------------
 staff:
   fly_invincible: true #<------------ On "true" the players with fly On, will be invincible!
+  staffchat:
+    enable_use_custom: true
+    custom_character: "!"
 
 # ------------> SOUNDS <-------------
 # Here is a list of all the sounds available: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html

@@ -2,7 +2,8 @@ package cl.bebt.staffcore.utils;
 
 import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.sql.SQLGetter;
+import cl.bebt.staffcore.sql.Queries.StaffQuery;
+import cl.bebt.staffcore.sql.Queries.VanishQuery;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.NamespacedKey;
@@ -21,7 +22,7 @@ public class SetVanish {
             if ( utils.mysqlEnabled( ) ) {
                 for ( Player player : Bukkit.getServer( ).getOnlinePlayers( ) ) {
                     if ( !player.hasPermission( "staffcore.vanish.see" ) && !player.hasPermission( "staffcore.vanish" ) ) {
-                        if ( player.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || player.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) || SQLGetter.isTrue( player , "vanish" ).equals( "true" ) || SQLGetter.isTrue( player , "staff" ).equals( "true" ) ) {
+                        if ( player.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) || player.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) || VanishQuery.isVanished( p.getName( ) ).equals( "true" ) || StaffQuery.isStaff( p.getName( ) ).equals( "true" ) ) {
                             p.showPlayer( plugin , player );
                         } else {
                             player.hidePlayer( plugin , p );
@@ -30,7 +31,7 @@ public class SetVanish {
                         p.showPlayer( plugin , player );
                     }
                 }
-                SQLGetter.set( p.getName( ) , "vanish" , "true" );
+                VanishQuery.enable( p.getName( ) );
             } else {
                 for ( Player player : Bukkit.getOnlinePlayers( ) ) {
                     if ( !player.hasPermission( "staffcore.vanish.see" ) && !player.hasPermission( "staffcore.vanish" ) ) {
@@ -64,8 +65,8 @@ public class SetVanish {
                 }
             }
         } else {
-            if ( !p.getGameMode( ).equals( GameMode.CREATIVE ) && !PlayerData.has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) ||
-                    !PlayerData.has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) ) {
+            if ( (p.getGameMode( ).equals( GameMode.SURVIVAL ) || p.getGameMode( ).equals( GameMode.ADVENTURE )) && (!PlayerData.has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) &&
+                    !PlayerData.has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING )) ) {
                 p.setAllowFlight( false );
                 p.setFlying( false );
                 p.setInvulnerable( false );
@@ -86,7 +87,7 @@ public class SetVanish {
                 }
             }
             if ( utils.mysqlEnabled( ) ) {
-                SQLGetter.set( p.getName( ) , "vanish" , "false" );
+                VanishQuery.disable( p.getName( ) );
             }
             for ( Player people : Bukkit.getOnlinePlayers( ) ) {
                 people.showPlayer( plugin , p );
