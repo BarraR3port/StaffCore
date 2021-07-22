@@ -1,5 +1,6 @@
 package cl.bebt.staffcore.sql.Queries;
 
+import cl.bebt.staffcore.sql.DataExporter;
 import cl.bebt.staffcore.sql.Mysql;
 
 import java.sql.PreparedStatement;
@@ -17,8 +18,8 @@ public class VanishQuery {
                 statement.setString( 1 , "true" );
                 statement.setString( 2 , player );
                 statement.executeUpdate( );
+                DataExporter.updateServerStats( "vanish" );
             } catch ( SQLException ignored ) {
-            
             }
         }
     }

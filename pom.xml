@@ -6,7 +6,7 @@
 
     <groupId>cl.bebt.staffcore</groupId>
     <artifactId>staffcore</artifactId>
-    <version>4.4.4</version>
+    <version>4.4.6</version>
     <packaging>jar</packaging>
 
     <name>StaffCore</name>

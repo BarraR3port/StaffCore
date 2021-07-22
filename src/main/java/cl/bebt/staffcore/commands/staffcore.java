@@ -242,6 +242,9 @@ public class staffcore implements TabExecutor {
                         } else if ( args[1].equalsIgnoreCase( "ES_CL" ) ) {
                             plugin.getConfig( ).set( "language" , "ES_CL" );
                             utils.tell( sender , utils.getString( "language_changed" , "lg" , "sv" ).replace( "%language%" , "ES_CL" ) );
+                        } else if ( args[1].equalsIgnoreCase( "FR" ) ) {
+                            plugin.getConfig( ).set( "language" , "FR" );
+                            utils.tell( sender , utils.getString( "language_changed" , "lg" , "sv" ).replace( "%language%" , "FR" ) );
                         } else {
                             utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "staffcore <version/vanished/staff/reload/changelanguage/link>" ) );
                         }

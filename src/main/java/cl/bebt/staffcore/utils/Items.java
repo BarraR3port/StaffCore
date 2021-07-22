@@ -139,9 +139,9 @@ public class Items {
         lore.add( utils.chat( "&5PUNISHMENTS STATUS:" ) );
         if ( utils.mysqlEnabled( ) ) {
             HashMap < String, Integer > serverStatus = ServerQuery.getServerStatus( );
-            lore.add( utils.chat( "&a► &7Current Bans: &a" + serverStatus.get( "currentBans" ) ) );
-            lore.add( utils.chat( "&a► &7Current Reports: &a" + serverStatus.get( "currentReports" ) ) );
-            lore.add( utils.chat( "&a► &7Current Warns: &a" + serverStatus.get( "currentWarns" ) ) );
+            lore.add( utils.chat( "&a► &7Current Bans: &a" + serverStatus.get( "CurrentBans" ) ) );
+            lore.add( utils.chat( "&a► &7Current Reports: &a" + serverStatus.get( "CurrentReports" ) ) );
+            lore.add( utils.chat( "&a► &7Current Warns: &a" + serverStatus.get( "CurrentWarns" ) ) );
             
         } else {
             lore.add( utils.chat( "&a► &7Current Bans: &a" + utils.count( "bans" ) ) );

@@ -90,7 +90,7 @@ public class SQLGetter {
     public static void createStaffCoreSettingsTable( ){
         PreparedStatement ps;
         try {
-            ps = Mysql.getConnection( ).prepareStatement( "CREATE TABLE IF NOT EXISTS sc_settings ( ServerName VARCHAR(30) NOT NULL DEFAULT ?, Version VARCHAR(5) NOT NULL DEFAULT '4.4.4', IsUpdated BOOLEAN NOT NULL DEFAULT true)" );
+            ps = Mysql.getConnection( ).prepareStatement( "CREATE TABLE IF NOT EXISTS sc_settings ( ServerName VARCHAR(30) NOT NULL DEFAULT ?, Version VARCHAR(5) NOT NULL DEFAULT '4.4.6', IsUpdated BOOLEAN NOT NULL DEFAULT true)" );
             ps.setString( 1 , utils.getServer( ) );
             ps.executeUpdate( );
         } catch ( SQLException ignored ) {
@@ -115,9 +115,7 @@ public class SQLGetter {
                 for ( Player p : Bukkit.getOnlinePlayers( ) ) {
                     utils.tellHover( p , "&cHEY STAFFCORE IS MAKING SOME UPDATES IN THE DB" , "&aClick to see What's Going on" , "https://staffcore.glitch.me/news/alts-migration" );
                 }
-                AltsQuery.DropOldAltsTable( );
-                createAltsTable( );
-                AltsQuery.addAlts( );
+                AltsQuery.MigrateAltsTable( );
             }
         } );
         

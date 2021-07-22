@@ -1,0 +1,5 @@
+Changelog:
++ Fixed a bug where when players login their IP was shown up for everyone.
++ Implemented a new Language: FR thx so much to MasterKW#1111
++ Fixed a Huge bug where the Alts migration was not working well
++ Fixed a critical bug where some stuff where not working well and crashed the plugin and the server!

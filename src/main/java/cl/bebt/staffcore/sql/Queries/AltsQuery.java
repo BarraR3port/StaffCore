@@ -1,6 +1,7 @@
 package cl.bebt.staffcore.sql.Queries;
 
 import cl.bebt.staffcore.main;
+import cl.bebt.staffcore.sql.DataExporter;
 import cl.bebt.staffcore.sql.Mysql;
 import cl.bebt.staffcore.sql.SQLGetter;
 import cl.bebt.staffcore.utils.Http;
@@ -45,6 +46,7 @@ public class AltsQuery {
                 statement.setString( 4 , Skin );
                 statement.executeUpdate( );
                 main.playerSkins.put( player , Skin );
+                DataExporter.updateServerStats( "player" );
                 break;
             } catch ( SQLException throwable ) {
                 main.plugin.getServer( ).getConsoleSender( ).sendMessage( utils.chat( "&c[&5Staff Core&c] There has been an error with the mysql" ) );
@@ -194,12 +196,14 @@ public class AltsQuery {
         return json;
     }
     
-    public static void DropOldAltsTable( ){
+    public static void MigrateAltsTable( ){
         PreparedStatement ps;
         try {
+            JSONObject alts = getAlts( );
             ps = Mysql.getConnection( ).prepareStatement( "DROP TABLE sc_alts" );
             ps.executeUpdate( );
             SQLGetter.createAltsTable( );
+            addAlts( alts );
         } catch ( SQLException ignored ) {
             main.plugin.getServer( ).getConsoleSender( ).sendMessage( utils.chat( "&c[&5Staff Core&c] There has been an error with the mysql" ) );
             main.plugin.getServer( ).getConsoleSender( ).sendMessage( utils.chat( "&c[&5Staff Core&c] Not able to connect to the Database" ) );
@@ -207,8 +211,7 @@ public class AltsQuery {
         }
     }
     
-    public static void addAlts( ){
-        JSONObject json = getAlts( );
+    public static void addAlts( JSONObject json ){
         int length = json.getInt( "total" );
         for ( int i = 1; i <= length; i++ ) {
             String rawAlts = json.get( String.valueOf( i ) ).toString( )

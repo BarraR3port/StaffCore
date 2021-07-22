@@ -64,7 +64,6 @@ public class BansQuery {
                 json.put( "IP_Banned" , rs.getString( "IP_Banned" ) );
                 json.put( "Status" , rs.getString( "Status" ) );
             }
-            Bukkit.broadcastMessage( json.toString( ) );
         } catch ( SQLException error ) {
             error.printStackTrace( );
             json.put( "error" , true );

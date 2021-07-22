@@ -71,8 +71,10 @@ public class utils {
         } else if ( type.equalsIgnoreCase( "lg" ) && prefix == null ) {
             if ( plugin.getConfig( ).getString( "language" ).equalsIgnoreCase( "EN_NA" ) ) {
                 return plugin.en_na.getConfig( ).getString( path );
-            } else {
+            } else if ( plugin.getConfig( ).getString( "language" ).equalsIgnoreCase( "ES_CL" ) ) {
                 return plugin.es_cl.getConfig( ).getString( path );
+            } else if ( plugin.getConfig( ).getString( "language" ).equalsIgnoreCase( "FR" ) ) {
+                return plugin.fr.getConfig( ).getString( path );
             }
         }
         if ( type.equalsIgnoreCase( "lg" ) && prefix != null ) { //Language
@@ -82,11 +84,17 @@ public class utils {
                 } else {
                     return plugin.getConfig( ).getString( "staff_prefix" ) + plugin.en_na.getConfig( ).getString( path );
                 }
-            } else {
+            } else if ( plugin.getConfig( ).getString( "language" ).equalsIgnoreCase( "ES_CL" ) ) {
                 if ( prefix.equalsIgnoreCase( "sv" ) ) {
                     return plugin.getConfig( ).getString( "server_prefix" ) + plugin.es_cl.getConfig( ).getString( path );
                 } else {
                     return plugin.getConfig( ).getString( "staff_prefix" ) + plugin.es_cl.getConfig( ).getString( path );
+                }
+            } else  {
+                if ( prefix.equalsIgnoreCase( "sv" ) ) {
+                    return plugin.getConfig( ).getString( "server_prefix" ) + plugin.fr.getConfig( ).getString( path );
+                } else {
+                    return plugin.getConfig( ).getString( "staff_prefix" ) + plugin.fr.getConfig( ).getString( path );
                 }
             }
         } else if ( type.equalsIgnoreCase( "item" ) && prefix == null ) {
@@ -133,8 +141,10 @@ public class utils {
         if ( type.equalsIgnoreCase( "lg" ) ) { //Language
             if ( plugin.getConfig( ).getString( "language" ).equalsIgnoreCase( "EN_NA" ) ) {
                 return plugin.en_na.getConfig( ).getInt( path );
-            } else {
+            } else if ( plugin.getConfig( ).getString( "language" ).equalsIgnoreCase( "ES_CL" ) ) {
                 return plugin.es_cl.getConfig( ).getInt( path );
+            } else {
+                return plugin.fr.getConfig( ).getInt( path );
             }
         } else if ( type.equalsIgnoreCase( "item" ) ) {
             return plugin.items.getConfig( ).getInt( path );
@@ -166,6 +176,7 @@ public class utils {
         plugin.warns.reloadConfig( );
         plugin.en_na.reloadConfig( );
         plugin.es_cl.reloadConfig( );
+        plugin.fr.reloadConfig( );
         plugin.items.reloadConfig( );
         plugin.alerts.reloadConfig( );
         plugin.menus.reloadConfig( );
@@ -435,7 +446,13 @@ public class utils {
         }
         version = version.replace( "-" , "" );
         version = version.trim( );
-        if ( version.equalsIgnoreCase( "1.17" ) ) {
+        if ( version.equalsIgnoreCase( "1.20" ) ) {
+            return false;
+        } if ( version.equalsIgnoreCase( "1.19" ) ) {
+            return false;
+        } else if ( version.equalsIgnoreCase( "1.18" ) ) {
+            return false;
+        } else if ( version.equalsIgnoreCase( "1.17" ) ) {
             return false;
         } else if ( version.equalsIgnoreCase( "1.16" ) ) {
             return false;

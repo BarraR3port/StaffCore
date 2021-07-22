@@ -15,9 +15,11 @@ import cl.bebt.staffcore.commands.staffcore;
 import cl.bebt.staffcore.configs.*;
 import cl.bebt.staffcore.configs.Lenguajes.EN_NA;
 import cl.bebt.staffcore.configs.Lenguajes.ES_CL;
+import cl.bebt.staffcore.configs.Lenguajes.FR;
 import cl.bebt.staffcore.listeners.*;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.menu.listeners.MenuListener;
+import cl.bebt.staffcore.sql.DataExporter;
 import cl.bebt.staffcore.sql.Mysql;
 import cl.bebt.staffcore.sql.Queries.StaffQuery;
 import cl.bebt.staffcore.sql.SQLGetter;
@@ -27,6 +29,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.IllegalPluginAccessException;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.SQLException;
@@ -70,6 +73,10 @@ public final class main extends JavaPlugin {
     
     public ES_CL es_cl;
     
+    public FR fr;
+    
+    public StatsConfig stats;
+    
     public ItemsConfig items;
     
     public AlertsConfig alerts;
@@ -103,17 +110,21 @@ public final class main extends JavaPlugin {
                     c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&4&lBut its recommend to use the latest version: &6" + version ) );
                     c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------" ) );
                     plugin.getPluginLoader( ).disablePlugin( this );
-                }
-                Bukkit.getServer( ).getScheduler( ).scheduleSyncRepeatingTask( this , ( ) -> {
-                    for ( Player p : Bukkit.getOnlinePlayers( ) ) {
-                        if ( p.hasPermission( "staffcore.staff" ) ) {
-                            utils.tellHover( p , getConfig( ).getString( "server_prefix" ) +
-                                            "&cYou are using an StaffCore older version" ,
-                                    "&aClick to download the version: " + latestVersion ,
-                                    "https://staffcore.glitch.me/download" );
-                        }
+                } else {
+                    try{
+                        Bukkit.getServer( ).getScheduler( ).scheduleSyncRepeatingTask( this , ( ) -> {
+                            for ( Player p : Bukkit.getOnlinePlayers( ) ) {
+                                if ( p.hasPermission( "staffcore.staff" ) ) {
+                                    utils.tellHover( p , getConfig( ).getString( "server_prefix" ) +
+                                                    "&cYou are using an StaffCore older version" ,
+                                            "&aClick to download the version: " + latestVersion ,
+                                            "https://staffcore.glitch.me/download" );
+                                }
+                            }
+                        } , 0L , 12000L );
+                    }catch ( IllegalPluginAccessException ignored ){
                     }
-                } , 12000L , 20L );
+                }
             }
         } );
         loadConfigManager( );
@@ -233,6 +244,7 @@ public final class main extends JavaPlugin {
             new ToggleStaffChat( plugin );
             new Staff( plugin );
         }
+        new DataExporter( this );
     }
     
     public void onDisable( ){
@@ -270,6 +282,12 @@ public final class main extends JavaPlugin {
         this.es_cl = new ES_CL( plugin );
         this.es_cl.saveDefaultConfig( );
         this.es_cl.reloadConfig( );
+        this.fr = new FR( plugin );
+        this.fr.saveDefaultConfig( );
+        this.fr.reloadConfig( );
+        this.stats = new StatsConfig( plugin );
+        this.stats.saveDefaultConfig( );
+        this.stats.reloadConfig( );
         this.items = new ItemsConfig( plugin );
         this.items.saveDefaultConfig( );
         this.items.reloadConfig( );

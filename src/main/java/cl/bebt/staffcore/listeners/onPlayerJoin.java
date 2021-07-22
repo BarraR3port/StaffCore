@@ -62,14 +62,12 @@ public class onPlayerJoin implements Listener {
             }
             if ( BansQuery.isStillBanned( e.getName( ) , IP ) ) {
                 int id = BansQuery.getBannedId( e.getName( ) , IP );
-                Bukkit.broadcastMessage( "id: " + id );
                 e.disallow( AsyncPlayerPreLoginEvent.Result.KICK_BANNED , KickBannedPlayerSql( BansQuery.getBanInfo( id ) ) );
             }
         } else {
             try {
                 List < String > ips = plugin.alts.getConfig( ).getStringList( "alts." + e.getName( ) );
                 int size = plugin.alts.getConfig( ).getStringList( "alts." + e.getName( ) ).size( );
-                Bukkit.broadcastMessage( ips.toString( ) );
                 if ( size > 0 ) {
                     if ( !ips.contains( IP ) )
                         ips.add( IP );

@@ -120,4 +120,50 @@ public class Http {
         return head;
     }
     
+    public static void registerServer( String urlParaVisitar , String uuid){
+        Bukkit.getScheduler( ).runTaskAsynchronously( plugin , ( ) -> {
+            try {
+                StringBuilder resultado = new StringBuilder( );
+                URL url = new URL( urlParaVisitar );
+                HttpURLConnection connexion = ( HttpURLConnection ) url.openConnection( );
+                connexion.setRequestMethod( "GET" );
+                BufferedReader rd = new BufferedReader( new InputStreamReader( connexion.getInputStream( ) ) );
+                String linea;
+                while ((linea = rd.readLine( )) != null) {
+                    resultado.append( linea );
+                }
+                rd.close( );
+                JSONObject array = new JSONObject( resultado.toString( ) );
+                if ( array.get( "type" ).toString( ).equalsIgnoreCase( "success" ) ) {
+                    plugin.stats.getConfig( ).set( "server_uuid" , uuid );
+                    plugin.stats.saveConfig( );
+                }
+            } catch ( IOException ignored ){
+                ignored.printStackTrace();
+            }
+        } );
+    }
+    
+    public static void exportNewServerData( String urlParaVisitar){
+        Bukkit.getScheduler( ).runTaskAsynchronously( plugin , ( ) -> {
+            try {
+                StringBuilder resultado = new StringBuilder( );
+                URL url = new URL( urlParaVisitar );
+                HttpURLConnection connexion = ( HttpURLConnection ) url.openConnection( );
+                connexion.setRequestMethod( "GET" );
+                BufferedReader rd = new BufferedReader( new InputStreamReader( connexion.getInputStream( ) ) );
+                String linea;
+                while ((linea = rd.readLine( )) != null) {
+                    resultado.append( linea );
+                }
+                rd.close( );
+                JSONObject array = new JSONObject( resultado.toString( ) );
+                if ( array.get( "type" ).toString( ).equalsIgnoreCase( "success" ) ) {
+                
+                }
+            } catch ( IOException ignored ){
+            }
+        } );
+    }
+    
 }
