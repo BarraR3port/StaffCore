@@ -1,0 +1,97 @@
+#     ______     _                ___      ___                  ______                                    #
+#   .' ____ \   / |_            .' ..]   .' ..]               .' ___  |                                   #
+#   | (___ \_| `| |-'  ,--.    _| |_    _| |_      ______    / .'   \_|   .--.    _ .--.   .---.          #
+#    _.____`.   | |   `'_\ :  '-| |-'  '-| |-'    |______|   | |        / .'`\ \ [ `/'`\] / /__\\         #
+#   | \____) |  | |,  // | |,   | |      | |                 \ `.___.'\ | \__. |  | |     | \__.,         #
+#   \______.'   \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.5.0 #
+#                                                                                                         #
+#                                                                                By BarraR3port : [MENUS] #
+
+# ------------> MENUS <--------------
+ban_menu:
+  name: "&5Ban &9%player%"
+  player_lore:
+    - "&7Select a reason to ban &9%banned%"
+bangui:
+  amount_banned:
+    name: "&cChose the amount:"
+  chose_ban_type:
+    name: "&cChose Ban type"
+  quantity_banned:
+    name: "&cChose between &ds/m/h/d"
+banlist:
+  ban_manager:
+    name: "&cBan manager"
+  edit_ban:
+    name: "&cUn Ban or Close the ban?"
+bans:
+  others: "&9%player%'s &cWarnings"
+  owns: "&cYour Warnings"
+  name: "&cWarns"
+chat:
+  amount_chat:
+    name: "&cChose the amount:"
+  chat_manager:
+    name: "&cChat Manager"
+  clear_chat_manager:
+    name: "&cClear Chat Manager"
+  clear_chat:
+    name: "&cClear Players chat"
+  mute_chat_manager:
+    name: "&cMute Chat Manager"
+  mute_players_chat:
+    name: "&cMute Players Chat"
+  quantity:
+    name: "&cChose between &ds/m/h/d"
+others:
+  client_settings:
+    name: "&cClient Settings"
+  server_manager:
+    name: "&cServer Manager"
+  staff_list:
+    name: "&cStaffList"
+inventory:
+  inv_see:
+    name: "&9%player%'s &7Chest"
+  ender_see:
+    name: "&9%player%'s &7Ender Chest"
+  open_chest:
+    name: "&7Chest"
+reports:
+  edit:
+    name: "&cEdit the Report"
+  closed:
+    name: "&cClosed Reports"
+  open:
+    name: "&cOpen Reports"
+  manager:
+    name: "&cReport Manager"
+  menu:
+    name: "&cReport &9%player%"
+warns:
+  amount:
+    name: "&cChose the amount"
+  menu:
+    name: "&cWarn &9%player%"
+  time:
+    name: "&cChose the time"
+  edit:
+    name: "&cEdit the Warn"
+  warnings:
+    others: "&9%player%'s &cWarnings"
+    owns: "&cYour Warnings"
+    name: "&cWarns"
+
+# ------------> REPORTS <--------------
+report:
+  report_menu:
+    name: "&5Report &9%player%"
+    player_lore:
+      - "&7Select a reason to report &9%reported%"
+
+# ------------> REPORTS <--------------
+warn:
+  warn_menu:
+    name: "&5Warn &9%player%"
+    player_lore:
+      - "&7Select a reason to warn &9%warned%"

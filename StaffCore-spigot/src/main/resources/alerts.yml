@@ -1,0 +1,174 @@
+#     ______     _                ___      ___                  ______                                    #
+#   .' ____ \   / |_            .' ..]   .' ..]               .' ___  |                                   #
+#   | (___ \_| `| |-'  ,--.    _| |_    _| |_      ______    / .'   \_|   .--.    _ .--.   .---.          #
+#    _.____`.   | |   `'_\ :  '-| |-'  '-| |-'    |______|   | |        / .'`\ \ [ `/'`\] / /__\\         #
+#   | \____) |  | |,  // | |,   | |      | |                 \ `.___.'\ | \__. |  | |     | \__.,         #
+#   \______.'   \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.5.0 #
+#                                                                                                         #
+#                                                                               By BarraR3port : [ALERTS] #
+
+# ------------> BAN <----------
+ban:
+  alerts: # Placeholders: %baner% | %banned% | %reason% | %amount% | %time% | %exp_date% | %date%
+    - " "
+    - "                    &6⚠ Ban Alerts &6⚠"
+    - " "
+    - "        &3The player &9%banned% &3was &cBanned."
+    - " "
+    - "           &a► &7Banned by: &9%baner%"
+    - "           &a► &7Reason: &4%reason%"
+    - "           &a► &7Ip Banned: %IP_BANED%"
+    - "           &a► &7For &a%time_left%"
+    - "           &a► &7Until &a%exp_date%"
+    - "           &a► &7Create Date &a%date%"
+    - " "
+  change: # Placeholders: %changed_by% | %baner% | %banned% | %id% | %reason% | %create_date% | %exp_date% | %ban_status%
+    - " "
+    - "                    &6⚠ &5Ban Changed  &6⚠"
+    - " "
+    - "        &3The Ban #&c%id% &awas &4%ban_status% &aby: &c%changed_by%"
+    - " "
+    - "           &a► &7Banned: &9%banned%"
+    - "           &a► &7Banned by: &9%baner%"
+    - "           &a► &7Reason: &4%reason%"
+    - "           &a► &7ID: &4%id%"
+    - " "
+  msg: # Placeholders: %baner% | %banned% | %reason% | %amount% | %time% | %exp_date% | %date%
+    - "&6&5Ban System &6"
+    - ""
+    - "&4Your account %banned% were banned!"
+    - ""
+    - "&a&7Banned by: &a%baner%"
+    - "&a&7Reason: &4%reason%"
+    - "&a&7Ip Banned: %IP_BANED%"
+    - "&a&7For &a%amount%%time%"
+    - "&a&7Until &a%exp_date%"
+    - "&a&7Create Date &a%date%"
+    - ""
+  join: # Placeholders: %baner% | %banned% | %reason% | %amount% | %time% | %exp_date% | %date%
+    - ""
+    - "&6&5Ban System &6"
+    - ""
+    - "&4Your account %banned% is banned!"
+    - ""
+    - "&a&7Banned by: &9%baner%"
+    - "&a&7Reason: &4%reason%"
+    - "&a&7Ip Banned: %IP_BANED%"
+    - "&a&7Time left: &c%time_left%"
+    - "&a&7Until &a%exp_date%"
+    - "&a&7Create Date &a%date%"
+    - ""
+
+chat:
+  toggle: # Placeholders: %muted% | %status% | %staff%
+    - " "
+    - "                    &6⚠ &5Mute Alerts &6⚠"
+    - " "
+    - "           &a► &3The player &9%muted% &3was %status%."
+    - " "
+    - "           &a► %status% &aby: &9%staff%"
+    - " "
+  temporal_mute: # Placeholders: %muted% | %staff% | %amount% | %quantity%
+    - " "
+    - "                    &6⚠ &5Mute Change &6⚠"
+    - " "
+    - "        &3The player &9%muted% &3was &cMuted."
+    - " "
+    - "           &a► &7Muted by: &9%staff%"
+    - " "
+    - "           &a► &bFor &a%amount% %quantity%"
+    - " "
+
+# ------------> FREEZE <----------
+freeze: # Placeholders: %frozen% | %freezer% | %status%
+  - " "
+  - "                    &6⚠ &5Freeze Alerts &6⚠"
+  - " "
+  - "             &a► &3The player &9%frozen% &3was %status%."
+  - " "
+  - "             &a► &a%status% by: &9%freezer%"
+  - " "
+
+# ------------> Report Alerts <----------
+report:
+  report_alerts: # Placeholders: %reporter% | %reported% | %reason% | %date%
+    - " "
+    - "                    &6⚠ &5Report Alerts &6⚠"
+    - " "
+    - "        &3The player &9%reported% &3was &creported."
+    - " "
+    - "           &a► &aReported by: &9%reporter%"
+    - "           &a► &aReason: &4%reason%"
+    - "           &a► &aCreate Date &a%date%"
+    - " "
+  report_change: # Placeholders: %changed_by% | %reported% | %reporter% | %id% | %reason% | %create_date% | %report_status%
+    - " "
+    - "                    &6⚠ &5Report Changed &6⚠"
+    - " "
+    - "        &3The Report &cId: #&c%id% &awas &4%report_status% &aby: &9%changed_by%"
+    - " "
+    - "           &a► &aReported: &9%reported%"
+    - "           &a► &aReported by: &9%reporter%"
+    - "           &a► &aReason: &4%reason%"
+    - " "
+
+# ------------> TELEPORT <-----------
+tp:
+  wrong:
+    - "&4Wrong usage, use:"
+    - "&c/tp <otherplayer>"
+    - "&c/tp <player> <otherplaye>"
+    - "&c/tp <all> || /tpall"
+    - "&c/tp <all> <otherplayer>"
+    - "&c/tp <x> <y> <z>"
+    - "&c/tp <player> <x> <y> <z>"
+    - "&c/tp <all> <x> <y> <z>"
+
+# ------------> WARNS <----------
+warns:
+  alerts:
+    warn_alerts: # Placeholders: %warner% | %warned% | %reason% | %amount% | %time% | %exp_date% | %date%
+      - " "
+      - "                    &6⚠ &5Warn Alerts &6⚠"
+      - " "
+      - "        &3The player &9%warned% &3was &cWarned."
+      - " "
+      - "           &a► &aWarned by: &9%warner%"
+      - "           &a► &aReason: &4%reason%"
+      - "           &a► &aFor &a%amount%%time%"
+      - "           &a► &aUntil &a%exp_date%"
+      - "           &a► &aCreate Date &a%date%"
+      - " "
+    warn_change: # Placeholders: %changed_by% | %warner% | %warned% | %id% | %reason% | %create_date% | %exp_date% | %warn_status%
+      - " "
+      - "                    &6⚠ &5Warn Changed &6⚠"
+      - " "
+      - "        &3The Warn #&c%id% &awas &4%warn_status% &aby: &c%changed_by%"
+      - " "
+      - "           &a► &aWarned: &a%warned%"
+      - "           &a► &aWarned by: &a%warner%"
+      - "           &a► &aReason: &4%reason%"
+      - "           &a► &aID: &4%id%"
+      - " "
+
+# ------------> WIPE <----------
+wipe:
+  wipe_msg: # Placeholders: %wiper% | %wiped% | %Bans% | %reports% | %warns%
+    - " "
+    - "                    &6⚠  &5Wipe Alerts &6⚠"
+    - " "
+    - "        &3The player &9%wiped% &3was &aWiped."
+    - " "
+    - "           &a► &aWiped by: &9%wiper%"
+    - "           &a► &aBans wiped: %Bans%"
+    - "           &a► &aReports wiped: %reports%"
+    - "           &a► &aWarns wiped: %warns%"
+    - " "
+  wipe_kick_msg: # Placeholders: %wiper% | %wiped%
+    - ""
+    - "&6⚠ &5Wipe System &6⚠"
+    - ""
+    - "&4Your account has being Wiped Off!"
+    - ""
+    - "&a&7Wiped by: &a%wiper%"
+    - ""
