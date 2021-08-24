@@ -8,7 +8,8 @@ import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.menu.ReportPlayerMenu;
 import cl.bebt.staffcore.utils.ReportPlayer;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.Api;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
@@ -32,7 +33,7 @@ public class ReportMenu extends ReportPlayerMenu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( utils.getString( "reports.menu.name" , "menu" , null ).replace( "%player%" , reported ) );
+        return Utils.chat( Utils.getString( "reports.menu.name" , "menu" , null ).replace( "%player%" , reported ) );
     }
     
     @Override
@@ -44,15 +45,15 @@ public class ReportMenu extends ReportPlayerMenu {
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
-        ConfigurationSection inventorySection = plugin.items.getConfig( ).getConfigurationSection( "punish_items" );
+        ConfigurationSection inventorySection = Api.items.getConfig( ).getConfigurationSection( "punish_items" );
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "other" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
             PersistentDataContainer PlayerData = p.getPersistentDataContainer( );
             PlayerData.set( new NamespacedKey( main.plugin , "reportmsg" ) , PersistentDataType.STRING , reported );
-            utils.tell( p , utils.getString( "bans.other_reason" , "lg" , "sv" ) );
+            Utils.tell( p , Utils.getString( "bans.other_reason" , "lg" , "sv" ) );
         } else {
             for ( String key : inventorySection.getKeys( false ) ) {
-                String reason = utils.getString( "punish_items." + key + ".reason" , "item" , null );
+                String reason = Utils.getString( "punish_items." + key + ".reason" , "item" , null );
                 if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , key ) , PersistentDataType.STRING ) ) {
                     new ReportPlayer( p , reason , reported );
                     p.closeInventory( );
@@ -67,21 +68,21 @@ public class ReportMenu extends ReportPlayerMenu {
     @Override
     public void setMenuItems( ){
         addMenuBorder( );
-        ConfigurationSection inventorySection = plugin.items.getConfig( ).getConfigurationSection( "punish_items" );
+        ConfigurationSection inventorySection = Api.items.getConfig( ).getConfigurationSection( "punish_items" );
         for ( String key : inventorySection.getKeys( false ) ) {
-            String name = utils.getString( "punish_items." + key + ".name" , "item" , null );
-            String material = utils.getString( "punish_items." + key + ".material" , "item" , null );
-            String reason = utils.getString( "punish_items." + key + ".reason" , "item" , null );
+            String name = Utils.getString( "punish_items." + key + ".name" , "item" , null );
+            String material = Utils.getString( "punish_items." + key + ".material" , "item" , null );
+            String reason = Utils.getString( "punish_items." + key + ".reason" , "item" , null );
             ArrayList < String > lore = new ArrayList <>( );
             ItemStack item = new ItemStack( Material.valueOf( material ) );
             ItemMeta meta = item.getItemMeta( );
-            for ( String key2 : utils.getStringList( "punish_items." + key + ".lore" , "item" ) ) {
+            for ( String key2 : Utils.getStringList( "punish_items." + key + ".lore" , "item" ) ) {
                 key2 = key2.replace( "%punish%" , "Report" );
                 key2 = key2.replace( "%player%" , reported );
-                lore.add( utils.chat( key2 ) );
+                lore.add( Utils.chat( key2 ) );
             }
             meta.setLore( lore );
-            meta.setDisplayName( utils.chat( name ) );
+            meta.setDisplayName( Utils.chat( name ) );
             if ( key.equalsIgnoreCase( "other" ) ) {
                 meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , key ) , PersistentDataType.STRING , "other" );
             } else {

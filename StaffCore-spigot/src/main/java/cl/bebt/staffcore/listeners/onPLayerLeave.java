@@ -8,7 +8,7 @@ package cl.bebt.staffcore.listeners;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.utils.OpenEnderSee;
 import cl.bebt.staffcore.utils.OpenInvSee;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -30,22 +30,22 @@ public class onPLayerLeave implements Listener {
         if ( main.invSee.containsValue( p ) ) {
             Player viewer = OpenInvSee.getOwner( p );
             viewer.closeInventory( );
-            utils.tell( viewer , utils.getString( "invsee.disconnected" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
-            utils.PlaySound( viewer , "invsee_close" );
+            Utils.tell( viewer , Utils.getString( "invsee.disconnected" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
+            Utils.PlaySound( viewer , "invsee_close" );
             main.invSee.remove( p );
         }
         if ( main.enderSee.containsValue( p ) ) {
             Player viewer = OpenEnderSee.getOwner( p );
             viewer.closeInventory( );
-            utils.tell( viewer , utils.getString( "invsee.disconnected" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
-            utils.PlaySound( viewer , "endersee_close" );
+            Utils.tell( viewer , Utils.getString( "invsee.disconnected" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
+            Utils.PlaySound( viewer , "endersee_close" );
             main.enderSee.remove( p );
         }
-        if ( utils.getBoolean( "discord.type.debug.enabled_debugs.commands" ) ) {
+        if ( Utils.getBoolean( "discord.type.debug.enabled_debugs.commands" ) ) {
             ArrayList < String > dc = new ArrayList <>( );
             dc.add( "**Player:** " + p.getName( ) );
             dc.add( "**Reason:** " + e.getQuitMessage( ) );
-            utils.sendDiscordDebugMsg( e.getPlayer( ) , "⚠ Player Leave ⚠" , dc );
+            Utils.sendDiscordDebugMsg( e.getPlayer( ) , "⚠ Player Leave ⚠" , dc );
         }
     }
     

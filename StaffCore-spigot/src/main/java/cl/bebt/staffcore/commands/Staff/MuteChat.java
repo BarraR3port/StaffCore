@@ -6,7 +6,7 @@ package cl.bebt.staffcore.commands.Staff;
 
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.utils.ToggleChat;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -41,43 +41,43 @@ public class MuteChat implements TabExecutor {
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {
-            if ( (args.length == 1 || args.length == 2) && utils.isOlderVersion( ) ) {
-                utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
+            if ( (args.length == 1 || args.length == 2) && Utils.isOlderVersion( ) ) {
+                Utils.tell( sender , Utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
                 return true;
             }
             if ( args.length == 0 ) {
                 if ( !plugin.chatMuted ) {
-                    Bukkit.broadcastMessage( utils.chat( utils.getString( "toggle_chat.mute_by_console" , "lg" , "staff" ) ) );
+                    Bukkit.broadcastMessage( Utils.chat( Utils.getString( "toggle_chat.mute_by_console" , "lg" , "staff" ) ) );
                     ToggleChat.Mute( true );
                 } else {
-                    Bukkit.broadcastMessage( utils.chat( utils.getString( "toggle_chat.un_mute_by_console" , "lg" , "staff" ) ) );
+                    Bukkit.broadcastMessage( Utils.chat( Utils.getString( "toggle_chat.un_mute_by_console" , "lg" , "staff" ) ) );
                     ToggleChat.Mute( false );
                 }
             } else {
-                utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "mute <player>" ) );
+                Utils.tell( sender , Utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "mute <player>" ) );
             }
         } else {
             Player p = ( Player ) sender;
             if ( p.hasPermission( "staffcore.mutechat" ) ) {
-                if ( (args.length == 1 || args.length == 2) && utils.isOlderVersion( ) ) {
-                    utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
+                if ( (args.length == 1 || args.length == 2) && Utils.isOlderVersion( ) ) {
+                    Utils.tell( sender , Utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
                     return true;
                 }
                 if ( args.length == 0 ) {
                     if ( !plugin.chatMuted ) {
-                        Bukkit.broadcastMessage( utils.chat( utils.getString( "toggle_chat.mute_chat" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) ) );
+                        Bukkit.broadcastMessage( Utils.chat( Utils.getString( "toggle_chat.mute_chat" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) ) );
                         ToggleChat.Mute( true );
                     } else {
-                        Bukkit.broadcastMessage( utils.chat( utils.getString( "toggle_chat.un_mute_chat" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) ) );
+                        Bukkit.broadcastMessage( Utils.chat( Utils.getString( "toggle_chat.un_mute_chat" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) ) );
                         ToggleChat.Mute( false );
                     }
                     
                 } else {
-                    utils.tell( sender , utils.getString( "p_dont_exist" , "lg" , "sv" ) );
+                    Utils.tell( sender , Utils.getString( "p_dont_exist" , "lg" , "sv" ) );
                     
                 }
             } else {
-                utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
+                Utils.tell( sender , Utils.getString( "no_permission" , "lg" , "staff" ) );
             }
         }
         

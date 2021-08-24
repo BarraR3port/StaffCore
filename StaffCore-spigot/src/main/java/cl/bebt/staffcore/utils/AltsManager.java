@@ -4,7 +4,8 @@
 
 package cl.bebt.staffcore.utils;
 
-import cl.bebt.staffcore.EntitysUtils.UserUtils;
+
+import cl.bebt.staffcoreapi.EntitiesUtils.UserUtils;
 
 import java.util.HashMap;
 import java.util.Objects;

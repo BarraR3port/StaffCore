@@ -4,14 +4,14 @@
 
 package cl.bebt.staffcore.menu.menu.Bangui;
 
-import cl.bebt.staffcore.PersistentData.PersistentDataType;
-import cl.bebt.staffcore.PersistentData.PersistentDataUtils;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.Menu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.utils.BanManager;
-import cl.bebt.staffcore.utils.utils;
-import org.bukkit.Bukkit;
+import cl.bebt.staffcoreapi.Api;
+import cl.bebt.staffcoreapi.EntitiesUtils.PersistentDataUtils;
+import cl.bebt.staffcoreapi.Enums.PersistentDataType;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -49,7 +49,7 @@ public class QuantityBanned extends Menu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( utils.getString( "bangui.quantity_banned.name" , "menu" , null ) );
+        return Utils.chat( Utils.getString( "bangui.quantity_banned.name" , "menu" , null ) );
     }
     
     @Override
@@ -61,16 +61,10 @@ public class QuantityBanned extends Menu {
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
         ItemStack item = e.getCurrentItem( );
-        Bukkit.broadcastMessage( "aaaa");
-        if ( PersistentDataUtils.has( item , "timeType", PersistentDataType.STRING ) ) {
+        if ( PersistentDataUtils.has( item , "timeType" , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            String key = PersistentDataUtils.getString( item, "timeType" );
-            switch (  key ) {
-                case "seconds" -> BanManager.TempBan( uuid , utils.getUUIDFromName( banned ) , reason , utils.ConvertDate( amount , "s" ) , false );
-                case "minutes" -> BanManager.TempBan( uuid , utils.getUUIDFromName( banned ) , reason , utils.ConvertDate( amount , "m" ) , false );
-                case "hours" -> BanManager.TempBan( uuid , utils.getUUIDFromName( banned ) , reason , utils.ConvertDate( amount , "h" ) , false );
-                case "days" -> BanManager.TempBan( uuid , utils.getUUIDFromName( banned ) , reason , utils.ConvertDate( amount , "d" ) , false );
-            }
+            String key = PersistentDataUtils.getString( item , "timeType" );
+            BanManager.TempBan( uuid , Utils.getUUIDFromName( banned ) , reason , Utils.ConvertDate( amount , key ) , false );
             PersistentDataUtils.clearItem( item );
         }
         
@@ -111,28 +105,28 @@ public class QuantityBanned extends Menu {
             }
         }
         inventory.setItem( 22 , close( ) );
-        ConfigurationSection inventorySection = plugin.items.getConfig( ).getConfigurationSection( "time" );
+        ConfigurationSection inventorySection = Api.items.getConfig( ).getConfigurationSection( "time" );
         for ( String key : inventorySection.getKeys( false ) ) {
-            String name = utils.getString( "time." + key + ".name" , "item" , null );
-            String material = utils.getString( "time." + key + ".material" , "item" , null );
+            String name = Utils.getString( "time." + key + ".name" , "item" , null );
+            String material = Utils.getString( "time." + key + ".material" , "item" , null );
             ArrayList < String > lore = new ArrayList <>( );
             ItemStack item = new ItemStack( Material.valueOf( material ) );
             ItemMeta meta = item.getItemMeta( );
-            for ( String key2 : utils.getStringList( "time." + key + ".lore" , "item" ) ) {
+            for ( String key2 : Utils.getStringList( "time." + key + ".lore" , "item" ) ) {
                 key2 = key2.replace( "%punish%" , "Ban" );
                 key2 = key2.replace( "%time%" , String.valueOf( amount ) );
                 key2 = key2.replace( "%player%" , banned );
-                lore.add( utils.chat( key2 ) );
+                lore.add( Utils.chat( key2 ) );
             }
             meta.setLore( lore );
-            meta.setDisplayName( utils.chat( name ) );
+            meta.setDisplayName( Utils.chat( name ) );
             meta.setLore( lore );
             item.setItemMeta( meta );
             PersistentDataUtils.save( "timeType" , key , item , uuid , PersistentDataType.STRING );
             inventory.addItem( item );
         }
         if ( inventory.getItem( 20 ) == null ) {
-            utils.tell( player , "&0[&5Warning&0] &7Try to delete the StaffCore/items.yml file and restart the server" );
+            Utils.tell( player , "&0[&5Warning&0] &7Try to delete the StaffCore/items.yml file and restart the server" );
         }
     }
     

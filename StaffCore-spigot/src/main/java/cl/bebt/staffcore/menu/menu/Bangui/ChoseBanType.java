@@ -4,13 +4,13 @@
 
 package cl.bebt.staffcore.menu.menu.Bangui;
 
-import cl.bebt.staffcore.PersistentData.PersistentDataType;
-import cl.bebt.staffcore.PersistentData.PersistentDataUtils;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.Menu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.utils.BanManager;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.EntitiesUtils.PersistentDataUtils;
+import cl.bebt.staffcoreapi.Enums.PersistentDataType;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -47,7 +47,7 @@ public class ChoseBanType extends Menu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( utils.getString( "bangui.chose_ban_type.name" , "menu" , null ) );
+        return Utils.chat( Utils.getString( "bangui.chose_ban_type.name" , "menu" , null ) );
     }
     
     @Override
@@ -59,21 +59,21 @@ public class ChoseBanType extends Menu {
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
         ItemStack item = e.getCurrentItem( );
-        if ( PersistentDataUtils.has( item , "tempban", PersistentDataType.STRING ) ) {
+        if ( PersistentDataUtils.has( item , "tempban" , PersistentDataType.STRING ) ) {
             p.closeInventory( );
             new AmountBanned( main.getPlayerMenuUtility( p ) , plugin , p , banned , reason ).open( );
-        } else if ( PersistentDataUtils.has( item , "permban", PersistentDataType.STRING ) ) {
+        } else if ( PersistentDataUtils.has( item , "permban" , PersistentDataType.STRING ) ) {
             p.closeInventory( );
             try {
-                BanManager.Ban( p.getUniqueId( ) , utils.getUUIDFromName( banned ) , reason , false );
+                BanManager.Ban( p.getUniqueId( ) , Utils.getUUIDFromName( banned ) , reason , false );
             } catch ( ParseException ex ) {
                 ex.printStackTrace( );
             }
-        } else if ( PersistentDataUtils.has( item , "ban-normal", PersistentDataType.STRING ) ) {
+        } else if ( PersistentDataUtils.has( item , "ban-normal" , PersistentDataType.STRING ) ) {
             p.closeInventory( );
             PersistentDataUtils.save( "ban-ip" , "ban-ip" , p.getUniqueId( ) , PersistentDataType.STRING );
             new ChoseBanType( playerMenuUtility , plugin , player , banned , reason ).open( );
-        } else if ( PersistentDataUtils.has( item , "ban-ip", PersistentDataType.STRING ) ) {
+        } else if ( PersistentDataUtils.has( item , "ban-ip" , PersistentDataType.STRING ) ) {
             p.closeInventory( );
             PersistentDataUtils.remove( p.getUniqueId( ) , "ban-ip" );
             new ChoseBanType( playerMenuUtility , plugin , player , banned , reason ).open( );
@@ -127,15 +127,15 @@ public class ChoseBanType extends Menu {
     
     public ItemStack tempBan( ){
         ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.getMaterial( utils.getString( "quantity.temp.item" , "item" , null ) ) );
+        ItemStack item = new ItemStack( Material.getMaterial( Utils.getString( "quantity.temp.item" , "item" , null ) ) );
         ItemMeta meta = item.getItemMeta( );
-        for ( String key : utils.getStringList( "quantity.temp.lore" , "item" ) ) {
+        for ( String key : Utils.getStringList( "quantity.temp.lore" , "item" ) ) {
             key = key.replace( "%player%" , banned );
             key = key.replace( "%type%" , "Ban" );
-            lore.add( utils.chat( key ) );
+            lore.add( Utils.chat( key ) );
         }
         meta.setLore( lore );
-        meta.setDisplayName( utils.chat( utils.getString( "quantity.temp.name" , "item" , null ).replace( "%type%" , "Ban" ) ) );
+        meta.setDisplayName( Utils.chat( Utils.getString( "quantity.temp.name" , "item" , null ).replace( "%type%" , "Ban" ) ) );
         item.setItemMeta( meta );
         PersistentDataUtils.save( "tempban" , "tempban" , item , uuid , PersistentDataType.STRING );
         return item;
@@ -143,15 +143,15 @@ public class ChoseBanType extends Menu {
     
     public ItemStack permBan( ){
         ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.getMaterial( utils.getString( "quantity.perm.item" , "item" , null ) ) );
+        ItemStack item = new ItemStack( Material.getMaterial( Utils.getString( "quantity.perm.item" , "item" , null ) ) );
         ItemMeta meta = item.getItemMeta( );
-        for ( String key : utils.getStringList( "quantity.perm.lore" , "item" ) ) {
+        for ( String key : Utils.getStringList( "quantity.perm.lore" , "item" ) ) {
             key = key.replace( "%player%" , banned );
             key = key.replace( "%type%" , "Ban" );
-            lore.add( utils.chat( key ) );
+            lore.add( Utils.chat( key ) );
         }
         meta.setLore( lore );
-        meta.setDisplayName( utils.chat( utils.getString( "quantity.perm.name" , "item" , null ).replace( "%type%" , "Ban" ) ) );
+        meta.setDisplayName( Utils.chat( Utils.getString( "quantity.perm.name" , "item" , null ).replace( "%type%" , "Ban" ) ) );
         item.setItemMeta( meta );
         PersistentDataUtils.save( "permban" , "permban" , item , uuid , PersistentDataType.STRING );
         return item;
@@ -159,17 +159,17 @@ public class ChoseBanType extends Menu {
     
     public ItemStack ban_ip( ){
         ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.getMaterial( utils.getString( "quantity.ip.item" , "item" , null ) ) );
+        ItemStack item = new ItemStack( Material.getMaterial( Utils.getString( "quantity.ip.item" , "item" , null ) ) );
         ItemMeta meta = item.getItemMeta( );
         meta.addEnchant( Enchantment.PROTECTION_ENVIRONMENTAL , 1 , true );
         meta.addItemFlags( ItemFlag.HIDE_ENCHANTS );
-        for ( String key : utils.getStringList( "quantity.ip.lore" , "item" ) ) {
+        for ( String key : Utils.getStringList( "quantity.ip.lore" , "item" ) ) {
             key = key.replace( "%player%" , banned );
             key = key.replace( "%type%" , "Ban" );
-            lore.add( utils.chat( key ) );
+            lore.add( Utils.chat( key ) );
         }
         meta.setLore( lore );
-        meta.setDisplayName( utils.chat( utils.getString( "quantity.ip.name" , "item" , null ).replace( "%type%" , "Ban" ) ) );
+        meta.setDisplayName( Utils.chat( Utils.getString( "quantity.ip.name" , "item" , null ).replace( "%type%" , "Ban" ) ) );
         item.setItemMeta( meta );
         PersistentDataUtils.save( "ban-ip" , "ban-ip" , item , uuid , PersistentDataType.STRING );
         return item;
@@ -177,15 +177,15 @@ public class ChoseBanType extends Menu {
     
     public ItemStack ban_normal( ){
         ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.getMaterial( utils.getString( "quantity.normal.item" , "item" , null ) ) );
+        ItemStack item = new ItemStack( Material.getMaterial( Utils.getString( "quantity.normal.item" , "item" , null ) ) );
         ItemMeta meta = item.getItemMeta( );
-        for ( String key : utils.getStringList( "quantity.normal.lore" , "item" ) ) {
+        for ( String key : Utils.getStringList( "quantity.normal.lore" , "item" ) ) {
             key = key.replace( "%player%" , banned );
             key = key.replace( "%type%" , "Ban" );
-            lore.add( utils.chat( key ) );
+            lore.add( Utils.chat( key ) );
         }
         meta.setLore( lore );
-        meta.setDisplayName( utils.chat( utils.getString( "quantity.normal.name" , "item" , null ).replace( "%type%" , "Ban" ) ) );
+        meta.setDisplayName( Utils.chat( Utils.getString( "quantity.normal.name" , "item" , null ).replace( "%type%" , "Ban" ) ) );
         item.setItemMeta( meta );
         PersistentDataUtils.save( "ban-normal" , "ban-normal" , item , uuid , PersistentDataType.STRING );
         return item;

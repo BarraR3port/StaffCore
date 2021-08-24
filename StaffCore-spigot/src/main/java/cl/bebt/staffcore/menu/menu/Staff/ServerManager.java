@@ -12,7 +12,7 @@ import cl.bebt.staffcore.menu.menu.Banlist.BanManager;
 import cl.bebt.staffcore.menu.menu.Chat.ChatManager;
 import cl.bebt.staffcore.menu.menu.Reports.ReportManager;
 import cl.bebt.staffcore.menu.menu.WarnManager.WarnManager;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -34,7 +34,7 @@ public class ServerManager extends MenuC {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( utils.getString( "others.server_manager.name" , "menu" , null ) );
+        return Utils.chat( Utils.getString( "others.server_manager.name" , "menu" , null ) );
     }
     
     @Override
@@ -86,22 +86,22 @@ public class ServerManager extends MenuC {
         ItemMeta metaWarn = WarnManager.getItemMeta( );
         
         
-        metaBans.setDisplayName( utils.chat( "&cBan Manager" ) );
-        metaReports.setDisplayName( utils.chat( "&cReport Manager" ) );
-        metaChat.setDisplayName( utils.chat( "&cChat Manager" ) );
-        metaWarn.setDisplayName( utils.chat( "&cWarn Manager" ) );
+        metaBans.setDisplayName( Utils.chat( "&cBan Manager" ) );
+        metaReports.setDisplayName( Utils.chat( "&cReport Manager" ) );
+        metaChat.setDisplayName( Utils.chat( "&cChat Manager" ) );
+        metaWarn.setDisplayName( Utils.chat( "&cWarn Manager" ) );
         
         
-        lore.add( utils.chat( "&7Click open the Ban Manager." ) );
+        lore.add( Utils.chat( "&7Click open the Ban Manager." ) );
         metaBans.setLore( lore );
         lore.clear( );
-        lore.add( utils.chat( "&7Click open the Report Manager." ) );
+        lore.add( Utils.chat( "&7Click open the Report Manager." ) );
         metaReports.setLore( lore );
         lore.clear( );
-        lore.add( utils.chat( "&7Click to open the Chat Manager." ) );
+        lore.add( Utils.chat( "&7Click to open the Chat Manager." ) );
         metaChat.setLore( lore );
         lore.clear( );
-        lore.add( utils.chat( "&7Click to open the Warn Manager." ) );
+        lore.add( Utils.chat( "&7Click to open the Warn Manager." ) );
         metaWarn.setLore( lore );
         lore.clear( );
         

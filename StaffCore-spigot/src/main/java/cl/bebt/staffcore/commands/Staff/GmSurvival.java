@@ -4,12 +4,11 @@
 
 package cl.bebt.staffcore.commands.Staff;
 
-import cl.bebt.staffcore.EntitysUtils.UserUtils;
-import cl.bebt.staffcore.Exeptions.PlayerNotFundException;
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.sql.Queries.VanishQuery;
 import cl.bebt.staffcore.utils.FlyManager;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.EntitiesUtils.UserUtils;
+import cl.bebt.staffcoreapi.SQL.Queries.VanishQuery;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -46,18 +45,18 @@ public class GmSurvival implements CommandExecutor {
                                     p.setAllowFlight( true );
                                     p.setFlying( true );
                                 }
-                            } catch ( NoSuchMethodError | PlayerNotFundException ignored ) {
+                            } catch ( NoSuchMethodError ignored ) {
                             }
                         }
-                        utils.tell( sender , utils.getString( "survival.enabled_to" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
+                        Utils.tell( sender , Utils.getString( "survival.enabled_to" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
                     } else {
-                        utils.tell( sender , utils.getString( "survival.already" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
+                        Utils.tell( sender , Utils.getString( "survival.already" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
                     }
                     return false;
                 }
-                utils.tell( sender , utils.getString( "p_dont_exist" , "lg" , "sv" ) );
+                Utils.tell( sender , Utils.getString( "p_dont_exist" , "lg" , "sv" ) );
             } else {
-                utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "sv" ).replace( "%command%" , "gms | gms <player>" ) );
+                Utils.tell( sender , Utils.getString( "wrong_usage" , "lg" , "sv" ).replace( "%command%" , "gms | gms <player>" ) );
             }
             return false;
         }
@@ -81,15 +80,15 @@ public class GmSurvival implements CommandExecutor {
                                 p.setAllowFlight( true );
                                 p.setFlying( true );
                             }
-                        } catch ( NoSuchMethodError | PlayerNotFundException ignored ) {
+                        } catch ( NoSuchMethodError ignored ) {
                         }
                     }
-                    utils.tell( sender , utils.getString( "survival.enabled" , "lg" , "sv" ) );
+                    Utils.tell( sender , Utils.getString( "survival.enabled" , "lg" , "sv" ) );
                 } else {
-                    utils.tell( sender , utils.getString( "survival.already" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
+                    Utils.tell( sender , Utils.getString( "survival.already" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
                 }
             } else {
-                utils.tell( sender , utils.getString( "no_permission" , "lg" , "sv" ) );
+                Utils.tell( sender , Utils.getString( "no_permission" , "lg" , "sv" ) );
             }
         } else if ( args.length == 1 ) {
             if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
@@ -112,24 +111,24 @@ public class GmSurvival implements CommandExecutor {
                                     p.setAllowFlight( true );
                                     p.setFlying( true );
                                 }
-                            } catch ( NoSuchMethodError | PlayerNotFundException ignored ) {
+                            } catch ( NoSuchMethodError ignored ) {
                             }
                         }
                         if ( !(sender == p) ) {
-                            utils.tell( sender , utils.getString( "survival.enabled_to" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
+                            Utils.tell( sender , Utils.getString( "survival.enabled_to" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
                         }
-                        utils.tell( sender , utils.getString( "survival.enabled" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
+                        Utils.tell( sender , Utils.getString( "survival.enabled" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
                     } else {
-                        utils.tell( sender , utils.getString( "survival.already" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
+                        Utils.tell( sender , Utils.getString( "survival.already" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
                     }
                 } else {
-                    utils.tell( sender , utils.getString( "no_permission" , "lg" , "sv" ) );
+                    Utils.tell( sender , Utils.getString( "no_permission" , "lg" , "sv" ) );
                 }
                 return false;
             }
-            utils.tell( sender , utils.getString( "p_dont_exist" , "lg" , "sv" ) );
+            Utils.tell( sender , Utils.getString( "p_dont_exist" , "lg" , "sv" ) );
         } else {
-            utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "sv" ).replace( "%command%" , "gms | gms <player>" ) );
+            Utils.tell( sender , Utils.getString( "wrong_usage" , "lg" , "sv" ).replace( "%command%" , "gms | gms <player>" ) );
         }
         return true;
     }

@@ -8,7 +8,7 @@ import cl.bebt.staffcore.MSGChanel.SendMsg;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.menu.menu.Staff.StaffListGui;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -25,29 +25,29 @@ public class StaffList implements CommandExecutor {
     
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        if ( !utils.isOlderVersion( ) ) {
+        if ( !Utils.isOlderVersion( ) ) {
             if ( sender instanceof Player ) {
                 if ( args.length == 0 ) {
                     Player p = ( Player ) sender;
                     if ( p.hasPermission( "staffcore.stafflist" ) ) {
-                        if ( utils.getBoolean( "bungeecord.enabled" ) ) {
+                        if ( Utils.getBoolean( "bungeecord.enabled" ) ) {
                             main.staffMembers.clear( );
                             main.playersServerMap.clear( );
                             main.playersServerPingMap.clear( );
                             main.playersServerGamemodesMap.clear( );
-                            SendMsg.sendStaffListRequest( p.getName( ) , utils.getString( "bungeecord.server" ) );
+                            SendMsg.sendStaffListRequest( p.getName( ) , Utils.getString( "bungeecord.server" ) );
                         } else {
                             new StaffListGui( new PlayerMenuUtility( p ) , plugin ).open( );
                         }
                     } else {
-                        utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
+                        Utils.tell( sender , Utils.getString( "no_permission" , "lg" , "staff" ) );
                     }
                 } else {
-                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "stafflist" ) );
+                    Utils.tell( sender , Utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "stafflist" ) );
                 }
             }
         } else {
-            utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
+            Utils.tell( sender , Utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
         }
         return true;
     }

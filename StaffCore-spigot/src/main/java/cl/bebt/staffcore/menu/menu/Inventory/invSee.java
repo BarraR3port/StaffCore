@@ -10,7 +10,7 @@ import cl.bebt.staffcore.menu.InventoryMenu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.utils.OpenInvSee;
 import cl.bebt.staffcore.utils.TpPlayers;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -35,7 +35,7 @@ public class invSee extends InventoryMenu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( utils.getString( "inventory.inv_see.name" , "menu" , null ).replace( "%player%" , target.getName( ) ) );
+        return Utils.chat( Utils.getString( "inventory.inv_see.name" , "menu" , null ).replace( "%player%" , target.getName( ) ) );
     }
     
     @Override
@@ -147,7 +147,7 @@ public class invSee extends InventoryMenu {
     @Override
     public void handleMenu( InventoryCloseEvent e ){
         main.invSee.remove( e.getPlayer( ) , target );
-        utils.PlaySound( ( Player ) e.getPlayer( ) , "invsee_close" );
+        Utils.PlaySound( ( Player ) e.getPlayer( ) , "invsee_close" );
     }
     
     @Override
@@ -191,7 +191,7 @@ public class invSee extends InventoryMenu {
         if ( target.getInventory( ).getBoots( ) != null ) {
             inventory.setItem( 35 , target.getInventory( ).getBoots( ) );
         }
-        utils.PlaySound( p , "invsee" );
+        Utils.PlaySound( p , "invsee" );
     }
     
 }

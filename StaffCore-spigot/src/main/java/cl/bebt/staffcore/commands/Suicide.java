@@ -5,7 +5,7 @@
 package cl.bebt.staffcore.commands;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -27,10 +27,10 @@ public class Suicide implements CommandExecutor {
             if ( p.hasPermission( "staffcore.suicide" ) ) {
                 p.setHealth( 0 );
             } else {
-                utils.tell( sender , utils.getString( "no_permission" , "lg" , "sv" ) );
+                Utils.tell( sender , Utils.getString( "no_permission" , "lg" , "sv" ) );
             }
         } else {
-            utils.tell( sender , utils.getString( "only_players" , "lg" , "sv" ) );
+            Utils.tell( sender , Utils.getString( "only_players" , "lg" , "sv" ) );
         }
         
         return true;

@@ -4,12 +4,14 @@
 
 package cl.bebt.staffcore.utils;
 
-import cl.bebt.staffcore.EntitysUtils.UserUtils;
-import cl.bebt.staffcore.Exeptions.PlayerNotFundException;
 import cl.bebt.staffcore.Items.Items;
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.sql.DataExporter;
-import cl.bebt.staffcore.sql.Queries.StaffQuery;
+import cl.bebt.staffcoreapi.EntitiesUtils.UserUtils;
+import cl.bebt.staffcoreapi.Enums.UpdateType;
+import cl.bebt.staffcoreapi.SQL.Queries.StaffQuery;
+import cl.bebt.staffcoreapi.utils.DataExporter;
+import cl.bebt.staffcoreapi.utils.Serializer;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -27,7 +29,7 @@ public class StaffManager {
     }
     
     public static void enable( UUID uuid ){
-        DataExporter.updateServerStats( "staff" );
+        DataExporter.updateServerStats( UpdateType.STAFF );
         try {
             Player p = Bukkit.getPlayer( uuid );
             UserUtils.setStaffInventory( uuid , Serializer.itemStackArrayToBase64( p.getInventory( ).getContents( ) ) );
@@ -44,13 +46,13 @@ public class StaffManager {
             p.getInventory( ).setItem( 6 , Items.InvSee( ) );
             p.getInventory( ).setItem( 8 , Items.staffOff( ) );
             p.setInvulnerable( true );
-            if ( utils.mysqlEnabled( ) ) {
+            if ( Utils.mysqlEnabled( ) ) {
                 StaffQuery.enable( p.getName( ) );
             }
             p.setAllowFlight( true );
             p.setFlying( true );
             UserUtils.setStaff( uuid , true );
-        } catch ( PlayerNotFundException | NullPointerException ignored ) {
+        } catch ( NullPointerException ignored ) {
             ignored.printStackTrace( );
         }
     }
@@ -67,7 +69,7 @@ public class StaffManager {
                     p.getInventory( ).setArmorContents( armor );
                     UserUtils.setStaffInventory( uuid , "" );
                     UserUtils.setStaffArmor( uuid , "" );
-                } catch ( IOException | NullPointerException | PlayerNotFundException ignored ) {
+                } catch ( IOException | NullPointerException ignored ) {
                 }
                 
                 p.getInventory( ).removeItem( Items.vanishOn( ) );
@@ -85,12 +87,12 @@ public class StaffManager {
             }
             p.setInvulnerable( false );
             VanishManager.disable( uuid );
-            if ( utils.mysqlEnabled( ) ) {
+            if ( Utils.mysqlEnabled( ) ) {
                 StaffQuery.disable( p.getName( ) );
             }
-            DataExporter.updateServerStats( "staff" );
+            DataExporter.updateServerStats( UpdateType.STAFF );
             UserUtils.setStaff( uuid , false );
-        } catch ( PlayerNotFundException | NullPointerException error ) {
+        } catch ( NullPointerException error ) {
             error.printStackTrace( );
         }
     }

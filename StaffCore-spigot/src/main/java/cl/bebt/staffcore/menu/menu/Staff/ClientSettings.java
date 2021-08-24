@@ -4,15 +4,14 @@
 
 package cl.bebt.staffcore.menu.menu.Staff;
 
-import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.Items.Items;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.MenuC;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.menu.menu.Chat.ChatSettings;
 import cl.bebt.staffcore.menu.menu.Chat.MuteChatManager;
-import cl.bebt.staffcore.sql.Queries.StaffChatQuery;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.SQL.Queries.StaffChatQuery;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -36,7 +35,7 @@ public class ClientSettings extends MenuC {
     }
     
     public String getMenuName( ){
-        return utils.chat( utils.getString( "others.client_settings.name" , "menu" , null ) );
+        return Utils.chat( Utils.getString( "others.client_settings.name" , "menu" , null ) );
     }
     
     public int getSlots( ){
@@ -56,32 +55,34 @@ public class ClientSettings extends MenuC {
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "TStaffOn" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
             PlayerData.remove( new NamespacedKey( this.plugin , "staffchat" ) );
-            if ( utils.mysqlEnabled( ) )
+            if ( Utils.mysqlEnabled( ) )
                 StaffChatQuery.disable( p.getName( ) );
-            utils.tell( p , "&8[&3&lSC&r&8]&r &cOff" );
+            Utils.tell( p , "&8[&3&lSC&r&8]&r &cOff" );
             new ClientSettings( main.getPlayerMenuUtility( p ) , this.plugin ).open( p );
             p.updateInventory( );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "TStaffOff" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
             PlayerData.set( new NamespacedKey( this.plugin , "staffchat" ) , PersistentDataType.STRING , "staffchat" );
-            if ( utils.mysqlEnabled( ) )
+            if ( Utils.mysqlEnabled( ) )
                 StaffChatQuery.enable( p.getName( ) );
-            utils.tell( p , "&8[&3&lSC&r&8]&r &aOn" );
+            Utils.tell( p , "&8[&3&lSC&r&8]&r &aOn" );
             new ClientSettings( main.getPlayerMenuUtility( p ) , this.plugin ).open( p );
             p.updateInventory( );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "TrollModeOn" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            StaffCoreAPI.setTrollMode( p , !StaffCoreAPI.getTrollStatus( p.getName( ) ) );
-            utils.tell( p , utils.getString( "troll.disabled" , "lg" , "staff" ) );
+            //todo fix this
+            //StaffCoreAPI.setTrollMode( p , !StaffCoreAPI.getTrollStatus( p.getName( ) ) );
+            Utils.tell( p , Utils.getString( "troll.disabled" , "lg" , "staff" ) );
             new ClientSettings( main.getPlayerMenuUtility( p ) , this.plugin ).open( p );
             p.updateInventory( );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "TrollModeOff" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            StaffCoreAPI.setTrollMode( p , !StaffCoreAPI.getTrollStatus( p.getName( ) ) );
-            utils.tell( p , utils.getString( "troll.enabled" , "lg" , "staff" ) );
+            //todo fix this
+            // StaffCoreAPI.setTrollMode( p , !StaffCoreAPI.getTrollStatus( p.getName( ) ) );
+            Utils.tell( p , Utils.getString( "troll.enabled" , "lg" , "staff" ) );
             new ClientSettings( main.getPlayerMenuUtility( p ) , this.plugin ).open( p );
             p.updateInventory( );
             e.setCancelled( true );
@@ -93,10 +94,10 @@ public class ClientSettings extends MenuC {
             p.closeInventory( );
             if ( p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "FakeJoinOrLeave" ) , PersistentDataType.STRING ) ) {
                 p.getPersistentDataContainer( ).remove( new NamespacedKey( plugin , "FakeJoinOrLeave" ) );
-                utils.tell( p , utils.getString( "fake_join_leave_msg.disabled" , "lg" , "staff" ) );
+                Utils.tell( p , Utils.getString( "fake_join_leave_msg.disabled" , "lg" , "staff" ) );
             } else {
                 p.getPersistentDataContainer( ).set( new NamespacedKey( plugin , "FakeJoinOrLeave" ) , PersistentDataType.STRING , "FakeJoinOrLeave" );
-                utils.tell( p , utils.getString( "fake_join_leave_msg.enabled" , "lg" , "staff" ) );
+                Utils.tell( p , Utils.getString( "fake_join_leave_msg.enabled" , "lg" , "staff" ) );
             }
             new ClientSettings( main.getPlayerMenuUtility( p ) , this.plugin ).open( p );
         } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
@@ -120,22 +121,22 @@ public class ClientSettings extends MenuC {
         ItemMeta metaTrollModeOn = TrollModeOn.getItemMeta( );
         ItemMeta metaTrollModeOff = TrollModeOff.getItemMeta( );
         
-        metaTStaffOn.setDisplayName( utils.chat( "&8Staff Chat &aOn" ) );
-        metaTStaffOff.setDisplayName( utils.chat( "&8Staff Chat &cOff" ) );
-        metaTrollModeOn.setDisplayName( utils.chat( "&8Troll Mode &aOn" ) );
-        metaTrollModeOff.setDisplayName( utils.chat( "&8Troll Mode &cOff" ) );
+        metaTStaffOn.setDisplayName( Utils.chat( "&8Staff Chat &aOn" ) );
+        metaTStaffOff.setDisplayName( Utils.chat( "&8Staff Chat &cOff" ) );
+        metaTrollModeOn.setDisplayName( Utils.chat( "&8Troll Mode &aOn" ) );
+        metaTrollModeOff.setDisplayName( Utils.chat( "&8Troll Mode &cOff" ) );
         
-        lore.add( utils.chat( "&7Click to turn &cOFF &7the Staff Chat." ) );
+        lore.add( Utils.chat( "&7Click to turn &cOFF &7the Staff Chat." ) );
         metaTStaffOn.setLore( lore );
         lore.clear( );
-        lore.add( utils.chat( "&7Click to turn &aON &7the Staff Chat." ) );
+        lore.add( Utils.chat( "&7Click to turn &aON &7the Staff Chat." ) );
         metaTStaffOff.setLore( lore );
         lore.clear( );
         
-        lore.add( utils.chat( "&7Click to turn &cOFF &7the Troll Mode." ) );
+        lore.add( Utils.chat( "&7Click to turn &cOFF &7the Troll Mode." ) );
         metaTrollModeOn.setLore( lore );
         lore.clear( );
-        lore.add( utils.chat( "&7Click to turn &aON &7the Troll Mode." ) );
+        lore.add( Utils.chat( "&7Click to turn &aON &7the Troll Mode." ) );
         metaTrollModeOff.setLore( lore );
         lore.clear( );
         
@@ -182,14 +183,15 @@ public class ClientSettings extends MenuC {
         } else if ( !p.getPersistentDataContainer( ).has( new NamespacedKey( main.plugin , "staffchat" ) , PersistentDataType.STRING ) ) {
             this.inventory.setItem( 20 , TStaffChatOff );
         }
-        if ( StaffCoreAPI.getTrollStatus( p.getName( ) ) ) {
-            this.inventory.setItem( 22 , TrollModeOn );
-        } else {
-            this.inventory.setItem( 22 , TrollModeOff );
-        }
+        //todo fix this
+//        if ( StaffCoreAPI.getTrollStatus( p.getName( ) ) ) {
+//            this.inventory.setItem( 22 , TrollModeOn );
+//        } else {
+//            this.inventory.setItem( 22 , TrollModeOff );
+//        }
         this.inventory.setItem( 21 , redPanel( ) );
         this.inventory.setItem( 23 , redPanel( ) );
-        if ( utils.getBoolean( "alerts.fake_join_leave_msg" ) ) {
+        if ( Utils.getBoolean( "alerts.fake_join_leave_msg" ) ) {
             this.inventory.setItem( 24 , Items.FakeJoinOrLeave( p.getPersistentDataContainer( ).has( new NamespacedKey( plugin , "FakeJoinOrLeave" ) , PersistentDataType.STRING ) ) );
         } else {
             this.inventory.setItem( 24 , Items.ComingSoon( ) );

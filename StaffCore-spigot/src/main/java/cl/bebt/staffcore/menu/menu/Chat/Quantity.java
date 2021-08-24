@@ -8,7 +8,8 @@ import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PaginatedMenu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.utils.ToggleChat;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.Api;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -38,7 +39,7 @@ public class Quantity extends PaginatedMenu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( utils.getString( "chat.quantity.name" , "menu" , null ) );
+        return Utils.chat( Utils.getString( "chat.quantity.name" , "menu" , null ) );
     }
     
     @Override
@@ -51,7 +52,7 @@ public class Quantity extends PaginatedMenu {
         Player p = ( Player ) e.getWhoClicked( );
         CommandSender sender = p;
         long time = p.getPersistentDataContainer( ).get( new NamespacedKey( plugin , "amount" ) , PersistentDataType.INTEGER );
-        int amount = utils.getInt( "inventories.time_limit" , null ) + 1;
+        int amount = Utils.getInt( "inventories.time_limit" , null ) + 1;
         Player muted = Bukkit.getPlayer( p.getPersistentDataContainer( ).get( new NamespacedKey( plugin , "muted_player" ) , PersistentDataType.STRING ) );
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "seconds" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
@@ -80,7 +81,7 @@ public class Quantity extends PaginatedMenu {
             }
         } else if ( e.getCurrentItem( ).equals( back( ) ) ) {
             if ( page == 0 ) {
-                utils.tell( p , utils.getString( "menu.already_in_first_page" , "lg" , "sv" ) );
+                Utils.tell( p , Utils.getString( "menu.already_in_first_page" , "lg" , "sv" ) );
             } else {
                 page--;
                 p.closeInventory( );
@@ -92,7 +93,7 @@ public class Quantity extends PaginatedMenu {
                 p.closeInventory( );
                 open( );
             } else {
-                utils.tell( p , utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
+                Utils.tell( p , Utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
             }
         }
     }
@@ -126,29 +127,29 @@ public class Quantity extends PaginatedMenu {
             }
         }
         inventory.setItem( 22 , close( ) );
-        ConfigurationSection inventorySection = plugin.items.getConfig( ).getConfigurationSection( "time" );
+        ConfigurationSection inventorySection = Api.items.getConfig( ).getConfigurationSection( "time" );
         for ( String key : inventorySection.getKeys( false ) ) {
             long time = player.getPersistentDataContainer( ).get( new NamespacedKey( plugin , "amount" ) , PersistentDataType.INTEGER );
-            String name = utils.getString( "time." + key + ".name" , "item" , null );
-            String material = utils.getString( "time." + key + ".material" , "item" , null );
+            String name = Utils.getString( "time." + key + ".name" , "item" , null );
+            String material = Utils.getString( "time." + key + ".material" , "item" , null );
             ArrayList < String > lore = new ArrayList <>( );
             ItemStack item = new ItemStack( Material.valueOf( material ) );
             ItemMeta meta = item.getItemMeta( );
-            for ( String key2 : utils.getStringList( "time." + key + ".lore" , "item" ) ) {
+            for ( String key2 : Utils.getStringList( "time." + key + ".lore" , "item" ) ) {
                 key2 = key2.replace( "%punish%" , "Mute" );
                 key = key.replace( "%time%" , String.valueOf( time ) );
                 key2 = key2.replace( "%player%" , muted.getName( ) );
-                lore.add( utils.chat( key2 ) );
+                lore.add( Utils.chat( key2 ) );
             }
             meta.setLore( lore );
-            meta.setDisplayName( utils.chat( name ) );
+            meta.setDisplayName( Utils.chat( name ) );
             meta.setLore( lore );
             meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , key ) , PersistentDataType.STRING , key );
             item.setItemMeta( meta );
             inventory.addItem( item );
         }
         if ( inventory.getItem( 20 ) == null ) {
-            utils.tell( player , "&0[&5Warning&0] &7Try to delete the StaffCore/items.yml file and restart the server" );
+            Utils.tell( player , "&0[&5Warning&0] &7Try to delete the StaffCore/items.yml file and restart the server" );
         }
     }
     

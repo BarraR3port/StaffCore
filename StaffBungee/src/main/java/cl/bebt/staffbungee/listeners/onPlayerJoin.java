@@ -4,9 +4,9 @@
 
 package cl.bebt.staffbungee.listeners;
 
-import cl.bebt.staffbungee.Entitys.User;
-import cl.bebt.staffbungee.EntitysUtils.UserUtils;
 import cl.bebt.staffbungee.utils.utils;
+import cl.bebt.staffcoreapi.Entities.User;
+import cl.bebt.staffcoreapi.EntitiesUtils.UserUtils;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -19,7 +19,7 @@ public class onPlayerJoin implements Listener {
         String ip = String.valueOf( e.getConnection( ).getSocketAddress( ) ).replace( "/" , "" );
         if ( !UserUtils.isSaved( e.getConnection( ).getUniqueId( ) ) ) {
             User user = UserUtils.createUser( e.getConnection( ).getName( ) , e.getConnection( ).getUniqueId( ) , ip );
-            utils.Broadcast( user.getName() );
+            utils.Broadcast( user.getName( ) );
         }
         User user = UserUtils.findUser( e.getConnection( ).getUniqueId( ) );
         if ( UserUtils.isInOtherIP( user , ip ) ) {

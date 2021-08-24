@@ -6,7 +6,7 @@ package cl.bebt.staffcore.commands.Staff;
 
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.menu.Reports.ReportManager;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,19 +21,19 @@ public class ReportList implements CommandExecutor {
     
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        if ( !utils.isOlderVersion( ) ) {
+        if ( !Utils.isOlderVersion( ) ) {
             if ( sender instanceof Player ) {
                 if ( sender.hasPermission( "staffcore.reportlist" ) ) {
                     Player p = ( Player ) sender;
                     new ReportManager( main.getPlayerMenuUtility( p ) , main.plugin ).open( );
                 } else {
-                    utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
+                    Utils.tell( sender , Utils.getString( "no_permission" , "lg" , "staff" ) );
                 }
             } else {
-                utils.tell( sender , utils.getString( "only_players" , "lg" , "sv" ) );
+                Utils.tell( sender , Utils.getString( "only_players" , "lg" , "sv" ) );
             }
         } else {
-            utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
+            Utils.tell( sender , Utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
         }
         return false;
     }

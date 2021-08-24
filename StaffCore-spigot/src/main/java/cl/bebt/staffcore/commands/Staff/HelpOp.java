@@ -6,7 +6,7 @@ package cl.bebt.staffcore.commands.Staff;
 
 import cl.bebt.staffcore.MSGChanel.SendMsg;
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -32,21 +32,21 @@ public class HelpOp implements CommandExecutor {
                     for ( Player p : Bukkit.getOnlinePlayers( ) ) {
                         if ( p.hasPermission( "staffcore.staff" ) ) {
                             if ( p != sender ) {
-                                utils.tell( p , utils.getString( "helpop.tostaff" , "lg" , null ).replace( "%player%" , player.getName( ) ) + reason );
-                                utils.PlaySound( p , "helpop" );
+                                Utils.tell( p , Utils.getString( "helpop.tostaff" , "lg" , null ).replace( "%player%" , player.getName( ) ) + reason );
+                                Utils.PlaySound( p , "helpop" );
                             }
                         }
                     }
-                    utils.tell( sender , utils.getString( "helpop.tousers" , "lg" , null ) );
-                    SendMsg.helpOp( sender.getName( ) , String.valueOf( reason ) , utils.getString( "bungeecord.server" ) );
+                    Utils.tell( sender , Utils.getString( "helpop.tousers" , "lg" , null ) );
+                    SendMsg.helpOp( sender.getName( ) , String.valueOf( reason ) , Utils.getString( "bungeecord.server" ) );
                 } else {
-                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "sv" ).replace( "%command%" , "helpop <reason>" ) );
+                    Utils.tell( sender , Utils.getString( "wrong_usage" , "lg" , "sv" ).replace( "%command%" , "helpop <reason>" ) );
                 }
             } else {
-                utils.tell( sender , utils.getString( "no_permission" , "lg" , "sv" ) );
+                Utils.tell( sender , Utils.getString( "no_permission" , "lg" , "sv" ) );
             }
         } else {
-            utils.tell( sender , utils.getString( "only_players" , "lg" , "sv" ) );
+            Utils.tell( sender , Utils.getString( "only_players" , "lg" , "sv" ) );
         }
         return false;
     }

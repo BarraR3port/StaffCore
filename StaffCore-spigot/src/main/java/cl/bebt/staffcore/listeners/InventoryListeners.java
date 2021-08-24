@@ -4,14 +4,13 @@
 
 package cl.bebt.staffcore.listeners;
 
-import cl.bebt.staffcore.API.StaffCoreAPI;
-import cl.bebt.staffcore.EntitysUtils.UserUtils;
-import cl.bebt.staffcore.Exeptions.PlayerNotFundException;
 import cl.bebt.staffcore.Items.Items;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.InventoryMenu;
 import cl.bebt.staffcore.utils.OpenEnderSee;
 import cl.bebt.staffcore.utils.OpenInvSee;
+import cl.bebt.staffcoreapi.EntitiesUtils.UserUtils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -105,19 +104,18 @@ public class InventoryListeners implements Listener {
             }
         }
         UUID uuid = e.getWhoClicked( ).getUniqueId( );
-        try {
-            if ( UserUtils.getFrozen( uuid ) ) {
-                e.setCancelled( true );
-            }
-            if ( UserUtils.getVanish( uuid ) || UserUtils.getFrozen( uuid ) ) {
-                if ( e.getClick( ) == ClickType.CONTROL_DROP || e.getClick( ) == ClickType.DROP || e.getClick( ) == ClickType.CREATIVE ) {
-                    if ( !StaffCoreAPI.getTrollStatus( e.getWhoClicked( ).getName( ) ) ) {
-                        e.setCancelled( true );
-                    }
+        
+        if ( UserUtils.getFrozen( uuid ) ) {
+            e.setCancelled( true );
+        }
+        if ( UserUtils.getVanish( uuid ) || UserUtils.getFrozen( uuid ) ) {
+            if ( e.getClick( ) == ClickType.CONTROL_DROP || e.getClick( ) == ClickType.DROP || e.getClick( ) == ClickType.CREATIVE ) {
+                if ( !Utils.getTrollStatus( e.getWhoClicked( ).getName( ) ) ) {
+                    e.setCancelled( true );
                 }
             }
-        } catch ( PlayerNotFundException ignored ) {
         }
+        
     }
     
     @EventHandler(priority = EventPriority.HIGHEST)

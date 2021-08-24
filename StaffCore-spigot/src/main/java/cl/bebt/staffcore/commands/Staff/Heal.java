@@ -5,7 +5,7 @@
 package cl.bebt.staffcore.commands.Staff;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -30,11 +30,11 @@ public class Heal implements CommandExecutor {
                     p.setFoodLevel( 20 );
                     p.setHealth( 20 );
                     p.setSaturation( 5f );
-                    utils.tell( sender , utils.getString( "heal.heal_to" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
-                    utils.tell( p , utils.getString( "heal.heal" , "lg" , "sv" ) );
+                    Utils.tell( sender , Utils.getString( "heal.heal_to" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
+                    Utils.tell( p , Utils.getString( "heal.heal" , "lg" , "sv" ) );
                 }
             } else {
-                utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "heal <player>" ) );
+                Utils.tell( sender , Utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "heal <player>" ) );
             }
         } else {
             Player p = ( Player ) sender;
@@ -43,7 +43,7 @@ public class Heal implements CommandExecutor {
                     p.setFoodLevel( 20 );
                     p.setHealth( 20 );
                     p.setSaturation( 5f );
-                    utils.tell( p , utils.getString( "heal.heal" , "lg" , "sv" ) );
+                    Utils.tell( p , Utils.getString( "heal.heal" , "lg" , "sv" ) );
                 } else if ( args.length == 1 ) {
                     if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
                         Player target = Bukkit.getPlayer( args[0] );
@@ -51,22 +51,22 @@ public class Heal implements CommandExecutor {
                             p.setFoodLevel( 20 );
                             p.setHealth( 20 );
                             p.setSaturation( 5f );
-                            utils.tell( p , utils.getString( "heal.heal" , "lg" , "sv" ) );
+                            Utils.tell( p , Utils.getString( "heal.heal" , "lg" , "sv" ) );
                         } else {
                             target.setFoodLevel( 20 );
                             target.setHealth( 20 );
                             target.setSaturation( 5f );
-                            utils.tell( p , utils.getString( "heal.heal_to" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
-                            utils.tell( target , utils.getString( "heal.heal" , "lg" , "sv" ) );
+                            Utils.tell( p , Utils.getString( "heal.heal_to" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
+                            Utils.tell( target , Utils.getString( "heal.heal" , "lg" , "sv" ) );
                         }
                     } else {
-                        utils.tell( sender , utils.getString( "p_dont_exist" , "lg" , "sv" ) );
+                        Utils.tell( sender , Utils.getString( "p_dont_exist" , "lg" , "sv" ) );
                     }
                 } else {
-                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "vanish | vanish <player>" ) );
+                    Utils.tell( sender , Utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "vanish | vanish <player>" ) );
                 }
             } else {
-                utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
+                Utils.tell( sender , Utils.getString( "no_permission" , "lg" , "staff" ) );
             }
         }
         return true;

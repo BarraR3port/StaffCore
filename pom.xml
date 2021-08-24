@@ -14,9 +14,9 @@
     <packaging>pom</packaging>
 
     <properties>
-        <java.version>16</java.version>
+        <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.target>16</maven.compiler.target>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <build>
@@ -53,6 +53,7 @@
 
     <modules>
         <module>StaffBungee</module>
-        <module>staffcore-spigot</module>
+        <module>StaffCore-spigot</module>
+        <module>StaffCore-Api</module>
     </modules>
 </project>

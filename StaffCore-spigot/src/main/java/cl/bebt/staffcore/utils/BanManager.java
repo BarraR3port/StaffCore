@@ -4,13 +4,14 @@
 
 package cl.bebt.staffcore.utils;
 
-import cl.bebt.staffcore.Entitys.Ban;
-import cl.bebt.staffcore.EntitysUtils.BanUtils;
-import cl.bebt.staffcore.EntitysUtils.UserUtils;
 import cl.bebt.staffcore.MSGChanel.SendMsg;
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.sql.Queries.AltsQuery;
-import cl.bebt.staffcore.sql.Queries.BansQuery;
+import cl.bebt.staffcoreapi.Entities.Ban;
+import cl.bebt.staffcoreapi.EntitiesUtils.BanUtils;
+import cl.bebt.staffcoreapi.EntitiesUtils.UserUtils;
+import cl.bebt.staffcoreapi.SQL.Queries.AltsQuery;
+import cl.bebt.staffcoreapi.SQL.Queries.BansQuery;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -28,7 +29,7 @@ public class BanManager {
         Date CreateDate = new Date( );
         SimpleDateFormat format = new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" );
         Date ExpDate = format.parse( "26-05-2102 10:10:10" );
-        if ( utils.mysqlEnabled( ) ) {
+        if ( Utils.mysqlEnabled( ) ) {
             Bukkit.getScheduler( ).runTaskAsynchronously( main.plugin , ( ) -> {
                 BansQuery.createBanByUUID( BannedUUID , BannerUUID , Reason , format.format( CreateDate ) , format.format( ExpDate ) , IpBanned.toString( ) , "open" );
                 Banner.set( AltsQuery.getNameByUUID( BannerUUID ) );
@@ -39,11 +40,11 @@ public class BanManager {
             Banner.set( UserUtils.findUser( BannerUUID ).getName( ) );
             Banned.set( UserUtils.findUser( BannedUUID ).getName( ) );
         }
-        SendMsg.sendBanAlert( Banner.get( ) , Banned.get( ) , Reason , true , IpBanned , ExpDate , CreateDate , utils.getString( "bungeecord.server" ) );
+        SendMsg.sendBanAlert( Banner.get( ) , Banned.get( ) , Reason , true , IpBanned , ExpDate , CreateDate , Utils.getString( "bungeecord.server" ) );
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-            if ( utils.getBoolean( "alerts.ban" ) || people.hasPermission( "staffcore.staff" ) ) {
-                utils.PlaySound( people , "ban_alerts" );
-                for ( String key : utils.getStringList( "ban.alerts" , "alerts" ) ) {
+            if ( Utils.getBoolean( "alerts.ban" ) || people.hasPermission( "staffcore.staff" ) ) {
+                Utils.PlaySound( people , "ban_alerts" );
+                for ( String key : Utils.getStringList( "ban.alerts" , "alerts" ) ) {
                     key = key.replace( "%baner%" , Banner.get( ) );
                     key = key.replace( "%banned%" , Banned.get( ) );
                     key = key.replace( "%reason%" , Reason );
@@ -55,13 +56,13 @@ public class BanManager {
                     }
                     key = key.replace( "%exp_date%" , format.format( ExpDate ) );
                     key = key.replace( "%date%" , format.format( CreateDate ) );
-                    utils.tell( people , key );
+                    Utils.tell( people , key );
                 }
             }
         }
         if ( Bukkit.getPlayer( BannedUUID ) != null ) {
             String ban_msg = "\n";
-            for ( String msg : utils.getStringList( "ban.msg" , "alerts" ) ) {
+            for ( String msg : Utils.getStringList( "ban.msg" , "alerts" ) ) {
                 msg = msg.replace( "%baner%" , Banner.get( ) );
                 msg = msg.replace( "%banned%" , Banned.get( ) );
                 msg = msg.replace( "%reason%" , Reason );
@@ -75,12 +76,12 @@ public class BanManager {
                 msg = msg.replace( "%date%" , format.format( CreateDate ) );
                 ban_msg = ban_msg + msg + "\n";
             }
-            utils.PlayParticle( Bukkit.getPlayer( BannedUUID ) , "ban" );
+            Utils.PlayParticle( Bukkit.getPlayer( BannedUUID ) , "ban" );
             if ( main.plugin.getConfig( ).getBoolean( "wipe.wipe_on_ban" ) ) {
                 wipePlayer.WipeOnBan( main.plugin , Banned.get( ) );
             }
             String finalBan_msg = ban_msg;
-            Bukkit.getPlayer( BannedUUID ).kickPlayer( utils.chat( finalBan_msg ) );
+            Bukkit.getPlayer( BannedUUID ).kickPlayer( Utils.chat( finalBan_msg ) );
         }
     }
     
@@ -88,10 +89,10 @@ public class BanManager {
         AtomicReference < String > Banner = new AtomicReference <>( "" );
         AtomicReference < String > Banned = new AtomicReference <>( "" );
         Date CreateDate = new Date( );
-        String TimeLeft = utils.getTimeLeft( ExpDate );
+        String TimeLeft = Utils.getTimeLeft( CreateDate , ExpDate );
         SimpleDateFormat format = new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" );
-        if ( utils.mysqlEnabled( ) ) {
-            Bukkit.getScheduler( ).runTaskAsynchronously( main.plugin , ( ) -> {
+        if ( Utils.mysqlEnabled( ) ) {
+            Utils.runAsync( ( ) -> {
                 BansQuery.createBanByUUID( BannedUUID , BannerUUID , Reason , format.format( CreateDate ) , format.format( ExpDate ) , IpBanned.toString( ) , "open" );
                 Banner.set( AltsQuery.getNameByUUID( BannerUUID ) );
                 Banned.set( AltsQuery.getNameByUUID( BannedUUID ) );
@@ -101,11 +102,11 @@ public class BanManager {
             Banner.set( UserUtils.findUser( BannerUUID ).getName( ) );
             Banned.set( UserUtils.findUser( BannedUUID ).getName( ) );
         }
-        SendMsg.sendBanAlert( Banner.get( ) , Banned.get( ) , Reason , false , IpBanned , ExpDate , CreateDate , utils.getString( "bungeecord.server" ) );
+        SendMsg.sendBanAlert( Banner.get( ) , Banned.get( ) , Reason , false , IpBanned , ExpDate , CreateDate , Utils.getString( "bungeecord.server" ) );
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-            if ( utils.getBoolean( "alerts.ban" ) || people.hasPermission( "staffcore.staff" ) ) {
-                utils.PlaySound( people , "ban_alerts" );
-                for ( String key : utils.getStringList( "ban.alerts" , "alerts" ) ) {
+            if ( Utils.getBoolean( "alerts.ban" ) || people.hasPermission( "staffcore.staff" ) ) {
+                Utils.PlaySound( people , "ban_alerts" );
+                for ( String key : Utils.getStringList( "ban.alerts" , "alerts" ) ) {
                     key = key.replace( "%baner%" , Banner.get( ) );
                     key = key.replace( "%banned%" , Banned.get( ) );
                     key = key.replace( "%reason%" , Reason );
@@ -117,13 +118,13 @@ public class BanManager {
                     }
                     key = key.replace( "%exp_date%" , format.format( ExpDate ) );
                     key = key.replace( "%date%" , format.format( CreateDate ) );
-                    utils.tell( people , key );
+                    Utils.tell( people , key );
                 }
             }
         }
         if ( Bukkit.getPlayer( BannedUUID ) != null ) {
             String ban_msg = "\n";
-            for ( String msg : utils.getStringList( "ban.msg" , "alerts" ) ) {
+            for ( String msg : Utils.getStringList( "ban.msg" , "alerts" ) ) {
                 msg = msg.replace( "%baner%" , Banner.get( ) );
                 msg = msg.replace( "%banned%" , Banned.get( ) );
                 msg = msg.replace( "%reason%" , Reason );
@@ -137,12 +138,12 @@ public class BanManager {
                 msg = msg.replace( "%date%" , format.format( CreateDate ) );
                 ban_msg = ban_msg + msg + "\n";
             }
-            utils.PlayParticle( Bukkit.getPlayer( BannedUUID ) , "ban" );
+            Utils.PlayParticle( Bukkit.getPlayer( BannedUUID ) , "ban" );
             if ( main.plugin.getConfig( ).getBoolean( "wipe.wipe_on_ban" ) ) {
                 wipePlayer.WipeOnBan( main.plugin , Banned.get( ) );
             }
             String finalBan_msg = ban_msg;
-            Bukkit.getPlayer( BannedUUID ).kickPlayer( utils.chat( finalBan_msg ) );
+            Bukkit.getPlayer( BannedUUID ).kickPlayer( Utils.chat( finalBan_msg ) );
         }
         
     }

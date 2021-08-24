@@ -5,7 +5,7 @@
 package cl.bebt.staffcore.commands.Time;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -46,24 +46,24 @@ public class Weather implements TabExecutor {
                         world.setThundering( false );
                         world.setStorm( false );
                     }
-                    Bukkit.broadcastMessage( utils.chat( utils.getString( "time.weather.clear" , "lg" , "sv" ) ) );
+                    Bukkit.broadcastMessage( Utils.chat( Utils.getString( "time.weather.clear" , "lg" , "sv" ) ) );
                 }
                 if ( args[0].equalsIgnoreCase( "rain" ) ) {
                     for ( World world : Bukkit.getServer( ).getWorlds( ) ) {
                         world.setStorm( true );
                         world.setThundering( false );
                     }
-                    Bukkit.broadcastMessage( utils.chat( utils.getString( "time.weather.rain" , "lg" , "sv" ) ) );
+                    Bukkit.broadcastMessage( Utils.chat( Utils.getString( "time.weather.rain" , "lg" , "sv" ) ) );
                 }
                 if ( args[0].equalsIgnoreCase( "storm" ) ) {
                     for ( World world : Bukkit.getServer( ).getWorlds( ) ) {
                         world.setStorm( true );
                         world.setThundering( true );
                     }
-                    Bukkit.broadcastMessage( utils.chat( utils.getString( "time.weather.storm" , "lg" , "sv" ) ) );
+                    Bukkit.broadcastMessage( Utils.chat( Utils.getString( "time.weather.storm" , "lg" , "sv" ) ) );
                 }
             } else {
-                utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "weather <rain/clear/storm>" ) );
+                Utils.tell( sender , Utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "weather <rain/clear/storm>" ) );
             }
         }
         Player p = ( Player ) sender;
@@ -72,23 +72,23 @@ public class Weather implements TabExecutor {
                 if ( args[0].equalsIgnoreCase( "clear" ) ) {
                     p.getLocation( ).getWorld( ).setThundering( false );
                     p.getLocation( ).getWorld( ).setStorm( false );
-                    Bukkit.broadcastMessage( utils.chat( utils.getString( "time.weather.clear" , "lg" , "sv" ) ) );
+                    Bukkit.broadcastMessage( Utils.chat( Utils.getString( "time.weather.clear" , "lg" , "sv" ) ) );
                 }
                 if ( args[0].equalsIgnoreCase( "rain" ) ) {
                     p.getLocation( ).getWorld( ).setStorm( true );
                     p.getLocation( ).getWorld( ).setThundering( false );
-                    Bukkit.broadcastMessage( utils.chat( utils.getString( "time.weather.rain" , "lg" , "sv" ) ) );
+                    Bukkit.broadcastMessage( Utils.chat( Utils.getString( "time.weather.rain" , "lg" , "sv" ) ) );
                 }
                 if ( args[0].equalsIgnoreCase( "storm" ) ) {
                     p.getLocation( ).getWorld( ).setStorm( true );
                     p.getLocation( ).getWorld( ).setThundering( true );
-                    Bukkit.broadcastMessage( utils.chat( utils.getString( "time.weather.storm" , "lg" , "sv" ) ) );
+                    Bukkit.broadcastMessage( Utils.chat( Utils.getString( "time.weather.storm" , "lg" , "sv" ) ) );
                 }
             } else {
-                utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "weather <rain/clear/storm>" ) );
+                Utils.tell( sender , Utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "weather <rain/clear/storm>" ) );
             }
         } else {
-            utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
+            Utils.tell( sender , Utils.getString( "no_permission" , "lg" , "staff" ) );
         }
         
         return true;

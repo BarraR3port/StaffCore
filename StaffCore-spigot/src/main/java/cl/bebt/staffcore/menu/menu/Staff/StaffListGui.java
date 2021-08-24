@@ -4,12 +4,11 @@
 
 package cl.bebt.staffcore.menu.menu.Staff;
 
-import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PaginatedMenu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.utils.TpPlayers;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.NamespacedKey;
@@ -32,7 +31,7 @@ public class StaffListGui extends PaginatedMenu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( utils.getString( "others.staff_list.name" , "menu" , null ) );
+        return Utils.chat( Utils.getString( "others.staff_list.name" , "menu" , null ) );
     }
     
     @Override
@@ -58,7 +57,7 @@ public class StaffListGui extends PaginatedMenu {
             p.closeInventory( );
         } else if ( e.getCurrentItem( ).equals( back( ) ) ) {
             if ( page == 0 ) {
-                utils.tell( p , utils.getString( "menu.already_in_first_page" , "lg" , "sv" ) );
+                Utils.tell( p , Utils.getString( "menu.already_in_first_page" , "lg" , "sv" ) );
             } else {
                 page--;
                 p.closeInventory( );
@@ -70,7 +69,7 @@ public class StaffListGui extends PaginatedMenu {
                 p.closeInventory( );
                 open( );
             } else {
-                utils.tell( p , utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
+                Utils.tell( p , Utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
             }
         }
     }
@@ -90,44 +89,44 @@ public class StaffListGui extends PaginatedMenu {
                 if ( index >= players.size( ) ) break;
                 if ( players.get( index ) != null ) {
                     //////////////////////////////
-                    ItemStack p_head = utils.getPlayerHead( players.get( index ).getName( ) );
+                    ItemStack p_head = Utils.getPlayerHead( players.get( index ).getName( ) );
                     ItemMeta meta = p_head.getItemMeta( );
                     ArrayList < String > lore = new ArrayList <>( );
-                    meta.setDisplayName( utils.chat( "&a" + players.get( index ).getName( ) ) );
+                    meta.setDisplayName( Utils.chat( "&a" + players.get( index ).getName( ) ) );
                     if ( players.get( index ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) ) {
-                        lore.add( utils.chat( "&7Staff Mode: &aTrue" ) );
+                        lore.add( Utils.chat( "&7Staff Mode: &aTrue" ) );
                     } else {
-                        lore.add( utils.chat( "&7Staff Mode: &cFalse" ) );
+                        lore.add( Utils.chat( "&7Staff Mode: &cFalse" ) );
                     }
                     if ( players.get( index ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "vanished" ) , PersistentDataType.STRING ) ) {
-                        lore.add( utils.chat( "&7Vanished: &aTrue" ) );
+                        lore.add( Utils.chat( "&7Vanished: &aTrue" ) );
                     } else {
-                        lore.add( utils.chat( "&7Vanished: &cFalse" ) );
+                        lore.add( Utils.chat( "&7Vanished: &cFalse" ) );
                     }
                     if ( players.get( index ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staffchat" ) , PersistentDataType.STRING ) ) {
-                        lore.add( utils.chat( "&7Staff Chat: &aTrue" ) );
+                        lore.add( Utils.chat( "&7Staff Chat: &aTrue" ) );
                     } else {
-                        lore.add( utils.chat( "&7Staff Chat: &cFalse" ) );
+                        lore.add( Utils.chat( "&7Staff Chat: &cFalse" ) );
                     }
                     if ( players.get( index ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "flying" ) , PersistentDataType.STRING ) || players.get( index ).getGameMode( ).equals( GameMode.CREATIVE ) ) {
-                        lore.add( utils.chat( "&7Flying: &aTrue" ) );
+                        lore.add( Utils.chat( "&7Flying: &aTrue" ) );
                     } else {
-                        lore.add( utils.chat( "&7Flying: &cFalse" ) );
+                        lore.add( Utils.chat( "&7Flying: &cFalse" ) );
                     }
                     if ( players.get( index ).getGameMode( ).equals( GameMode.CREATIVE ) ) {
-                        lore.add( utils.chat( "&7Gamemode: &aCreative" ) );
+                        lore.add( Utils.chat( "&7Gamemode: &aCreative" ) );
                     }
                     if ( players.get( index ).getGameMode( ).equals( GameMode.SURVIVAL ) ) {
-                        lore.add( utils.chat( "&7Gamemode: &aSurvival" ) );
+                        lore.add( Utils.chat( "&7Gamemode: &aSurvival" ) );
                     }
                     if ( players.get( index ).getGameMode( ).equals( GameMode.SPECTATOR ) ) {
-                        lore.add( utils.chat( "&7Gamemode: &aSpectator" ) );
+                        lore.add( Utils.chat( "&7Gamemode: &aSpectator" ) );
                     }
-                    if ( StaffCoreAPI.getTrollStatus( players.get( index ).getName( ) ) ) {
-                        lore.add( utils.chat( "&7Troll Mode: &aON" ) );
+                    if ( Utils.getTrollStatus( players.get( index ).getName( ) ) ) {
+                        lore.add( Utils.chat( "&7Troll Mode: &aON" ) );
                     }
-                    if ( !StaffCoreAPI.getTrollStatus( players.get( index ).getName( ) ) ) {
-                        lore.add( utils.chat( "&7Troll Mode: &cOFF" ) );
+                    if ( !Utils.getTrollStatus( players.get( index ).getName( ) ) ) {
+                        lore.add( Utils.chat( "&7Troll Mode: &cOFF" ) );
                     }
                     meta.setLore( lore );
                     meta.getPersistentDataContainer( ).set( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING , "staff" );

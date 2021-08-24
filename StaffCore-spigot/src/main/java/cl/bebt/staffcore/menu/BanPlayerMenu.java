@@ -5,7 +5,7 @@
 package cl.bebt.staffcore.menu;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -42,13 +42,13 @@ public abstract class BanPlayerMenu extends Menu {
                 }
             }
         }
-        ItemStack p_head = utils.getPlayerHead( banned );
+        ItemStack p_head = Utils.getPlayerHead( banned );
         ItemMeta meta = p_head.getItemMeta( );
         ArrayList < String > lore = new ArrayList <>( );
-        meta.setDisplayName( utils.chat( utils.getString( "ban_menu.name" , "menu" , null ).replace( "%player%" , banned ) ) );
-        for ( String key : utils.getStringList( "ban_menu.player_lore" , "menu" ) ) {
+        meta.setDisplayName( Utils.chat( Utils.getString( "ban_menu.name" , "menu" , null ).replace( "%player%" , banned ) ) );
+        for ( String key : Utils.getStringList( "ban_menu.player_lore" , "menu" ) ) {
             key = key.replace( "%banned%" , banned );
-            lore.add( utils.chat( key ) );
+            lore.add( Utils.chat( key ) );
         }
         meta.setLore( lore );
         meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "panel" ) , PersistentDataType.STRING , "panel" );

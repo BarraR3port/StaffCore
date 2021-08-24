@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteRepositoriesConfiguration">
+    <remote-repository>
+      <option name="id" value="jitpack.io" />
+      <option name="name" value="jitpack.io" />
+      <option name="url" value="https://jitpack.io" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jcenter" />
+      <option name="name" value="jcenter" />
+      <option name="url" value="http://jcenter.bintray.com" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="staffcore" />
+      <option name="name" value="GitHub BarraR3port Apache Maven Packages" />
+      <option name="url" value="https://maven.pkg.github.com/BarraR3port/staffcore" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="github" />
+      <option name="name" value="GitHub BarraR3port Apache Maven Packages" />
+      <option name="url" value="https://maven.pkg.github.com/BarraR3port/staffcore" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="Plugin Metrics" />
+      <option name="name" value="Plugin Metrics" />
+      <option name="url" value="http://repo.mcstats.org/content/repositories/public" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="spigotmc-repo" />
+      <option name="name" value="spigotmc-repo" />
+      <option name="url" value="https://hub.spigotmc.org/nexus/content/repositories/snapshots/org/spigotmc/spigot-api/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="spigot-old" />
+      <option name="name" value="spigot-old" />
+      <option name="url" value="https://maven.elmakers.com/repository/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="flogic-releases" />
+      <option name="name" value="flogic-releases" />
+      <option name="url" value="https://repo.flogi.cc/artifactory/flogic-releases" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jboss.community" />
+      <option name="name" value="JBoss Community repository" />
+      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="staffbungee" />
+      <option name="name" value="GitHub BarraR3port Apache Maven Packages" />
+      <option name="url" value="https://maven.pkg.github.com/BarraR3port/staffbungee" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="onarandombox" />
+      <option name="name" value="onarandombox" />
+      <option name="url" value="http://repo.onarandombox.com/content/groups/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Central Repository" />
+      <option name="url" value="https://repo.maven.apache.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="wesjd-repo" />
+      <option name="name" value="wesjd-repo" />
+      <option name="url" value="https://nexus.wesjd.net/repository/thirdparty/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="sonatype" />
+      <option name="name" value="sonatype" />
+      <option name="url" value="https://oss.sonatype.org/content/groups/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="github" />
+      <option name="name" value="GitHub BarraR3port Apache Maven Packages" />
+      <option name="url" value="https://maven.pkg.github.com/BarraR3port/staffbungee" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="github" />
+      <option name="name" value="github" />
+      <option name="url" value="https://maven.pkg.github.com/OWNER/*" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="skullcreator-repo" />
+      <option name="name" value="skullcreator-repo" />
+      <option name="url" value="https://github.com/deanveloper/SkullCreator/raw/mvn-repo/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Maven Central repository" />
+      <option name="url" value="https://repo1.maven.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="github" />
+      <option name="name" value="github" />
+      <option name="url" value="https://maven.pkg.github.com/BarraR3port/StaffCore" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="central" />
+      <option name="url" value="https://repo1.maven.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="viaversion-repo" />
+      <option name="name" value="viaversion-repo" />
+      <option name="url" value="https://repo.viaversion.com" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="spigot-repo" />
+      <option name="name" value="spigot-repo" />
+      <option name="url" value="https://hub.spigotmc.org/nexus/content/repositories/snapshots/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="spigotmc-repo" />
+      <option name="name" value="spigotmc-repo" />
+      <option name="url" value="https://hub.spigotmc.org/nexus/content/repositories/snapshots/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="github" />
+      <option name="name" value="GitHub BarraR3port Apache Maven Packages" />
+      <option name="url" value="https://maven.pkg.github.com/BarraR3port/StaffCore" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="dynmap-repo" />
+      <option name="name" value="dynmap-repo" />
+      <option name="url" value="http://repo.mikeprimm.com/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="bintray-jcenter" />
+      <option name="name" value="jcenter" />
+      <option name="url" value="https://jcenter.bintray.com" />
+    </remote-repository>
+  </component>
+</project>

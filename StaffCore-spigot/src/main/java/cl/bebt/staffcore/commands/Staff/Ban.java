@@ -7,7 +7,7 @@ package cl.bebt.staffcore.commands.Staff;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.menu.Bangui.BanMenu;
 import cl.bebt.staffcore.utils.BanManager;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -18,7 +18,10 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-public record Ban(main plugin) implements TabExecutor {
+public class Ban implements TabExecutor {
+    
+    private final main plugin;
+    
     public Ban( main plugin ){
         this.plugin = plugin;
         plugin.getCommand( "ban" ).setExecutor( this );
@@ -26,18 +29,18 @@ public record Ban(main plugin) implements TabExecutor {
     
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        if ( !utils.isOlderVersion( ) ) {
+        if ( !Utils.isOlderVersion( ) ) {
             if ( sender instanceof Player ) {
                 Player p = ( Player ) sender;
                 if ( p.hasPermission( "staffcore.ban" ) ) {
                     p.getPersistentDataContainer( ).remove( new NamespacedKey( plugin , "ban-ip" ) );
                     if ( args.length == 0 ) {
-                        utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "ban <player> <time> <-ip> <reason>" ) );
+                        Utils.tell( sender , Utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "ban <player> <time> <-ip> <reason>" ) );
                     } else if ( args.length == 1 ) {
-                        if ( utils.getUsers( ).contains( args[0] ) ) {
+                        if ( Utils.getUsers( ).contains( args[0] ) ) {
                             new BanMenu( main.getPlayerMenuUtility( p ) , plugin , p , args[0] ).open( );
                         } else {
-                            utils.tell( p , utils.getString( "never_seen" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
+                            Utils.tell( p , Utils.getString( "never_seen" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
                         }
                     } else {
                         if ( isNormal( args[1] ) ) {
@@ -48,12 +51,12 @@ public record Ban(main plugin) implements TabExecutor {
                                 for ( int i = 3; i < args.length; i++ ) {
                                     reason.append( args[i] ).append( " " );
                                 }
-                                BanManager.TempBan( p.getUniqueId( ) , utils.getUUIDFromName( args[0] ) , reason.toString( ) , utils.ConvertDate( amount , lastWord ) , true );
+                                BanManager.TempBan( p.getUniqueId( ) , Utils.getUUIDFromName( args[0] ) , reason.toString( ) , Utils.ConvertDate( amount , lastWord ) , true );
                             } else {
                                 for ( int i = 2; i < args.length; i++ ) {
                                     reason.append( args[i] ).append( " " );
                                 }
-                                BanManager.TempBan( p.getUniqueId( ) , utils.getUUIDFromName( args[0] ) , reason.toString( ) , utils.ConvertDate( amount , lastWord ) , false );
+                                BanManager.TempBan( p.getUniqueId( ) , Utils.getUUIDFromName( args[0] ) , reason.toString( ) , Utils.ConvertDate( amount , lastWord ) , false );
                             }
                             
                         } else {
@@ -63,7 +66,7 @@ public record Ban(main plugin) implements TabExecutor {
                                     reason.append( args[i] ).append( " " );
                                 }
                                 try {
-                                    BanManager.Ban( p.getUniqueId( ) , utils.getUUIDFromName( args[0] ) , reason.toString( ) , true );
+                                    BanManager.Ban( p.getUniqueId( ) , Utils.getUUIDFromName( args[0] ) , reason.toString( ) , true );
                                 } catch ( ParseException e ) {
                                     e.printStackTrace( );
                                 }
@@ -72,7 +75,7 @@ public record Ban(main plugin) implements TabExecutor {
                                     reason.append( args[i] ).append( " " );
                                 }
                                 try {
-                                    BanManager.Ban( p.getUniqueId( ) , utils.getUUIDFromName( args[0] ) , reason.toString( ) , false );
+                                    BanManager.Ban( p.getUniqueId( ) , Utils.getUUIDFromName( args[0] ) , reason.toString( ) , false );
                                 } catch ( ParseException e ) {
                                     e.printStackTrace( );
                                 }
@@ -80,11 +83,11 @@ public record Ban(main plugin) implements TabExecutor {
                         }
                     }
                 } else {
-                    utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
+                    Utils.tell( sender , Utils.getString( "no_permission" , "lg" , "staff" ) );
                 }
             }
         } else {
-            utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
+            Utils.tell( sender , Utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
         }
         return true;
     }
@@ -93,7 +96,7 @@ public record Ban(main plugin) implements TabExecutor {
     public List < String > onTabComplete( CommandSender sender , Command command , String alias , String[] args ){
         List < String > version = new ArrayList <>( );
         if ( args.length == 1 ) {
-            ArrayList < String > Players = utils.getUsers( );
+            ArrayList < String > Players = Utils.getUsers( );
             if ( !Players.isEmpty( ) ) {
                 Players.remove( sender.getName( ) );
                 version.addAll( Players );

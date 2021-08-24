@@ -5,7 +5,7 @@
 package cl.bebt.staffcore.menu;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -37,13 +37,13 @@ public abstract class WarnPlayerMenu extends Menu {
                 }
             }
         }
-        ItemStack p_head = utils.getPlayerHead( warned );
+        ItemStack p_head = Utils.getPlayerHead( warned );
         ItemMeta meta = p_head.getItemMeta( );
         ArrayList < String > lore = new ArrayList <>( );
-        meta.setDisplayName( utils.chat( utils.getString( "warn.warn_menu.name" , "menu" , null ).replace( "%player%" , warned ) ) );
-        for ( String key : utils.getStringList( "warn.warn_menu.player_lore" , "menu" ) ) {
+        meta.setDisplayName( Utils.chat( Utils.getString( "warn.warn_menu.name" , "menu" , null ).replace( "%player%" , warned ) ) );
+        for ( String key : Utils.getStringList( "warn.warn_menu.player_lore" , "menu" ) ) {
             key = key.replace( "%warned%" , warned );
-            lore.add( utils.chat( key ) );
+            lore.add( Utils.chat( key ) );
         }
         meta.setLore( lore );
         meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "panel" ) , PersistentDataType.STRING , "panel" );

@@ -6,7 +6,7 @@ package cl.bebt.staffcore.commands.Staff;
 
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.utils.WarnPlayer;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -26,28 +26,28 @@ public class Warn implements TabExecutor {
     
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        if ( !utils.isOlderVersion( ) ) {
+        if ( !Utils.isOlderVersion( ) ) {
             if ( !(sender instanceof Player) ) {
-                utils.tell( sender , "&cThis command can only be executed by players." );
+                Utils.tell( sender , "&cThis command can only be executed by players." );
             } else {
                 if ( args.length == 1 ) {
                     Player p = ( Player ) sender;
                     if ( p.hasPermission( "staffcore.warn" ) ) {
-                        if ( utils.isRegistered( args[0] ) ) {
+                        if ( Utils.isRegistered( args[0] ) ) {
                             new WarnPlayer( p , args[0] , plugin );
                         } else {
-                            utils.tell( sender , utils.getString( "never_seen" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
+                            Utils.tell( sender , Utils.getString( "never_seen" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
                         }
                     } else {
-                        utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
+                        Utils.tell( sender , Utils.getString( "no_permission" , "lg" , "staff" ) );
                     }
                     
                 } else {
-                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "warn <player>" ) );
+                    Utils.tell( sender , Utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "warn <player>" ) );
                 }
             }
         } else {
-            utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
+            Utils.tell( sender , Utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
         }
         return false;
     }
@@ -56,12 +56,12 @@ public class Warn implements TabExecutor {
     public List < String > onTabComplete( CommandSender sender , Command command , String alias , String[] args ){
         List < String > version = new ArrayList <>( );
         if ( args.length == 1 ) {
-            ArrayList < String > Players = utils.getUsers( );
+            ArrayList < String > Players = Utils.getUsers( );
             if ( !Players.isEmpty( ) ) {
                 Players.remove( sender.getName( ) );
                 version.addAll( Players );
             } else {
-                utils.tell( sender , utils.getString( "no_players_saved" , "lg" , "staff" ) );
+                Utils.tell( sender , Utils.getString( "no_players_saved" , "lg" , "staff" ) );
             }
         }
         return version;

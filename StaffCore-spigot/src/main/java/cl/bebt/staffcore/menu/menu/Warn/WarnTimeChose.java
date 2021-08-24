@@ -8,7 +8,7 @@ import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.Menu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.utils.WarnPlayer;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -42,7 +42,7 @@ public class WarnTimeChose extends Menu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( utils.getString( "warns.time.name" , "menu" , null ) );
+        return Utils.chat( Utils.getString( "warns.time.name" , "menu" , null ) );
     }
     
     @Override
@@ -55,8 +55,8 @@ public class WarnTimeChose extends Menu {
         Player p = ( Player ) e.getWhoClicked( );
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "default" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            long amount = utils.getInt( "warns.expire_after" , null );
-            String time = utils.getString( "warns.expire_after_quantity" );
+            int amount = Utils.getInt( "warns.expire_after" , null );
+            String time = Utils.getString( "warns.expire_after_quantity" );
             WarnPlayer.createWarn( p , warned , reason , amount , time );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "specific" ) , PersistentDataType.STRING ) ) {
@@ -77,7 +77,7 @@ public class WarnTimeChose extends Menu {
     @Override
     public void setMenuItems( ){
         ArrayList < String > lore = new ArrayList <>( );
-        ItemStack head = utils.getPlayerHead( warned );
+        ItemStack head = Utils.getPlayerHead( warned );
         ItemStack defaultTime = new ItemStack( Material.NAME_TAG , 1 );
         ItemStack specificTime = new ItemStack( Material.NAME_TAG , 1 );
         
@@ -85,25 +85,25 @@ public class WarnTimeChose extends Menu {
         ItemMeta cr_meta = specificTime.getItemMeta( );
         ItemMeta head_meta = head.getItemMeta( );
         
-        or_meta.setDisplayName( utils.chat( "&aDefault Time" ) );
-        cr_meta.setDisplayName( utils.chat( "&cSpecific Time" ) );
-        head_meta.setDisplayName( utils.chat( "&5" + warned ) );
-        int currentWarns = utils.currentPlayerWarns( warned );
-        lore.add( utils.chat( "&5Click to Warn " + warned ) );
-        lore.add( utils.chat( "for the the default time." ) );
-        lore.add( utils.chat( "&a(&c" + utils.getString( "warns.expire_after" ) + utils.getString( "warns.expire_after_quantity" ) + "&a)" ) );
+        or_meta.setDisplayName( Utils.chat( "&aDefault Time" ) );
+        cr_meta.setDisplayName( Utils.chat( "&cSpecific Time" ) );
+        head_meta.setDisplayName( Utils.chat( "&5" + warned ) );
+        int currentWarns = Utils.currentPlayerWarns( warned );
+        lore.add( Utils.chat( "&5Click to Warn " + warned ) );
+        lore.add( Utils.chat( "for the the default time." ) );
+        lore.add( Utils.chat( "&a(&c" + Utils.getString( "warns.expire_after" ) + Utils.getString( "warns.expire_after_quantity" ) + "&a)" ) );
         
         or_meta.setLore( lore );
         lore.clear( );
-        lore.add( utils.chat( "&5Click to Warn " + warned ) );
-        lore.add( utils.chat( "for an specific time." ) );
+        lore.add( Utils.chat( "&5Click to Warn " + warned ) );
+        lore.add( Utils.chat( "for an specific time." ) );
         
         cr_meta.setLore( lore );
         lore.clear( );
-        lore.add( utils.chat( "&cCurrents warns: &6" + currentWarns ) );
+        lore.add( Utils.chat( "&cCurrents warns: &6" + currentWarns ) );
         
-        if ( currentWarns < utils.getInt( "warns.max_warns" , null ) && utils.getBoolean( "warns.ban_on_exceeded" ) ) {
-            lore.add( utils.chat( "&cWarns left: &6" + (utils.getInt( "warns.max_warns" , null ) - currentWarns) ) );
+        if ( currentWarns < Utils.getInt( "warns.max_warns" , null ) && Utils.getBoolean( "warns.ban_on_exceeded" ) ) {
+            lore.add( Utils.chat( "&cWarns left: &6" + (Utils.getInt( "warns.max_warns" , null ) - currentWarns) ) );
         }
         
         head_meta.setLore( lore );

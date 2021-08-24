@@ -6,7 +6,7 @@ package cl.bebt.staffcore.commands.Staff;
 
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.utils.OpenEnderSee;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -21,29 +21,29 @@ public class invSeeEnder implements CommandExecutor {
     
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        if ( !utils.isOlderVersion( ) ) {
+        if ( !Utils.isOlderVersion( ) ) {
             if ( sender instanceof Player ) {
                 if ( args.length == 1 ) {
                     if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
                         if ( sender.hasPermission( "staffcore.endersee" ) ) {
                             Player p = ( Player ) sender;
                             Player p2 = Bukkit.getPlayer( args[0] );
-                            utils.tell( p , utils.getString( "invsee.ender_chest" , "lg" , "staff" ).replace( "%player%" , p2.getName( ) ) );
+                            Utils.tell( p , Utils.getString( "invsee.ender_chest" , "lg" , "staff" ).replace( "%player%" , p2.getName( ) ) );
                             new OpenEnderSee( p , p2 );
                         } else {
-                            utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
+                            Utils.tell( sender , Utils.getString( "no_permission" , "lg" , "staff" ) );
                         }
                     } else {
-                        utils.tell( sender , utils.getString( "p_dont_exist" , "lg" , "sv" ) );
+                        Utils.tell( sender , Utils.getString( "p_dont_exist" , "lg" , "sv" ) );
                     }
                 } else {
-                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "endersee <player>" ) );
+                    Utils.tell( sender , Utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "endersee <player>" ) );
                 }
             } else {
-                utils.tell( sender , utils.getString( "only_players" , "lg" , "sv" ) );
+                Utils.tell( sender , Utils.getString( "only_players" , "lg" , "sv" ) );
             }
         } else {
-            utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
+            Utils.tell( sender , Utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
         }
         return false;
     }

@@ -7,7 +7,7 @@ package cl.bebt.staffcore.menu.menu.Chat;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PaginatedMenu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -27,7 +27,7 @@ public class MutePlayer extends PaginatedMenu {
     }
     
     public String getMenuName( ){
-        return utils.chat( utils.getString( "chat.mute_players_chat.name" , "menu" , null ) );
+        return Utils.chat( Utils.getString( "chat.mute_players_chat.name" , "menu" , null ) );
     }
     
     public int getSlots( ){
@@ -46,7 +46,7 @@ public class MutePlayer extends PaginatedMenu {
             p.closeInventory( );
         } else if ( e.getCurrentItem( ).equals( back( ) ) ) {
             if ( page == 0 ) {
-                utils.tell( p , utils.getString( "menu.already_in_first_page" , "lg" , "sv" ) );
+                Utils.tell( p , Utils.getString( "menu.already_in_first_page" , "lg" , "sv" ) );
             } else {
                 page--;
                 p.closeInventory( );
@@ -58,7 +58,7 @@ public class MutePlayer extends PaginatedMenu {
                 p.closeInventory( );
                 open( );
             } else {
-                utils.tell( p , utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
+                Utils.tell( p , Utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
             }
         }
     }
@@ -72,11 +72,11 @@ public class MutePlayer extends PaginatedMenu {
                 if ( this.index >= players.size( ) )
                     break;
                 if ( players.get( this.index ) != null ) {
-                    ItemStack p_head = utils.getPlayerHead( players.get( this.index ).getName( ) );
+                    ItemStack p_head = Utils.getPlayerHead( players.get( this.index ).getName( ) );
                     ItemMeta meta = p_head.getItemMeta( );
                     ArrayList < String > lore = new ArrayList <>( );
                     meta.setDisplayName( players.get( this.index ).getName( ) );
-                    lore.add( utils.chat( utils.chat( "&cMute &r" ) + players.get( this.index ).getDisplayName( ) ) );
+                    lore.add( Utils.chat( Utils.chat( "&cMute &r" ) + players.get( this.index ).getDisplayName( ) ) );
                     meta.setLore( lore );
                     meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "mute" ) , PersistentDataType.STRING , "mute" );
                     p_head.setItemMeta( meta );

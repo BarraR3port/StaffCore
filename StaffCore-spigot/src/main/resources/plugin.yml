@@ -106,7 +106,6 @@ commands:
     description: Ask for help to the Staff Members
   troll:
     description: Toggles the trollmode
-  staffcoretestcommand:
 permissions:
   staffcore.*:
     description: Give's all StaffCore Permissions.

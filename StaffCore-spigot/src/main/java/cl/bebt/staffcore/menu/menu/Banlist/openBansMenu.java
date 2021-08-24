@@ -4,13 +4,14 @@
 
 package cl.bebt.staffcore.menu.menu.Banlist;
 
-import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PaginatedMenu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
-import cl.bebt.staffcore.sql.Queries.BansQuery;
 import cl.bebt.staffcore.utils.TpPlayers;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.Api;
+import cl.bebt.staffcoreapi.Enums.UpdateType;
+import cl.bebt.staffcoreapi.SQL.Queries.BansQuery;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -35,7 +36,7 @@ public class openBansMenu extends PaginatedMenu {
     }
     
     public String getMenuName( ){
-        return utils.chat( "&cOpen Bans:" );
+        return Utils.chat( "&cOpen Bans:" );
     }
     
     public int getSlots( ){
@@ -46,17 +47,17 @@ public class openBansMenu extends PaginatedMenu {
         Player p = ( Player ) e.getWhoClicked( );
         HashMap < Integer, Integer > bans = new HashMap <>( );
         int num = 0;
-        if ( utils.mysqlEnabled( ) ) {
+        if ( Utils.mysqlEnabled( ) ) {
             ArrayList < Integer > openBans = BansQuery.getOpenBans( );
             for ( Integer openBan : openBans ) {
                 num++;
                 bans.put( num , openBan );
             }
         } else {
-            for ( int id = 0; id <= utils.count( "bans" ); ) {
+            for ( int id = 0; id <= Utils.count( UpdateType.BAN ); ) {
                 id++;
                 try {
-                    if ( plugin.bans.getConfig( ).getString( "bans." + id + ".status" ).equals( "open" ) ) {
+                    if ( Api.bans.getConfig( ).getString( "bans." + id + ".status" ).equals( "open" ) ) {
                         num++;
                         bans.put( num , id );
                     }
@@ -81,7 +82,7 @@ public class openBansMenu extends PaginatedMenu {
             }
         } else if ( e.getCurrentItem( ).equals( back( ) ) ) {
             if ( page == 0 ) {
-                utils.tell( p , utils.getString( "menu.already_in_first_page" , "lg" , "sv" ) );
+                Utils.tell( p , Utils.getString( "menu.already_in_first_page" , "lg" , "sv" ) );
             } else {
                 page--;
                 p.closeInventory( );
@@ -93,7 +94,7 @@ public class openBansMenu extends PaginatedMenu {
                 p.closeInventory( );
                 open( );
             } else {
-                utils.tell( p , utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
+                Utils.tell( p , Utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
             }
         }
     }
@@ -103,7 +104,7 @@ public class openBansMenu extends PaginatedMenu {
         HashMap < Integer, Integer > bans = new HashMap <>( );
         int num = 0;
         JSONObject json = new JSONObject( );
-        if ( utils.mysqlEnabled( ) ) {
+        if ( Utils.mysqlEnabled( ) ) {
             ArrayList < Integer > openBans = BansQuery.getOpenBans( );
             for ( Integer openBan : openBans ) {
                 num++;
@@ -111,10 +112,10 @@ public class openBansMenu extends PaginatedMenu {
             }
             json = BansQuery.getOpenBanInfo( );
         } else {
-            for ( int id = 0; id <= utils.count( "bans" ); ) {
+            for ( int id = 0; id <= Utils.count( UpdateType.BAN ); ) {
                 id++;
                 try {
-                    if ( plugin.bans.getConfig( ).getString( "bans." + id + ".status" ).equals( "open" ) ) {
+                    if ( Api.bans.getConfig( ).getString( "bans." + id + ".status" ).equals( "open" ) ) {
                         num++;
                         bans.put( num , id );
                     }
@@ -130,7 +131,7 @@ public class openBansMenu extends PaginatedMenu {
                     if ( index > bans.size( ) )
                         break;
                     if ( bans.get( index ) != null ) {
-                        if ( utils.mysqlEnabled( ) ) {
+                        if ( Utils.mysqlEnabled( ) ) {
                             String rawBanInfo = json.get( String.valueOf( bans.get( index ) ) ).toString( )
                                     .replace( "[" , "" )
                                     .replace( "]" , "" );
@@ -147,32 +148,32 @@ public class openBansMenu extends PaginatedMenu {
                             Seconds -= TimeUnit.HOURS.toSeconds( Hours );
                             long Minutes = TimeUnit.SECONDS.toMinutes( Seconds );
                             Seconds -= TimeUnit.MINUTES.toSeconds( Minutes );
-                            ItemStack p_head = utils.getPlayerHead( banInfo.getString( "Name" ) );
+                            ItemStack p_head = Utils.getPlayerHead( banInfo.getString( "Name" ) );
                             ItemMeta meta = p_head.getItemMeta( );
                             ArrayList < String > lore = new ArrayList <>( );
                             meta.setDisplayName( banInfo.getString( "Name" ) );
-                            lore.add( utils.chat( "&7Banned by: " + banInfo.getString( "Baner" ) ) );
-                            lore.add( utils.chat( "&7Reason: &b" + banInfo.getString( "Reason" ) ) );
-                            lore.add( utils.chat( "&7Created date: &c" + banInfo.getString( "Date" ) ) );
-                            lore.add( utils.chat( "&7Expiry date: &c" + banInfo.getString( "ExpDate" ) ) );
+                            lore.add( Utils.chat( "&7Banned by: " + banInfo.getString( "Baner" ) ) );
+                            lore.add( Utils.chat( "&7Reason: &b" + banInfo.getString( "Reason" ) ) );
+                            lore.add( Utils.chat( "&7Created date: &c" + banInfo.getString( "Date" ) ) );
+                            lore.add( Utils.chat( "&7Expiry date: &c" + banInfo.getString( "ExpDate" ) ) );
                             if ( banInfo.getString( "Status" ).equalsIgnoreCase( "open" ) ) {
-                                lore.add( utils.chat( "&7Status: &aOpen" ) );
+                                lore.add( Utils.chat( "&7Status: &aOpen" ) );
                                 if ( Days > 365L ) {
-                                    lore.add( utils.chat( "&7Time left: &4PERMANENT" ) );
+                                    lore.add( Utils.chat( "&7Time left: &4PERMANENT" ) );
                                 } else {
-                                    lore.add( utils.chat( "&7Time left: &c" + Days + "d " + Hours + "h " + Minutes + "m " + Seconds + "s" ) );
+                                    lore.add( Utils.chat( "&7Time left: &c" + Days + "d " + Hours + "h " + Minutes + "m " + Seconds + "s" ) );
                                 }
                             } else {
-                                lore.add( utils.chat( "&7Status: &cClosed" ) );
+                                lore.add( Utils.chat( "&7Status: &cClosed" ) );
                             }
                             if ( banInfo.getString( "IP_Banned" ).equalsIgnoreCase( "true" ) ) {
-                                lore.add( utils.chat( "&7Ip Banned: &aTrue" ) );
+                                lore.add( Utils.chat( "&7Ip Banned: &aTrue" ) );
                             } else {
-                                lore.add( utils.chat( "&7Ip Banned: &cFalse" ) );
+                                lore.add( Utils.chat( "&7Ip Banned: &cFalse" ) );
                             }
-                            lore.add( utils.chat( "&7Ban ID:&a #" + bans.get( index ) ) );
-                            lore.add( utils.chat( "&aLeft click delete or close" ) );
-                            lore.add( utils.chat( "&aRight click to tp" ) );
+                            lore.add( Utils.chat( "&7Ban ID:&a #" + bans.get( index ) ) );
+                            lore.add( Utils.chat( "&aLeft click delete or close" ) );
+                            lore.add( Utils.chat( "&aRight click to tp" ) );
                             meta.setLore( lore );
                             meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "open-id" ) , PersistentDataType.INTEGER , bans.get( index ) );
                             meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "open" ) , PersistentDataType.STRING , "open" );
@@ -180,7 +181,7 @@ public class openBansMenu extends PaginatedMenu {
                             inventory.addItem( p_head );
                         } else {
                             Date now = new Date( );
-                            String exp = plugin.bans.getConfig( ).getString( "bans." + bans.get( index ) + ".expdate" );
+                            String exp = Api.bans.getConfig( ).getString( "bans." + bans.get( index ) + ".expdate" );
                             SimpleDateFormat format = new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" );
                             Date d2 = null;
                             d2 = format.parse( exp );
@@ -191,32 +192,32 @@ public class openBansMenu extends PaginatedMenu {
                             Seconds -= TimeUnit.HOURS.toSeconds( Hours );
                             long Minutes = TimeUnit.SECONDS.toMinutes( Seconds );
                             Seconds -= TimeUnit.MINUTES.toSeconds( Minutes );
-                            ItemStack p_head = utils.getPlayerHead( plugin.bans.getConfig( ).getString( "bans." + bans.get( index ) + ".name" ) );
+                            ItemStack p_head = Utils.getPlayerHead( Api.bans.getConfig( ).getString( "bans." + bans.get( index ) + ".name" ) );
                             ItemMeta meta = p_head.getItemMeta( );
                             ArrayList < String > lore = new ArrayList <>( );
-                            meta.setDisplayName( plugin.bans.getConfig( ).get( "bans." + bans.get( index ) + ".name" ).toString( ) );
-                            lore.add( utils.chat( "&7Banned by: " + plugin.bans.getConfig( ).getString( "bans." + bans.get( index ) + ".banned_by" ) ) );
-                            lore.add( utils.chat( "&7Reason: &b" + plugin.bans.getConfig( ).getString( "bans." + bans.get( index ) + ".reason" ) ) );
-                            lore.add( utils.chat( "&7Created date: &c" + plugin.bans.getConfig( ).getString( "bans." + bans.get( index ) + ".date" ) ) );
-                            lore.add( utils.chat( "&7Expiry date: &c" + plugin.bans.getConfig( ).getString( "bans." + bans.get( index ) + ".expdate" ) ) );
-                            if ( StaffCoreAPI.isStillBanned( bans.get( index ) ) ) {
-                                lore.add( utils.chat( "&7Status: &aOpen" ) );
+                            meta.setDisplayName( Api.bans.getConfig( ).get( "bans." + bans.get( index ) + ".name" ).toString( ) );
+                            lore.add( Utils.chat( "&7Banned by: " + Api.bans.getConfig( ).getString( "bans." + bans.get( index ) + ".banned_by" ) ) );
+                            lore.add( Utils.chat( "&7Reason: &b" + Api.bans.getConfig( ).getString( "bans." + bans.get( index ) + ".reason" ) ) );
+                            lore.add( Utils.chat( "&7Created date: &c" + Api.bans.getConfig( ).getString( "bans." + bans.get( index ) + ".date" ) ) );
+                            lore.add( Utils.chat( "&7Expiry date: &c" + Api.bans.getConfig( ).getString( "bans." + bans.get( index ) + ".expdate" ) ) );
+                            if ( Utils.isStillBanned( bans.get( index ) ) ) {
+                                lore.add( Utils.chat( "&7Status: &aOpen" ) );
                                 if ( Days > 365L ) {
-                                    lore.add( utils.chat( "&7Time left: &4PERMANENT" ) );
+                                    lore.add( Utils.chat( "&7Time left: &4PERMANENT" ) );
                                 } else {
-                                    lore.add( utils.chat( "&7Time left: &c" + Days + "d " + Hours + "h " + Minutes + "m " + Seconds + "s" ) );
+                                    lore.add( Utils.chat( "&7Time left: &c" + Days + "d " + Hours + "h " + Minutes + "m " + Seconds + "s" ) );
                                 }
                             } else {
-                                lore.add( utils.chat( "&7Status: &c" + plugin.bans.getConfig( ).getString( "bans." + bans.get( index ) + ".status" ) ) );
+                                lore.add( Utils.chat( "&7Status: &c" + Api.bans.getConfig( ).getString( "bans." + bans.get( index ) + ".status" ) ) );
                             }
-                            if ( plugin.bans.getConfig( ).getBoolean( "bans." + bans.get( index ) + ".IP-Banned" ) ) {
-                                lore.add( utils.chat( "&7Ip Banned: &aTrue" ) );
+                            if ( Api.bans.getConfig( ).getBoolean( "bans." + bans.get( index ) + ".IP-Banned" ) ) {
+                                lore.add( Utils.chat( "&7Ip Banned: &aTrue" ) );
                             } else {
-                                lore.add( utils.chat( "&7Ip Banned: &cFalse" ) );
+                                lore.add( Utils.chat( "&7Ip Banned: &cFalse" ) );
                             }
-                            lore.add( utils.chat( "&7Ban ID:&a #" + bans.get( index ) ) );
-                            lore.add( utils.chat( "&aLeft click delete or close" ) );
-                            lore.add( utils.chat( "&aRight click to tp" ) );
+                            lore.add( Utils.chat( "&7Ban ID:&a #" + bans.get( index ) ) );
+                            lore.add( Utils.chat( "&aLeft click delete or close" ) );
+                            lore.add( Utils.chat( "&aRight click to tp" ) );
                             meta.setLore( lore );
                             meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "open-id" ) , PersistentDataType.INTEGER , bans.get( index ) );
                             meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "open" ) , PersistentDataType.STRING , "open" );

@@ -4,10 +4,9 @@
 
 package cl.bebt.staffcore.utils;
 
-import cl.bebt.staffcore.EntitysUtils.UserUtils;
-import cl.bebt.staffcore.Exeptions.PlayerNotFundException;
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.sql.DataExporter;
+import cl.bebt.staffcoreapi.EntitiesUtils.UserUtils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -28,8 +27,7 @@ public class FlyManager {
             p.setAllowFlight( true );
             p.setFlying( true );
             UserUtils.setFly( uuid , true );
-            DataExporter.updateServerStats( "staff" );
-        } catch ( PlayerNotFundException | NullPointerException ignored ) {
+        } catch ( NullPointerException ignored ) {
             ignored.printStackTrace( );
         }
     }
@@ -41,12 +39,12 @@ public class FlyManager {
                 if ( p.getGameMode( ) == GameMode.ADVENTURE || p.getGameMode( ) == GameMode.SURVIVAL ) {
                     p.setAllowFlight( false );
                     p.setFlying( false );
-                    if ( utils.getBoolean( "staff.fly_invincible" ) ) {
+                    if ( Utils.getBoolean( "staff.fly_invincible" ) ) {
                         p.setInvulnerable( false );
                     }
                 }
             }
-        } catch ( PlayerNotFundException | NullPointerException ignored ) {
+        } catch ( NullPointerException ignored ) {
         }
     }
     

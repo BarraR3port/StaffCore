@@ -5,7 +5,7 @@
 package cl.bebt.staffcore.commands.Staff;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -31,15 +31,15 @@ public class GmCreative implements CommandExecutor {
                             p.setFlying( true );
                         }
                         p.setAllowFlight( true );
-                        utils.tell( sender , utils.getString( "creative.enabled_to" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
+                        Utils.tell( sender , Utils.getString( "creative.enabled_to" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
                     } else {
-                        utils.tell( sender , utils.getString( "creative.already" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
+                        Utils.tell( sender , Utils.getString( "creative.already" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
                     }
                     return false;
                 }
-                utils.tell( sender , utils.getString( "p_dont_exist" , "lg" , "sv" ) );
+                Utils.tell( sender , Utils.getString( "p_dont_exist" , "lg" , "sv" ) );
             } else {
-                utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "sv" ).replace( "%command%" , "gmc | gmc <player>" ) );
+                Utils.tell( sender , Utils.getString( "wrong_usage" , "lg" , "sv" ).replace( "%command%" , "gmc | gmc <player>" ) );
             }
         }
         if ( sender instanceof Player ) {
@@ -52,12 +52,12 @@ public class GmCreative implements CommandExecutor {
                             p.setFlying( true );
                         }
                         p.setAllowFlight( true );
-                        utils.tell( sender , utils.getString( "creative.enabled" , "lg" , "sv" ) );
+                        Utils.tell( sender , Utils.getString( "creative.enabled" , "lg" , "sv" ) );
                     } else {
-                        utils.tell( sender , utils.getString( "creative.already" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
+                        Utils.tell( sender , Utils.getString( "creative.already" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
                     }
                 } else {
-                    utils.tell( sender , utils.getString( "no_permission" , "lg" , "sv" ) );
+                    Utils.tell( sender , Utils.getString( "no_permission" , "lg" , "sv" ) );
                 }
             } else if ( args.length == 1 ) {
                 if ( Bukkit.getPlayer( args[0] ) instanceof Player ) {
@@ -68,20 +68,20 @@ public class GmCreative implements CommandExecutor {
                             p.setFlying( true );
                             p.setAllowFlight( true );
                             if ( !(sender == p) ) {
-                                utils.tell( sender , utils.getString( "creative.enabled_to" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
+                                Utils.tell( sender , Utils.getString( "creative.enabled_to" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
                             }
-                            utils.tell( sender , utils.getString( "creative.enabled" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
+                            Utils.tell( sender , Utils.getString( "creative.enabled" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
                         } else {
-                            utils.tell( sender , utils.getString( "creative.already" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
+                            Utils.tell( sender , Utils.getString( "creative.already" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) );
                         }
                     } else {
-                        utils.tell( sender , utils.getString( "no_permission" , "lg" , "sv" ) );
+                        Utils.tell( sender , Utils.getString( "no_permission" , "lg" , "sv" ) );
                     }
                     return false;
                 }
-                utils.tell( sender , utils.getString( "p_dont_exist" , "lg" , "sv" ) );
+                Utils.tell( sender , Utils.getString( "p_dont_exist" , "lg" , "sv" ) );
             } else {
-                utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "sv" ).replace( "%command%" , "gmc | gmc <player>" ) );
+                Utils.tell( sender , Utils.getString( "wrong_usage" , "lg" , "sv" ).replace( "%command%" , "gmc | gmc <player>" ) );
             }
         }
         return true;

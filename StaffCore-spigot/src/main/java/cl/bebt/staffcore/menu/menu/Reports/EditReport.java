@@ -6,9 +6,10 @@ package cl.bebt.staffcore.menu.menu.Reports;
 
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
-import cl.bebt.staffcore.sql.Queries.ReportsQuery;
 import cl.bebt.staffcore.utils.ReportPlayer;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.Api;
+import cl.bebt.staffcoreapi.SQL.Queries.ReportsQuery;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -34,7 +35,7 @@ public class EditReport extends ReportMenu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( utils.getString( "reports.edit.name" , "menu" , null ) );
+        return Utils.chat( Utils.getString( "reports.edit.name" , "menu" , null ) );
     }
     
     @Override
@@ -78,9 +79,9 @@ public class EditReport extends ReportMenu {
         ItemMeta closeReport_meta = closeReport.getItemMeta( );
         ItemMeta openReport_meta = openReport.getItemMeta( );
         
-        delete_meta.setDisplayName( utils.chat( "&4DELETE REPORT" ) );
-        closeReport_meta.setDisplayName( utils.chat( "&4CLOSE REPORT" ) );
-        openReport_meta.setDisplayName( utils.chat( "&aOPEN REPORT" ) );
+        delete_meta.setDisplayName( Utils.chat( "&4DELETE REPORT" ) );
+        closeReport_meta.setDisplayName( Utils.chat( "&4CLOSE REPORT" ) );
+        openReport_meta.setDisplayName( Utils.chat( "&aOPEN REPORT" ) );
         
         delete_meta.addEnchant( Enchantment.DURABILITY , 1 , true );
         delete_meta.addItemFlags( ItemFlag.HIDE_ENCHANTS );
@@ -94,15 +95,15 @@ public class EditReport extends ReportMenu {
         openReport_meta.addItemFlags( ItemFlag.HIDE_ENCHANTS );
         openReport_meta.addItemFlags( ItemFlag.HIDE_ATTRIBUTES );
         
-        lore.add( utils.chat( "&8Click to &4Delete &8the report" ) );
+        lore.add( Utils.chat( "&8Click to &4Delete &8the report" ) );
         delete_meta.setLore( lore );
         lore.clear( );
         
-        lore.add( utils.chat( "&8Click to &aClose &8the report" ) );
+        lore.add( Utils.chat( "&8Click to &aClose &8the report" ) );
         closeReport_meta.setLore( lore );
         lore.clear( );
         
-        lore.add( utils.chat( "&8Click to &aOpen &8the report" ) );
+        lore.add( Utils.chat( "&8Click to &aOpen &8the report" ) );
         openReport_meta.setLore( lore );
         lore.clear( );
         
@@ -144,14 +145,14 @@ public class EditReport extends ReportMenu {
         inventory.setItem( 21 , super.redPanel( ) );
         inventory.setItem( 22 , close( ) );
         inventory.setItem( 23 , super.redPanel( ) );
-        if ( utils.mysqlEnabled( ) ) {
+        if ( Utils.mysqlEnabled( ) ) {
             if ( ReportsQuery.isOpen( id ) ) {
                 inventory.setItem( 24 , closeReport );
             } else {
                 inventory.setItem( 24 , openReport );
             }
         } else {
-            if ( plugin.reports.getConfig( ).get( "reports." + id + ".status" ).equals( "open" ) ) {
+            if ( Api.reports.getConfig( ).get( "reports." + id + ".status" ).equals( "open" ) ) {
                 inventory.setItem( 24 , closeReport );
             } else {
                 inventory.setItem( 24 , openReport );

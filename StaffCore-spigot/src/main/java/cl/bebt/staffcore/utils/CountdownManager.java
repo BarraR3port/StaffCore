@@ -4,8 +4,7 @@
 
 package cl.bebt.staffcore.utils;
 
-import cl.bebt.staffcore.EntitysUtils.UserUtils;
-import cl.bebt.staffcore.Exeptions.PlayerNotFundException;
+import cl.bebt.staffcoreapi.EntitiesUtils.UserUtils;
 
 import java.util.UUID;
 
@@ -13,43 +12,31 @@ import java.util.UUID;
 public class CountdownManager {
     
     public static void setMuteCountdown( UUID uuid , long seconds ){
-        try {
-            double delay = System.currentTimeMillis( ) + (seconds * 1000);
-            UserUtils.setMutedTime( uuid , delay );
-        } catch ( PlayerNotFundException ignored ) {
-        }
+        double delay = System.currentTimeMillis( ) + (seconds * 1000);
+        UserUtils.setMutedTime( uuid , delay );
+        
     }
     
     public static void removeMuteCountdown( UUID uuid ){
-        try {
-            UserUtils.setMutedTime( uuid , 0D );
-        } catch ( PlayerNotFundException ignored ) {
-        }
+        UserUtils.setMutedTime( uuid , 0D );
+        
     }
     
     public static long getMuteCountDown( UUID uuid ){
-        try {
-            double delay = UserUtils.getMutedTime( uuid );
-            return Math.toIntExact( Math.round( (delay - System.currentTimeMillis( )) / 1000 ) );
-        } catch ( PlayerNotFundException error ) {
-            return 0;
-        }
+        double delay = UserUtils.getMutedTime( uuid );
+        return Math.toIntExact( Math.round( (delay - System.currentTimeMillis( )) / 1000 ) );
+        
     }
     
     public static boolean checkMuteCountdown( UUID uuid ){
-        try {
-            return UserUtils.getMutedTime( uuid ) <= System.currentTimeMillis( );
-        } catch ( PlayerNotFundException error ) {
-            return false;
-        }
+        return UserUtils.getMutedTime( uuid ) <= System.currentTimeMillis( );
+        
     }
     
     public static void setCountDown( UUID uuid , Double seconds ){
-        try {
-            double delay = System.currentTimeMillis( ) + (seconds * 1000);
-            UserUtils.setMutedTime( uuid , delay );
-        } catch ( PlayerNotFundException ignored ) {
-        }
+        double delay = System.currentTimeMillis( ) + (seconds * 1000);
+        UserUtils.setMutedTime( uuid , delay );
+        
     }
     
 }

@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Maven: cl.bebt:StaffCoreApi:4.5.0">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/cl/bebt/StaffCoreApi/4.5.0/StaffCoreApi-4.5.0.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/StaffCoreApi/StaffCoreApi-4.5.0-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/cl/bebt/StaffCoreApi/4.5.0/StaffCoreApi-4.5.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/StaffCoreApi/StaffCoreApi-4.5.0-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/cl/bebt/StaffCoreApi/4.5.0/StaffCoreApi-4.5.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

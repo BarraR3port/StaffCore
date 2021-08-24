@@ -4,14 +4,12 @@
 
 package cl.bebt.staffcore.menu.menu.Bangui;
 
-import cl.bebt.staffcore.PersistentData.PersistentData;
-import cl.bebt.staffcore.PersistentData.PersistentDataType;
-import cl.bebt.staffcore.PersistentData.PersistentDataUtils;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PaginatedMenu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
-import cl.bebt.staffcore.utils.utils;
-import org.bukkit.Bukkit;
+import cl.bebt.staffcoreapi.EntitiesUtils.PersistentDataUtils;
+import cl.bebt.staffcoreapi.Enums.PersistentDataType;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -43,7 +41,7 @@ public class AmountBanned extends PaginatedMenu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( utils.getString( "bangui.amount_banned.name" , "menu" , null ) );
+        return Utils.chat( Utils.getString( "bangui.amount_banned.name" , "menu" , null ) );
     }
     
     @Override
@@ -54,13 +52,11 @@ public class AmountBanned extends PaginatedMenu {
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
-        int amount = utils.getInt( "inventories.time_limit" , null ) + 1;
+        int amount = Utils.getInt( "inventories.time_limit" , null ) + 1;
         ItemStack item = e.getCurrentItem( );
-        PersistentData data = PersistentDataUtils.getPersistentData( item );
-        if ( PersistentDataUtils.has( item , "amount", PersistentDataType.INTEGER ) ) {
+        if ( PersistentDataUtils.has( item , "amount" , PersistentDataType.INTEGER ) ) {
             p.closeInventory( );
-            Integer time = data.getIntegerValues( ).get( "amount" );
-            Bukkit.broadcastMessage( "time" + time );
+            Integer time = PersistentDataUtils.getInteger( item , "amount" );
             new QuantityBanned( playerMenuUtility , plugin , player , banned , reason , time ).open( );
         }
         if ( e.getCurrentItem( ).equals( close( ) ) ) {
@@ -70,7 +66,7 @@ public class AmountBanned extends PaginatedMenu {
             }
         } else if ( e.getCurrentItem( ).equals( back( ) ) ) {
             if ( page == 0 ) {
-                utils.tell( p , utils.getString( "menu.already_in_first_page" , "lg" , "sv" ) );
+                Utils.tell( p , Utils.getString( "menu.already_in_first_page" , "lg" , "sv" ) );
             } else {
                 page--;
                 p.closeInventory( );
@@ -82,7 +78,7 @@ public class AmountBanned extends PaginatedMenu {
                 p.closeInventory( );
                 open( );
             } else {
-                utils.tell( p , utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
+                Utils.tell( p , Utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
             }
         }
         
@@ -91,16 +87,16 @@ public class AmountBanned extends PaginatedMenu {
     @Override
     public void setMenuItems( ){
         addMenuBorder( );
-        int amount = utils.getInt( "inventories.time_limit" , null ) + 1;
+        int amount = Utils.getInt( "inventories.time_limit" , null ) + 1;
         PersistentDataUtils.remove( uuid , "seconds" );
         PersistentDataUtils.remove( uuid , "amount" );
         for ( int i = 1; i < getMaxItemsPerPage( ) + 1; i++ ) {
             index = getMaxItemsPerPage( ) * page + i;
             if ( index >= amount ) break;
             //////////////////////////////
-            ItemStack clock = new ItemStack( Material.CLOCK , index );
+            ItemStack clock = new ItemStack( Material.CLOCK );
             ItemMeta meta = clock.getItemMeta( );
-            meta.setDisplayName( utils.chat( "&a" ) + index );
+            meta.setDisplayName( Utils.chat( "&a" ) + index );
             clock.setItemMeta( meta );
             PersistentDataUtils.save( "amount" , index , clock , uuid , PersistentDataType.INTEGER );
             inventory.addItem( clock );

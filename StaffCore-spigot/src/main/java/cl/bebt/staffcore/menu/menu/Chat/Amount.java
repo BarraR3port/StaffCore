@@ -7,7 +7,7 @@ package cl.bebt.staffcore.menu.menu.Chat;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PaginatedMenu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -28,7 +28,7 @@ public class Amount extends PaginatedMenu {
     }
     
     public String getMenuName( ){
-        return utils.chat( utils.getString( "chat.amount_chat.name" , "menu" , null ) );
+        return Utils.chat( Utils.getString( "chat.amount_chat.name" , "menu" , null ) );
     }
     
     public int getSlots( ){
@@ -37,7 +37,7 @@ public class Amount extends PaginatedMenu {
     
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
-        int amount = utils.getInt( "inventories.time_limit" , null ) + 1;
+        int amount = Utils.getInt( "inventories.time_limit" , null ) + 1;
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "amount" ) , PersistentDataType.INTEGER ) ) {
             p.closeInventory( );
             int yep = e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).get( new NamespacedKey( this.plugin , "amount" ) , PersistentDataType.INTEGER ).intValue( );
@@ -50,7 +50,7 @@ public class Amount extends PaginatedMenu {
             }
         } else if ( e.getCurrentItem( ).equals( back( ) ) ) {
             if ( page == 0 ) {
-                utils.tell( p , utils.getString( "menu.already_in_first_page" , "lg" , "sv" ) );
+                Utils.tell( p , Utils.getString( "menu.already_in_first_page" , "lg" , "sv" ) );
             } else {
                 page--;
                 p.closeInventory( );
@@ -62,14 +62,14 @@ public class Amount extends PaginatedMenu {
                 p.closeInventory( );
                 open( );
             } else {
-                utils.tell( p , utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
+                Utils.tell( p , Utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
             }
         }
     }
     
     public void setMenuItems( ){
         addMenuBorder( );
-        int amount = utils.getInt( "inventories.time_limit" , null ) + 1;
+        int amount = Utils.getInt( "inventories.time_limit" , null ) + 1;
         this.player.getPersistentDataContainer( ).remove( new NamespacedKey( this.plugin , "seconds" ) );
         this.player.getPersistentDataContainer( ).remove( new NamespacedKey( this.plugin , "amount" ) );
         for ( int i = 1; i < getMaxItemsPerPage( ) + 1; i++ ) {
@@ -78,7 +78,7 @@ public class Amount extends PaginatedMenu {
                 break;
             ItemStack clock = new ItemStack( Material.CLOCK , this.index );
             ItemMeta meta = clock.getItemMeta( );
-            meta.setDisplayName( utils.chat( "&a" ) + this.index );
+            meta.setDisplayName( Utils.chat( "&a" ) + this.index );
             meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "amount" ) , PersistentDataType.INTEGER , Integer.valueOf( this.index ) );
             clock.setItemMeta( meta );
             this.inventory.addItem( clock );

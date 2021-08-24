@@ -7,7 +7,7 @@ package cl.bebt.staffcore.menu.menu.Chat;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.MenuC;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -31,7 +31,7 @@ public class MuteChatManager extends MenuC {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( utils.getString( "chat.mute_chat_manager.name" , "menu" , null ) );
+        return Utils.chat( Utils.getString( "chat.mute_chat_manager.name" , "menu" , null ) );
     }
     
     @Override
@@ -53,13 +53,13 @@ public class MuteChatManager extends MenuC {
             p.closeInventory( );
             plugin.chatMuted = true;
             new MuteChatManager( main.getPlayerMenuUtility( p ) , plugin ).open( p );
-            Bukkit.broadcastMessage( utils.chat( utils.getString( "toggle_chat.global_mute_by_player" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) ) );
+            Bukkit.broadcastMessage( Utils.chat( Utils.getString( "toggle_chat.global_mute_by_player" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) ) );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "TChatOff" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
             plugin.chatMuted = false;
             new MuteChatManager( main.getPlayerMenuUtility( p ) , plugin ).open( p );
-            Bukkit.broadcastMessage( utils.chat( utils.getString( "toggle_chat.global_un_mute_by_player" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) ) );
+            Bukkit.broadcastMessage( Utils.chat( Utils.getString( "toggle_chat.global_un_mute_by_player" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) ) );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
@@ -75,23 +75,23 @@ public class MuteChatManager extends MenuC {
         
         ItemStack TChatOn = new ItemStack( Material.ENDER_EYE , 1 );
         ItemStack TChatOff = new ItemStack( Material.ENDER_EYE , 1 );
-        ItemStack Head = utils.getPlayerHead( p.getName( ) );
+        ItemStack Head = Utils.getPlayerHead( p.getName( ) );
         
         ItemMeta metaTChatOn = TChatOn.getItemMeta( );
         ItemMeta metaTChatOff = TChatOff.getItemMeta( );
         ItemMeta metaHead = Head.getItemMeta( );
         
-        metaTChatOn.setDisplayName( utils.chat( "&8Current Chat: &aNormal" ) );
-        metaTChatOff.setDisplayName( utils.chat( "&8Current Chat: &cMuted" ) );
-        metaHead.setDisplayName( utils.chat( "&cMute Player Chat" ) );
+        metaTChatOn.setDisplayName( Utils.chat( "&8Current Chat: &aNormal" ) );
+        metaTChatOff.setDisplayName( Utils.chat( "&8Current Chat: &cMuted" ) );
+        metaHead.setDisplayName( Utils.chat( "&cMute Player Chat" ) );
         
-        lore.add( utils.chat( "&7Click to &cMUTE &7the Chat." ) );
+        lore.add( Utils.chat( "&7Click to &cMUTE &7the Chat." ) );
         metaTChatOn.setLore( lore );
         lore.clear( );
-        lore.add( utils.chat( "&7Click to &aUnMute &7the Chat." ) );
+        lore.add( Utils.chat( "&7Click to &aUnMute &7the Chat." ) );
         metaTChatOff.setLore( lore );
         lore.clear( );
-        lore.add( utils.chat( "&7Click to &cMute &7a specific player chat." ) );
+        lore.add( Utils.chat( "&7Click to &cMute &7a specific player chat." ) );
         metaHead.setLore( lore );
         
         metaTChatOff.addEnchant( Enchantment.MENDING , 1 , false );

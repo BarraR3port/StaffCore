@@ -9,7 +9,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cl.bebt.staffcore</groupId>
-    <artifactId>staffcore</artifactId>
+    <artifactId>StaffCore</artifactId>
     <version>4.5.0</version>
     <packaging>jar</packaging>
 
@@ -106,6 +106,13 @@
             <version>1.7.10-R0.1-SNAPSHOT</version>
         </dependency>-->
         <dependency>
+            <groupId>net.md-5</groupId>
+            <artifactId>bungeecord-api</artifactId>
+            <version>1.17-R0.1-SNAPSHOT</version>
+            <type>jar</type>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.17.1-R0.1-SNAPSHOT</version>
@@ -152,6 +159,12 @@
         <dependency>
             <groupId>cl.bebt</groupId>
             <artifactId>StaffBungee</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>cl.bebt</groupId>
+            <artifactId>StaffCore-Api</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>

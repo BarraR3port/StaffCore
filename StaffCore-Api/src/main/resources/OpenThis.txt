@@ -1,0 +1,23 @@
+#     ______     _                ___      ___                  ______                                    #
+#   .' ____ \   / |_            .' ..]   .' ..]               .' ___  |                                   #
+#   | (___ \_| `| |-'  ,--.    _| |_    _| |_      ______    / .'   \_|   .--.    _ .--.   .---.          #
+#    _.____`.   | |   `'_\ :  '-| |-'  '-| |-'    |______|   | |        / .'`\ \ [ `/'`\] / /__\\         #
+#   | \____) |  | |,  // | |,   | |      | |                 \ `.___.'\ | \__. |  | |     | \__.,         #
+#   \______.'   \__/  \'-;__/  [___]    [___]                 `.____ .'  '.__.'  [___]     '.__.'   4.5.0 #
+#                                                                                                         #
+#                                                                               By BarraR3port :   [INFO] #
+#                                                                                                         #
+# If you need some help, or you have any suggestion please join in my discord:                            #
+# ------------------> https://discord.gg/rgekTwy <------------------                                      #
+#
+
+
+#   Hey now that you are reading this, here I'm gonna explain you what you can and can't change,
+#   what you Should,  and what you shouldn't.
+#
+# 1:
+#    Go to the serversettings.json and open it, there will be some stats that StaffCore works with.
+#    You can change 2 sectors inside there, the servers (using this format: lobby, hcf, practice, etc )
+#    and the ServerName where is going to be your Network / Server Name (Don't use '&' or anything like this).
+#
+# 2:

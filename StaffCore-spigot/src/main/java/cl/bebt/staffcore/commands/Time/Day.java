@@ -5,7 +5,7 @@
 package cl.bebt.staffcore.commands.Time;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -31,7 +31,7 @@ public class Day implements CommandExecutor {
                     world.setThundering( false );
                     world.setStorm( false );
                 }
-                Bukkit.broadcastMessage( utils.chat( utils.getString( "time.day.set_by_console" , "lg" , "sv" ) ) );
+                Bukkit.broadcastMessage( Utils.chat( Utils.getString( "time.day.set_by_console" , "lg" , "sv" ) ) );
                 return true;
             }
             Player p = ( Player ) sender;
@@ -41,12 +41,12 @@ public class Day implements CommandExecutor {
                     world.setThundering( false );
                     world.setStorm( false );
                 }
-                Bukkit.broadcastMessage( utils.chat( utils.getString( "time.day.set_by_console" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) ) );
+                Bukkit.broadcastMessage( Utils.chat( Utils.getString( "time.day.set_by_console" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) ) );
             } else {
-                utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
+                Utils.tell( sender , Utils.getString( "no_permission" , "lg" , "staff" ) );
             }
         } else {
-            utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "day" ) );
+            Utils.tell( sender , Utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "day" ) );
         }
         return true;
     }

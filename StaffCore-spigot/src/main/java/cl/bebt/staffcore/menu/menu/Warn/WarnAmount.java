@@ -7,7 +7,7 @@ package cl.bebt.staffcore.menu.menu.Warn;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PaginatedMenu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -32,7 +32,7 @@ public class WarnAmount extends PaginatedMenu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( utils.getString( "warns.amount.name" , "menu" , null ) );
+        return Utils.chat( Utils.getString( "warns.amount.name" , "menu" , null ) );
     }
     
     @Override
@@ -43,11 +43,11 @@ public class WarnAmount extends PaginatedMenu {
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
-        int amount = utils.getInt( "inventories.time_limit" , null ) + 1;
+        int amount = Utils.getInt( "inventories.time_limit" , null ) + 1;
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "amount" ) , PersistentDataType.LONG ) ) {
             p.closeInventory( );
-            long yep = e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).get( new NamespacedKey( plugin , "amount" ) , PersistentDataType.LONG );
-            new WarnQuantity( playerMenuUtility , plugin , warned , reason , yep ).open( );
+            int finalAmount = e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).get( new NamespacedKey( plugin , "amount" ) , PersistentDataType.INTEGER );
+            new WarnQuantity( playerMenuUtility , plugin , warned , reason , finalAmount ).open( );
         } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
@@ -55,7 +55,7 @@ public class WarnAmount extends PaginatedMenu {
             }
         } else if ( e.getCurrentItem( ).equals( back( ) ) ) {
             if ( page == 0 ) {
-                utils.tell( p , utils.getString( "menu.already_in_first_page" , "lg" , "sv" ) );
+                Utils.tell( p , Utils.getString( "menu.already_in_first_page" , "lg" , "sv" ) );
             } else {
                 page--;
                 p.closeInventory( );
@@ -67,7 +67,7 @@ public class WarnAmount extends PaginatedMenu {
                 p.closeInventory( );
                 open( );
             } else {
-                utils.tell( p , utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
+                Utils.tell( p , Utils.getString( "menu.already_in_last_page" , "lg" , "sv" ) );
             }
         }
     }
@@ -75,7 +75,7 @@ public class WarnAmount extends PaginatedMenu {
     @Override
     public void setMenuItems( ){
         addMenuBorder( );
-        int amount = utils.getInt( "inventories.time_limit" , null ) + 1;
+        int amount = Utils.getInt( "inventories.time_limit" , null ) + 1;
         player.getPersistentDataContainer( ).remove( new NamespacedKey( plugin , "seconds" ) );
         player.getPersistentDataContainer( ).remove( new NamespacedKey( plugin , "amount" ) );
         for ( int i = 1; i < getMaxItemsPerPage( ) + 1; i++ ) {
@@ -84,7 +84,7 @@ public class WarnAmount extends PaginatedMenu {
             //////////////////////////////
             ItemStack clock = new ItemStack( Material.CLOCK , index );
             ItemMeta meta = clock.getItemMeta( );
-            meta.setDisplayName( utils.chat( "&a" ) + index );
+            meta.setDisplayName( Utils.chat( "&a" ) + index );
             long a = index;
             meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "amount" ) , PersistentDataType.LONG , a );
             clock.setItemMeta( meta );

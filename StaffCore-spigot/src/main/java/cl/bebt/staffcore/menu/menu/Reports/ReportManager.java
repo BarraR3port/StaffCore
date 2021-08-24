@@ -8,8 +8,9 @@ import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.Menu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.menu.menu.Staff.ServerManager;
-import cl.bebt.staffcore.sql.Queries.ReportsQuery;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.Api;
+import cl.bebt.staffcoreapi.SQL.Queries.ReportsQuery;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -31,7 +32,7 @@ public class ReportManager extends Menu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( utils.getString( "reports.manager.name" , "menu" , null ) );
+        return Utils.chat( Utils.getString( "reports.manager.name" , "menu" , null ) );
     }
     
     @Override
@@ -63,15 +64,15 @@ public class ReportManager extends Menu {
     
     private int Closed( ){
         int close = 0;
-        if ( utils.mysqlEnabled( ) ) {
+        if ( Utils.mysqlEnabled( ) ) {
             return ReportsQuery.getClosedReports( ).size( );
         } else {
-            int count = plugin.reports.getConfig( ).getInt( "current" ) + plugin.reports.getConfig( ).getInt( "count" );
+            int count = Api.reports.getConfig( ).getInt( "current" ) + Api.reports.getConfig( ).getInt( "count" );
             for ( int id = 0; id <= count; ) {
-                plugin.reports.reloadConfig( );
+                Api.reports.reloadConfig( );
                 id++;
                 try {
-                    if ( plugin.reports.getConfig( ).get( "reports." + id + ".status" ).equals( "close" ) ) {
+                    if ( Api.reports.getConfig( ).get( "reports." + id + ".status" ).equals( "close" ) ) {
                         close++;
                     }
                 } catch ( NullPointerException ignored ) {
@@ -83,15 +84,15 @@ public class ReportManager extends Menu {
     
     private int Opens( ){
         int opens = 0;
-        if ( utils.mysqlEnabled( ) ) {
+        if ( Utils.mysqlEnabled( ) ) {
             return ReportsQuery.getOpenReports( ).size( );
         } else {
-            int count = plugin.reports.getConfig( ).getInt( "current" ) + plugin.reports.getConfig( ).getInt( "count" );
+            int count = Api.reports.getConfig( ).getInt( "current" ) + Api.reports.getConfig( ).getInt( "count" );
             for ( int id = 0; id <= count + 1; ) {
-                plugin.reports.reloadConfig( );
+                Api.reports.reloadConfig( );
                 id++;
                 try {
-                    if ( plugin.reports.getConfig( ).get( "reports." + id + ".status" ).equals( "open" ) ) {
+                    if ( Api.reports.getConfig( ).get( "reports." + id + ".status" ).equals( "open" ) ) {
                         opens++;
                     }
                 } catch ( NullPointerException ignored ) {
@@ -110,17 +111,17 @@ public class ReportManager extends Menu {
         ItemMeta or_meta = openReports.getItemMeta( );
         ItemMeta cr_meta = closeReports.getItemMeta( );
         
-        or_meta.setDisplayName( utils.chat( "&aOpen Reports" ) );
-        cr_meta.setDisplayName( utils.chat( "&cClosed Reports" ) );
+        or_meta.setDisplayName( Utils.chat( "&aOpen Reports" ) );
+        cr_meta.setDisplayName( Utils.chat( "&cClosed Reports" ) );
         
-        lore.add( utils.chat( "&8&lClick to open all the opened Reports" ) );
+        lore.add( Utils.chat( "&8&lClick to open all the opened Reports" ) );
         
-        lore.add( utils.chat( "&8&lCurrent Opened: &a" + Opens( ) ) );
+        lore.add( Utils.chat( "&8&lCurrent Opened: &a" + Opens( ) ) );
         or_meta.setLore( lore );
         lore.clear( );
-        lore.add( utils.chat( "&8&lClick to open all the closed Reports" ) );
+        lore.add( Utils.chat( "&8&lClick to open all the closed Reports" ) );
         
-        lore.add( utils.chat( "&8&lCurrent Closed: &a" + Closed( ) ) );
+        lore.add( Utils.chat( "&8&lCurrent Closed: &a" + Closed( ) ) );
         cr_meta.setLore( lore );
         lore.clear( );
         

@@ -6,7 +6,7 @@ package cl.bebt.staffcore.menu.menu.Inventory;
 
 import cl.bebt.staffcore.menu.Menu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -24,7 +24,7 @@ public class openChest extends Menu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( utils.getString( "inventory.open_chest.name" , "menu" , null ) );
+        return Utils.chat( Utils.getString( "inventory.open_chest.name" , "menu" , null ) );
     }
     
     @Override

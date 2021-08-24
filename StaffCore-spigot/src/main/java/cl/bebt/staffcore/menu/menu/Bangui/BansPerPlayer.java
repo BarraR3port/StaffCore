@@ -4,15 +4,15 @@
 
 package cl.bebt.staffcore.menu.menu.Bangui;
 
-import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.Items.Items;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.Menu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.menu.menu.Banlist.EditBan;
-import cl.bebt.staffcore.sql.Queries.BansQuery;
 import cl.bebt.staffcore.utils.TpPlayers;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.Api;
+import cl.bebt.staffcoreapi.SQL.Queries.BansQuery;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
+//TODO CREATE A NEW WAY TO DO THIS WITH THE NEW BANS ENTITIES
 public class BansPerPlayer extends Menu {
     private final main plugin;
     private final Player p;
@@ -45,9 +46,9 @@ public class BansPerPlayer extends Menu {
     @Override
     public String getMenuName( ){
         if ( p.getName( ).equalsIgnoreCase( banned ) ) {
-            return utils.chat( utils.getString( "bans.owns" , "menu" , null ) );
+            return Utils.chat( Utils.getString( "bans.owns" , "menu" , null ) );
         } else {
-            return utils.chat( utils.getString( "bans.others" , "menu" , null ).replace( "%player%" , banned ) );
+            return Utils.chat( Utils.getString( "bans.others" , "menu" , null ).replace( "%player%" , banned ) );
         }
     }
     
@@ -92,7 +93,7 @@ public class BansPerPlayer extends Menu {
         JSONObject json = new JSONObject( );
         HashMap < Integer, Integer > warns = new HashMap <>( );
         int num = 0;
-        if ( utils.mysqlEnabled( ) ) {
+        if ( Utils.mysqlEnabled( ) ) {
             ArrayList < Integer > closedReports = BansQuery.getPlayerBans( banned );
             for ( Integer closedReport : closedReports ) {
                 warns.put( num , closedReport );
@@ -100,7 +101,7 @@ public class BansPerPlayer extends Menu {
             }
             json = BansQuery.getPlayerBansInfo( banned );
         }
-        if ( utils.mysqlEnabled( ) ) {
+        if ( Utils.mysqlEnabled( ) ) {
             for ( int i = 0; i <= warns.size( ); i++ ) {
                 try {
                     String rawBanInfo = json.get( String.valueOf( i ) ).toString( )
@@ -119,32 +120,32 @@ public class BansPerPlayer extends Menu {
                     Seconds -= TimeUnit.HOURS.toSeconds( Hours );
                     long Minutes = TimeUnit.SECONDS.toMinutes( Seconds );
                     Seconds -= TimeUnit.MINUTES.toSeconds( Minutes );
-                    ItemStack p_head = utils.getPlayerHead( banInfo.getString( "Name" ) );
+                    ItemStack p_head = Utils.getPlayerHead( banInfo.getString( "Name" ) );
                     ItemMeta meta = p_head.getItemMeta( );
                     ArrayList < String > lore = new ArrayList <>( );
                     meta.setDisplayName( banInfo.getString( "Name" ) );
-                    lore.add( utils.chat( "&7Banned by: " + banInfo.getString( "Baner" ) ) );
-                    lore.add( utils.chat( "&7Reason: &b" + banInfo.getString( "Reason" ) ) );
-                    lore.add( utils.chat( "&7Created date: &c" + banInfo.getString( "Date" ) ) );
-                    lore.add( utils.chat( "&7Expiry date: &c" + banInfo.getString( "ExpDate" ) ) );
+                    lore.add( Utils.chat( "&7Banned by: " + banInfo.getString( "Baner" ) ) );
+                    lore.add( Utils.chat( "&7Reason: &b" + banInfo.getString( "Reason" ) ) );
+                    lore.add( Utils.chat( "&7Created date: &c" + banInfo.getString( "Date" ) ) );
+                    lore.add( Utils.chat( "&7Expiry date: &c" + banInfo.getString( "ExpDate" ) ) );
                     if ( banInfo.getString( "Status" ).equalsIgnoreCase( "open" ) ) {
-                        lore.add( utils.chat( "&7Status: &aOpen" ) );
+                        lore.add( Utils.chat( "&7Status: &aOpen" ) );
                         if ( Days > 365L ) {
-                            lore.add( utils.chat( "&7Time left: &4PERMANENT" ) );
+                            lore.add( Utils.chat( "&7Time left: &4PERMANENT" ) );
                         } else {
-                            lore.add( utils.chat( "&7Time left: &c" + Days + "d " + Hours + "h " + Minutes + "m " + Seconds + "s" ) );
+                            lore.add( Utils.chat( "&7Time left: &c" + Days + "d " + Hours + "h " + Minutes + "m " + Seconds + "s" ) );
                         }
                     } else {
-                        lore.add( utils.chat( "&7Status: &cClosed" ) );
+                        lore.add( Utils.chat( "&7Status: &cClosed" ) );
                     }
                     if ( banInfo.getString( "IP_Banned" ).equalsIgnoreCase( "true" ) ) {
-                        lore.add( utils.chat( "&7Ip Banned: &aTrue" ) );
+                        lore.add( Utils.chat( "&7Ip Banned: &aTrue" ) );
                     } else {
-                        lore.add( utils.chat( "&7Ip Banned: &cFalse" ) );
+                        lore.add( Utils.chat( "&7Ip Banned: &cFalse" ) );
                     }
-                    lore.add( utils.chat( "&7Ban ID:&a #" + i ) );
-                    lore.add( utils.chat( "&aLeft click delete or close" ) );
-                    lore.add( utils.chat( "&aRight click to tp" ) );
+                    lore.add( Utils.chat( "&7Ban ID:&a #" + i ) );
+                    lore.add( Utils.chat( "&aLeft click delete or close" ) );
+                    lore.add( Utils.chat( "&aRight click to tp" ) );
                     meta.setLore( lore );
                     meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "id" ) , PersistentDataType.INTEGER , i );
                     p_head.setItemMeta( meta );
@@ -156,7 +157,7 @@ public class BansPerPlayer extends Menu {
             ArrayList < Integer > ids = getWarnIds( );
             for ( int i : ids ) {
                 Date now = new Date( );
-                String exp = plugin.bans.getConfig( ).getString( "bans." + i + ".expdate" );
+                String exp = Api.bans.getConfig( ).getString( "bans." + i + ".expdate" );
                 SimpleDateFormat format = new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" );
                 Date d2 = null;
                 try {
@@ -171,32 +172,32 @@ public class BansPerPlayer extends Menu {
                 Seconds -= TimeUnit.HOURS.toSeconds( Hours );
                 long Minutes = TimeUnit.SECONDS.toMinutes( Seconds );
                 Seconds -= TimeUnit.MINUTES.toSeconds( Minutes );
-                ItemStack p_head = utils.getPlayerHead( plugin.bans.getConfig( ).getString( "bans." + i + ".name" ) );
+                ItemStack p_head = Utils.getPlayerHead( Api.bans.getConfig( ).getString( "bans." + i + ".name" ) );
                 ItemMeta meta = p_head.getItemMeta( );
                 ArrayList < String > lore = new ArrayList <>( );
-                meta.setDisplayName( plugin.bans.getConfig( ).get( "bans." + i + ".name" ).toString( ) );
-                lore.add( utils.chat( "&7Banned by: " + plugin.bans.getConfig( ).getString( "bans." + i + ".banned_by" ) ) );
-                lore.add( utils.chat( "&7Reason: &b" + plugin.bans.getConfig( ).getString( "bans." + i + ".reason" ) ) );
-                lore.add( utils.chat( "&7Created date: &c" + plugin.bans.getConfig( ).getString( "bans." + i + ".date" ) ) );
-                lore.add( utils.chat( "&7Expiry date: &c" + plugin.bans.getConfig( ).getString( "bans." + i + ".expdate" ) ) );
-                if ( StaffCoreAPI.isStillBanned( i ) ) {
-                    lore.add( utils.chat( "&7Status: &aOpen" ) );
+                meta.setDisplayName( Api.bans.getConfig( ).get( "bans." + i + ".name" ).toString( ) );
+                lore.add( Utils.chat( "&7Banned by: " + Api.bans.getConfig( ).getString( "bans." + i + ".banned_by" ) ) );
+                lore.add( Utils.chat( "&7Reason: &b" + Api.bans.getConfig( ).getString( "bans." + i + ".reason" ) ) );
+                lore.add( Utils.chat( "&7Created date: &c" + Api.bans.getConfig( ).getString( "bans." + i + ".date" ) ) );
+                lore.add( Utils.chat( "&7Expiry date: &c" + Api.bans.getConfig( ).getString( "bans." + i + ".expdate" ) ) );
+                if ( Utils.isStillBanned( i ) ) {
+                    lore.add( Utils.chat( "&7Status: &aOpen" ) );
                     if ( Days > 365L ) {
-                        lore.add( utils.chat( "&7Time left: &4PERMANENT" ) );
+                        lore.add( Utils.chat( "&7Time left: &4PERMANENT" ) );
                     } else {
-                        lore.add( utils.chat( "&7Time left: &c" + Days + "d " + Hours + "h " + Minutes + "m " + Seconds + "s" ) );
+                        lore.add( Utils.chat( "&7Time left: &c" + Days + "d " + Hours + "h " + Minutes + "m " + Seconds + "s" ) );
                     }
                 } else {
-                    lore.add( utils.chat( "&7Status: &c" + plugin.bans.getConfig( ).getString( "bans." + i + ".status" ) ) );
+                    lore.add( Utils.chat( "&7Status: &c" + Api.bans.getConfig( ).getString( "bans." + i + ".status" ) ) );
                 }
-                if ( plugin.bans.getConfig( ).getBoolean( "bans." + i + ".IP-Banned" ) ) {
-                    lore.add( utils.chat( "&7Ip Banned: &aTrue" ) );
+                if ( Api.bans.getConfig( ).getBoolean( "bans." + i + ".IP-Banned" ) ) {
+                    lore.add( Utils.chat( "&7Ip Banned: &aTrue" ) );
                 } else {
-                    lore.add( utils.chat( "&7Ip Banned: &cFalse" ) );
+                    lore.add( Utils.chat( "&7Ip Banned: &cFalse" ) );
                 }
-                lore.add( utils.chat( "&7Ban ID:&a #" + i ) );
-                lore.add( utils.chat( "&aLeft click delete or close" ) );
-                lore.add( utils.chat( "&aRight click to tp" ) );
+                lore.add( Utils.chat( "&7Ban ID:&a #" + i ) );
+                lore.add( Utils.chat( "&aLeft click delete or close" ) );
+                lore.add( Utils.chat( "&aRight click to tp" ) );
                 meta.setLore( lore );
                 meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "id" ) , PersistentDataType.INTEGER , i );
                 p_head.setItemMeta( meta );
@@ -213,9 +214,9 @@ public class BansPerPlayer extends Menu {
     
     private ArrayList < Integer > getWarnIds( ){
         ArrayList < Integer > bansIds = new ArrayList <>( );
-        for ( int i = 0; i < (plugin.bans.getConfig( ).getInt( "current" ) + plugin.bans.getConfig( ).getInt( "count" )); i++ ) {
+        for ( int i = 0; i < (Api.bans.getConfig( ).getInt( "current" ) + Api.bans.getConfig( ).getInt( "count" )); i++ ) {
             try {
-                if ( plugin.bans.getConfig( ).getString( "bans." + i + ".name" ).equalsIgnoreCase( banned ) ) {
+                if ( Api.bans.getConfig( ).getString( "bans." + i + ".name" ).equalsIgnoreCase( banned ) ) {
                     bansIds.add( i );
                 }
             } catch ( NullPointerException ignored ) {

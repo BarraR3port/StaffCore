@@ -8,8 +8,9 @@ import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.Menu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.menu.menu.Staff.ServerManager;
-import cl.bebt.staffcore.sql.Queries.BansQuery;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.Api;
+import cl.bebt.staffcoreapi.SQL.Queries.BansQuery;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -29,7 +30,7 @@ public class BanManager extends Menu {
     }
     
     public String getMenuName( ){
-        return utils.chat( utils.getString( "banlist.ban_manager.name" , "menu" , null ) );
+        return Utils.chat( Utils.getString( "banlist.ban_manager.name" , "menu" , null ) );
     }
     
     public int getSlots( ){
@@ -59,15 +60,15 @@ public class BanManager extends Menu {
     
     private int Closed( ){
         int close = 0;
-        if ( utils.mysqlEnabled( ) ) {
+        if ( Utils.mysqlEnabled( ) ) {
             return BansQuery.getClosedBans( ).size( );
         }
-        int count = this.plugin.bans.getConfig( ).getInt( "current" ) + this.plugin.bans.getConfig( ).getInt( "count" );
+        int count = Api.bans.getConfig( ).getInt( "current" ) + Api.bans.getConfig( ).getInt( "count" );
         for ( int id = 0; id <= count; ) {
-            this.plugin.bans.reloadConfig( );
+            Api.bans.reloadConfig( );
             id++;
             try {
-                if ( this.plugin.bans.getConfig( ).get( "bans." + id + ".status" ).equals( "closed" ) )
+                if ( Api.bans.getConfig( ).get( "bans." + id + ".status" ).equals( "closed" ) )
                     close++;
             } catch ( NullPointerException ignored ) {
             }
@@ -77,15 +78,15 @@ public class BanManager extends Menu {
     
     private int Opens( ){
         int opens = 0;
-        if ( utils.mysqlEnabled( ) ) {
+        if ( Utils.mysqlEnabled( ) ) {
             return BansQuery.getOpenBans( ).size( );
         }
-        int count = this.plugin.bans.getConfig( ).getInt( "current" ) + this.plugin.bans.getConfig( ).getInt( "count" );
+        int count = Api.bans.getConfig( ).getInt( "current" ) + Api.bans.getConfig( ).getInt( "count" );
         for ( int id = 0; id <= count + 1; ) {
-            this.plugin.bans.reloadConfig( );
+            Api.bans.reloadConfig( );
             id++;
             try {
-                if ( this.plugin.bans.getConfig( ).get( "bans." + id + ".status" ).equals( "open" ) )
+                if ( Api.bans.getConfig( ).get( "bans." + id + ".status" ).equals( "open" ) )
                     opens++;
             } catch ( NullPointerException ignored ) {
             }
@@ -99,14 +100,14 @@ public class BanManager extends Menu {
         ItemStack closeBans = new ItemStack( Material.NAME_TAG , 1 );
         ItemMeta o_meta = openBans.getItemMeta( );
         ItemMeta c_meta = closeBans.getItemMeta( );
-        o_meta.setDisplayName( utils.chat( "&aOpen Bans" ) );
-        c_meta.setDisplayName( utils.chat( "&cClosed Bans" ) );
-        lore.add( utils.chat( "&8&lClick to open all the opened Bans" ) );
-        lore.add( utils.chat( "&8&lCurrent Opened: &a" + Opens( ) ) );
+        o_meta.setDisplayName( Utils.chat( "&aOpen Bans" ) );
+        c_meta.setDisplayName( Utils.chat( "&cClosed Bans" ) );
+        lore.add( Utils.chat( "&8&lClick to open all the opened Bans" ) );
+        lore.add( Utils.chat( "&8&lCurrent Opened: &a" + Opens( ) ) );
         o_meta.setLore( lore );
         lore.clear( );
-        lore.add( utils.chat( "&8&lClick to open all the closed Bans" ) );
-        lore.add( utils.chat( "&8&lCurrent Closed: &a" + Closed( ) ) );
+        lore.add( Utils.chat( "&8&lClick to open all the closed Bans" ) );
+        lore.add( Utils.chat( "&8&lCurrent Closed: &a" + Closed( ) ) );
         c_meta.setLore( lore );
         lore.clear( );
         o_meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "openBans" ) , PersistentDataType.STRING , "openBans" );

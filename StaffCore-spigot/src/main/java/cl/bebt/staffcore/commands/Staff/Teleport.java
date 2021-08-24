@@ -6,7 +6,7 @@ package cl.bebt.staffcore.commands.Staff;
 
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.utils.TpPlayers;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -114,8 +114,8 @@ public class Teleport implements CommandExecutor {
         if ( !(sender instanceof Player) ) {
             if ( args.length == 0 || ((args.length == 1) && (args[0].equalsIgnoreCase( "all" ))) || args.length == 3 ||
                     (args.length == 4 && (args[0].equalsIgnoreCase( "all" ) || args[3].equalsIgnoreCase( "all" ))) ) {
-                for ( String s : utils.getStringList( "tp.wrong" , "alerts" ) ) {
-                    utils.tell( sender , s );
+                for ( String s : Utils.getStringList( "tp.wrong" , "alerts" ) ) {
+                    Utils.tell( sender , s );
                 }
                 return true;
             } else if ( args.length == 2 ) {
@@ -174,8 +174,8 @@ public class Teleport implements CommandExecutor {
                     TpPlayers.tpToCordsAndPlayer( sender , target , x , y , z );
                     return true;
                 } else {
-                    for ( String s : utils.getStringList( "tp.wrong" , "alerts" ) ) {
-                        utils.tell( sender , s );
+                    for ( String s : Utils.getStringList( "tp.wrong" , "alerts" ) ) {
+                        Utils.tell( sender , s );
                     }
                     return true;
                 }
@@ -184,8 +184,8 @@ public class Teleport implements CommandExecutor {
             Player p = ( Player ) sender;
             if ( p.hasPermission( "staffcore.tp" ) ) {
                 if ( args.length == 0 ) {
-                    for ( String s : utils.getStringList( "tp.wrong" , "alerts" ) ) {
-                        utils.tell( sender , s );
+                    for ( String s : Utils.getStringList( "tp.wrong" , "alerts" ) ) {
+                        Utils.tell( sender , s );
                     }
                 } else if ( args.length == 1 ) {
                     if ( args[0].equalsIgnoreCase( "all" ) ) {
@@ -207,7 +207,7 @@ public class Teleport implements CommandExecutor {
                             return false;
                         }
                     } else {
-                        utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
+                        Utils.tell( sender , Utils.getString( "no_permission" , "lg" , "staff" ) );
                         return false;
                     }
                     TpPlayers.tpPlayerToPlayer( p , args[0] , args[1] );
@@ -233,8 +233,8 @@ public class Teleport implements CommandExecutor {
                         }
                         TpPlayers.tpToCords( p , x , y , z );
                     } else {
-                        for ( String s : utils.getStringList( "tp.wrong" , "alerts" ) ) {
-                            utils.tell( sender , s );
+                        for ( String s : Utils.getStringList( "tp.wrong" , "alerts" ) ) {
+                            Utils.tell( sender , s );
                         }
                     }
                     return true;
@@ -261,8 +261,8 @@ public class Teleport implements CommandExecutor {
                             }
                             TpPlayers.tpAllToCords( p , x , y , z );
                         } else {
-                            for ( String s : utils.getStringList( "tp.wrong" , "alerts" ) ) {
-                                utils.tell( sender , s );
+                            for ( String s : Utils.getStringList( "tp.wrong" , "alerts" ) ) {
+                                Utils.tell( sender , s );
                             }
                         }
                         return true;
@@ -288,8 +288,8 @@ public class Teleport implements CommandExecutor {
                             }
                             TpPlayers.tpAllToCords( p , x , y , z );
                         } else {
-                            for ( String s : utils.getStringList( "tp.wrong" , "alerts" ) ) {
-                                utils.tell( sender , s );
+                            for ( String s : Utils.getStringList( "tp.wrong" , "alerts" ) ) {
+                                Utils.tell( sender , s );
                             }
                         }
                         return true;
@@ -338,14 +338,14 @@ public class Teleport implements CommandExecutor {
                         TpPlayers.tpToCordsAndPlayer( p , target , x , y , z );
                         return true;
                     } else {
-                        for ( String s : utils.getStringList( "tp.wrong" , "alerts" ) ) {
-                            utils.tell( sender , s );
+                        for ( String s : Utils.getStringList( "tp.wrong" , "alerts" ) ) {
+                            Utils.tell( sender , s );
                         }
                         return true;
                     }
                 }
             } else {
-                utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
+                Utils.tell( sender , Utils.getString( "no_permission" , "lg" , "staff" ) );
             }
         }
         return true;

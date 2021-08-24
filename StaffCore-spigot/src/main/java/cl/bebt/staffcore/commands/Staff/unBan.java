@@ -4,11 +4,11 @@
 
 package cl.bebt.staffcore.commands.Staff;
 
-import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.sql.Queries.BansQuery;
 import cl.bebt.staffcore.utils.BanPlayer;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.Api;
+import cl.bebt.staffcoreapi.SQL.Queries.BansQuery;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -29,7 +29,7 @@ public class unBan implements TabExecutor {
     }
     
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        if ( !utils.isOlderVersion( ) ) {
+        if ( !Utils.isOlderVersion( ) ) {
             if ( sender instanceof Player ) {
                 if ( args.length == 1 ) {
                     Player p = ( Player ) sender;
@@ -40,14 +40,14 @@ public class unBan implements TabExecutor {
                                 BanPlayer.unBan( p , i );
                             }
                         } catch ( NullPointerException error ) {
-                            utils.tell( sender , utils.getString( "error" , "lg" , "staff" ) );
+                            Utils.tell( sender , Utils.getString( "error" , "lg" , "staff" ) );
                             error.printStackTrace( );
                         }
                     } else {
-                        utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
+                        Utils.tell( sender , Utils.getString( "no_permission" , "lg" , "staff" ) );
                     }
                 } else {
-                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "unabn <player>" ) );
+                    Utils.tell( sender , Utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "unabn <player>" ) );
                 }
             } else if ( args.length == 1 ) {
                 ArrayList < Integer > ids = BanIds( args[0] );
@@ -56,14 +56,14 @@ public class unBan implements TabExecutor {
                         BanPlayer.unBan( sender , i );
                     }
                 } catch ( NullPointerException error ) {
-                    utils.tell( sender , utils.getString( "error" , "lg" , "staff" ) );
+                    Utils.tell( sender , Utils.getString( "error" , "lg" , "staff" ) );
                     error.printStackTrace( );
                 }
             } else {
-                utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "unban <player>" ) );
+                Utils.tell( sender , Utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "unban <player>" ) );
             }
         } else {
-            utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
+            Utils.tell( sender , Utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
         }
         return true;
     }
@@ -72,10 +72,10 @@ public class unBan implements TabExecutor {
         List < String > version = new ArrayList <>( );
         this.bans.clear( );
         if ( args.length == 1 )
-            if ( StaffCoreAPI.getBannedPlayers( ).size( ) == 0 ) {
-                utils.tell( sender , utils.getString( "bans.no_banned_players" , "lg" , "staff" ) );
+            if ( Utils.getBannedPlayers( ).size( ) == 0 ) {
+                Utils.tell( sender , Utils.getString( "bans.no_banned_players" , "lg" , "staff" ) );
             } else {
-                version.addAll( StaffCoreAPI.getBannedPlayers( ) );
+                version.addAll( Utils.getBannedPlayers( ) );
             }
         return version;
     }
@@ -83,11 +83,11 @@ public class unBan implements TabExecutor {
     
     private ArrayList < Integer > BanIds( String banned ){
         ArrayList < Integer > BanIDs = new ArrayList <>( );
-        if ( utils.mysqlEnabled( ) )
+        if ( Utils.mysqlEnabled( ) )
             return BansQuery.getBanIds( banned );
         for ( int i = 0; i < BanPlayer.currentBans( ); i++ ) {
             try {
-                if ( this.plugin.bans.getConfig( ).getString( "bans." + i + ".name" ).equalsIgnoreCase( banned ) )
+                if ( Api.bans.getConfig( ).getString( "bans." + i + ".name" ).equalsIgnoreCase( banned ) )
                     BanIDs.add( i );
             } catch ( NullPointerException ignored ) {
             }

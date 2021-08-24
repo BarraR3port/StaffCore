@@ -5,6 +5,7 @@
 package cl.bebt.staffbungee.utils;
 
 import cl.bebt.staffbungee.main;
+import cl.bebt.staffcoreapi.Enums.ApiType;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -23,6 +24,10 @@ import java.net.URL;
 public class utils {
     
     private static final main plugin = main.getPlugin( );
+    
+    public utils( ApiType bungeecord ){
+    
+    }
     
     public static String chat( String s ){
         return ChatColor.translateAlternateColorCodes( '&' , s );
@@ -67,11 +72,11 @@ public class utils {
         
     }
     
-    public static void Broadcast(String s){
-        for ( ProxiedPlayer p : plugin.getProxy().getPlayers( ) ){
-            tell( p, s );
+    public static void Broadcast( String s ){
+        for ( ProxiedPlayer p : plugin.getProxy( ).getPlayers( ) ) {
+            tell( p , s );
         }
-        tell( plugin.getProxy().getConsole(), s );
+        tell( plugin.getProxy( ).getConsole( ) , s );
     }
     
     public static TextComponent tc( String s ){

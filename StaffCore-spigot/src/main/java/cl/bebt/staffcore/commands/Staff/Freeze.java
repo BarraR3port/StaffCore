@@ -4,12 +4,11 @@
 
 package cl.bebt.staffcore.commands.Staff;
 
-import cl.bebt.staffcore.EntitysUtils.UserUtils;
-import cl.bebt.staffcore.Exeptions.PlayerNotFundException;
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.sql.Queries.StaffQuery;
 import cl.bebt.staffcore.utils.FreezeManager;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.EntitiesUtils.UserUtils;
+import cl.bebt.staffcoreapi.SQL.Queries.StaffQuery;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,55 +26,51 @@ public class Freeze implements CommandExecutor {
     
     @Override
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
-        if ( !utils.isOlderVersion( ) ) {
+        if ( !Utils.isOlderVersion( ) ) {
             if ( sender instanceof Player ) {
                 Player player = ( Player ) sender;
                 if ( player.hasPermission( "staffcore.freeze" ) ) {
                     if ( args.length == 1 ) {
-                        if ( utils.isRegistered( args[0] ) ) {
+                        if ( Utils.isRegistered( args[0] ) ) {
                             Player p = Bukkit.getPlayer( args[0] );
-                            UUID uuid = utils.getUUIDFromName( args[0] );
+                            UUID uuid = Utils.getUUIDFromName( args[0] );
                             if ( p == player ) {
-                                if ( utils.mysqlEnabled( ) ) {
+                                if ( Utils.mysqlEnabled( ) ) {
                                     String is = StaffQuery.isStaff( args[0] );
                                     if ( is.equals( "true" ) ) {
                                         if ( p.hasPermission( "staffcore.unfreeze.himself" ) ) {
                                             FreezeManager.disable( uuid , player.getName( ) );
-                                            utils.tell( player , utils.getString( "freeze.unfreeze_ur_self" , "lg" , "staff" ) );
+                                            Utils.tell( player , Utils.getString( "freeze.unfreeze_ur_self" , "lg" , "staff" ) );
                                         } else {
-                                            utils.tell( player , utils.chat( utils.getString( "no_permission" , "lg" , "staff" ) ) );
+                                            Utils.tell( player , Utils.chat( Utils.getString( "no_permission" , "lg" , "staff" ) ) );
                                         }
                                     } else {
                                         if ( !player.hasPermission( "staffcore.freeze.bypas" ) ) {
                                             FreezeManager.enable( uuid , player.getName( ) );
                                         } else {
-                                            utils.tell( player , utils.getString( "freeze.freeze_bypass" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
+                                            Utils.tell( player , Utils.getString( "freeze.freeze_bypass" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
                                             return false;
                                         }
                                     }
                                 } else {
                                     if ( player.hasPermission( "staffcore.unfreeze.himself" ) ) {
-                                        try {
-                                            if ( UserUtils.getFrozen( uuid ) ) {
-                                                FreezeManager.disable( uuid , player.getName( ) );
-                                                utils.tell( player , utils.getString( "freeze.unfreeze_ur_self" , "lg" , "staff" ) );
+                                        if ( UserUtils.getFrozen( uuid ) ) {
+                                            FreezeManager.disable( uuid , player.getName( ) );
+                                            Utils.tell( player , Utils.getString( "freeze.unfreeze_ur_self" , "lg" , "staff" ) );
+                                        } else {
+                                            if ( !player.hasPermission( "staffcore.freeze.bypas" ) ) {
+                                                FreezeManager.enable( uuid , player.getName( ) );
                                             } else {
-                                                if ( !player.hasPermission( "staffcore.freeze.bypas" ) ) {
-                                                    FreezeManager.enable( uuid , player.getName( ) );
-                                                } else {
-                                                    utils.tell( player , utils.getString( "freeze.freeze_bypass" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
-                                                    return false;
-                                                }
+                                                Utils.tell( player , Utils.getString( "freeze.freeze_bypass" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
+                                                return false;
                                             }
-                                        } catch ( PlayerNotFundException e ) {
-                                            e.printStackTrace( );
                                         }
                                     } else {
-                                        utils.tell( p , utils.chat( utils.getString( "no_permission" , "lg" , "staff" ) ) );
+                                        Utils.tell( p , Utils.chat( Utils.getString( "no_permission" , "lg" , "staff" ) ) );
                                     }
                                 }
                             } else {
-                                if ( utils.mysqlEnabled( ) ) {
+                                if ( Utils.mysqlEnabled( ) ) {
                                     String is = StaffQuery.isStaff( args[0] );
                                     if ( is.equals( "true" ) ) {
                                         FreezeManager.disable( uuid , player.getName( ) );
@@ -83,65 +78,57 @@ public class Freeze implements CommandExecutor {
                                         if ( !p.hasPermission( "staffcore.freeze.bypas" ) ) {
                                             FreezeManager.enable( uuid , player.getName( ) );
                                         } else {
-                                            utils.tell( player , utils.getString( "freeze.freeze_bypass" , "lg" , "staff" ) );
+                                            Utils.tell( player , Utils.getString( "freeze.freeze_bypass" , "lg" , "staff" ) );
                                             return false;
                                         }
                                     }
                                 } else {
-                                    try {
-                                        if ( UserUtils.getFrozen( uuid ) ) {
-                                            FreezeManager.disable( uuid , player.getName( ) );
+                                    if ( UserUtils.getFrozen( uuid ) ) {
+                                        FreezeManager.disable( uuid , player.getName( ) );
+                                    } else {
+                                        if ( !p.hasPermission( "staffcore.freeze.bypas" ) ) {
+                                            FreezeManager.enable( uuid , player.getName( ) );
                                         } else {
-                                            if ( !p.hasPermission( "staffcore.freeze.bypas" ) ) {
-                                                FreezeManager.enable( uuid , player.getName( ) );
-                                            } else {
-                                                utils.tell( player , utils.getString( "freeze.freeze_bypass" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
-                                                return false;
-                                            }
+                                            Utils.tell( player , Utils.getString( "freeze.freeze_bypass" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
+                                            return false;
                                         }
-                                    } catch ( PlayerNotFundException e ) {
-                                        e.printStackTrace( );
                                     }
                                 }
                             }
                         } else {
-                            utils.tell( sender , utils.getString( "p_dont_exist" , "lg" , "sv" ) );
+                            Utils.tell( sender , Utils.getString( "p_dont_exist" , "lg" , "sv" ) );
                         }
                     } else {
-                        utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "freeze <player>" ) );
+                        Utils.tell( sender , Utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "freeze <player>" ) );
                     }
                 } else if ( !(player.hasPermission( "staffcore.freeze" )) ) {
-                    utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
+                    Utils.tell( sender , Utils.getString( "no_permission" , "lg" , "staff" ) );
                 }
             } else {
                 if ( args.length == 1 ) {
-                    if ( utils.isRegistered( args[0] ) ) {
-                        UUID uuid = utils.getUUIDFromName( args[0] );
-                        if ( utils.mysqlEnabled( ) ) {
+                    if ( Utils.isRegistered( args[0] ) ) {
+                        UUID uuid = Utils.getUUIDFromName( args[0] );
+                        if ( Utils.mysqlEnabled( ) ) {
                             String is = StaffQuery.isStaff( args[0] );
                             if ( is.equals( "true" ) ) {
-                                FreezeManager.disable( uuid , utils.getConsoleName( ) );
+                                FreezeManager.disable( uuid , Utils.getConsoleName( ) );
                             } else {
-                                FreezeManager.enable( uuid , utils.getConsoleName( ) );
+                                FreezeManager.enable( uuid , Utils.getConsoleName( ) );
                             }
                         } else {
-                            try {
-                                if ( UserUtils.getFrozen( uuid ) ) {
-                                    FreezeManager.disable( uuid , utils.getConsoleName( ) );
-                                } else {
-                                    FreezeManager.enable( uuid , utils.getConsoleName( ) );
-                                }
-                            } catch ( PlayerNotFundException e ) {
-                                e.printStackTrace( );
+                            if ( UserUtils.getFrozen( uuid ) ) {
+                                FreezeManager.disable( uuid , Utils.getConsoleName( ) );
+                            } else {
+                                FreezeManager.enable( uuid , Utils.getConsoleName( ) );
                             }
                         }
                     }
                 } else {
-                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "freeze <player>" ) );
+                    Utils.tell( sender , Utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "freeze <player>" ) );
                 }
             }
         } else {
-            utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
+            Utils.tell( sender , Utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
         }
         return true;
     }

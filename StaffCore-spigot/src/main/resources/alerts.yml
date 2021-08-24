@@ -33,7 +33,7 @@ ban:
     - "           &a► &7Reason: &4%reason%"
     - "           &a► &7ID: &4%id%"
     - " "
-  msg: # Placeholders: %baner% | %banned% | %reason% | %amount% | %time% | %exp_date% | %date%
+  msg: # Placeholders: %baner% | %banned% | %reason% | %time_left% | %exp_date% | %date%
     - "&6&5Ban System &6"
     - ""
     - "&4Your account %banned% were banned!"
@@ -41,7 +41,7 @@ ban:
     - "&a&7Banned by: &a%baner%"
     - "&a&7Reason: &4%reason%"
     - "&a&7Ip Banned: %IP_BANED%"
-    - "&a&7For &a%amount%%time%"
+    - "&a&7For &a%time_left%"
     - "&a&7Until &a%exp_date%"
     - "&a&7Create Date &a%date%"
     - ""
@@ -127,7 +127,7 @@ tp:
 # ------------> WARNS <----------
 warns:
   alerts:
-    warn_alerts: # Placeholders: %warner% | %warned% | %reason% | %amount% | %time% | %exp_date% | %date%
+    warn_alerts: # Placeholders: %warner% | %warned% | %reason% | %time_left% | %exp_date% | %date%
       - " "
       - "                    &6⚠ &5Warn Alerts &6⚠"
       - " "
@@ -135,7 +135,7 @@ warns:
       - " "
       - "           &a► &aWarned by: &9%warner%"
       - "           &a► &aReason: &4%reason%"
-      - "           &a► &aFor &a%amount%%time%"
+      - "           &a► &aFor &a%time_left%"
       - "           &a► &aUntil &a%exp_date%"
       - "           &a► &aCreate Date &a%date%"
       - " "

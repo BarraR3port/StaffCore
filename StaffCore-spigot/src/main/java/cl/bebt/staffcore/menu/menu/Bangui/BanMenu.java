@@ -4,12 +4,13 @@
 
 package cl.bebt.staffcore.menu.menu.Bangui;
 
-import cl.bebt.staffcore.PersistentData.PersistentDataType;
-import cl.bebt.staffcore.PersistentData.PersistentDataUtils;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.BanPlayerMenu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.Api;
+import cl.bebt.staffcoreapi.EntitiesUtils.PersistentDataUtils;
+import cl.bebt.staffcoreapi.Enums.PersistentDataType;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -31,7 +32,7 @@ public class BanMenu extends BanPlayerMenu {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( utils.getString( "ban_menu.name" , "menu" , null ).replace( "%player%" , banned ) );
+        return Utils.chat( Utils.getString( "ban_menu.name" , "menu" , null ).replace( "%player%" , banned ) );
     }
     
     @Override
@@ -42,18 +43,18 @@ public class BanMenu extends BanPlayerMenu {
     @Override
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
-        ConfigurationSection inventorySection = plugin.items.getConfig( ).getConfigurationSection( "punish_items" );
+        ConfigurationSection inventorySection = Api.items.getConfig( ).getConfigurationSection( "punish_items" );
         for ( String key : inventorySection.getKeys( false ) ) {
-            if ( PersistentDataUtils.has( e.getCurrentItem( ) , key, PersistentDataType.STRING ) ) {
-                String reason = utils.getString( "punish_items." + key + ".reason" , "item" , null );
+            if ( PersistentDataUtils.has( e.getCurrentItem( ) , key , PersistentDataType.STRING ) ) {
+                String reason = Utils.getString( "punish_items." + key + ".reason" , "item" , null );
                 p.closeInventory( );
                 new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , banned , reason ).open( );
             }
         }
-        if ( PersistentDataUtils.has( e.getCurrentItem( ) , "other", PersistentDataType.STRING ) ) {
+        if ( PersistentDataUtils.has( e.getCurrentItem( ) , "other" , PersistentDataType.STRING ) ) {
             p.closeInventory( );
             PersistentDataUtils.save( "banmsg" , banned , baner.getUniqueId( ) , PersistentDataType.STRING );
-            utils.tell( p , utils.getString( "bans.other_reason" , "lg" , "sv" ) );
+            Utils.tell( p , Utils.getString( "bans.other_reason" , "lg" , "sv" ) );
         }
         if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
@@ -63,21 +64,21 @@ public class BanMenu extends BanPlayerMenu {
     @Override
     public void setMenuItems( ){
         addMenuBorder( );
-        ConfigurationSection inventorySection = plugin.items.getConfig( ).getConfigurationSection( "punish_items" );
+        ConfigurationSection inventorySection = Api.items.getConfig( ).getConfigurationSection( "punish_items" );
         for ( String key : inventorySection.getKeys( false ) ) {
-            String name = utils.getString( "punish_items." + key + ".name" , "item" , null );
-            String material = utils.getString( "punish_items." + key + ".material" , "item" , null );
-            String reason = utils.getString( "punish_items." + key + ".reason" , "item" , null );
+            String name = Utils.getString( "punish_items." + key + ".name" , "item" , null );
+            String material = Utils.getString( "punish_items." + key + ".material" , "item" , null );
+            String reason = Utils.getString( "punish_items." + key + ".reason" , "item" , null );
             ArrayList < String > lore = new ArrayList <>( );
             ItemStack item = new ItemStack( Material.valueOf( material ) );
             ItemMeta meta = item.getItemMeta( );
-            for ( String key2 : utils.getStringList( "punish_items." + key + ".lore" , "item" ) ) {
+            for ( String key2 : Utils.getStringList( "punish_items." + key + ".lore" , "item" ) ) {
                 key2 = key2.replace( "%punish%" , "Ban" );
                 key2 = key2.replace( "%player%" , banned );
-                lore.add( utils.chat( key2 ) );
+                lore.add( Utils.chat( key2 ) );
             }
             meta.setLore( lore );
-            meta.setDisplayName( utils.chat( name ) );
+            meta.setDisplayName( Utils.chat( name ) );
             item.setItemMeta( meta );
             if ( key.equalsIgnoreCase( "other" ) ) {
                 PersistentDataUtils.save( key , "other" , item , baner.getUniqueId( ) , PersistentDataType.STRING );

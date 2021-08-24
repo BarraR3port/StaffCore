@@ -4,11 +4,12 @@
 
 package cl.bebt.staffcore.utils;
 
-import cl.bebt.staffcore.EntitysUtils.UserUtils;
-import cl.bebt.staffcore.Exeptions.PlayerNotFundException;
 import cl.bebt.staffcore.MSGChanel.SendMsg;
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.sql.Queries.FreezeQuery;
+import cl.bebt.staffcoreapi.EntitiesUtils.UserUtils;
+import cl.bebt.staffcoreapi.SQL.Queries.FreezeQuery;
+import cl.bebt.staffcoreapi.utils.Serializer;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -30,12 +31,12 @@ public class FreezeManager {
             Player p = Bukkit.getPlayer( uuid );
             p.setAllowFlight( true );
             p.setInvulnerable( true );
-            utils.PlaySound( p , "freeze" );
-            utils.PlayParticle( p , "unfreeze_player" );
-            if ( utils.mysqlEnabled( ) ) {
+            Utils.PlaySound( p , "freeze" );
+            Utils.PlayParticle( p , "unfreeze_player" );
+            if ( Utils.mysqlEnabled( ) ) {
                 FreezeQuery.enable( p.getName( ) );
             }
-            if ( utils.getBoolean( "freeze.set_ice_block" ) ) {
+            if ( Utils.getBoolean( "freeze.set_ice_block" ) ) {
                 if ( p.getInventory( ).getHelmet( ) != null ) {
                     UserUtils.setFreezeHelmet( uuid , Serializer.serialize( p.getInventory( ).getHelmet( ) ) );
                     p.getInventory( ).setItem( 39 , new ItemStack( Material.BLUE_ICE ) );
@@ -43,34 +44,34 @@ public class FreezeManager {
             }
             UserUtils.setFrozen( uuid , true );
             for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-                if ( utils.getBoolean( "alerts.freeze" ) || people.hasPermission( "staffcore.staff" ) ) {
-                    for ( String key : utils.getStringList( "freeze" , "alerts" ) ) {
+                if ( Utils.getBoolean( "alerts.freeze" ) || people.hasPermission( "staffcore.staff" ) ) {
+                    for ( String key : Utils.getStringList( "freeze" , "alerts" ) ) {
                         key = key.replace( "%frozen%" , p.getName( ) );
                         key = key.replace( "%freezer%" , freezer );
-                        key = key.replace( "%status%" , utils.getString( "freeze.freeze" , "lg" , null ) );
-                        utils.tell( people , key );
+                        key = key.replace( "%status%" , Utils.getString( "freeze.freeze" , "lg" , null ) );
+                        Utils.tell( people , key );
                     }
                 }
             }
-            SendMsg.sendFreezeAlert( freezer , p.getName( ) , true , utils.getServer( ) );
-        } catch ( PlayerNotFundException | NullPointerException ignored ) {
+            SendMsg.sendFreezeAlert( freezer , p.getName( ) , true , Utils.getServer( ) );
+        } catch ( NullPointerException ignored ) {
         }
     }
     
     public static void disable( UUID uuid , String freezer ){
         try {
             Player p = Bukkit.getPlayer( uuid );
-            utils.PlaySound( p , "un_freeze" );
-            utils.PlayParticle( p , "freeze_player" );
+            Utils.PlaySound( p , "un_freeze" );
+            Utils.PlayParticle( p , "freeze_player" );
             if ( !(p.getGameMode( ) == GameMode.CREATIVE || p.getGameMode( ) == GameMode.SPECTATOR ||
                     UserUtils.getVanish( uuid ) || UserUtils.getFly( uuid ) || UserUtils.getStaff( uuid )) ) {
                 p.setAllowFlight( false );
                 p.setInvulnerable( false );
             }
-            if ( utils.mysqlEnabled( ) ) {
+            if ( Utils.mysqlEnabled( ) ) {
                 FreezeQuery.disable( p.getName( ) );
             }
-            if ( utils.getBoolean( "freeze.set_ice_block" ) ) {
+            if ( Utils.getBoolean( "freeze.set_ice_block" ) ) {
                 try {
                     ItemStack helmet = Serializer.deserialize( UserUtils.getFreezeHelmet( uuid ) );
                     p.getInventory( ).setHelmet( helmet );
@@ -81,17 +82,17 @@ public class FreezeManager {
             }
             UserUtils.setFrozen( uuid , false );
             for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-                if ( utils.getBoolean( "alerts.freeze" ) || people.hasPermission( "staffcore.staff" ) ) {
-                    for ( String key : utils.getStringList( "freeze" , "alerts" ) ) {
+                if ( Utils.getBoolean( "alerts.freeze" ) || people.hasPermission( "staffcore.staff" ) ) {
+                    for ( String key : Utils.getStringList( "freeze" , "alerts" ) ) {
                         key = key.replace( "%frozen%" , p.getName( ) );
                         key = key.replace( "%freezer%" , freezer );
-                        key = key.replace( "%status%" , utils.getString( "freeze.unfreeze" , "lg" , null ) );
-                        utils.tell( people , key );
+                        key = key.replace( "%status%" , Utils.getString( "freeze.unfreeze" , "lg" , null ) );
+                        Utils.tell( people , key );
                     }
                 }
             }
-            SendMsg.sendFreezeAlert( freezer , p.getName( ) , false , utils.getServer( ) );
-        } catch ( PlayerNotFundException | NullPointerException ignored ) {
+            SendMsg.sendFreezeAlert( freezer , p.getName( ) , false , Utils.getServer( ) );
+        } catch ( NullPointerException ignored ) {
         }
     }
     

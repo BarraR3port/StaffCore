@@ -4,18 +4,18 @@
 
 package cl.bebt.staffcore.listeners;
 
-import cl.bebt.staffcore.API.StaffCoreAPI;
-import cl.bebt.staffcore.Entitys.User;
-import cl.bebt.staffcore.EntitysUtils.UserUtils;
-import cl.bebt.staffcore.Exeptions.PlayerNotFundException;
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.sql.Queries.AltsQuery;
-import cl.bebt.staffcore.sql.Queries.BansQuery;
-import cl.bebt.staffcore.sql.Queries.FreezeQuery;
 import cl.bebt.staffcore.utils.FlyManager;
 import cl.bebt.staffcore.utils.FreezeManager;
 import cl.bebt.staffcore.utils.StaffManager;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.Api;
+import cl.bebt.staffcoreapi.Entities.User;
+import cl.bebt.staffcoreapi.EntitiesUtils.UserUtils;
+import cl.bebt.staffcoreapi.Enums.UpdateType;
+import cl.bebt.staffcoreapi.SQL.Queries.AltsQuery;
+import cl.bebt.staffcoreapi.SQL.Queries.BansQuery;
+import cl.bebt.staffcoreapi.SQL.Queries.FreezeQuery;
+import cl.bebt.staffcoreapi.utils.Utils;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -55,15 +55,15 @@ public class onPlayerJoin implements Listener {
             }
             UserUtils.isIPSaved( user , ip );
         } );
-        if ( utils.mysqlEnabled( ) ) {
+        if ( Utils.mysqlEnabled( ) ) {
             Bukkit.getScheduler( ).runTaskAsynchronously( plugin , ( ) -> {
                 User user = UserUtils.findUser( e.getUniqueId( ) );
                 try {
                     if ( !AltsQuery.PlayerExists( e.getName( ) ) ) {
                         AltsQuery.createAlts( user , ip );
                     } else {
-                        List < String > ips = utils.makeList( AltsQuery.getAlts( e.getName( ) ) );
-                        AltsQuery.addIps( e.getName( ) , utils.stringify( ips , ip ) );
+                        List < String > ips = Utils.makeList( AltsQuery.getAltsIps( e.getUniqueId( ) ) );
+                        AltsQuery.addIps( e.getName( ) , Utils.stringify( ips , ip ) );
                     }
                 } catch ( NullPointerException | IndexOutOfBoundsException Exception ) {
                     Exception.printStackTrace( );
@@ -74,18 +74,18 @@ public class onPlayerJoin implements Listener {
                 e.disallow( AsyncPlayerPreLoginEvent.Result.KICK_BANNED , KickBannedPlayerSql( BansQuery.getBanInfo( id ) ) );
             }
         } else {
-            for ( int i = 1; i <= utils.count( "bans" ); i++ ) {
+            for ( int i = 1; i <= Utils.count( UpdateType.BAN ); i++ ) {
                 try {
-                    if ( Objects.equals( plugin.bans.getConfig( ).getString( "bans." + i + ".name" ) , e.getName( ) ) &&
-                            Objects.equals( plugin.bans.getConfig( ).getString( "bans." + i + ".status" ) , "open" ) &&
-                            StaffCoreAPI.isStillBanned( i ) ) {
+                    if ( Objects.equals( Api.bans.getConfig( ).getString( "bans." + i + ".name" ) , e.getName( ) ) &&
+                            Objects.equals( Api.bans.getConfig( ).getString( "bans." + i + ".status" ) , "open" ) &&
+                            Utils.isStillBanned( i ) ) {
                         e.disallow( AsyncPlayerPreLoginEvent.Result.KICK_BANNED , KickBannedPlayer( i ) );
                         break;
                     }
-                    if ( plugin.bans.getConfig( ).getBoolean( "bans." + i + ".IP-Banned" ) &&
-                            Objects.equals( plugin.bans.getConfig( ).getString( "bans." + i + ".IP" ) , ip ) &&
-                            Objects.equals( plugin.bans.getConfig( ).getString( "bans." + i + ".status" ) , "open" ) &&
-                            StaffCoreAPI.isStillBanned( i ) ) {
+                    if ( Api.bans.getConfig( ).getBoolean( "bans." + i + ".IP-Banned" ) &&
+                            Objects.equals( Api.bans.getConfig( ).getString( "bans." + i + ".IP" ) , ip ) &&
+                            Objects.equals( Api.bans.getConfig( ).getString( "bans." + i + ".status" ) , "open" ) &&
+                            Utils.isStillBanned( i ) ) {
                         e.disallow( AsyncPlayerPreLoginEvent.Result.KICK_BANNED , KickBannedPlayer( i ) );
                         break;
                     }
@@ -99,18 +99,18 @@ public class onPlayerJoin implements Listener {
     void onPlayerJoinEvent( PlayerJoinEvent e ){
         Player p = e.getPlayer( );
         UUID uuid = p.getUniqueId( );
-        if ( utils.currentPlayerWarns( p.getName( ) ) != 0 && utils.getBoolean( "warns.notify" ) ) {
-            ComponentBuilder cb = new ComponentBuilder( utils.chat( utils.getString( "warns.join_msg" , "lg" , null ) ) );
-            TextComponent dis = new TextComponent( utils.chat( utils.getString( "warns.notify" , "lg" , "staff" ).replace( "%amount%" , String.valueOf( utils.currentPlayerWarns( p.getName( ) ) ) ) ) );
+        if ( Utils.currentPlayerWarns( p.getName( ) ) != 0 && Utils.getBoolean( "warns.notify" ) ) {
+            ComponentBuilder cb = new ComponentBuilder( Utils.chat( Utils.getString( "warns.join_msg" , "lg" , null ) ) );
+            TextComponent dis = new TextComponent( Utils.chat( Utils.getString( "warns.notify" , "lg" , "staff" ).replace( "%amount%" , String.valueOf( Utils.currentPlayerWarns( p.getName( ) ) ) ) ) );
             dis.setHoverEvent( new HoverEvent( HoverEvent.Action.SHOW_TEXT , cb.create( ) ) );
             dis.setClickEvent( new ClickEvent( ClickEvent.Action.RUN_COMMAND , "/warningns" ) );
             p.spigot( ).sendMessage( dis );
         }
         try {
-            if ( utils.mysqlEnabled( ) ) {
+            if ( Utils.mysqlEnabled( ) ) {
                 Bukkit.getScheduler( ).runTaskAsynchronously( plugin , ( ) -> {
                     if ( FreezeQuery.isFrozen( p.getName( ) ).equals( "true" ) ) {
-                        FreezeManager.enable( uuid , utils.getConsoleName( ) );
+                        FreezeManager.enable( uuid , Utils.getConsoleName( ) );
                     }
                 } );
             }
@@ -124,11 +124,11 @@ public class onPlayerJoin implements Listener {
             }
             
             for ( Player player : Bukkit.getOnlinePlayers( ) ) {
-                if ( !plugin.getDescription( ).getVersion( ).equals( plugin.latestVersion ) ) {
+                if ( !plugin.getDescription( ).getVersion( ).equals( Api.latestVersion ) ) {
                     if ( p.hasPermission( "staffcore.staff" ) ) {
-                        utils.tellHover( p , plugin.getConfig( ).getString( "server_prefix" ) +
+                        Utils.tellHover( p , plugin.getConfig( ).getString( "server_prefix" ) +
                                         "&cYou are using an StaffCore older version" ,
-                                "&aClick to download the version: " + plugin.latestVersion ,
+                                "&aClick to download the version: " + Api.latestVersion ,
                                 "http://localhost:82/download" );
                     }
                 }
@@ -149,13 +149,13 @@ public class onPlayerJoin implements Listener {
                     }
                 }
             }
-        } catch ( NoSuchMethodError | PlayerNotFundException ignored ) {
+        } catch ( NoSuchMethodError ignored ) {
         }
-        if ( utils.getBoolean( "discord.type.debug.enabled_debugs.commands" ) ) {
+        if ( Utils.getBoolean( "discord.type.debug.enabled_debugs.commands" ) ) {
             ArrayList < String > dc = new ArrayList <>( );
             dc.add( "**Player:** " + p.getName( ) );
             dc.add( "**Reason:** " + e.getJoinMessage( ) );
-            utils.sendDiscordDebugMsg( e.getPlayer( ) , "⚠ Player Join ⚠" , dc );
+            Utils.sendDiscordDebugMsg( e.getPlayer( ) , "⚠ Player Join ⚠" , dc );
         }
     }
     
@@ -178,7 +178,7 @@ public class onPlayerJoin implements Listener {
             long Minutes = TimeUnit.SECONDS.toMinutes( Seconds );
             Seconds -= TimeUnit.MINUTES.toSeconds( Minutes );
             String ban_msg = "\n";
-            for ( String msg : utils.getStringList( "ban.join" , "alerts" ) ) {
+            for ( String msg : Utils.getStringList( "ban.join" , "alerts" ) ) {
                 msg = msg.replace( "%baner%" , banner );
                 msg = msg.replace( "%banned%" , banned );
                 msg = msg.replace( "%reason%" , reason );
@@ -196,7 +196,7 @@ public class onPlayerJoin implements Listener {
                 msg = msg.replace( "%date%" , created );
                 ban_msg = ban_msg + msg + "\n";
             }
-            return utils.chat( ban_msg );
+            return Utils.chat( ban_msg );
         } catch ( ParseException | NullPointerException error ) {
             error.printStackTrace( );
             return null;
@@ -205,12 +205,12 @@ public class onPlayerJoin implements Listener {
     
     String KickBannedPlayer( int Id ){
         try {
-            String p = plugin.bans.getConfig( ).getString( "bans." + Id + ".banned_by" );
-            String banned = plugin.bans.getConfig( ).getString( "bans." + Id + ".name" );
-            String reason = plugin.bans.getConfig( ).getString( "bans." + Id + ".reason" );
+            String p = Api.bans.getConfig( ).getString( "bans." + Id + ".banned_by" );
+            String banned = Api.bans.getConfig( ).getString( "bans." + Id + ".name" );
+            String reason = Api.bans.getConfig( ).getString( "bans." + Id + ".reason" );
             Date now = new Date( );
-            String created = plugin.bans.getConfig( ).getString( "bans." + Id + ".date" );
-            String exp = plugin.bans.getConfig( ).getString( "bans." + Id + ".expdate" );
+            String created = Api.bans.getConfig( ).getString( "bans." + Id + ".date" );
+            String exp = Api.bans.getConfig( ).getString( "bans." + Id + ".expdate" );
             SimpleDateFormat format = new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" );
             Date d2 = null;
             d2 = format.parse( exp );
@@ -222,7 +222,7 @@ public class onPlayerJoin implements Listener {
             long Minutes = TimeUnit.SECONDS.toMinutes( Seconds );
             Seconds -= TimeUnit.MINUTES.toSeconds( Minutes );
             String ban_msg = "\n";
-            for ( String msg : utils.getStringList( "ban.join" , "alerts" ) ) {
+            for ( String msg : Utils.getStringList( "ban.join" , "alerts" ) ) {
                 msg = msg.replace( "%baner%" , p );
                 msg = msg.replace( "%banned%" , banned );
                 msg = msg.replace( "%reason%" , reason );
@@ -231,7 +231,7 @@ public class onPlayerJoin implements Listener {
                 } else {
                     msg = msg.replace( "%time_left%" , Days + "d " + Hours + "h " + Minutes + "m " + Seconds + "s" );
                 }
-                if ( plugin.bans.getConfig( ).getBoolean( "bans." + Id + ".IP-Banned" ) ) {
+                if ( Api.bans.getConfig( ).getBoolean( "bans." + Id + ".IP-Banned" ) ) {
                     msg = msg.replace( "%IP_BANED%" , "&atrue" );
                 } else {
                     msg = msg.replace( "%IP_BANED%" , "&cfalse" );
@@ -240,7 +240,7 @@ public class onPlayerJoin implements Listener {
                 msg = msg.replace( "%date%" , created );
                 ban_msg = ban_msg + msg + "\n";
             }
-            return utils.chat( ban_msg );
+            return Utils.chat( ban_msg );
         } catch ( ParseException | NullPointerException error ) {
             error.printStackTrace( );
             return null;

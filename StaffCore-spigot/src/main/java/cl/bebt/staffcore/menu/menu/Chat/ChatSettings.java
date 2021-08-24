@@ -7,7 +7,7 @@ package cl.bebt.staffcore.menu.menu.Chat;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.MenuC;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -29,7 +29,7 @@ public class ChatSettings extends MenuC {
     
     @Override
     public String getMenuName( ){
-        return utils.chat( utils.getString( "chat.clear_chat_manager.name" , "menu" , null ) );
+        return Utils.chat( Utils.getString( "chat.clear_chat_manager.name" , "menu" , null ) );
     }
     
     @Override
@@ -49,8 +49,8 @@ public class ChatSettings extends MenuC {
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "clearAll" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            utils.ccAll( );
-            Bukkit.broadcastMessage( utils.chat( utils.getString( "clear_chat.global" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) ) );
+            Utils.ccAll( );
+            Bukkit.broadcastMessage( Utils.chat( Utils.getString( "clear_chat.global" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) ) );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
@@ -63,15 +63,15 @@ public class ChatSettings extends MenuC {
     @Override
     public void setMenuItemsPlayer( Player p ){
         ArrayList < String > lore = new ArrayList <>( );
-        lore.add( utils.chat( "&c" ) );
+        lore.add( Utils.chat( "&c" ) );
         ItemStack ClearChat = new ItemStack( Material.END_CRYSTAL , 1 );
-        ItemStack Head = utils.getPlayerHead( p.getName( ) );
+        ItemStack Head = Utils.getPlayerHead( p.getName( ) );
         
         ItemMeta metaTChat = ClearChat.getItemMeta( );
         ItemMeta metaHead = Head.getItemMeta( );
         
-        metaTChat.setDisplayName( utils.chat( "&cClear Server Chat" ) );
-        metaHead.setDisplayName( utils.chat( "&5Clear player chat" ) );
+        metaTChat.setDisplayName( Utils.chat( "&cClear Server Chat" ) );
+        metaHead.setDisplayName( Utils.chat( "&5Clear player chat" ) );
         
         metaTChat.setLore( lore );
         metaHead.setLore( lore );

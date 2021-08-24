@@ -5,15 +5,16 @@
 package cl.bebt.staffcore.commands.Staff;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.sql.Queries.AltsQuery;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.EntitiesUtils.UserUtils;
+import cl.bebt.staffcoreapi.SQL.Queries.AltsQuery;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
-import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class CheckAlts implements TabExecutor {
     private static main plugin;
@@ -23,48 +24,12 @@ public class CheckAlts implements TabExecutor {
         plugin.getCommand( "alts" ).setExecutor( this );
     }
     
-    public static List < String > ips( String p ){
-        if ( utils.mysqlEnabled( ) ) {
-            return utils.makeList( AltsQuery.getAlts( p ) );
+    public static List < String > ips( UUID uuid ){
+        if ( Utils.mysqlEnabled( ) ) {
+            return Utils.makeList( AltsQuery.getAltsIps( uuid ) );
         } else {
-            return plugin.alts.getConfig( ).getStringList( "alts." + p );
+            return new ArrayList <>( UserUtils.getIpsAsHash( uuid ).values( ) );
         }
-    }
-    
-    public static List < String > alts( String player ){
-        List < String > alts = new ArrayList <>( );
-        List < String > accounts = new ArrayList <>( );
-        if ( utils.mysqlEnabled( ) ) {
-            List < String > ip = utils.makeList( AltsQuery.getAlts( player ) );
-            List < String > players = AltsQuery.getPlayersNames( );
-            for ( String key : players ) {
-                if ( !player.equals( key ) ) {
-                    alts.add( key );
-                }
-            }
-            for ( String alt : alts ) {
-                List < String > list2 = utils.makeList( AltsQuery.getAlts( alt ) );
-                if ( ip.stream( ).anyMatch( list2::contains ) ) {
-                    accounts.add( alt );
-                }
-            }
-        } else {
-            ConfigurationSection inventorySection = plugin.alts.getConfig( ).getConfigurationSection( "alts" );
-            List < String > ip = main.plugin.alts.getConfig( ).getStringList( "alts." + player );
-            assert inventorySection != null;
-            for ( String key : inventorySection.getKeys( false ) ) {
-                if ( !player.equals( key ) ) {
-                    alts.add( key );
-                }
-            }
-            for ( String alt : alts ) {
-                List < String > list2 = main.plugin.alts.getConfig( ).getStringList( "alts." + alt );
-                if ( ip.stream( ).anyMatch( list2::contains ) ) {
-                    accounts.add( alt );
-                }
-            }
-        }
-        return accounts;
     }
     
     @Override
@@ -72,26 +37,27 @@ public class CheckAlts implements TabExecutor {
         if ( sender.hasPermission( "staffcore.alts" ) ) {
             if ( args.length == 1 ) {
                 try {
-                    List < String > alts = alts( args[0] );
+                    UUID uuid = Utils.getUUIDFromName( args[0] );
+                    List < String > alts = Utils.getAlts( uuid );
                     if ( alts.isEmpty( ) ) {
-                        utils.tell( sender , utils.getString( "alts.no_alts" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
+                        Utils.tell( sender , Utils.getString( "alts.no_alts" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
                     } else {
-                        utils.tell( sender , utils.getString( "alts.alts" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
+                        Utils.tell( sender , Utils.getString( "alts.alts" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
                         for ( String alt : alts ) {
-                            List < String > ips = ips( alt );
+                            List < String > ips = ips( uuid );
                             if ( !alt.equalsIgnoreCase( args[0] ) ) {
-                                utils.tell( sender , "&7  ► &a" + alt );
+                                Utils.tell( sender , "&7  ► &a" + alt );
                                 for ( String ip : ips ) {
-                                    utils.tell( sender , "&7    ► &a" + ip );
+                                    Utils.tell( sender , "&7    ► &a" + ip );
                                 }
                             }
                         }
                     }
                 } catch ( NullPointerException error ) {
-                    utils.tell( sender , utils.getString( "never_seen" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
+                    Utils.tell( sender , Utils.getString( "never_seen" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
                 }
             } else {
-                utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "alts <player>" ) );
+                Utils.tell( sender , Utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "alts <player>" ) );
             }
         }
         return true;
@@ -101,7 +67,7 @@ public class CheckAlts implements TabExecutor {
     public List < String > onTabComplete( CommandSender sender , Command command , String alias , String[] args ){
         List < String > version = new ArrayList <>( );
         if ( args.length == 1 ) {
-            ArrayList < String > Players = utils.getUsers( );
+            ArrayList < String > Players = Utils.getUsers( );
             if ( !Players.isEmpty( ) ) {
                 Players.remove( sender.getName( ) );
                 version.addAll( Players );

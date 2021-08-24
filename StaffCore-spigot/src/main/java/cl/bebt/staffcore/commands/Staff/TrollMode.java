@@ -4,9 +4,8 @@
 
 package cl.bebt.staffcore.commands.Staff;
 
-import cl.bebt.staffcore.API.StaffCoreAPI;
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.utils.utils;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,66 +22,66 @@ public class TrollMode implements CommandExecutor {
     
     @Override
     public boolean onCommand( CommandSender sender , Command command , String label , String[] args ){
-        if ( !utils.isOlderVersion( ) ) {
+        if ( !Utils.isOlderVersion( ) ) {
             if ( sender instanceof Player ) {
                 if ( args.length == 0 ) {
                     Player p = ( Player ) sender;
                     if ( p.hasPermission( "staffcore.troll" ) ) {
-                        StaffCoreAPI.setTrollMode( p , !StaffCoreAPI.getTrollStatus( p.getName( ) ) );
-                        if ( StaffCoreAPI.getTrollStatus( p.getName( ) ) ) {
-                            utils.tell( p , utils.getString( "troll.enabled" , "lg" , "staff" ) );
+                        Utils.setTrollMode( p , !Utils.getTrollStatus( p.getName( ) ) );
+                        if ( Utils.getTrollStatus( p.getName( ) ) ) {
+                            Utils.tell( p , Utils.getString( "troll.enabled" , "lg" , "staff" ) );
                         } else {
-                            utils.tell( p , utils.getString( "troll.disabled" , "lg" , "staff" ) );
+                            Utils.tell( p , Utils.getString( "troll.disabled" , "lg" , "staff" ) );
                         }
                     } else {
-                        utils.tell( p , utils.getString( "no_permission" , "lg" , "staff" ) );
+                        Utils.tell( p , Utils.getString( "no_permission" , "lg" , "staff" ) );
                     }
                 } else if ( args.length == 1 ) {
                     if ( Bukkit.getPlayer( args[0] ) != null ) {
                         if ( sender.hasPermission( "staffcore.troll" ) ) {
                             Player target = Bukkit.getPlayer( args[0] );
-                            StaffCoreAPI.setTrollMode( target , !StaffCoreAPI.getTrollStatus( args[0] ) );
-                            if ( StaffCoreAPI.getTrollStatus( args[0] ) ) {
+                            Utils.setTrollMode( target , !Utils.getTrollStatus( args[0] ) );
+                            if ( Utils.getTrollStatus( args[0] ) ) {
                                 if ( target != sender ) {
-                                    utils.tell( target , utils.getString( "troll.enabled" , "lg" , "staff" ) );
+                                    Utils.tell( target , Utils.getString( "troll.enabled" , "lg" , "staff" ) );
                                 }
-                                utils.tell( sender , utils.getString( "troll.enabled_to" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
+                                Utils.tell( sender , Utils.getString( "troll.enabled_to" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
                             } else {
                                 if ( target != sender ) {
-                                    utils.tell( target , utils.getString( "troll.disabled" , "lg" , "staff" ) );
+                                    Utils.tell( target , Utils.getString( "troll.disabled" , "lg" , "staff" ) );
                                 }
-                                utils.tell( sender , utils.getString( "troll.disabled_to" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
+                                Utils.tell( sender , Utils.getString( "troll.disabled_to" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
                             }
                         } else {
-                            utils.tell( sender , utils.getString( "no_permission" , "lg" , "staff" ) );
+                            Utils.tell( sender , Utils.getString( "no_permission" , "lg" , "staff" ) );
                         }
                     }
                 } else {
-                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "troll | troll <player>" ) );
+                    Utils.tell( sender , Utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "troll | troll <player>" ) );
                 }
             } else {
                 if ( args.length == 1 ) {
                     if ( Bukkit.getPlayer( args[0] ) != null ) {
                         Player target = Bukkit.getPlayer( args[0] );
-                        StaffCoreAPI.setTrollMode( target , !StaffCoreAPI.getTrollStatus( args[0] ) );
-                        if ( StaffCoreAPI.getTrollStatus( args[0] ) ) {
+                        Utils.setTrollMode( target , !Utils.getTrollStatus( args[0] ) );
+                        if ( Utils.getTrollStatus( args[0] ) ) {
                             if ( target != sender ) {
-                                utils.tell( target , utils.getString( "troll.enabled" , "lg" , "staff" ) );
+                                Utils.tell( target , Utils.getString( "troll.enabled" , "lg" , "staff" ) );
                             }
-                            utils.tell( sender , utils.getString( "troll.enabled_to" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
+                            Utils.tell( sender , Utils.getString( "troll.enabled_to" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
                         } else {
                             if ( target != sender ) {
-                                utils.tell( target , utils.getString( "troll.disabled" , "lg" , "staff" ) );
+                                Utils.tell( target , Utils.getString( "troll.disabled" , "lg" , "staff" ) );
                             }
-                            utils.tell( sender , utils.getString( "troll.disabled_to" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
+                            Utils.tell( sender , Utils.getString( "troll.disabled_to" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
                         }
                     }
                 } else {
-                    utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "troll | troll <player>" ) );
+                    Utils.tell( sender , Utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "troll | troll <player>" ) );
                 }
             }
         } else {
-            utils.tell( sender , utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
+            Utils.tell( sender , Utils.getString( "not_for_older_versions" , "lg" , "sv" ) );
         }
         return false;
     }

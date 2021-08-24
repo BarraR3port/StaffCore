@@ -4,10 +4,11 @@
 
 package cl.bebt.staffcore.utils;
 
-import cl.bebt.staffcore.EntitysUtils.UserUtils;
-import cl.bebt.staffcore.Exeptions.PlayerNotFundException;
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.sql.DataExporter;
+import cl.bebt.staffcoreapi.EntitiesUtils.UserUtils;
+import cl.bebt.staffcoreapi.Enums.UpdateType;
+import cl.bebt.staffcoreapi.utils.DataExporter;
+import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -19,75 +20,72 @@ public class ToggleChat {
     public static void Mute( Boolean bol ){
         if ( bol ) {
             main.plugin.chatMuted = true;
-            DataExporter.updateServerStats( "mute" );
+            DataExporter.updateServerStats( UpdateType.MUTE );
         }
         if ( !bol ) {
             main.plugin.chatMuted = false;
+            DataExporter.updateServerStats( UpdateType.MUTE );
         }
     }
     
     public static void unMute( CommandSender p , UUID uuid ){
-        try {
-            CountdownManager.removeMuteCountdown( uuid );
-            if ( p instanceof Player ) {
-                utils.tell( uuid , utils.getString( "toggle_chat.un_mute_by_player" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
-            } else {
-                utils.tell( uuid , utils.getString( "toggle_chat.un_mute_by_console" , "lg" , "staff" ) );
-            }
-            String name = UserUtils.findUser( uuid ).getName( );
-            for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-                if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.mute_player" ) ) {
-                    utils.PlaySound( people , "staff_mute_alerts" );
-                    for ( String key : utils.getStringList( "chat.toggle" , "alerts" ) ) {
-                        if ( p instanceof Player ) {
-                            key = key.replace( "%staff%" , p.getName( ) );
-                        } else {
-                            key = key.replace( "%staff%" , utils.getConsoleName( ) );
-                        }
-                        key = key.replace( "%muted%" , name );
-                        key = key.replace( "%status%" , "&aUn Muted" );
-                        utils.tell( people , key );
+        CountdownManager.removeMuteCountdown( uuid );
+        if ( p instanceof Player ) {
+            Utils.tell( uuid , Utils.getString( "toggle_chat.un_mute_by_player" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) );
+        } else {
+            Utils.tell( uuid , Utils.getString( "toggle_chat.un_mute_by_console" , "lg" , "staff" ) );
+        }
+        String name = UserUtils.findUser( uuid ).getName( );
+        for ( Player people : Bukkit.getOnlinePlayers( ) ) {
+            if ( people.hasPermission( "staffcore.staff" ) || Utils.getBoolean( "alerts.mute_player" ) ) {
+                Utils.PlaySound( people , "staff_mute_alerts" );
+                for ( String key : Utils.getStringList( "chat.toggle" , "alerts" ) ) {
+                    if ( p instanceof Player ) {
+                        key = key.replace( "%staff%" , p.getName( ) );
+                    } else {
+                        key = key.replace( "%staff%" , Utils.getConsoleName( ) );
                     }
+                    key = key.replace( "%muted%" , name );
+                    key = key.replace( "%status%" , "&aUn Muted" );
+                    Utils.tell( people , key );
                 }
             }
-            DataExporter.updateServerStats( "mute" );
-            UserUtils.setMute( uuid , false );
-        } catch ( PlayerNotFundException ignored ) {
         }
+        DataExporter.updateServerStats( UpdateType.MUTE );
+        UserUtils.setMute( uuid , false );
+        
     }
     
     public static void MutePlayer( CommandSender p , UUID uuid ){
-        try {
-            if ( !UserUtils.getMute( uuid ) ) {
-                if ( p instanceof Player ) {
-                    Player jugador = ( Player ) p;
-                    utils.tell( uuid , utils.getString( "toggle_chat.mute_by_player" , "lg" , "sv" ).replace( "%player%" , jugador.getName( ) ) );
-                } else {
-                    utils.tell( uuid , utils.getString( "toggle_chat.mute_by_player" , "lg" , "sv" ).replace( "%player%" , utils.getConsoleName( ) ) );
-                }
-                String name = UserUtils.findUser( uuid ).getName( );
-                for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-                    if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.mute_player" ) ) {
-                        utils.PlaySound( people , "staff_mute_alerts" );
-                        for ( String key : utils.getStringList( "chat.toggle" , "alerts" ) ) {
-                            if ( p instanceof Player ) {
-                                key = key.replace( "%staff%" , p.getName( ) );
-                            } else {
-                                key = key.replace( "%staff%" , utils.getConsoleName( ) );
-                            }
-                            key = key.replace( "%muted%" , name );
-                            key = key.replace( "%status%" , "&cMuted" );
-                            utils.tell( people , key );
+        if ( !UserUtils.getMute( uuid ) ) {
+            if ( p instanceof Player ) {
+                Player jugador = ( Player ) p;
+                Utils.tell( uuid , Utils.getString( "toggle_chat.mute_by_player" , "lg" , "sv" ).replace( "%player%" , jugador.getName( ) ) );
+            } else {
+                Utils.tell( uuid , Utils.getString( "toggle_chat.mute_by_player" , "lg" , "sv" ).replace( "%player%" , Utils.getConsoleName( ) ) );
+            }
+            String name = UserUtils.findUser( uuid ).getName( );
+            for ( Player people : Bukkit.getOnlinePlayers( ) ) {
+                if ( people.hasPermission( "staffcore.staff" ) || Utils.getBoolean( "alerts.mute_player" ) ) {
+                    Utils.PlaySound( people , "staff_mute_alerts" );
+                    for ( String key : Utils.getStringList( "chat.toggle" , "alerts" ) ) {
+                        if ( p instanceof Player ) {
+                            key = key.replace( "%staff%" , p.getName( ) );
+                        } else {
+                            key = key.replace( "%staff%" , Utils.getConsoleName( ) );
                         }
+                        key = key.replace( "%muted%" , name );
+                        key = key.replace( "%status%" , "&cMuted" );
+                        Utils.tell( people , key );
                     }
                 }
-                DataExporter.updateServerStats( "mute" );
-                UserUtils.setMute( uuid , true );
-            } else {
-                unMute( p , uuid );
             }
-        } catch ( PlayerNotFundException ignored ) {
+            DataExporter.updateServerStats( UpdateType.MUTE );
+            UserUtils.setMute( uuid , true );
+        } else {
+            unMute( p , uuid );
         }
+        
     }
     
     
@@ -97,39 +95,39 @@ public class ToggleChat {
             case "s":
                 CountdownManager.setMuteCountdown( uuid , amount );
                 sendMessage( ( Player ) sender , p , amount , "s" );
-                DataExporter.updateServerStats( "mute" );
+                DataExporter.updateServerStats( UpdateType.MUTE );
                 break;
             case "m":
                 CountdownManager.setMuteCountdown( uuid , amount * 60 );
                 sendMessage( ( Player ) sender , p , amount , "m" );
-                DataExporter.updateServerStats( "mute" );
+                DataExporter.updateServerStats( UpdateType.MUTE );
                 break;
             case "h":
                 CountdownManager.setMuteCountdown( uuid , amount * 3600 );
                 sendMessage( ( Player ) sender , p , amount , "h" );
-                DataExporter.updateServerStats( "mute" );
+                DataExporter.updateServerStats( UpdateType.MUTE );
                 break;
             case "d":
                 CountdownManager.setMuteCountdown( uuid , amount * 86400 );
                 sendMessage( ( Player ) sender , p , amount , "d" );
-                DataExporter.updateServerStats( "mute" );
+                DataExporter.updateServerStats( UpdateType.MUTE );
                 break;
             default:
-                utils.tell( sender , utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "mute " + p.getName( ) + " &d10<s/m/h/d>" ) );
+                Utils.tell( sender , Utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "mute " + p.getName( ) + " &d10<s/m/h/d>" ) );
                 break;
         }
     }
     
     private static void sendMessage( Player p , Player muted , long amount , String quantity ){
         for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-            if ( people.hasPermission( "staffcore.staff" ) || utils.getBoolean( "alerts.mute_player" ) || people.equals( muted ) ) {
-                utils.PlaySound( people , "staff_mute_alerts" );
-                for ( String key : utils.getStringList( "chat.temporal_mute" , "alerts" ) ) {
+            if ( people.hasPermission( "staffcore.staff" ) || Utils.getBoolean( "alerts.mute_player" ) || people.equals( muted ) ) {
+                Utils.PlaySound( people , "staff_mute_alerts" );
+                for ( String key : Utils.getStringList( "chat.temporal_mute" , "alerts" ) ) {
                     key = key.replace( "%staff%" , p.getName( ) );
                     key = key.replace( "%muted%" , muted.getName( ) );
                     key = key.replace( "%amount%" , String.valueOf( amount ) );
                     key = key.replace( "%quantity%" , quantity );
-                    utils.tell( people , key );
+                    Utils.tell( people , key );
                 }
             }
         }
