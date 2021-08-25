@@ -7,6 +7,7 @@ package cl.bebt.staffcore.menu.menu.Chat;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.MenuC;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
+import cl.bebt.staffcoreapi.Api;
 import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -51,13 +52,13 @@ public class MuteChatManager extends MenuC {
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "TChatOn" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            plugin.chatMuted = true;
+            Api.chatMuted = true;
             new MuteChatManager( main.getPlayerMenuUtility( p ) , plugin ).open( p );
             Bukkit.broadcastMessage( Utils.chat( Utils.getString( "toggle_chat.global_mute_by_player" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) ) );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "TChatOff" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            plugin.chatMuted = false;
+            Api.chatMuted = false;
             new MuteChatManager( main.getPlayerMenuUtility( p ) , plugin ).open( p );
             Bukkit.broadcastMessage( Utils.chat( Utils.getString( "toggle_chat.global_un_mute_by_player" , "lg" , "sv" ).replace( "%player%" , p.getName( ) ) ) );
             e.setCancelled( true );
@@ -131,9 +132,9 @@ public class MuteChatManager extends MenuC {
                 inventory.setItem( i , super.bluePanel( ) );
             }
         }
-        if ( !plugin.chatMuted ) {
+        if ( !Api.chatMuted ) {
             inventory.setItem( 20 , TChatOn );
-        } else if ( plugin.chatMuted ) {
+        } else if ( Api.chatMuted ) {
             inventory.setItem( 20 , TChatOff );
         }
         inventory.setItem( 21 , super.redPanel( ) );

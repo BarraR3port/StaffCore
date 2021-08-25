@@ -5,9 +5,6 @@
 package cl.bebt.staffcore.listeners;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.utils.FlyManager;
-import cl.bebt.staffcore.utils.FreezeManager;
-import cl.bebt.staffcore.utils.StaffManager;
 import cl.bebt.staffcoreapi.Api;
 import cl.bebt.staffcoreapi.Entities.User;
 import cl.bebt.staffcoreapi.EntitiesUtils.UserUtils;
@@ -15,6 +12,9 @@ import cl.bebt.staffcoreapi.Enums.UpdateType;
 import cl.bebt.staffcoreapi.SQL.Queries.AltsQuery;
 import cl.bebt.staffcoreapi.SQL.Queries.BansQuery;
 import cl.bebt.staffcoreapi.SQL.Queries.FreezeQuery;
+import cl.bebt.staffcoreapi.utils.FlyManager;
+import cl.bebt.staffcoreapi.utils.FreezeManager;
+import cl.bebt.staffcoreapi.utils.StaffManager;
 import cl.bebt.staffcoreapi.utils.Utils;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;

@@ -5,8 +5,8 @@
 package cl.bebt.staffcore.commands.Staff;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.utils.FlyManager;
 import cl.bebt.staffcoreapi.EntitiesUtils.UserUtils;
+import cl.bebt.staffcoreapi.utils.FlyManager;
 import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

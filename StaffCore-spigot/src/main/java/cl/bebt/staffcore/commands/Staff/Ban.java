@@ -6,7 +6,7 @@ package cl.bebt.staffcore.commands.Staff;
 
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.menu.Bangui.BanMenu;
-import cl.bebt.staffcore.utils.BanManager;
+import cl.bebt.staffcoreapi.utils.BanManager;
 import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;

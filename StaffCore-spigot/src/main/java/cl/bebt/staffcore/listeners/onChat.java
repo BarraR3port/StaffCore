@@ -4,10 +4,10 @@
 
 package cl.bebt.staffcore.listeners;
 
-import cl.bebt.staffcore.MSGChanel.SendMsg;
-import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.utils.CountdownManager;
+import cl.bebt.staffcoreapi.Api;
 import cl.bebt.staffcoreapi.EntitiesUtils.UserUtils;
+import cl.bebt.staffcoreapi.MSGChanel.SendMsg;
+import cl.bebt.staffcoreapi.utils.CountdownManager;
 import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -99,7 +99,7 @@ public class onChat implements Listener {
             }
         }
         
-        if ( main.plugin.chatMuted ) {
+        if ( Api.chatMuted ) {
             if ( !p.hasPermission( "staffcore.togglechat.bypass" ) ) {
                 e.setCancelled( true );
                 Utils.PlaySound( p , "muted_try_to_chat" );

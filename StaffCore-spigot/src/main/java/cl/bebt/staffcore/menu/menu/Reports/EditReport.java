@@ -6,9 +6,9 @@ package cl.bebt.staffcore.menu.menu.Reports;
 
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
-import cl.bebt.staffcore.utils.ReportPlayer;
 import cl.bebt.staffcoreapi.Api;
 import cl.bebt.staffcoreapi.SQL.Queries.ReportsQuery;
+import cl.bebt.staffcoreapi.utils.ReportManager;
 import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -48,22 +48,22 @@ public class EditReport extends ReportMenu {
         Player p = ( Player ) e.getWhoClicked( );
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "delete_report" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            ReportPlayer.DeleteReport( p , id );
+            ReportManager.DeleteReport( p , id );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "close_report" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            ReportPlayer.CloseReport( p , id );
+            ReportManager.CloseReport( p , id );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "open_report" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            ReportPlayer.OpenReport( p , id );
+            ReportManager.OpenReport( p , id );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "panel" ) , PersistentDataType.STRING ) ) {
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
-                new ReportManager( main.getPlayerMenuUtility( p ) , main.plugin ).open( );
+                new cl.bebt.staffcore.menu.menu.Reports.ReportManager( main.getPlayerMenuUtility( p ) , main.plugin ).open( );
             }
         }
     }

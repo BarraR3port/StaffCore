@@ -4,8 +4,7 @@
 
 package cl.bebt.staffcore;
 
-import cl.bebt.staffcore.Items.Items;
-import cl.bebt.staffcore.MSGChanel.PluginMessage;
+import cl.bebt.staffcore.MSGChannel.PluginMessage;
 import cl.bebt.staffcore.commands.Staff.*;
 import cl.bebt.staffcore.commands.Suicide;
 import cl.bebt.staffcore.commands.Time.Day;
@@ -15,10 +14,12 @@ import cl.bebt.staffcore.commands.staffcore;
 import cl.bebt.staffcore.listeners.*;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.menu.listeners.MenuListener;
-import cl.bebt.staffcore.utils.*;
+import cl.bebt.staffcore.utils.Metrics;
 import cl.bebt.staffcoreapi.Api;
 import cl.bebt.staffcoreapi.EntitiesUtils.SqlUtils;
+import cl.bebt.staffcoreapi.Items.Items;
 import cl.bebt.staffcoreapi.SQL.SqlManager;
+import cl.bebt.staffcoreapi.utils.CountdownManager;
 import cl.bebt.staffcoreapi.utils.TPS;
 import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
@@ -51,8 +52,6 @@ public final class main extends JavaPlugin {
     
     public static HashMap < Player, Player > enderSee = new HashMap <>( );
     
-    public Boolean chatMuted = false;
-    
     ConsoleCommandSender c = Bukkit.getConsoleSender( );
     
     public static PlayerMenuUtility getPlayerMenuUtility( Player p ){
@@ -66,14 +65,6 @@ public final class main extends JavaPlugin {
     public void onEnable( ){
         plugin = this;
         Api.initializeSpigot( this );
-        new wipePlayer( plugin );
-        new FreezeManager( plugin );
-        new ToggleChat( );
-        new CountdownManager( );
-        new StaffManager( plugin );
-        new VanishManager( plugin );
-        new FlyManager( plugin );
-        new Items( plugin );
         new Ip( plugin );
         new Teleport( plugin );
         new TpAll( plugin );
@@ -101,7 +92,6 @@ public final class main extends JavaPlugin {
         new StaffChat( plugin );
         new Report( plugin );
         new CheckAlts( plugin );
-        new ReportPlayer( plugin );
         new StaffList( plugin );
         new Warn( plugin );
         new Warnings( plugin );

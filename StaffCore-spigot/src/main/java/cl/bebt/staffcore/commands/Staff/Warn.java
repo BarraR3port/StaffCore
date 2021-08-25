@@ -5,7 +5,8 @@
 package cl.bebt.staffcore.commands.Staff;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.utils.WarnPlayer;
+import cl.bebt.staffcore.menu.PlayerMenuUtility;
+import cl.bebt.staffcore.menu.menu.Warn.WarnMenu;
 import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -34,7 +35,8 @@ public class Warn implements TabExecutor {
                     Player p = ( Player ) sender;
                     if ( p.hasPermission( "staffcore.warn" ) ) {
                         if ( Utils.isRegistered( args[0] ) ) {
-                            new WarnPlayer( p , args[0] , plugin );
+                            new WarnMenu( new PlayerMenuUtility( p ) , plugin , args[0] ).open( );
+                            ;
                         } else {
                             Utils.tell( sender , Utils.getString( "never_seen" , "lg" , "staff" ).replace( "%player%" , args[0] ) );
                         }

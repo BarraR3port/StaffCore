@@ -7,20 +7,16 @@ package cl.bebt.staffcore.menu.menu.Bangui;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.Menu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
-import cl.bebt.staffcore.utils.BanManager;
 import cl.bebt.staffcoreapi.EntitiesUtils.PersistentDataUtils;
 import cl.bebt.staffcoreapi.Enums.PersistentDataType;
+import cl.bebt.staffcoreapi.Items.Items;
+import cl.bebt.staffcoreapi.utils.BanManager;
 import cl.bebt.staffcoreapi.utils.Utils;
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -59,23 +55,28 @@ public class ChoseBanType extends Menu {
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
         ItemStack item = e.getCurrentItem( );
-        if ( PersistentDataUtils.has( item , "tempban" , PersistentDataType.STRING ) ) {
+        if ( item.equals( Items.ban_ip( uuid , banned ) ) ) {
+        
+        }
+        if ( item.equals( Items.tempBan( uuid , banned ) ) ) {
             p.closeInventory( );
             new AmountBanned( main.getPlayerMenuUtility( p ) , plugin , p , banned , reason ).open( );
-        } else if ( PersistentDataUtils.has( item , "permban" , PersistentDataType.STRING ) ) {
+        } else if ( item.equals( Items.permBan( uuid , banned ) ) ) {
             p.closeInventory( );
             try {
                 BanManager.Ban( p.getUniqueId( ) , Utils.getUUIDFromName( banned ) , reason , false );
             } catch ( ParseException ex ) {
                 ex.printStackTrace( );
             }
-        } else if ( PersistentDataUtils.has( item , "ban-normal" , PersistentDataType.STRING ) ) {
+        } else if ( item.equals( Items.ban_normal( uuid , banned ) ) ) {
             p.closeInventory( );
+            PersistentDataUtils.remove( p.getUniqueId( ) , "ban-normal" );
             PersistentDataUtils.save( "ban-ip" , "ban-ip" , p.getUniqueId( ) , PersistentDataType.STRING );
             new ChoseBanType( playerMenuUtility , plugin , player , banned , reason ).open( );
-        } else if ( PersistentDataUtils.has( item , "ban-ip" , PersistentDataType.STRING ) ) {
-            p.closeInventory( );
+        } else if ( item.equals( Items.ban_ip( uuid , banned ) ) ) {
             PersistentDataUtils.remove( p.getUniqueId( ) , "ban-ip" );
+            PersistentDataUtils.save( "ban-normal" , "ban-normal" , p.getUniqueId( ) , PersistentDataType.STRING );
+            p.closeInventory( );
             new ChoseBanType( playerMenuUtility , plugin , player , banned , reason ).open( );
         } else if ( Objects.equals( e.getCurrentItem( ) , close( ) ) ) {
             p.closeInventory( );
@@ -113,82 +114,17 @@ public class ChoseBanType extends Menu {
                 inventory.setItem( i , super.bluePanel( ) );
             }
         }
-        inventory.setItem( 20 , tempBan( ) );
+        inventory.setItem( 20 , Items.tempBan( uuid , banned ) );
         inventory.setItem( 21 , super.redPanel( ) );
         if ( PersistentDataUtils.has( uuid , "ban-ip" ) ) {
-            inventory.setItem( 22 , ban_ip( ) );
+            inventory.setItem( 22 , Items.ban_ip( uuid , banned ) );
         } else {
-            inventory.setItem( 22 , ban_normal( ) );
+            inventory.setItem( 22 , Items.ban_normal( uuid , banned ) );
         }
         inventory.setItem( 23 , super.redPanel( ) );
-        inventory.setItem( 24 , permBan( ) );
+        inventory.setItem( 24 , Items.permBan( uuid , banned ) );
         inventory.setItem( 25 , super.redPanel( ) );
     }
     
-    public ItemStack tempBan( ){
-        ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.getMaterial( Utils.getString( "quantity.temp.item" , "item" , null ) ) );
-        ItemMeta meta = item.getItemMeta( );
-        for ( String key : Utils.getStringList( "quantity.temp.lore" , "item" ) ) {
-            key = key.replace( "%player%" , banned );
-            key = key.replace( "%type%" , "Ban" );
-            lore.add( Utils.chat( key ) );
-        }
-        meta.setLore( lore );
-        meta.setDisplayName( Utils.chat( Utils.getString( "quantity.temp.name" , "item" , null ).replace( "%type%" , "Ban" ) ) );
-        item.setItemMeta( meta );
-        PersistentDataUtils.save( "tempban" , "tempban" , item , uuid , PersistentDataType.STRING );
-        return item;
-    }
-    
-    public ItemStack permBan( ){
-        ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.getMaterial( Utils.getString( "quantity.perm.item" , "item" , null ) ) );
-        ItemMeta meta = item.getItemMeta( );
-        for ( String key : Utils.getStringList( "quantity.perm.lore" , "item" ) ) {
-            key = key.replace( "%player%" , banned );
-            key = key.replace( "%type%" , "Ban" );
-            lore.add( Utils.chat( key ) );
-        }
-        meta.setLore( lore );
-        meta.setDisplayName( Utils.chat( Utils.getString( "quantity.perm.name" , "item" , null ).replace( "%type%" , "Ban" ) ) );
-        item.setItemMeta( meta );
-        PersistentDataUtils.save( "permban" , "permban" , item , uuid , PersistentDataType.STRING );
-        return item;
-    }
-    
-    public ItemStack ban_ip( ){
-        ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.getMaterial( Utils.getString( "quantity.ip.item" , "item" , null ) ) );
-        ItemMeta meta = item.getItemMeta( );
-        meta.addEnchant( Enchantment.PROTECTION_ENVIRONMENTAL , 1 , true );
-        meta.addItemFlags( ItemFlag.HIDE_ENCHANTS );
-        for ( String key : Utils.getStringList( "quantity.ip.lore" , "item" ) ) {
-            key = key.replace( "%player%" , banned );
-            key = key.replace( "%type%" , "Ban" );
-            lore.add( Utils.chat( key ) );
-        }
-        meta.setLore( lore );
-        meta.setDisplayName( Utils.chat( Utils.getString( "quantity.ip.name" , "item" , null ).replace( "%type%" , "Ban" ) ) );
-        item.setItemMeta( meta );
-        PersistentDataUtils.save( "ban-ip" , "ban-ip" , item , uuid , PersistentDataType.STRING );
-        return item;
-    }
-    
-    public ItemStack ban_normal( ){
-        ArrayList < String > lore = new ArrayList <>( );
-        ItemStack item = new ItemStack( Material.getMaterial( Utils.getString( "quantity.normal.item" , "item" , null ) ) );
-        ItemMeta meta = item.getItemMeta( );
-        for ( String key : Utils.getStringList( "quantity.normal.lore" , "item" ) ) {
-            key = key.replace( "%player%" , banned );
-            key = key.replace( "%type%" , "Ban" );
-            lore.add( Utils.chat( key ) );
-        }
-        meta.setLore( lore );
-        meta.setDisplayName( Utils.chat( Utils.getString( "quantity.normal.name" , "item" , null ).replace( "%type%" , "Ban" ) ) );
-        item.setItemMeta( meta );
-        PersistentDataUtils.save( "ban-normal" , "ban-normal" , item , uuid , PersistentDataType.STRING );
-        return item;
-    }
     
 }

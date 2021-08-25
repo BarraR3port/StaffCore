@@ -2,44 +2,37 @@
  * Copyright (c) 2021. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
  */
 
-package cl.bebt.staffcore.utils;
+package cl.bebt.staffcoreapi.utils;
 
-import cl.bebt.staffcore.MSGChanel.SendMsg;
-import cl.bebt.staffcore.main;
 import cl.bebt.staffcoreapi.Api;
 import cl.bebt.staffcoreapi.Enums.UpdateType;
+import cl.bebt.staffcoreapi.MSGChanel.SendMsg;
 import cl.bebt.staffcoreapi.SQL.Queries.AltsQuery;
 import cl.bebt.staffcoreapi.SQL.Queries.BansQuery;
 import cl.bebt.staffcoreapi.SQL.Queries.ReportsQuery;
 import cl.bebt.staffcoreapi.SQL.Queries.WarnsQuery;
-import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class wipePlayer {
+public class WipeManager {
     
-    private static main plugin;
-    
-    public wipePlayer( main plugin ){
-        wipePlayer.plugin = plugin;
-    }
-    
-    public wipePlayer( CommandSender sender , String p ){
+    public WipeManager( CommandSender sender , String p ){
         int bans = 0;
         int reports = 0;
         int warns = 0;
         if ( Utils.isRegistered( p ) ) {
             if ( Utils.mysqlEnabled( ) ) {
-                if ( plugin.getConfig( ).getBoolean( "wipe.bans" ) ) {
+                if ( Utils.getBoolean( "wipe.bans" ) ) {
                     bans = BansQuery.wipePlayerBans( p );
                 }
-                if ( plugin.getConfig( ).getBoolean( "wipe.reports" ) ) {
+                if ( Utils.getBoolean( "wipe.reports" ) ) {
                     reports = ReportsQuery.wipePlayerReports( p );
                 }
                 try {
@@ -48,12 +41,12 @@ public class wipePlayer {
                 }
                 AltsQuery.wipe( p );
                 try {
-                    PersistentDataContainer( p , plugin );
+                    PersistentDataContainer( p , Utils.getSpigot( ) );
                 } catch ( NoSuchMethodError ignored ) {
                 }
                 AltsQuery.deleteAlts( p );
             } else {
-                if ( plugin.getConfig( ).getBoolean( "wipe.bans" ) ) {
+                if ( Utils.getBoolean( "wipe.bans" ) ) {
                     HashMap < Integer, Integer > ids = Ids( "bans" , p );
                     for ( int i = 1; i <= ids.size( ); i++ ) {
                         if ( ids.get( i ) != null ) {
@@ -66,7 +59,7 @@ public class wipePlayer {
                     }
                     bans = ids.size( );
                 }
-                if ( plugin.getConfig( ).getBoolean( "wipe.reports" ) ) {
+                if ( Utils.getBoolean( "wipe.reports" ) ) {
                     HashMap < Integer, Integer > ids = Ids( "report" , p );
                     for ( int i = 1; i <= ids.size( ); i++ ) {
                         if ( ids.get( i ) != null ) {
@@ -78,7 +71,7 @@ public class wipePlayer {
                     }
                     reports = ids.size( );
                 }
-                if ( plugin.getConfig( ).getBoolean( "wipe.warns" ) ) {
+                if ( Utils.getBoolean( "wipe.warns" ) ) {
                     HashMap < Integer, Integer > ids = Ids( "warns" , p );
                     for ( int i = 1; i <= ids.size( ); i++ ) {
                         if ( ids.get( i ) != null ) {
@@ -92,7 +85,7 @@ public class wipePlayer {
                 }
                 try {
                     StaffManager.disable( Utils.getUUIDFromName( p ) );
-                    PersistentDataContainer( p , plugin );
+                    PersistentDataContainer( p , Utils.getSpigot( ) );
                 } catch ( NoSuchMethodError ignored ) {
                 }
                 Api.alts.reloadConfig( );
@@ -115,10 +108,10 @@ public class wipePlayer {
         }
     }
     
-    public static void WipeOnBan( main plugin , String p ){
+    public static void WipeOnBan( JavaPlugin spigot , String p ){
         if ( Utils.isRegistered( p ) ) {
             if ( Utils.mysqlEnabled( ) ) {
-                if ( plugin.getConfig( ).getBoolean( "wipe.reports" ) ) {
+                if ( Utils.getBoolean( "wipe.reports" ) ) {
                     List < Integer > ids = ReportsQuery.getPlayersIds( p );
                     for ( int i : ids ) {
                         ReportsQuery.deleteReport( i );
@@ -128,7 +121,7 @@ public class wipePlayer {
                 AltsQuery.deleteAlts( p );
                 WarnsQuery.deleteWarns( p );
             } else {
-                if ( plugin.getConfig( ).getBoolean( "wipe.reports" ) ) {
+                if ( Utils.getBoolean( "wipe.reports" ) ) {
                     HashMap < Integer, Integer > ids = Ids( "report" , p );
                     for ( int i = 1; i <= ids.size( ); i++ ) {
                         if ( ids.get( i ) != null ) {
@@ -153,11 +146,11 @@ public class wipePlayer {
                 Api.alts.saveConfig( );
             }
             StaffManager.disable( Utils.getUUIDFromName( p ) );
-            PersistentDataContainer( p , plugin );
+            PersistentDataContainer( p , Utils.getSpigot( ) );
         }
     }
     
-    private static void PersistentDataContainer( String p , main plugin ){
+    private static void PersistentDataContainer( String p , JavaPlugin plugin ){
         try {
             if ( Bukkit.getPlayer( p ) instanceof Player ) {
                 Player player = Bukkit.getPlayer( p );

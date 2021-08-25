@@ -7,8 +7,8 @@ package cl.bebt.staffcore.menu.menu.Warn;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.Menu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
-import cl.bebt.staffcore.utils.WarnPlayer;
 import cl.bebt.staffcoreapi.utils.Utils;
+import cl.bebt.staffcoreapi.utils.WarnManager;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -57,7 +57,7 @@ public class WarnTimeChose extends Menu {
             p.closeInventory( );
             int amount = Utils.getInt( "warns.expire_after" , null );
             String time = Utils.getString( "warns.expire_after_quantity" );
-            WarnPlayer.createWarn( p , warned , reason , amount , time );
+            WarnManager.createWarn( p , warned , reason , amount , time );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "specific" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );

@@ -2,9 +2,8 @@
  * Copyright (c) 2021. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
  */
 
-package cl.bebt.staffcore.MSGChanel;
+package cl.bebt.staffcoreapi.MSGChanel;
 
-import cl.bebt.staffcore.main;
 import cl.bebt.staffcoreapi.Enums.UpdateType;
 import cl.bebt.staffcoreapi.utils.DataExporter;
 import cl.bebt.staffcoreapi.utils.Utils;
@@ -19,7 +18,6 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class SendMsg {
-    private static final main plugin = main.plugin;
     
     public static void sendReportAlert( int id , String sender , String target , String reason , String date , String server ){
         if ( Utils.getBoolean( "bungeecord.enabled" ) ) {
@@ -34,7 +32,7 @@ public class SendMsg {
             out.writeUTF( reason );
             out.writeUTF( date );
             out.writeUTF( server );
-            Bukkit.getServer( ).sendPluginMessage( plugin , "sc:alerts" , out.toByteArray( ) );
+            Bukkit.getServer( ).sendPluginMessage( Utils.getSpigot( ) , "sc:alerts" , out.toByteArray( ) );
         }
         ArrayList < String > dc = new ArrayList <>( );
         dc.add( "**Reporter:** " + sender );
@@ -61,7 +59,7 @@ public class SendMsg {
             out.writeUTF( date );
             out.writeUTF( status );
             out.writeUTF( server );
-            Bukkit.getServer( ).sendPluginMessage( plugin , "sc:alerts" , out.toByteArray( ) );
+            Bukkit.getServer( ).sendPluginMessage( Utils.getSpigot( ) , "sc:alerts" , out.toByteArray( ) );
         }
         ArrayList < String > dc = new ArrayList <>( );
         dc.add( "**Changer:** " + changer );
@@ -88,7 +86,7 @@ public class SendMsg {
             out.writeUTF( ExpDate.toString( ) );
             out.writeUTF( CreateDate.toString( ) );
             out.writeUTF( server );
-            Bukkit.getServer( ).sendPluginMessage( plugin , "sc:alerts" , out.toByteArray( ) );
+            Bukkit.getServer( ).sendPluginMessage( Utils.getSpigot( ) , "sc:alerts" , out.toByteArray( ) );
         }
         ArrayList < String > dc = new ArrayList <>( );
         dc.add( "**Banner:** " + sender );
@@ -118,7 +116,7 @@ public class SendMsg {
             out.writeUTF( date );
             out.writeUTF( status );
             out.writeUTF( server );
-            Bukkit.getServer( ).sendPluginMessage( plugin , "sc:alerts" , out.toByteArray( ) );
+            Bukkit.getServer( ).sendPluginMessage( Utils.getSpigot( ) , "sc:alerts" , out.toByteArray( ) );
         }
         ArrayList < String > dc = new ArrayList <>( );
         dc.add( "**Changer:** " + changer );
@@ -146,7 +144,7 @@ public class SendMsg {
             out.writeUTF( ExpDate );
             out.writeUTF( date );
             out.writeUTF( server );
-            Bukkit.getServer( ).sendPluginMessage( plugin , "sc:alerts" , out.toByteArray( ) );
+            Bukkit.getServer( ).sendPluginMessage( Utils.getSpigot( ) , "sc:alerts" , out.toByteArray( ) );
         }
         ArrayList < String > dc = new ArrayList <>( );
         dc.add( "**Warner:** " + sender );
@@ -175,7 +173,7 @@ public class SendMsg {
             out.writeUTF( date );
             out.writeUTF( status );
             out.writeUTF( server );
-            Bukkit.getServer( ).sendPluginMessage( plugin , "sc:alerts" , out.toByteArray( ) );
+            Bukkit.getServer( ).sendPluginMessage( Utils.getSpigot( ) , "sc:alerts" , out.toByteArray( ) );
         }
         ArrayList < String > dc = new ArrayList <>( );
         dc.add( "**Changer:** " + changer );
@@ -200,7 +198,7 @@ public class SendMsg {
             out.writeUTF( target );
             out.writeBoolean( bool );
             out.writeUTF( server );
-            Bukkit.getServer( ).sendPluginMessage( plugin , "sc:alerts" , out.toByteArray( ) );
+            Bukkit.getServer( ).sendPluginMessage( Utils.getSpigot( ) , "sc:alerts" , out.toByteArray( ) );
         }
         ArrayList < String > dc = new ArrayList <>( );
         dc.add( "**Freezer:** " + sender );
@@ -224,7 +222,7 @@ public class SendMsg {
             out.writeInt( reports );
             out.writeInt( warns );
             out.writeUTF( server );
-            Bukkit.getServer( ).sendPluginMessage( plugin , "sc:alerts" , out.toByteArray( ) );
+            Bukkit.getServer( ).sendPluginMessage( Utils.getSpigot( ) , "sc:alerts" , out.toByteArray( ) );
         }
         ArrayList < String > dc = new ArrayList <>( );
         dc.add( "**Wiper:** " + sender );
@@ -247,7 +245,7 @@ public class SendMsg {
             out.writeUTF( sender );
             out.writeUTF( msg );
             out.writeUTF( server );
-            Bukkit.getServer( ).sendPluginMessage( plugin , "sc:alerts" , out.toByteArray( ) );
+            Bukkit.getServer( ).sendPluginMessage( Utils.getSpigot( ) , "sc:alerts" , out.toByteArray( ) );
         }
         ArrayList < String > dc = new ArrayList <>( );
         dc.add( "**[SC][" + server + "]**" + sender + ": " + msg );
@@ -263,7 +261,7 @@ public class SendMsg {
             out.writeUTF( "SendSLRequest" );
             out.writeUTF( sender );
             out.writeUTF( server );
-            Bukkit.getServer( ).sendPluginMessage( plugin , "sc:stafflist" , out.toByteArray( ) );
+            Bukkit.getServer( ).sendPluginMessage( Utils.getSpigot( ) , "sc:stafflist" , out.toByteArray( ) );
         }
     }
     
@@ -296,7 +294,7 @@ public class SendMsg {
             out.writeUTF( staffMembersServer );
             out.writeUTF( staffMembersPing );
             out.writeUTF( staffMembersGamemode );
-            Bukkit.getServer( ).sendPluginMessage( plugin , "sc:stafflist" , out.toByteArray( ) );
+            Bukkit.getServer( ).sendPluginMessage( Utils.getSpigot( ) , "sc:stafflist" , out.toByteArray( ) );
         }
     }
     
@@ -309,7 +307,7 @@ public class SendMsg {
             out.writeUTF( "ConnectOther" );
             out.writeUTF( player );
             out.writeUTF( server );
-            Bukkit.getServer( ).sendPluginMessage( plugin , "BungeeCord" , out.toByteArray( ) );
+            Bukkit.getServer( ).sendPluginMessage( Utils.getSpigot( ) , "BungeeCord" , out.toByteArray( ) );
         }
         ArrayList < String > dc = new ArrayList <>( );
         dc.add( "**The player:** " + player + " has connected to " + server );
@@ -326,7 +324,7 @@ public class SendMsg {
             out.writeUTF( player );
             out.writeUTF( reason );
             out.writeUTF( server );
-            Bukkit.getServer( ).sendPluginMessage( plugin , "sc:alerts" , out.toByteArray( ) );
+            Bukkit.getServer( ).sendPluginMessage( Utils.getSpigot( ) , "sc:alerts" , out.toByteArray( ) );
         }
         ArrayList < String > dc = new ArrayList <>( );
         dc.add( "**Player:** " + player );

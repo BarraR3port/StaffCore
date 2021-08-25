@@ -7,10 +7,10 @@ package cl.bebt.staffcore.menu.menu.Reports;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PaginatedMenu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
-import cl.bebt.staffcore.utils.TpPlayers;
 import cl.bebt.staffcoreapi.Api;
 import cl.bebt.staffcoreapi.Enums.UpdateType;
 import cl.bebt.staffcoreapi.SQL.Queries.ReportsQuery;
+import cl.bebt.staffcoreapi.utils.TpManager;
 import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -73,7 +73,7 @@ public class openReportsMenu extends PaginatedMenu {
                 int id = e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).get( new NamespacedKey( plugin , "open-id" ) , PersistentDataType.INTEGER );
                 new EditReport( main.getPlayerMenuUtility( p ) , plugin , jugador , id ).open( );
             } else if ( e.getClick( ).isRightClick( ) ) {
-                TpPlayers.tpToPlayer( p , jugador );
+                TpManager.tpToPlayer( p , jugador );
             }
         } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );

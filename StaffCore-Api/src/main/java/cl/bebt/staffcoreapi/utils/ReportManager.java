@@ -2,13 +2,11 @@
  * Copyright (c) 2021. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
  */
 
-package cl.bebt.staffcore.utils;
+package cl.bebt.staffcoreapi.utils;
 
-import cl.bebt.staffcore.MSGChanel.SendMsg;
-import cl.bebt.staffcore.main;
 import cl.bebt.staffcoreapi.Api;
+import cl.bebt.staffcoreapi.MSGChanel.SendMsg;
 import cl.bebt.staffcoreapi.SQL.Queries.ReportsQuery;
-import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.json.JSONObject;
@@ -16,46 +14,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class ReportPlayer {
-    private static main plugin;
-    
-    public ReportPlayer( main plugin ){
-        ReportPlayer.plugin = plugin;
-    }
-    
-    public ReportPlayer( Player p , String reason , String reported ){
-        Integer id = (Api.reports.getConfig( ).getInt( "count" ) + 1);
-        Date now = new Date( );
-        SimpleDateFormat format = new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" );
-        if ( Utils.mysqlEnabled( ) ) {
-            ReportsQuery.createReport( reported , p.getName( ) , reason , format.format( now ) , "open" );
-        } else {
-            if ( Api.reports.getConfig( ).contains( "count" ) ) {
-                Api.reports.getConfig( ).set( "count" , id );
-                Api.reports.getConfig( ).set( "reports." + id + ".name" , reported );
-                Api.reports.getConfig( ).set( "reports." + id + ".reported_by" , p.getName( ) );
-                Api.reports.getConfig( ).set( "reports." + id + ".reason" , reason );
-                Api.reports.getConfig( ).set( "reports." + id + ".time" , format.format( now ) );
-                Api.reports.getConfig( ).set( "reports." + id + ".status" , "open" );
-                Api.reports.getConfig( ).set( "current" , Utils.getCurrentReports( ) );
-                Api.reports.saveConfig( );
-            }
-        }
-        for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-            if ( people.hasPermission( "staffcore.staff" ) || !people.equals( p ) || Utils.getBoolean( "alerts.report" ) ) {
-                Utils.PlaySound( people , "reports_alerts" );
-                for ( String key : Utils.getStringList( "report.report_alerts" , "alerts" ) ) {
-                    key = key.replace( "%reporter%" , p.getName( ) );
-                    key = key.replace( "%reported%" , reported );
-                    key = key.replace( "%reason%" , reason );
-                    key = key.replace( "%id%" , String.valueOf( id ) );
-                    key = key.replace( "%date%" , format.format( now ) );
-                    Utils.tell( people , key );
-                }
-            }
-        }
-        SendMsg.sendReportAlert( id , p.getName( ) , reported , reason , format.format( now ) , Utils.getServer( ) );
-    }
+public class ReportManager {
     
     public static void CloseReport( Player p , Integer id ){
         String reporter = null;
@@ -188,5 +147,39 @@ public class ReportPlayer {
                 }
             }
         }
+    }
+    
+    public void ReportPlayer( Player p , String reason , String reported ){
+        Integer id = (Api.reports.getConfig( ).getInt( "count" ) + 1);
+        Date now = new Date( );
+        SimpleDateFormat format = new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" );
+        if ( Utils.mysqlEnabled( ) ) {
+            ReportsQuery.createReport( reported , p.getName( ) , reason , format.format( now ) , "open" );
+        } else {
+            if ( Api.reports.getConfig( ).contains( "count" ) ) {
+                Api.reports.getConfig( ).set( "count" , id );
+                Api.reports.getConfig( ).set( "reports." + id + ".name" , reported );
+                Api.reports.getConfig( ).set( "reports." + id + ".reported_by" , p.getName( ) );
+                Api.reports.getConfig( ).set( "reports." + id + ".reason" , reason );
+                Api.reports.getConfig( ).set( "reports." + id + ".time" , format.format( now ) );
+                Api.reports.getConfig( ).set( "reports." + id + ".status" , "open" );
+                Api.reports.getConfig( ).set( "current" , Utils.getCurrentReports( ) );
+                Api.reports.saveConfig( );
+            }
+        }
+        for ( Player people : Bukkit.getOnlinePlayers( ) ) {
+            if ( people.hasPermission( "staffcore.staff" ) || !people.equals( p ) || Utils.getBoolean( "alerts.report" ) ) {
+                Utils.PlaySound( people , "reports_alerts" );
+                for ( String key : Utils.getStringList( "report.report_alerts" , "alerts" ) ) {
+                    key = key.replace( "%reporter%" , p.getName( ) );
+                    key = key.replace( "%reported%" , reported );
+                    key = key.replace( "%reason%" , reason );
+                    key = key.replace( "%id%" , String.valueOf( id ) );
+                    key = key.replace( "%date%" , format.format( now ) );
+                    Utils.tell( people , key );
+                }
+            }
+        }
+        SendMsg.sendReportAlert( id , p.getName( ) , reported , reason , format.format( now ) , Utils.getServer( ) );
     }
 }

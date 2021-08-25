@@ -2,14 +2,15 @@
  * Copyright (c) 2021. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
  */
 
-package cl.bebt.staffcore.MSGChanel;
+package cl.bebt.staffcore.MSGChannel;
 
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.menu.menu.Staff.StaffListBungeeGui;
-import cl.bebt.staffcore.utils.StaffManager;
-import cl.bebt.staffcore.utils.wipePlayer;
+import cl.bebt.staffcoreapi.MSGChanel.SendMsg;
+import cl.bebt.staffcoreapi.utils.StaffManager;
 import cl.bebt.staffcoreapi.utils.Utils;
+import cl.bebt.staffcoreapi.utils.WipeManager;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 import org.bukkit.Bukkit;
@@ -21,12 +22,11 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class PluginMessage implements PluginMessageListener {
-    private final main plugin = main.plugin;
     
     private int serverCount = 1;
     
     public void onPluginMessageReceived( String channel , Player p , byte[] msg ){
-        if ( !this.plugin.getConfig( ).getBoolean( "bungeecord.enabled" ) ) return;
+        if ( !Utils.getBoolean( "bungeecord.enabled" ) ) return;
         if ( channel.equals( "sc:alerts" ) ) {
             ByteArrayDataInput in = ByteStreams.newDataInput( msg );
             String subChannel = in.readUTF( );
@@ -236,8 +236,8 @@ public class PluginMessage implements PluginMessageListener {
                 ban_msg = ban_msg + key + "\n";
             }
             Utils.PlayParticle( Bukkit.getPlayer( target ) , "ban" );
-            if ( main.plugin.getConfig( ).getBoolean( "wipe.wipe_on_ban" ) )
-                wipePlayer.WipeOnBan( this.plugin , target );
+            if ( Utils.getBoolean( "wipe.wipe_on_ban" ) )
+                WipeManager.WipeOnBan( Utils.getSpigot( ) , target );
             Bukkit.getPlayer( target ).kickPlayer( Utils.chat( ban_msg ) );
         }
     }
@@ -299,10 +299,10 @@ public class PluginMessage implements PluginMessageListener {
                 ban_msg = ban_msg + msg + "\n";
             }
             Utils.PlayParticle( Bukkit.getPlayer( target ) , "ban" );
-            if ( main.plugin.getConfig( ).getBoolean( "wipe.wipe_on_ban" ) )
-                wipePlayer.WipeOnBan( main.plugin , target );
+            if ( Utils.getBoolean( "wipe.wipe_on_ban" ) )
+                WipeManager.WipeOnBan( Utils.getSpigot( ) , target );
             String finalBan_msg = ban_msg;
-            Bukkit.getScheduler( ).scheduleSyncDelayedTask( main.plugin , ( ) -> Bukkit.getPlayer( target ).kickPlayer( Utils.chat( finalBan_msg ) ) , 7L );
+            Utils.runSyncDelayed( ( ) -> Bukkit.getPlayer( target ).kickPlayer( Utils.chat( finalBan_msg ) ) , 7L );
         }
     }
     
@@ -367,10 +367,10 @@ public class PluginMessage implements PluginMessageListener {
                 }
         }
         try {
-            wipePlayer.WipeOnBan( this.plugin , target );
+            WipeManager.WipeOnBan( Utils.getSpigot( ) , target );
         } catch ( NullPointerException ignored ) {
         }
-        Bukkit.getServer( ).getScheduler( ).scheduleSyncRepeatingTask( plugin , ( ) -> {
+        Utils.runSyncDelayed( ( ) -> {
             try {
                 Utils.tell( Bukkit.getPlayer( target ) , "&cYour account is Wiping" );
                 String ban_msg = "\n";
@@ -382,7 +382,7 @@ public class PluginMessage implements PluginMessageListener {
                 Bukkit.getPlayer( target ).kickPlayer( Utils.chat( ban_msg ) );
             } catch ( NullPointerException ignored ) {
             }
-        } , 6L , 10L );
+        } , 6L );
     }
     
     public void StaffChatMSG( String sender , String msg , String server ){
@@ -406,7 +406,7 @@ public class PluginMessage implements PluginMessageListener {
         if ( this.serverCount >= count ) {
             if ( server.equalsIgnoreCase( Utils.getString( "bungeecord.server" ) ) ) {
                 Player player = Bukkit.getPlayer( sender );
-                new StaffListBungeeGui( new PlayerMenuUtility( player ) , this.plugin , player ).open( );
+                new StaffListBungeeGui( new PlayerMenuUtility( player ) , main.plugin , player ).open( );
             }
             this.serverCount = 1;
         }

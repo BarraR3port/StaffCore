@@ -7,8 +7,8 @@ package cl.bebt.staffcore.menu.menu.WarnManager;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.menu.menu.Reports.ReportMenu;
-import cl.bebt.staffcore.utils.WarnPlayer;
 import cl.bebt.staffcoreapi.utils.Utils;
+import cl.bebt.staffcoreapi.utils.WarnManager;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -56,15 +56,15 @@ public class EditWarn extends ReportMenu {
         Player p = ( Player ) e.getWhoClicked( );
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "open" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            WarnPlayer.CloseWarn( p , Id );
+            WarnManager.CloseWarn( p , Id );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "closed" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            WarnPlayer.OpenWarn( p , Id );
+            WarnManager.OpenWarn( p , Id );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "delete" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            WarnPlayer.DeleteWarn( p , Id );
+            WarnManager.DeleteWarn( p , Id );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "panel" ) , PersistentDataType.STRING ) ) {
             e.setCancelled( true );

@@ -2,13 +2,11 @@
  * Copyright (c) 2021. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
  */
 
-package cl.bebt.staffcore.utils;
+package cl.bebt.staffcoreapi.utils;
 
-import cl.bebt.staffcore.main;
+import cl.bebt.staffcoreapi.Api;
 import cl.bebt.staffcoreapi.EntitiesUtils.UserUtils;
 import cl.bebt.staffcoreapi.Enums.UpdateType;
-import cl.bebt.staffcoreapi.utils.DataExporter;
-import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -19,11 +17,11 @@ public class ToggleChat {
     
     public static void Mute( Boolean bol ){
         if ( bol ) {
-            main.plugin.chatMuted = true;
+            Api.chatMuted = true;
             DataExporter.updateServerStats( UpdateType.MUTE );
         }
         if ( !bol ) {
-            main.plugin.chatMuted = false;
+            Api.chatMuted = false;
             DataExporter.updateServerStats( UpdateType.MUTE );
         }
     }

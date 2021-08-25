@@ -4,14 +4,14 @@
 
 package cl.bebt.staffcore.menu.menu.Bangui;
 
-import cl.bebt.staffcore.Items.Items;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.Menu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.menu.menu.Banlist.EditBan;
-import cl.bebt.staffcore.utils.TpPlayers;
 import cl.bebt.staffcoreapi.Api;
+import cl.bebt.staffcoreapi.Items.Items;
 import cl.bebt.staffcoreapi.SQL.Queries.BansQuery;
+import cl.bebt.staffcoreapi.utils.TpManager;
 import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -68,7 +68,7 @@ public class BansPerPlayer extends Menu {
                     int id = item.getItemMeta( ).getPersistentDataContainer( ).get( new NamespacedKey( plugin , "id" ) , PersistentDataType.INTEGER );
                     new EditBan( main.getPlayerMenuUtility( p ) , main.plugin , jugador , id ).open( );
                 } else if ( e.getClick( ).isRightClick( ) ) {
-                    TpPlayers.tpToPlayer( p , jugador );
+                    TpManager.tpToPlayer( p , jugador );
                 }
             }
         } else if ( e.getCurrentItem( ).equals( close( ) ) ) {

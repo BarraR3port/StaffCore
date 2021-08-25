@@ -2,16 +2,12 @@
  * Copyright (c) 2021. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
  */
 
-package cl.bebt.staffcore.utils;
+package cl.bebt.staffcoreapi.utils;
 
-import cl.bebt.staffcore.Items.Items;
-import cl.bebt.staffcore.main;
 import cl.bebt.staffcoreapi.EntitiesUtils.UserUtils;
 import cl.bebt.staffcoreapi.Enums.UpdateType;
+import cl.bebt.staffcoreapi.Items.Items;
 import cl.bebt.staffcoreapi.SQL.Queries.StaffQuery;
-import cl.bebt.staffcoreapi.utils.DataExporter;
-import cl.bebt.staffcoreapi.utils.Serializer;
-import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -22,11 +18,6 @@ import java.util.UUID;
 
 public class StaffManager {
     
-    private static main plugin;
-    
-    public StaffManager( main plugin ){
-        StaffManager.plugin = plugin;
-    }
     
     public static void enable( UUID uuid ){
         DataExporter.updateServerStats( UpdateType.STAFF );
@@ -60,7 +51,7 @@ public class StaffManager {
     public static void disable( UUID uuid ){
         try {
             Player p = Bukkit.getPlayer( uuid );
-            Bukkit.getScheduler( ).scheduleSyncDelayedTask( plugin , ( ) -> {
+            Utils.runSyncDelayed( ( ) -> {
                 p.getInventory( ).clear( );
                 try {
                     ItemStack[] inventory = Serializer.itemStackArrayFromBase64Inventory( UserUtils.getStaffInventory( uuid ) );

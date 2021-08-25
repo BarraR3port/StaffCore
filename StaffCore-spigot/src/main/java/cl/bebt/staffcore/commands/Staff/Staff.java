@@ -5,9 +5,9 @@
 package cl.bebt.staffcore.commands.Staff;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.utils.StaffManager;
 import cl.bebt.staffcoreapi.EntitiesUtils.UserUtils;
 import cl.bebt.staffcoreapi.SQL.Queries.StaffQuery;
+import cl.bebt.staffcoreapi.utils.StaffManager;
 import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;

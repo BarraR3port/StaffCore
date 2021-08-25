@@ -4,7 +4,7 @@
 
 package cl.bebt.staffcore.menu;
 
-import cl.bebt.staffcore.Items.Items;
+import cl.bebt.staffcoreapi.Items.Items;
 
 public abstract class InvSeePlayerMenu extends InventoryMenu {
     

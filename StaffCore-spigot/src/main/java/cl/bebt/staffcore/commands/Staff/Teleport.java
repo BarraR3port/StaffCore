@@ -5,7 +5,7 @@
 package cl.bebt.staffcore.commands.Staff;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.utils.TpPlayers;
+import cl.bebt.staffcoreapi.utils.TpManager;
 import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -120,13 +120,13 @@ public class Teleport implements CommandExecutor {
                 return true;
             } else if ( args.length == 2 ) {
                 if ( args[0].equalsIgnoreCase( "all" ) ) {
-                    TpPlayers.tpAll( sender , args[1] );
+                    TpManager.tpAll( sender , args[1] );
                     return true;
                 } else if ( args[1].equalsIgnoreCase( "all" ) ) {
-                    TpPlayers.tpAll( sender , args[0] );
+                    TpManager.tpAll( sender , args[0] );
                     return true;
                 }
-                TpPlayers.tpPlayerToPlayer( sender , args[0] , args[1] );
+                TpManager.tpPlayerToPlayer( sender , args[0] , args[1] );
                 return true;
             } else if ( args.length == 4 ) {
                 if ( isCordAndPlayer( args[0] , args[1] , args[2] , args[3] ) ) {
@@ -149,7 +149,7 @@ public class Teleport implements CommandExecutor {
                     } else {
                         z = Double.parseDouble( args[2] );
                     }
-                    TpPlayers.tpToCordsAndPlayer( sender , target , x , y , z );
+                    TpManager.tpToCordsAndPlayer( sender , target , x , y , z );
                     return true;
                 } else if ( isPlayerAndCord( args[0] , args[1] , args[2] , args[3] ) ) {
                     double x;
@@ -171,7 +171,7 @@ public class Teleport implements CommandExecutor {
                     } else {
                         z = Double.parseDouble( args[3] );
                     }
-                    TpPlayers.tpToCordsAndPlayer( sender , target , x , y , z );
+                    TpManager.tpToCordsAndPlayer( sender , target , x , y , z );
                     return true;
                 } else {
                     for ( String s : Utils.getStringList( "tp.wrong" , "alerts" ) ) {
@@ -190,27 +190,27 @@ public class Teleport implements CommandExecutor {
                 } else if ( args.length == 1 ) {
                     if ( args[0].equalsIgnoreCase( "all" ) ) {
                         if ( p.hasPermission( "staffcore.tp.all" ) ) {
-                            TpPlayers.tpAll( p , p.getName( ) );
+                            TpManager.tpAll( p , p.getName( ) );
                             return true;
                         }
                     } else {
-                        TpPlayers.tpToPlayer( p , args[0] );
+                        TpManager.tpToPlayer( p , args[0] );
                         return true;
                     }
                 } else if ( args.length == 2 ) {
                     if ( p.hasPermission( "staffcore.tp.all" ) ) {
                         if ( args[0].equalsIgnoreCase( "all" ) ) {
-                            TpPlayers.tpAll( p , args[1] );
+                            TpManager.tpAll( p , args[1] );
                             return false;
                         } else if ( args[1].equalsIgnoreCase( "all" ) ) {
-                            TpPlayers.tpAll( p , args[0] );
+                            TpManager.tpAll( p , args[0] );
                             return false;
                         }
                     } else {
                         Utils.tell( sender , Utils.getString( "no_permission" , "lg" , "staff" ) );
                         return false;
                     }
-                    TpPlayers.tpPlayerToPlayer( p , args[0] , args[1] );
+                    TpManager.tpPlayerToPlayer( p , args[0] , args[1] );
                 } else if ( args.length == 3 ) {
                     if ( isCord( p , args[0] , args[1] , args[2] ) ) {
                         double x;
@@ -231,7 +231,7 @@ public class Teleport implements CommandExecutor {
                         } else {
                             z = Double.parseDouble( args[2] );
                         }
-                        TpPlayers.tpToCords( p , x , y , z );
+                        TpManager.tpToCords( p , x , y , z );
                     } else {
                         for ( String s : Utils.getStringList( "tp.wrong" , "alerts" ) ) {
                             Utils.tell( sender , s );
@@ -259,7 +259,7 @@ public class Teleport implements CommandExecutor {
                             } else {
                                 z = Double.parseDouble( args[2] );
                             }
-                            TpPlayers.tpAllToCords( p , x , y , z );
+                            TpManager.tpAllToCords( p , x , y , z );
                         } else {
                             for ( String s : Utils.getStringList( "tp.wrong" , "alerts" ) ) {
                                 Utils.tell( sender , s );
@@ -286,7 +286,7 @@ public class Teleport implements CommandExecutor {
                             } else {
                                 z = Double.parseDouble( args[2] );
                             }
-                            TpPlayers.tpAllToCords( p , x , y , z );
+                            TpManager.tpAllToCords( p , x , y , z );
                         } else {
                             for ( String s : Utils.getStringList( "tp.wrong" , "alerts" ) ) {
                                 Utils.tell( sender , s );
@@ -313,7 +313,7 @@ public class Teleport implements CommandExecutor {
                         } else {
                             z = Double.parseDouble( args[2] );
                         }
-                        TpPlayers.tpToCordsAndPlayer( p , target , x , y , z );
+                        TpManager.tpToCordsAndPlayer( p , target , x , y , z );
                         return true;
                     } else if ( isPlayerAndCord( args[0] , args[1] , args[2] , args[3] ) ) {
                         double x;
@@ -335,7 +335,7 @@ public class Teleport implements CommandExecutor {
                         } else {
                             z = Double.parseDouble( args[3] );
                         }
-                        TpPlayers.tpToCordsAndPlayer( p , target , x , y , z );
+                        TpManager.tpToCordsAndPlayer( p , target , x , y , z );
                         return true;
                     } else {
                         for ( String s : Utils.getStringList( "tp.wrong" , "alerts" ) ) {

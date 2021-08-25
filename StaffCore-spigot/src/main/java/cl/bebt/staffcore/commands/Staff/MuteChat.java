@@ -5,7 +5,8 @@
 package cl.bebt.staffcore.commands.Staff;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.utils.ToggleChat;
+import cl.bebt.staffcoreapi.Api;
+import cl.bebt.staffcoreapi.utils.ToggleChat;
 import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -46,7 +47,7 @@ public class MuteChat implements TabExecutor {
                 return true;
             }
             if ( args.length == 0 ) {
-                if ( !plugin.chatMuted ) {
+                if ( !Api.chatMuted ) {
                     Bukkit.broadcastMessage( Utils.chat( Utils.getString( "toggle_chat.mute_by_console" , "lg" , "staff" ) ) );
                     ToggleChat.Mute( true );
                 } else {
@@ -64,7 +65,7 @@ public class MuteChat implements TabExecutor {
                     return true;
                 }
                 if ( args.length == 0 ) {
-                    if ( !plugin.chatMuted ) {
+                    if ( !Api.chatMuted ) {
                         Bukkit.broadcastMessage( Utils.chat( Utils.getString( "toggle_chat.mute_chat" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) ) );
                         ToggleChat.Mute( true );
                     } else {

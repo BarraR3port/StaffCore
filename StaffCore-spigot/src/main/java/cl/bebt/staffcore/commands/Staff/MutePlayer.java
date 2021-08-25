@@ -5,7 +5,7 @@
 package cl.bebt.staffcore.commands.Staff;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.utils.ToggleChat;
+import cl.bebt.staffcoreapi.utils.ToggleChat;
 import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;

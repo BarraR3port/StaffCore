@@ -55,6 +55,7 @@ public class Api {
     
     public static ApiType currentApiType;
     
+    public static Boolean chatMuted = false;
     
     public static void initializeSpigot( JavaPlugin plugin ){
         currentApiType = ApiType.SPIGOT;

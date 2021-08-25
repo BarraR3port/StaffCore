@@ -7,8 +7,8 @@ package cl.bebt.staffcore.menu.menu.Reports;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.menu.ReportPlayerMenu;
-import cl.bebt.staffcore.utils.ReportPlayer;
 import cl.bebt.staffcoreapi.Api;
+import cl.bebt.staffcoreapi.utils.ReportManager;
 import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -55,7 +55,7 @@ public class ReportMenu extends ReportPlayerMenu {
             for ( String key : inventorySection.getKeys( false ) ) {
                 String reason = Utils.getString( "punish_items." + key + ".reason" , "item" , null );
                 if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , key ) , PersistentDataType.STRING ) ) {
-                    new ReportPlayer( p , reason , reported );
+                    new ReportManager( ).ReportPlayer( p , reason , reported );
                     p.closeInventory( );
                 }
             }

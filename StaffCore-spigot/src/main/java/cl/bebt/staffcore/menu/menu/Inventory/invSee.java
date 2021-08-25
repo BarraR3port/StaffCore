@@ -4,12 +4,12 @@
 
 package cl.bebt.staffcore.menu.menu.Inventory;
 
-import cl.bebt.staffcore.Items.Items;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.InventoryMenu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.utils.OpenInvSee;
-import cl.bebt.staffcore.utils.TpPlayers;
+import cl.bebt.staffcoreapi.Items.Items;
+import cl.bebt.staffcoreapi.utils.TpManager;
 import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -104,7 +104,7 @@ public class invSee extends InventoryMenu {
             if ( item.getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( main.plugin , "head" ) , PersistentDataType.STRING ) ) {
                 p.closeInventory( );
                 String target = item.getItemMeta( ).getPersistentDataContainer( ).get( new NamespacedKey( main.plugin , "name" ) , PersistentDataType.STRING );
-                TpPlayers.tpToPlayer( p , target );
+                TpManager.tpToPlayer( p , target );
             }
             
         } catch ( NullPointerException ignored ) {

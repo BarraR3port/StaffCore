@@ -4,10 +4,10 @@
 
 package cl.bebt.staffcore.commands.Staff;
 
-import cl.bebt.staffcore.MSGChanel.SendMsg;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.menu.menu.Staff.StaffListGui;
+import cl.bebt.staffcoreapi.MSGChanel.SendMsg;
 import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

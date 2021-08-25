@@ -5,9 +5,10 @@
 package cl.bebt.staffcore.commands.Staff;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.utils.CountdownManager;
-import cl.bebt.staffcore.utils.ToggleChat;
+import cl.bebt.staffcoreapi.Api;
 import cl.bebt.staffcoreapi.EntitiesUtils.UserUtils;
+import cl.bebt.staffcoreapi.utils.CountdownManager;
+import cl.bebt.staffcoreapi.utils.ToggleChat;
 import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -49,7 +50,7 @@ public class unMute implements TabExecutor {
         if ( !Utils.isOlderVersion( ) ) {
             if ( !(sender instanceof Player) ) {
                 if ( args.length == 0 ) {
-                    if ( !plugin.chatMuted ) {
+                    if ( !Api.chatMuted ) {
                         Utils.tell( sender , Utils.getString( "toggle_chat.the_chat_is_not_muted" , "lg" , "staff" ) );
                     } else {
                         Bukkit.broadcastMessage( Utils.chat( Utils.getString( "toggle_chat.un_mute_by_console" , "lg" , "staff" ) ) );
@@ -69,7 +70,7 @@ public class unMute implements TabExecutor {
                 Player p = ( Player ) sender;
                 if ( p.hasPermission( "staffcore.unmute" ) ) {
                     if ( args.length == 0 ) {
-                        if ( !plugin.chatMuted ) {
+                        if ( !Api.chatMuted ) {
                             Utils.tell( p , Utils.getString( "toggle_chat.chat_not_muted" , "lg" , "staff" ) );
                         } else {
                             Bukkit.broadcastMessage( Utils.chat( Utils.getString( "toggle_chat.un_mute_by_player" , "lg" , "staff" ).replace( "%player%" , p.getName( ) ) ) );

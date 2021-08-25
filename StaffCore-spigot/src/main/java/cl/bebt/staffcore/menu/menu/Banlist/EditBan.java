@@ -4,12 +4,11 @@
 
 package cl.bebt.staffcore.menu.menu.Banlist;
 
-import cl.bebt.staffcore.MSGChanel.SendMsg;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.menu.menu.Reports.ReportMenu;
-import cl.bebt.staffcore.utils.BanPlayer;
 import cl.bebt.staffcoreapi.Api;
+import cl.bebt.staffcoreapi.MSGChanel.SendMsg;
 import cl.bebt.staffcoreapi.SQL.Queries.BansQuery;
 import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
@@ -56,7 +55,9 @@ public class EditBan extends ReportMenu {
         Player p = ( Player ) e.getWhoClicked( );
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "delete_ban" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
-            BanPlayer.unBan( p , this.Id );
+            
+            //TODO FIX THIS
+            //BanManager.unBan( p , this.Id );
             e.setCancelled( true );
         } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "close_ban" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );

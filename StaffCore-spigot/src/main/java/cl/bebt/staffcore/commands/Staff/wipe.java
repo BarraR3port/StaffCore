@@ -5,8 +5,8 @@
 package cl.bebt.staffcore.commands.Staff;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.utils.wipePlayer;
 import cl.bebt.staffcoreapi.utils.Utils;
+import cl.bebt.staffcoreapi.utils.WipeManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -32,7 +32,7 @@ public class wipe implements TabExecutor {
             if ( p.hasPermission( "staffcore.wipe" ) ) {
                 if ( args.length == 1 ) {
                     if ( Utils.isRegistered( args[0] ) ) {
-                        new wipePlayer( sender , args[0] );
+                        new WipeManager( sender , args[0] );
                         Bukkit.getScheduler( ).scheduleSyncDelayedTask( plugin , ( ) -> {
                             try {
                                 Utils.tell( Bukkit.getPlayer( args[0] ) , Utils.getString( "wipe.account_wiped" , "lg" , "staff" ) );
@@ -58,7 +58,7 @@ public class wipe implements TabExecutor {
         } else {
             if ( args.length == 1 ) {
                 if ( Utils.isRegistered( args[0] ) ) {
-                    new wipePlayer( sender , args[0] );
+                    new WipeManager( sender , args[0] );
                     Bukkit.getScheduler( ).scheduleSyncDelayedTask( plugin , ( ) -> {
                         try {
                             Utils.tell( Bukkit.getPlayer( args[0] ) , Utils.getString( "wipe.account_wiped" , "lg" , "staff" ) );

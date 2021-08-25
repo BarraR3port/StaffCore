@@ -62,6 +62,7 @@ public class AmountBanned extends PaginatedMenu {
         if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
+                PersistentDataUtils.remove( p.getUniqueId( ) , "ban-ip" );
                 new ChoseBanType( playerMenuUtility , plugin , player , banned , reason ).open( );
             }
         } else if ( e.getCurrentItem( ).equals( back( ) ) ) {

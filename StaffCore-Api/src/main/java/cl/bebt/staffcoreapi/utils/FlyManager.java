@@ -2,24 +2,16 @@
  * Copyright (c) 2021. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
  */
 
-package cl.bebt.staffcore.utils;
+package cl.bebt.staffcoreapi.utils;
 
-import cl.bebt.staffcore.main;
 import cl.bebt.staffcoreapi.EntitiesUtils.UserUtils;
-import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import java.util.UUID;
 
 public class FlyManager {
-    private static Plugin plugin;
-    
-    public FlyManager( main plugin ){
-        FlyManager.plugin = plugin;
-    }
     
     public static void enable( UUID uuid ){
         try {

@@ -860,7 +860,6 @@ public class Utils {
         return ip;
     }
     
-    
     public static ArrayList < String > getAlts( UUID uuid ){
         ArrayList < String > alts = new ArrayList <>( );
         if ( mysqlEnabled( ) ) {
@@ -878,6 +877,12 @@ public class Utils {
         }
     }
     
+    public static void runSyncDelayed( Runnable task , Long delay ){
+        switch (Api.currentApiType) {
+            case BUNGEECORD -> Bungee.getProxy( ).getScheduler( ).schedule( Bungee , task , delay , TimeUnit.MILLISECONDS );
+            case SPIGOT -> Spigot.getServer( ).getScheduler( ).scheduleSyncDelayedTask( Spigot , task , delay );
+        }
+    }
     //TODO REMOVE THIS SHIT AND CHANGE HOW THIS WORKS
     
     public static void setTrollMode( Player p , Boolean bol ){

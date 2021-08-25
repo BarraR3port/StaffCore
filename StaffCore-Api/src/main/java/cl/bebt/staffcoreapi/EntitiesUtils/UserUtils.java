@@ -5,7 +5,6 @@
 package cl.bebt.staffcoreapi.EntitiesUtils;
 
 import cl.bebt.staffcoreapi.Entities.User;
-import cl.bebt.staffcoreapi.Enums.ApiType;
 import cl.bebt.staffcoreapi.utils.Http;
 import cl.bebt.staffcoreapi.utils.Utils;
 import com.google.gson.Gson;
@@ -26,7 +25,7 @@ public class UserUtils {
         if ( !isSaved( uuid ) ) {
             HashMap < String, String > alts = new HashMap <>( );
             alts.put( name , ip );
-            User user = new User( name , Http.getSkin( "http://localhost:82/api/head/" + name , name ) , alts , ApiType.BUNGEECORD );
+            User user = new User( name , Http.getSkin( "http://localhost:82/api/head/" + name , name ) , alts );
             users.add( user );
             saveUsers( );
             return user;

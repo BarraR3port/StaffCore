@@ -5,7 +5,6 @@
 package cl.bebt.staffcoreapi.Entities;
 
 
-import cl.bebt.staffcoreapi.Enums.ApiType;
 import cl.bebt.staffcoreapi.utils.Utils;
 
 import java.util.Date;
@@ -56,7 +55,7 @@ public class User {
     
     private int Mutes;
     
-    public User( String name , String Skin , HashMap < String, String > Alts , ApiType type ){
+    public User( String name , String Skin , HashMap < String, String > Alts ){
         this.Name = name;
         this.UUID = Utils.getUUID( Name );
         this.Skin = Skin;

@@ -5,8 +5,6 @@
 package cl.bebt.staffcore.commands.Staff;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.utils.BanPlayer;
-import cl.bebt.staffcoreapi.Api;
 import cl.bebt.staffcoreapi.SQL.Queries.BansQuery;
 import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.command.Command;
@@ -37,7 +35,8 @@ public class unBan implements TabExecutor {
                         ArrayList < Integer > ids = BanIds( args[0] );
                         try {
                             for ( int i : ids ) {
-                                BanPlayer.unBan( p , i );
+                                //TODO FIX THIS
+                                //BanPlayer.unBan( p , i );
                             }
                         } catch ( NullPointerException error ) {
                             Utils.tell( sender , Utils.getString( "error" , "lg" , "staff" ) );
@@ -53,7 +52,8 @@ public class unBan implements TabExecutor {
                 ArrayList < Integer > ids = BanIds( args[0] );
                 try {
                     for ( int i : ids ) {
-                        BanPlayer.unBan( sender , i );
+                        //TODO FIX THIS
+                        // BanManager.unBan( sender , i );
                     }
                 } catch ( NullPointerException error ) {
                     Utils.tell( sender , Utils.getString( "error" , "lg" , "staff" ) );
@@ -85,13 +85,15 @@ public class unBan implements TabExecutor {
         ArrayList < Integer > BanIDs = new ArrayList <>( );
         if ( Utils.mysqlEnabled( ) )
             return BansQuery.getBanIds( banned );
-        for ( int i = 0; i < BanPlayer.currentBans( ); i++ ) {
-            try {
-                if ( Api.bans.getConfig( ).getString( "bans." + i + ".name" ).equalsIgnoreCase( banned ) )
-                    BanIDs.add( i );
-            } catch ( NullPointerException ignored ) {
-            }
-        }
+        
+        //TODO FIX THIS
+//        for ( int i = 0; i < BanPlayer.currentBans( ); i++ ) {
+//            try {
+//                if ( Api.bans.getConfig( ).getString( "bans." + i + ".name" ).equalsIgnoreCase( banned ) )
+//                    BanIDs.add( i );
+//            } catch ( NullPointerException ignored ) {
+//            }
+//        }
         return BanIDs;
     }
 }

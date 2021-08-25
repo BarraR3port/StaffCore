@@ -2,9 +2,8 @@
  * Copyright (c) 2021. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
  */
 
-package cl.bebt.staffcore.utils;
+package cl.bebt.staffcoreapi.utils;
 
-import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -12,8 +11,7 @@ import org.bukkit.entity.Player;
 
 import static java.lang.Math.round;
 
-public class TpPlayers {
-    
+public class TpManager {
     
     public static void tpToPlayer( Player sender , String player ){
         if ( Utils.isPlayer( player ) ) {

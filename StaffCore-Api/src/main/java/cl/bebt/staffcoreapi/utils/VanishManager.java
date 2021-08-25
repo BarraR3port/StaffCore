@@ -2,16 +2,13 @@
  * Copyright (c) 2021. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
  */
 
-package cl.bebt.staffcore.utils;
+package cl.bebt.staffcoreapi.utils;
 
-import cl.bebt.staffcore.Items.Items;
-import cl.bebt.staffcore.main;
 import cl.bebt.staffcoreapi.EntitiesUtils.UserUtils;
 import cl.bebt.staffcoreapi.Enums.UpdateType;
+import cl.bebt.staffcoreapi.Items.Items;
 import cl.bebt.staffcoreapi.SQL.Queries.StaffQuery;
 import cl.bebt.staffcoreapi.SQL.Queries.VanishQuery;
-import cl.bebt.staffcoreapi.utils.DataExporter;
-import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -20,11 +17,6 @@ import java.util.UUID;
 
 public class VanishManager {
     
-    private static main plugin;
-    
-    public VanishManager( main plugin ){
-        VanishManager.plugin = plugin;
-    }
     
     public static void enable( UUID uuid ){
         try {
@@ -33,12 +25,12 @@ public class VanishManager {
                 for ( Player player : Bukkit.getServer( ).getOnlinePlayers( ) ) {
                     if ( !player.hasPermission( "staffcore.vanish.see" ) && !player.hasPermission( "staffcore.vanish" ) ) {
                         if ( UserUtils.getVanish( uuid ) || UserUtils.getStaff( uuid ) || VanishQuery.isVanished( p.getName( ) ).equals( "true" ) || StaffQuery.isStaff( p.getName( ) ).equals( "true" ) ) {
-                            p.showPlayer( plugin , player );
+                            p.showPlayer( Utils.getSpigot( ) , player );
                         } else {
-                            player.hidePlayer( plugin , p );
+                            player.hidePlayer( Utils.getSpigot( ) , p );
                         }
                     } else {
-                        p.showPlayer( plugin , player );
+                        p.showPlayer( Utils.getSpigot( ) , player );
                     }
                 }
                 VanishQuery.enable( p.getName( ) );
@@ -46,12 +38,12 @@ public class VanishManager {
                 for ( Player player : Bukkit.getOnlinePlayers( ) ) {
                     if ( !player.hasPermission( "staffcore.vanish.see" ) && !player.hasPermission( "staffcore.vanish" ) ) {
                         if ( UserUtils.getVanish( uuid ) || UserUtils.getStaff( uuid ) ) {
-                            p.showPlayer( plugin , player );
+                            p.showPlayer( Utils.getSpigot( ) , player );
                         } else {
-                            player.hidePlayer( plugin , p );
+                            player.hidePlayer( Utils.getSpigot( ) , p );
                         }
                     } else {
-                        p.showPlayer( plugin , player );
+                        p.showPlayer( Utils.getSpigot( ) , player );
                     }
                 }
             }
@@ -109,11 +101,11 @@ public class VanishManager {
                 VanishQuery.disable( p.getName( ) );
             }
             for ( Player people : Bukkit.getOnlinePlayers( ) ) {
-                people.showPlayer( plugin , p );
+                people.showPlayer( Utils.getSpigot( ) , p );
                 if ( !p.hasPermission( "staffcore.vanish" ) || !p.hasPermission( "staffcore.staff" ) ) {
                     for ( String players : Utils.getVanishedPlayers( ) ) {
                         try {
-                            p.hidePlayer( plugin , Bukkit.getPlayer( players ) );
+                            p.hidePlayer( Utils.getSpigot( ) , Bukkit.getPlayer( players ) );
                         } catch ( IllegalArgumentException | NullPointerException ignored ) {
                         }
                     }

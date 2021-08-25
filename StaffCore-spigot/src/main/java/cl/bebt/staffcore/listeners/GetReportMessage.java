@@ -7,8 +7,8 @@ package cl.bebt.staffcore.listeners;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.menu.Bangui.ChoseBanType;
 import cl.bebt.staffcore.menu.menu.Warn.WarnTimeChose;
-import cl.bebt.staffcore.utils.ReportPlayer;
 import cl.bebt.staffcoreapi.EntitiesUtils.PersistentDataUtils;
+import cl.bebt.staffcoreapi.utils.ReportManager;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -36,12 +36,13 @@ public class GetReportMessage implements Listener {
             e.setCancelled( true );
             String reason = e.getMessage( );
             String reported = p.getPersistentDataContainer( ).get( new NamespacedKey( plugin , "reportmsg" ) , PersistentDataType.STRING );
-            Bukkit.getScheduler( ).runTask( plugin , ( ) -> new ReportPlayer( p , reason , reported ) );
+            Bukkit.getScheduler( ).runTask( plugin , ( ) -> new ReportManager( ).ReportPlayer( p , reason , reported ) );
             PlayerData.remove( new NamespacedKey( main.plugin , "reportmsg" ) );
         } else if ( PersistentDataUtils.has( p.getUniqueId( ) , "banmsg" ) ) {
             e.setCancelled( true );
             String reason = e.getMessage( );
             String banned = PersistentDataUtils.getString( p.getUniqueId( ) , "banmsg" );
+            PersistentDataUtils.remove( p.getUniqueId( ) , "ban-ip" );
             Bukkit.getScheduler( ).runTask( plugin , ( ) -> new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , p , banned , reason ).open( ) );
             PersistentDataUtils.remove( p.getUniqueId( ) , "banmsg" );
         } else if ( PlayerData.has( new NamespacedKey( main.plugin , "warnmsg" ) , PersistentDataType.STRING ) ) {

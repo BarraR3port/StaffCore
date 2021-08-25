@@ -2,16 +2,12 @@
  * Copyright (c) 2021. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
  */
 
-package cl.bebt.staffcore.utils;
+package cl.bebt.staffcoreapi.utils;
 
-import cl.bebt.staffcore.MSGChanel.SendMsg;
-import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.menu.PlayerMenuUtility;
-import cl.bebt.staffcore.menu.menu.Warn.WarnMenu;
 import cl.bebt.staffcoreapi.Api;
 import cl.bebt.staffcoreapi.Enums.UpdateType;
+import cl.bebt.staffcoreapi.MSGChanel.SendMsg;
 import cl.bebt.staffcoreapi.SQL.Queries.WarnsQuery;
-import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -22,15 +18,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
-public class WarnPlayer {
-    
-    private static main plugin;
-    
-    public WarnPlayer( Player p , String warned , main plugin ){
-        WarnPlayer.plugin = plugin;
-        new WarnMenu( new PlayerMenuUtility( p ) , plugin , warned ).open( );
-    }
-    
+public class WarnManager {
     
     public static void createWarn( Player p , String warned , String reason , int amount , String time ){
         int id = (Api.warns.getConfig( ).getInt( "count" ) + 1);

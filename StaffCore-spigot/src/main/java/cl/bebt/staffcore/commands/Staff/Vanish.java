@@ -5,10 +5,10 @@
 package cl.bebt.staffcore.commands.Staff;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.utils.VanishManager;
 import cl.bebt.staffcoreapi.EntitiesUtils.UserUtils;
 import cl.bebt.staffcoreapi.SQL.Queries.VanishQuery;
 import cl.bebt.staffcoreapi.utils.Utils;
+import cl.bebt.staffcoreapi.utils.VanishManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

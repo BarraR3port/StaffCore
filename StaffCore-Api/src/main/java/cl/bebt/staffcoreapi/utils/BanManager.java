@@ -2,16 +2,14 @@
  * Copyright (c) 2021. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
  */
 
-package cl.bebt.staffcore.utils;
+package cl.bebt.staffcoreapi.utils;
 
-import cl.bebt.staffcore.MSGChanel.SendMsg;
-import cl.bebt.staffcore.main;
 import cl.bebt.staffcoreapi.Entities.Ban;
 import cl.bebt.staffcoreapi.EntitiesUtils.BanUtils;
 import cl.bebt.staffcoreapi.EntitiesUtils.UserUtils;
+import cl.bebt.staffcoreapi.MSGChanel.SendMsg;
 import cl.bebt.staffcoreapi.SQL.Queries.AltsQuery;
 import cl.bebt.staffcoreapi.SQL.Queries.BansQuery;
-import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -30,7 +28,7 @@ public class BanManager {
         SimpleDateFormat format = new SimpleDateFormat( "dd-MM-yyyy HH:mm:ss" );
         Date ExpDate = format.parse( "26-05-2102 10:10:10" );
         if ( Utils.mysqlEnabled( ) ) {
-            Bukkit.getScheduler( ).runTaskAsynchronously( main.plugin , ( ) -> {
+            Utils.runAsync( ( ) -> {
                 BansQuery.createBanByUUID( BannedUUID , BannerUUID , Reason , format.format( CreateDate ) , format.format( ExpDate ) , IpBanned.toString( ) , "open" );
                 Banner.set( AltsQuery.getNameByUUID( BannerUUID ) );
                 Banned.set( AltsQuery.getNameByUUID( BannedUUID ) );
@@ -48,7 +46,7 @@ public class BanManager {
                     key = key.replace( "%baner%" , Banner.get( ) );
                     key = key.replace( "%banned%" , Banned.get( ) );
                     key = key.replace( "%reason%" , Reason );
-                    key = key.replace( "%amount%" , "&4PERMANENT" );
+                    key = key.replace( "%time_left%" , "&4PERMANENT" );
                     if ( IpBanned ) {
                         key = key.replace( "%IP_BANED%" , "&atrue" );
                     } else {
@@ -77,8 +75,8 @@ public class BanManager {
                 ban_msg = ban_msg + msg + "\n";
             }
             Utils.PlayParticle( Bukkit.getPlayer( BannedUUID ) , "ban" );
-            if ( main.plugin.getConfig( ).getBoolean( "wipe.wipe_on_ban" ) ) {
-                wipePlayer.WipeOnBan( main.plugin , Banned.get( ) );
+            if ( Utils.getBoolean( "wipe.wipe_on_ban" ) ) {
+                WipeManager.WipeOnBan( Utils.getSpigot( ) , Banned.get( ) );
             }
             String finalBan_msg = ban_msg;
             Bukkit.getPlayer( BannedUUID ).kickPlayer( Utils.chat( finalBan_msg ) );
@@ -139,8 +137,8 @@ public class BanManager {
                 ban_msg = ban_msg + msg + "\n";
             }
             Utils.PlayParticle( Bukkit.getPlayer( BannedUUID ) , "ban" );
-            if ( main.plugin.getConfig( ).getBoolean( "wipe.wipe_on_ban" ) ) {
-                wipePlayer.WipeOnBan( main.plugin , Banned.get( ) );
+            if ( Utils.getBoolean( "wipe.wipe_on_ban" ) ) {
+                WipeManager.WipeOnBan( Utils.getSpigot( ) , Banned.get( ) );
             }
             String finalBan_msg = ban_msg;
             Bukkit.getPlayer( BannedUUID ).kickPlayer( Utils.chat( finalBan_msg ) );
@@ -148,7 +146,7 @@ public class BanManager {
         
     }
     
-    public void UnBan( Ban ban , UUID UnBanner ){
+    public static void unBan( Ban ban , int UnBanner ){
         
         BanUtils.deleteBan( ban.getBanId( ) );
     }

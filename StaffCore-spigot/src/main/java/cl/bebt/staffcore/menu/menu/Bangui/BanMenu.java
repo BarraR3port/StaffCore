@@ -48,6 +48,7 @@ public class BanMenu extends BanPlayerMenu {
             if ( PersistentDataUtils.has( e.getCurrentItem( ) , key , PersistentDataType.STRING ) ) {
                 String reason = Utils.getString( "punish_items." + key + ".reason" , "item" , null );
                 p.closeInventory( );
+                PersistentDataUtils.remove( p.getUniqueId( ) , "ban-ip" );
                 new ChoseBanType( main.getPlayerMenuUtility( p ) , plugin , baner , banned , reason ).open( );
             }
         }

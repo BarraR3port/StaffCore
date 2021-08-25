@@ -7,7 +7,7 @@ package cl.bebt.staffcore.menu.menu.Staff;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PaginatedMenu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
-import cl.bebt.staffcore.utils.TpPlayers;
+import cl.bebt.staffcoreapi.utils.TpManager;
 import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -52,7 +52,7 @@ public class StaffListGui extends PaginatedMenu {
         if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "staff" ) , PersistentDataType.STRING ) ) {
             p.closeInventory( );
             String target = e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).get( new NamespacedKey( plugin , "name" ) , PersistentDataType.STRING );
-            TpPlayers.tpToPlayer( p , target );
+            TpManager.tpToPlayer( p , target );
         } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
             p.closeInventory( );
         } else if ( e.getCurrentItem( ).equals( back( ) ) ) {

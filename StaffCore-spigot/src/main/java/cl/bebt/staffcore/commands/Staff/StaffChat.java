@@ -4,8 +4,8 @@
 
 package cl.bebt.staffcore.commands.Staff;
 
-import cl.bebt.staffcore.MSGChanel.SendMsg;
 import cl.bebt.staffcore.main;
+import cl.bebt.staffcoreapi.MSGChanel.SendMsg;
 import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;

@@ -4,10 +4,10 @@
 
 package cl.bebt.staffcore.utils;
 
-import cl.bebt.staffcore.Items.Items;
 import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.menu.menu.Inventory.invSee;
+import cl.bebt.staffcoreapi.Items.Items;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

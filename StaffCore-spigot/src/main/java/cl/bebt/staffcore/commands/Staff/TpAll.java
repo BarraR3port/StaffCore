@@ -5,7 +5,7 @@
 package cl.bebt.staffcore.commands.Staff;
 
 import cl.bebt.staffcore.main;
-import cl.bebt.staffcore.utils.TpPlayers;
+import cl.bebt.staffcoreapi.utils.TpManager;
 import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,7 +22,7 @@ public class TpAll implements CommandExecutor {
     public boolean onCommand( CommandSender sender , Command cmd , String label , String[] args ){
         if ( !(sender instanceof Player) ) {
             if ( args.length == 1 ) {
-                TpPlayers.tpAll( sender , args[0] );
+                TpManager.tpAll( sender , args[0] );
             } else {
                 Utils.tell( sender , Utils.getString( "no_permission" , "lg" , "tpall <player>" ) );
             }
@@ -30,10 +30,10 @@ public class TpAll implements CommandExecutor {
             Player p = ( Player ) sender;
             if ( p.hasPermission( "staffcore.tp.all" ) ) {
                 if ( args.length == 0 ) {
-                    TpPlayers.tpAll( p , p.getName( ) );
+                    TpManager.tpAll( p , p.getName( ) );
                     return true;
                 } else if ( args.length == 1 ) {
-                    TpPlayers.tpAll( p , args[0] );
+                    TpManager.tpAll( p , args[0] );
                 } else {
                     Utils.tell( sender , Utils.getString( "no_permission" , "lg" , "tpall | tpall <player>" ) );
                 }
