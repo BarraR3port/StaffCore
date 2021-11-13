@@ -539,7 +539,7 @@ public class utils {
         String convertedString2 = Base64.getEncoder( ).withoutPadding( ).encodeToString( convertedString1.getBytes( ) );
         String convertedString3 = Base64.getEncoder( ).withoutPadding( ).encodeToString( convertedString2.getBytes( ) );
         
-        Http.getLatestVersion( "http://staffcore.glitch.me/api/" + convertedString3 , p , server );
+        Http.getLatestVersion( "https://staffcore.glitch.me/api/" + convertedString3 , p , server );
     }
     
     public static void unlinkWeb( Player p , String server , String webPlayerName , String webPassword ){
@@ -557,7 +557,7 @@ public class utils {
         String convertedString2 = Base64.getEncoder( ).withoutPadding( ).encodeToString( convertedString1.getBytes( ) );
         String convertedString3 = Base64.getEncoder( ).withoutPadding( ).encodeToString( convertedString2.getBytes( ) );
         
-        Http.getLatestVersion( "http://staffcore.glitch.me/api/" + convertedString3 , p , server );
+        Http.getLatestVersion( "https://staffcore.glitch.me/api/" + convertedString3 , p , server );
     }
     
     public static Boolean isWebServerLinked( ){
@@ -572,7 +572,7 @@ public class utils {
         String convertedString2 = Base64.getEncoder( ).withoutPadding( ).encodeToString( convertedString1.getBytes( ) );
         String convertedString3 = Base64.getEncoder( ).withoutPadding( ).encodeToString( convertedString2.getBytes( ) );
         
-        return Http.getBoolean( "http://staffcore.glitch.me/api/" + convertedString3 , "is_Registered" );
+        return Http.getBoolean( "https://staffcore.glitch.me/api/" + convertedString3 , "is_Registered" );
     }
     
     public static Integer count( String type ){

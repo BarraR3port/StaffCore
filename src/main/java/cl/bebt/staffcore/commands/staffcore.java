@@ -171,7 +171,7 @@ public class staffcore implements TabExecutor {
                         utils.tell( sender , " " );
                         utils.tell( sender , "                 &aStaff Core Version: &7" + plugin.getDescription( ).getVersion( ) );
                         new UpdateChecker( plugin ).getLatestVersion( version -> {
-                            if ( plugin.getDescription( ).getVersion( ).equalsIgnoreCase( version ) ) {
+                            if ( version != null && !version.isEmpty() && plugin.getDescription( ).getVersion( ).equalsIgnoreCase( version ) ) {
                                 utils.tell( sender , "&a                 You are using the latest version!" );
                             } else {
                                 ComponentBuilder cb = new ComponentBuilder( utils.chat( "&aClick to download!" ) );

@@ -100,7 +100,7 @@ public final class main extends JavaPlugin {
     public void onEnable( ){
         plugin = this;
         new UpdateChecker( plugin ).getLatestVersion( version -> {
-            if ( !getDescription( ).getVersion( ).equals( version ) ) {
+            if ( version != null && !version.isEmpty() && !getDescription( ).getVersion( ).equals( version ) ) {
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&c     Hey, there is a new version out!" ) );
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&b         Staff-Core " + version ) );
                 c.sendMessage( utils.chat( getConfig( ).getString( "server_prefix" ) + "&1---------------------------------------------" ) );
