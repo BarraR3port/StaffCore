@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
+ * Copyright (c) 2021-2022. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
  */
 
 package cl.bebt.staffcore;
@@ -16,7 +16,9 @@ import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.menu.listeners.MenuListener;
 import cl.bebt.staffcore.utils.Metrics;
 import cl.bebt.staffcoreapi.Api;
+import cl.bebt.staffcoreapi.EntitiesUtils.BanUtils;
 import cl.bebt.staffcoreapi.EntitiesUtils.SqlUtils;
+import cl.bebt.staffcoreapi.EntitiesUtils.UserUtils;
 import cl.bebt.staffcoreapi.Items.Items;
 import cl.bebt.staffcoreapi.SQL.SqlManager;
 import cl.bebt.staffcoreapi.utils.CountdownManager;
@@ -113,7 +115,7 @@ public final class main extends JavaPlugin {
             Bukkit.getPluginManager( ).registerEvents( new GetReportMessage( plugin ) , plugin );
             Bukkit.getPluginManager( ).registerEvents( new MenuListener( ) , plugin );
             Bukkit.getPluginManager( ).registerEvents( new FreezeListeners( plugin ) , plugin );
-            Bukkit.getPluginManager( ).registerEvents( new InventoryListeners( plugin ) , plugin );
+            //Bukkit.getPluginManager( ).registerEvents( new InventoryListeners( plugin ) , plugin );
             Bukkit.getPluginManager( ).registerEvents( new onPLayerLeave( plugin ) , plugin );
             Bukkit.getServer( ).getScheduler( ).scheduleSyncRepeatingTask( this , new TPS( ) , 100L , 1L );
             Bukkit.getServer( ).getScheduler( ).scheduleAsyncRepeatingTask( this , ( ) -> {
@@ -163,6 +165,10 @@ public final class main extends JavaPlugin {
         getServer( ).getMessenger( ).registerOutgoingPluginChannel( plugin , "sc:stafflist" );
         getServer( ).getMessenger( ).registerIncomingPluginChannel( plugin , "BungeeCord" , new PluginMessage( ) );
         getServer( ).getMessenger( ).registerOutgoingPluginChannel( plugin , "BungeeCord" );
+        for ( cl.bebt.staffcoreapi.Entities.Ban bans : BanUtils.getBans() ){
+            Bukkit.broadcastMessage( bans.getBanId().toString() );
+            Bukkit.broadcastMessage( UserUtils.findUser( bans.getBannedUUID() ).getName() );
+        }
     }
     
     public void onDisable( ){

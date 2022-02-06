@@ -1,23 +1,23 @@
 /*
- * Copyright (c) 2021. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
+ * Copyright (c) 2021-2022. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
  */
 
 package cl.bebt.staffcore.menu;
 
-import cl.bebt.staffcore.main;
+import cl.bebt.staffcoreapi.EntitiesUtils.PersistentDataUtils;
+import cl.bebt.staffcoreapi.Enums.PersistentDataType;
 import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.UUID;
 
 public abstract class Menu implements InventoryHolder {
     
@@ -33,8 +33,8 @@ public abstract class Menu implements InventoryHolder {
         ItemStack panel = new ItemStack( Material.RED_STAINED_GLASS_PANE );
         ItemMeta panel_meta = panel.getItemMeta( );
         panel_meta.setDisplayName( " " );
-        panel_meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "panel" ) , PersistentDataType.STRING , "panel" );
         panel.setItemMeta( panel_meta );
+        PersistentDataUtils.save("panel", "panel", panel, uuid, PersistentDataType.STRING );
         return panel;
     }
     
@@ -42,8 +42,8 @@ public abstract class Menu implements InventoryHolder {
         ItemStack panel = new ItemStack( Material.LIME_STAINED_GLASS_PANE );
         ItemMeta panel_meta = panel.getItemMeta( );
         panel_meta.setDisplayName( " " );
-        panel_meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "panel" ) , PersistentDataType.STRING , "panel" );
         panel.setItemMeta( panel_meta );
+        PersistentDataUtils.save("panel", "panel", panel, uuid, PersistentDataType.STRING );
         return panel;
     }
     
@@ -51,8 +51,8 @@ public abstract class Menu implements InventoryHolder {
         ItemStack panel = new ItemStack( Material.CYAN_STAINED_GLASS_PANE );
         ItemMeta panel_meta = panel.getItemMeta( );
         panel_meta.setDisplayName( " " );
-        panel_meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "panel" ) , PersistentDataType.STRING , "panel" );
         panel.setItemMeta( panel_meta );
+        PersistentDataUtils.save("panel", "panel", panel, uuid, PersistentDataType.STRING );
         return panel;
     }
     
@@ -65,8 +65,8 @@ public abstract class Menu implements InventoryHolder {
             lore.add( Utils.chat( key ) );
         }
         next_meta.setLore( lore );
-        next_meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "next" ) , PersistentDataType.STRING , "next" );
         next.setItemMeta( next_meta );
+        PersistentDataUtils.save("next", "next", next, uuid, PersistentDataType.STRING );
         return next;
     }
     
@@ -79,8 +79,8 @@ public abstract class Menu implements InventoryHolder {
             lore.add( Utils.chat( key ) );
         }
         back_meta.setLore( lore );
-        back_meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "back" ) , PersistentDataType.STRING , "back" );
         back.setItemMeta( back_meta );
+        PersistentDataUtils.save("back", "back", back, uuid, PersistentDataType.STRING );
         return back;
     }
     
@@ -93,8 +93,8 @@ public abstract class Menu implements InventoryHolder {
             lore.add( Utils.chat( key ) );
         }
         close_meta.setLore( lore );
-        close_meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "BARRIER" ) , PersistentDataType.STRING , "BARRIER" );
         close.setItemMeta( close_meta );
+        PersistentDataUtils.save("close", "close", close, uuid, PersistentDataType.STRING );
         return close;
     }
     
@@ -110,8 +110,6 @@ public abstract class Menu implements InventoryHolder {
         inventory = Bukkit.createInventory( this , getSlots( ) , getMenuName( ) );
         this.setMenuItems( );
         playerMenuUtility.getOwner( ).openInventory( inventory );
-        
-        
     }
     
     public ItemStack makeItem( Material material , String displayName , String... lore ){
@@ -122,6 +120,7 @@ public abstract class Menu implements InventoryHolder {
         item.setItemMeta( itemMeta );
         return item;
     }
+    public UUID uuid = playerMenuUtility.getOwner().getUniqueId();
     
     @Override
     public Inventory getInventory( ){

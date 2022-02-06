@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
+ * Copyright (c) 2021-2022. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
  */
 
 package cl.bebt.staffcore.menu.menu.Banlist;
@@ -8,17 +8,16 @@ import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PaginatedMenu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcoreapi.Api;
+import cl.bebt.staffcoreapi.EntitiesUtils.PersistentDataUtils;
+import cl.bebt.staffcoreapi.Enums.PersistentDataType;
 import cl.bebt.staffcoreapi.Enums.UpdateType;
 import cl.bebt.staffcoreapi.SQL.Queries.BansQuery;
 import cl.bebt.staffcoreapi.utils.TpManager;
 import cl.bebt.staffcoreapi.utils.Utils;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 import org.json.JSONObject;
 
 import java.text.ParseException;
@@ -26,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class closedBansMenu extends PaginatedMenu {
@@ -46,6 +46,7 @@ public class closedBansMenu extends PaginatedMenu {
     
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
+        ItemStack item = e.getCurrentItem( );
         HashMap < Integer, Integer > bans = new HashMap <>( );
         int num = 0;
         if ( Utils.mysqlEnabled( ) ) {
@@ -67,16 +68,16 @@ public class closedBansMenu extends PaginatedMenu {
                 }
             }
         }
-        if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "closed" ) , PersistentDataType.STRING ) ) {
+        if ( PersistentDataUtils.has( item, "closed", PersistentDataType.STRING ) ){
             p.closeInventory( );
             String jugador = e.getCurrentItem( ).getItemMeta( ).getDisplayName( );
             if ( e.getClick( ).isLeftClick( ) ) {
-                int i = e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).get( new NamespacedKey( this.plugin , "closed-id" ) , PersistentDataType.INTEGER );
+                int i = PersistentDataUtils.getInteger( item,"closed-id" );
                 new EditBan( main.getPlayerMenuUtility( p ) , main.plugin , jugador , i ).open( );
             } else if ( e.getClick( ).isRightClick( ) ) {
                 TpManager.tpToPlayer( p , jugador );
             }
-        } else if ( e.getCurrentItem( ).getType( ).equals( Material.BARRIER ) ) {
+        } else if ( Objects.equals( e.getCurrentItem( ) , close( ) ) ) {
             if ( e.getClick( ).isLeftClick( ) ) {
                 p.closeInventory( );
                 new BanManager( main.getPlayerMenuUtility( p ) , this.plugin ).open( );
@@ -84,7 +85,7 @@ public class closedBansMenu extends PaginatedMenu {
             } else if ( e.getClick( ).isRightClick( ) ) {
                 p.closeInventory( );
             }
-        } else if ( e.getCurrentItem( ).equals( back( ) ) ) {
+        } else if ( Objects.equals( e.getCurrentItem( ) , back( ) ) ) {
             if ( page == 0 ) {
                 Utils.tell( p , Utils.getString( "menu.already_in_first_page" , "lg" , "sv" ) );
             } else {
@@ -92,7 +93,7 @@ public class closedBansMenu extends PaginatedMenu {
                 p.closeInventory( );
                 open( );
             }
-        } else if ( e.getCurrentItem( ).equals( next( ) ) ) {
+        } else if ( Objects.equals( e.getCurrentItem( ) , next( ) ) ) {
             e.setCancelled( true );
             if ( index + 1 <= bans.size( ) ) {
                 page++;
@@ -180,9 +181,9 @@ public class closedBansMenu extends PaginatedMenu {
                             lore.add( Utils.chat( "&aLeft click delete" ) );
                             lore.add( Utils.chat( "&aRight click to tp" ) );
                             meta.setLore( lore );
-                            meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "closed-id" ) , PersistentDataType.INTEGER , bans.get( this.index ) );
-                            meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "closed" ) , PersistentDataType.STRING , "closed" );
                             p_head.setItemMeta( meta );
+                            PersistentDataUtils.save( "closed-id", bans.get( this.index ), p_head, uuid, PersistentDataType.INTEGER );
+                            PersistentDataUtils.save( "closed", "closed", p_head, uuid, PersistentDataType.STRING );
                             this.inventory.addItem( p_head );
                         } else {
                             Date now = new Date( );
@@ -225,9 +226,9 @@ public class closedBansMenu extends PaginatedMenu {
                             lore.add( Utils.chat( "&aLeft click delete" ) );
                             lore.add( Utils.chat( "&aRight click to tp" ) );
                             meta.setLore( lore );
-                            meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "closed-id" ) , PersistentDataType.INTEGER , bans.get( this.index ) );
-                            meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "closed" ) , PersistentDataType.STRING , "closed" );
                             p_head.setItemMeta( meta );
+                            PersistentDataUtils.save( "closed-id", bans.get( this.index ), p_head, uuid, PersistentDataType.INTEGER );
+                            PersistentDataUtils.save( "closed", "closed", p_head, uuid, PersistentDataType.STRING );
                             this.inventory.addItem( p_head );
                         }
                     }

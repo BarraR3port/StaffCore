@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
+ * Copyright (c) 2021-2022. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
  */
 
 package cl.bebt.staffcore.menu.menu.Banlist;
@@ -8,18 +8,18 @@ import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.Menu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcore.menu.menu.Staff.ServerManager;
-import cl.bebt.staffcoreapi.Api;
-import cl.bebt.staffcoreapi.SQL.Queries.BansQuery;
+import cl.bebt.staffcoreapi.EntitiesUtils.PersistentDataUtils;
+import cl.bebt.staffcoreapi.Enums.PersistentDataType;
+import cl.bebt.staffcoreapi.Enums.UpdateType;
 import cl.bebt.staffcoreapi.utils.Utils;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class BanManager extends Menu {
     private final main plugin;
@@ -39,59 +39,24 @@ public class BanManager extends Menu {
     
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
-        if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "openBans" ) , PersistentDataType.STRING ) ) {
+        ItemStack item = e.getCurrentItem();
+        if (PersistentDataUtils.has( item, "openBans", PersistentDataType.STRING ) ){
             p.closeInventory( );
             new openBansMenu( main.getPlayerMenuUtility( p ) , this.plugin ).open( );
             e.setCancelled( true );
-        } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "closeBans" ) , PersistentDataType.STRING ) ) {
+        } else if (PersistentDataUtils.has( item, "closeBans", PersistentDataType.STRING ) ){
             p.closeInventory( );
             new closedBansMenu( main.getPlayerMenuUtility( p ) , this.plugin ).open( );
             e.setCancelled( true );
-        } else if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( this.plugin , "panel" ) , PersistentDataType.STRING ) ) {
+        } else if ( PersistentDataUtils.has( item, "panel", PersistentDataType.STRING ) ){
             e.setCancelled( true );
-        } else if ( e.getCurrentItem( ).equals( close( ) ) ) {
+        } else if ( Objects.equals( e.getCurrentItem( ) , close( ) ) ) {
             p.closeInventory( );
             if ( e.getClick( ).isLeftClick( ) ) {
                 new ServerManager( main.getPlayerMenuUtility( p ) , this.plugin ).open( p );
                 e.setCancelled( true );
             }
         }
-    }
-    
-    private int Closed( ){
-        int close = 0;
-        if ( Utils.mysqlEnabled( ) ) {
-            return BansQuery.getClosedBans( ).size( );
-        }
-        int count = Api.bans.getConfig( ).getInt( "current" ) + Api.bans.getConfig( ).getInt( "count" );
-        for ( int id = 0; id <= count; ) {
-            Api.bans.reloadConfig( );
-            id++;
-            try {
-                if ( Api.bans.getConfig( ).get( "bans." + id + ".status" ).equals( "closed" ) )
-                    close++;
-            } catch ( NullPointerException ignored ) {
-            }
-        }
-        return close;
-    }
-    
-    private int Opens( ){
-        int opens = 0;
-        if ( Utils.mysqlEnabled( ) ) {
-            return BansQuery.getOpenBans( ).size( );
-        }
-        int count = Api.bans.getConfig( ).getInt( "current" ) + Api.bans.getConfig( ).getInt( "count" );
-        for ( int id = 0; id <= count + 1; ) {
-            Api.bans.reloadConfig( );
-            id++;
-            try {
-                if ( Api.bans.getConfig( ).get( "bans." + id + ".status" ).equals( "open" ) )
-                    opens++;
-            } catch ( NullPointerException ignored ) {
-            }
-        }
-        return opens;
     }
     
     public void setMenuItems( ){
@@ -103,17 +68,17 @@ public class BanManager extends Menu {
         o_meta.setDisplayName( Utils.chat( "&aOpen Bans" ) );
         c_meta.setDisplayName( Utils.chat( "&cClosed Bans" ) );
         lore.add( Utils.chat( "&8&lClick to open all the opened Bans" ) );
-        lore.add( Utils.chat( "&8&lCurrent Opened: &a" + Opens( ) ) );
+        lore.add( Utils.chat( "&8&lCurrent Opened: &a" + Utils.getOpen( UpdateType.BAN ) ) );
         o_meta.setLore( lore );
         lore.clear( );
         lore.add( Utils.chat( "&8&lClick to open all the closed Bans" ) );
-        lore.add( Utils.chat( "&8&lCurrent Closed: &a" + Closed( ) ) );
+        lore.add( Utils.chat( "&8&lCurrent Closed: &a" + Utils.getClosed( UpdateType.BAN ) ) );
         c_meta.setLore( lore );
         lore.clear( );
-        o_meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "openBans" ) , PersistentDataType.STRING , "openBans" );
-        c_meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "closeBans" ) , PersistentDataType.STRING , "closeBans" );
         openBans.setItemMeta( o_meta );
         closeBans.setItemMeta( c_meta );
+        PersistentDataUtils.save("openBans", "openBans", openBans, uuid, PersistentDataType.STRING );
+        PersistentDataUtils.save("closeBans", "closeBans", closeBans, uuid, PersistentDataType.STRING );
         int i;
         for ( i = 0; i < 10; i++ ) {
             if ( this.inventory.getItem( i ) == null )

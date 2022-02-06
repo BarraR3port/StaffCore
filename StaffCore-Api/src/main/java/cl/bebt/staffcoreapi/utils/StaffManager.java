@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
+ * Copyright (c) 2021-2022. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
  */
 
 package cl.bebt.staffcoreapi.utils;
@@ -61,6 +61,7 @@ public class StaffManager {
                     UserUtils.setStaffInventory( uuid , "" );
                     UserUtils.setStaffArmor( uuid , "" );
                 } catch ( IOException | NullPointerException ignored ) {
+                    ignored.printStackTrace();
                 }
                 
                 p.getInventory( ).removeItem( Items.vanishOn( ) );
@@ -71,7 +72,7 @@ public class StaffManager {
                 p.getInventory( ).removeItem( Items.freeze( ) );
                 p.getInventory( ).removeItem( Items.randomTp( ) );
                 p.updateInventory( );
-            } , 2L );
+            } , 6L );
             if ( p.getGameMode( ).equals( GameMode.SURVIVAL ) || p.getGameMode( ).equals( GameMode.ADVENTURE ) ) {
                 p.setAllowFlight( false );
                 p.setFlying( false );

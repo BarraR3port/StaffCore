@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
+ * Copyright (c) 2021-2022. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
  */
 
 package cl.bebt.staffcoreapi;
@@ -146,7 +146,6 @@ public class Api {
                 Utils.tellConsole( "&8[&a&lSTAFF CORE API&r&8]&r " + "&a                      Plugin &5StaffCore &c&l DEACTIVATED" );
                 Utils.tellConsole( "&8[&a&lSTAFF CORE API&r&8]&r " + "&1-----------------------------------------------------------------------------------------" );
                 Utils.StopServer( );
-                return;
             }
         }
     }

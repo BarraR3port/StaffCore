@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
+ * Copyright (c) 2021-2022. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
  */
 
 package cl.bebt.staffcore.menu.menu.Banlist;
@@ -8,16 +8,16 @@ import cl.bebt.staffcore.main;
 import cl.bebt.staffcore.menu.PaginatedMenu;
 import cl.bebt.staffcore.menu.PlayerMenuUtility;
 import cl.bebt.staffcoreapi.Api;
+import cl.bebt.staffcoreapi.EntitiesUtils.PersistentDataUtils;
+import cl.bebt.staffcoreapi.Enums.PersistentDataType;
 import cl.bebt.staffcoreapi.Enums.UpdateType;
 import cl.bebt.staffcoreapi.SQL.Queries.BansQuery;
 import cl.bebt.staffcoreapi.utils.TpManager;
 import cl.bebt.staffcoreapi.utils.Utils;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 import org.json.JSONObject;
 
 import java.text.ParseException;
@@ -45,6 +45,7 @@ public class openBansMenu extends PaginatedMenu {
     
     public void handleMenu( InventoryClickEvent e ){
         Player p = ( Player ) e.getWhoClicked( );
+        ItemStack item = e.getCurrentItem( );
         HashMap < Integer, Integer > bans = new HashMap <>( );
         int num = 0;
         if ( Utils.mysqlEnabled( ) ) {
@@ -66,11 +67,11 @@ public class openBansMenu extends PaginatedMenu {
                 }
             }
         }
-        if ( e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).has( new NamespacedKey( plugin , "open" ) , PersistentDataType.STRING ) ) {
+        if ( PersistentDataUtils.has( item, "open", PersistentDataType.STRING ) ){
             p.closeInventory( );
             String jugador = e.getCurrentItem( ).getItemMeta( ).getDisplayName( );
             if ( e.getClick( ).isLeftClick( ) ) {
-                int i = e.getCurrentItem( ).getItemMeta( ).getPersistentDataContainer( ).get( new NamespacedKey( plugin , "open-id" ) , PersistentDataType.INTEGER );
+                int i = PersistentDataUtils.getInteger( item,"open-id" );
                 new EditBan( main.getPlayerMenuUtility( p ) , main.plugin , jugador , i ).open( );
             } else if ( e.getClick( ).isRightClick( ) ) {
                 TpManager.tpToPlayer( p , jugador );
@@ -175,9 +176,9 @@ public class openBansMenu extends PaginatedMenu {
                             lore.add( Utils.chat( "&aLeft click delete or close" ) );
                             lore.add( Utils.chat( "&aRight click to tp" ) );
                             meta.setLore( lore );
-                            meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "open-id" ) , PersistentDataType.INTEGER , bans.get( index ) );
-                            meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "open" ) , PersistentDataType.STRING , "open" );
                             p_head.setItemMeta( meta );
+                            PersistentDataUtils.save( "open-id", bans.get( this.index ), p_head, uuid, PersistentDataType.INTEGER );
+                            PersistentDataUtils.save( "open", "open", p_head, uuid, PersistentDataType.STRING );
                             inventory.addItem( p_head );
                         } else {
                             Date now = new Date( );
@@ -219,9 +220,9 @@ public class openBansMenu extends PaginatedMenu {
                             lore.add( Utils.chat( "&aLeft click delete or close" ) );
                             lore.add( Utils.chat( "&aRight click to tp" ) );
                             meta.setLore( lore );
-                            meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "open-id" ) , PersistentDataType.INTEGER , bans.get( index ) );
-                            meta.getPersistentDataContainer( ).set( new NamespacedKey( main.plugin , "open" ) , PersistentDataType.STRING , "open" );
                             p_head.setItemMeta( meta );
+                            PersistentDataUtils.save( "open-id", bans.get( this.index ), p_head, uuid, PersistentDataType.INTEGER );
+                            PersistentDataUtils.save( "open", "open", p_head, uuid, PersistentDataType.STRING );
                             inventory.addItem( p_head );
                         }
                     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
+ * Copyright (c) 2021-2022. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
  */
 
 package cl.bebt.staffcoreapi.utils;
@@ -90,29 +90,27 @@ public class ToggleChat {
     public static void MuteCooldown( CommandSender sender , Player p , String time , long amount ){
         UUID uuid = p.getUniqueId( );
         switch (time) {
-            case "s":
+            case "s" -> {
                 CountdownManager.setMuteCountdown( uuid , amount );
                 sendMessage( ( Player ) sender , p , amount , "s" );
                 DataExporter.updateServerStats( UpdateType.MUTE );
-                break;
-            case "m":
+            }
+            case "m" -> {
                 CountdownManager.setMuteCountdown( uuid , amount * 60 );
                 sendMessage( ( Player ) sender , p , amount , "m" );
                 DataExporter.updateServerStats( UpdateType.MUTE );
-                break;
-            case "h":
+            }
+            case "h" -> {
                 CountdownManager.setMuteCountdown( uuid , amount * 3600 );
                 sendMessage( ( Player ) sender , p , amount , "h" );
                 DataExporter.updateServerStats( UpdateType.MUTE );
-                break;
-            case "d":
+            }
+            case "d" -> {
                 CountdownManager.setMuteCountdown( uuid , amount * 86400 );
                 sendMessage( ( Player ) sender , p , amount , "d" );
                 DataExporter.updateServerStats( UpdateType.MUTE );
-                break;
-            default:
-                Utils.tell( sender , Utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "mute " + p.getName( ) + " &d10<s/m/h/d>" ) );
-                break;
+            }
+            default -> Utils.tell( sender , Utils.getString( "wrong_usage" , "lg" , "staff" ).replace( "%command%" , "mute " + p.getName( ) + " &d10<s/m/h/d>" ) );
         }
     }
     

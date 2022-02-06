@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
+ * Copyright (c) 2021-2022. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
  */
 
 package cl.bebt.staffcoreapi.utils;
@@ -210,7 +210,6 @@ public class Utils {
         } else {
             return ChatColor.translateAlternateColorCodes( '&' , s );
         }
-        
     }
     
     
@@ -879,7 +878,7 @@ public class Utils {
     
     public static void runSyncDelayed( Runnable task , Long delay ){
         switch (Api.currentApiType) {
-            case BUNGEECORD -> Bungee.getProxy( ).getScheduler( ).schedule( Bungee , task , delay , TimeUnit.MILLISECONDS );
+            case BUNGEECORD -> Bungee.getProxy( ).getScheduler( ).schedule( Bungee , task , delay*10 , TimeUnit.MILLISECONDS );
             case SPIGOT -> Spigot.getServer( ).getScheduler( ).scheduleSyncDelayedTask( Spigot , task , delay );
         }
     }
@@ -938,6 +937,54 @@ public class Utils {
             Api.warns.reloadConfig( );
             return false;
         }
+    }
+    
+    public static int getOpen( UpdateType type ){
+        int opens = 0;
+        switch (type) {
+            case BAN -> {
+                if ( Utils.mysqlEnabled( ) ) {
+                    return BansQuery.getOpenBans( ).size( );
+                }
+                int count = Api.bans.getConfig( ).getInt( "current" ) + Api.bans.getConfig( ).getInt( "count" );
+                for ( int id = 0; id <= count + 1; ) {
+                    Api.bans.reloadConfig( );
+                    id++;
+                    try {
+                        if ( Api.bans.getConfig( ).get( "bans." + id + ".status" ).equals( "open" ) )
+                            opens++;
+                    } catch ( NullPointerException ignored ) {
+                    }
+                }
+            }
+            //case REPORT -> TODO CREATE A REPORT SYSTEM
+        }
+    
+        return opens;
+    }
+    
+    public static int getClosed( UpdateType type ){
+        int close = 0;
+        switch (type) {
+            case BAN -> {
+                if ( Utils.mysqlEnabled( ) ) {
+                    return BansQuery.getClosedBans( ).size( );
+                }
+                int count = Api.bans.getConfig( ).getInt( "current" ) + Api.bans.getConfig( ).getInt( "count" );
+                for ( int id = 0; id <= count; ) {
+                    Api.bans.reloadConfig( );
+                    id++;
+                    try {
+                        if ( Api.bans.getConfig( ).get( "bans." + id + ".status" ).equals( "closed" ) )
+                            close++;
+                    } catch ( NullPointerException ignored ) {
+                    }
+                }
+            }
+            //case REPORT -> TODO CREATE A REPORT SYSTEM
+        }
+    
+        return close;
     }
     
 }

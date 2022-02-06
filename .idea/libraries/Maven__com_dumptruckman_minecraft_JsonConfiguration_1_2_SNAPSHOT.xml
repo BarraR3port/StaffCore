@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: com.dumptruckman.minecraft:JsonConfiguration:1.2-SNAPSHOT">
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/com/dumptruckman/minecraft/JsonConfiguration/1.2-SNAPSHOT/JsonConfiguration-1.2-20190304.192624-3.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/dumptruckman/minecraft/JsonConfiguration/1.2-SNAPSHOT/JsonConfiguration-1.2-SNAPSHOT.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$MAVEN_REPOSITORY$/com/dumptruckman/minecraft/JsonConfiguration/1.2-SNAPSHOT/JsonConfiguration-1.2-20190304.192624-3-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/dumptruckman/minecraft/JsonConfiguration/1.2-SNAPSHOT/JsonConfiguration-1.2-SNAPSHOT-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$MAVEN_REPOSITORY$/com/dumptruckman/minecraft/JsonConfiguration/1.2-SNAPSHOT/JsonConfiguration-1.2-20190304.192624-3-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/dumptruckman/minecraft/JsonConfiguration/1.2-SNAPSHOT/JsonConfiguration-1.2-SNAPSHOT-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

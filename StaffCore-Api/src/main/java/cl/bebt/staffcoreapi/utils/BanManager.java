@@ -1,9 +1,10 @@
 /*
- * Copyright (c) 2021. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
+ * Copyright (c) 2021-2022. StaffCore Use of this source is governed by the MIT License that can be found int the LICENSE file
  */
 
 package cl.bebt.staffcoreapi.utils;
 
+import cl.bebt.staffcoreapi.Api;
 import cl.bebt.staffcoreapi.Entities.Ban;
 import cl.bebt.staffcoreapi.EntitiesUtils.BanUtils;
 import cl.bebt.staffcoreapi.EntitiesUtils.UserUtils;
@@ -12,6 +13,7 @@ import cl.bebt.staffcoreapi.SQL.Queries.AltsQuery;
 import cl.bebt.staffcoreapi.SQL.Queries.BansQuery;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -147,8 +149,54 @@ public class BanManager {
     }
     
     public static void unBan( Ban ban , int UnBanner ){
-        
-        BanUtils.deleteBan( ban.getBanId( ) );
+        if ( Utils.mysqlEnabled() ){
+            BanUtils.deleteBan( ban.getBanId( ) );
+        }
+    }
+    public static void CloseBan( Player p, Integer Id ){
+        String reason = null;
+        String created = null;
+        String exp = null;
+        String baner = null;
+        String banned = null;
+        if ( Utils.mysqlEnabled( ) ) {
+            JSONObject json = BansQuery.getBanInfo( Id );
+            if ( !json.getBoolean( "error" ) ) {
+                reason = json.getString( "Reason" );
+                created = json.getString( "Date" );
+                exp = json.getString( "ExpDate" );
+                baner = json.getString( "Banner" );
+                banned = json.getString( "Name" );
+                BansQuery.closeBan( Id );
+            }
+        } else {
+            Api.bans.reloadConfig( );
+            reason = Api.bans.getConfig( ).getString( "bans." + Id + ".reason" );
+            created = Api.bans.getConfig( ).getString( "bans." + Id + ".date" );
+            exp = Api.bans.getConfig( ).getString( "bans." + Id + ".expdate" );
+            baner = Api.bans.getConfig( ).getString( "bans." + Id + ".banned_by" );
+            banned = Api.bans.getConfig( ).getString( "bans." + Id + ".name" );
+            Api.bans.getConfig( ).set( "bans." + Id + ".status" , "closed" );
+            Api.bans.getConfig( ).set( "count" , Utils.getCurrentBans( ) );
+            Api.bans.saveConfig( );
+        }
+        SendMsg.sendBanChangeAlert( Id , p.getName( ) , baner , banned , reason , exp , created , "closed" , Utils.getServer( ) );
+        for ( Player people : Bukkit.getOnlinePlayers( ) ) {
+            if ( people.hasPermission( "staffcore.staff" ) ) {
+                Utils.PlaySound( p , "close_ban" );
+                for ( String key : Utils.getStringList( "ban.change" , "alerts" ) ) {
+                    key = key.replace( "%changed_by%" , p.getName( ) );
+                    key = key.replace( "%baner%" , baner );
+                    key = key.replace( "%banned%" , banned );
+                    key = key.replace( "%id%" , String.valueOf( Id ) );
+                    key = key.replace( "%reason%" , reason );
+                    key = key.replace( "%create_date%" , created );
+                    key = key.replace( "%exp_date%" , exp );
+                    key = key.replace( "%ban_status%" , "Closed" );
+                    Utils.tell( people , key );
+                }
+            }
+        }
     }
     
     
